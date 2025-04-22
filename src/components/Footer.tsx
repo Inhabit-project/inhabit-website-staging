@@ -1,0 +1,146 @@
+import React from 'react';
+
+const Footer: React.FC = () => {
+  return (
+    <footer className="relative w-full min-h-screen bg-secondary">
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 w-full h-full"
+        style={{
+          backgroundImage: 'url("/assets/footer-bg.webp")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 1
+        }}
+      />
+
+      {/* Blur Overlay */}
+      <div className="absolute inset-0 bg-white/5 backdrop-blur-[60px] border-[0.5px] border-white/20" />
+
+      {/* Content */}
+      <div className="relative z-10 w-full min-h-screen flex flex-col py-[5rem]">
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col lg:flex-row px-6 lg:px-0">
+          {/* Left Side - Logo */}
+          <div className="w-full lg:w-[45%] pt-16 lg:pl-[clamp(1.5rem,5vw,6.25rem)]">
+            <img src="/assets/figma-images/logo-footer.svg" alt="INHABIT" className="h-[4rem]" />
+          </div>
+
+          {/* Right Side Content */}
+          <div className="w-full lg:w-[55%] flex flex-col mt-16 lg:mt-0">
+            {/* Main Content Area */}
+            <div className="flex-1 flex flex-col lg:flex-row lg:pr-[clamp(1.5rem,5vw,6.25rem)] gap-16 lg:gap-8">
+              {/* Combined Section: Connect, Location, Newsletter, Social */}
+              <div className="w-full lg:w-[45%] flex flex-col justify-between lg:py-16">
+                {/* Top Group */}
+                <div className="space-y-8">
+                  {/* Connect Section */}
+                  <div>
+                    <h3 className="eyebrow text-light mb-2">
+                      CONNECT
+                    </h3>
+                    <a
+                      href="mailto:hello@inhabit.one"
+                      className="nav-text text-light hover:opacity-80"
+                    >
+                      HELLO@INHABIT.ONE
+                    </a>
+                  </div>
+
+                  {/* Location Section */}
+                  <div>
+                    <h3 className="eyebrow text-light mb-2">
+                      CONNECT
+                    </h3>
+                    <p className="nav-text text-light">
+                      TIERRA KILWA, PALOMINO, LA GUAJIRA, COLOMBIA
+                    </p>
+                  </div>
+                </div>
+
+                {/* Middle Group */}
+                <div className="my-16 lg:my-0">
+                  {/* Newsletter Section */}
+                  <div>
+                    <h3 className="eyebrow text-light mb-2">
+                      NEWSLETTER
+                    </h3>
+                    <p className="nav-text text-light mb-4">
+                      SUSCRIBE TO HAVE THE BEST UPDATES FROM US!
+                    </p>
+                    <div className="flex flex-col gap-3">
+                      <input
+                        type="email"
+                        placeholder="Your email"
+                        className="w-full h-[2.8125rem] bg-white/5 backdrop-blur-[18.9px] border-[0.5px] border-[#F6FFEA]/20 rounded-input px-4 text-light font-ibm-mono text-base placeholder:text-[#F6FFEA]/50 focus:outline-none"
+                      />
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <div className="relative w-[1.125rem] h-[1.125rem] border-[0.5px] border-[#F6FFEA] rounded">
+                          <input type="checkbox" className="absolute opacity-0 w-full h-full cursor-pointer" />
+                        </div>
+                        <span className="eyebrow text-light text-xs">
+                          I ACCEPT THE PRIVACY POLICY
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Group */}
+                <div>
+                  {/* Social Links */}
+                  <div className="flex gap-6">
+                    <a href="#" className="w-5 h-5 hover:opacity-80">
+                      <img src="/assets/figma-images/twitter.svg" alt="Twitter" className="w-full h-full" />
+                    </a>
+                    <a href="#" className="w-5 h-5 hover:opacity-80">
+                      <img src="/assets/figma-images/linkedin.svg" alt="LinkedIn" className="w-full h-full" />
+                    </a>
+                    <a href="#" className="w-5 h-5 hover:opacity-80">
+                      <img src="/assets/figma-images/medium.svg" alt="Medium" className="w-full h-full" />
+                    </a>
+                    <a href="#" className="w-5 h-5 hover:opacity-80">
+                      <img src="/assets/figma-images/youtube.svg" alt="YouTube" className="w-full h-full" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Menu Section */}
+              <div className="w-full lg:w-[45%] lg:py-16">
+                <nav className="flex flex-col gap-4">
+                  {[
+                    'HOME',
+                    'HUBS',
+                    'STEWARDSHIP NFT',
+                    'ABOUT US',
+                    'PROJECTS',
+                    'BLOG',
+                    'CONTACTS'
+                  ].map((item) => (
+                    <a
+                      key={item}
+                      href="#"
+                      className="nav-text text-light hover:opacity-80"
+                    >
+                      {item}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Copyright Section */}
+        <div className="h-[5.5rem] px-6 lg:pl-[clamp(1.5rem,5vw,6.25rem)] flex items-center">
+          <p className="nav-text text-light text-xs">
+            COPYRIGHT 2025 ALL RIGHTS RESERVED DESIGNED BY FERNANDA HERRERA
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer; 

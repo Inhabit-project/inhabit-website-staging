@@ -1,0 +1,132 @@
+{
+  "name": "INHABIT",
+  "version": "1.0.0",
+  "mcpServers": {
+    "TalkToFigma": {
+      "command": "bunx",
+      "args": [
+        "cursor-talk-to-figma-mcp@latest",
+        "--server=vps.sonnylab.com",
+        "--figma-api-key=figd_tF6hULsPUpA0oqKaYHZeVLjVrdhH7_uwvhRTIfmu"
+      ]
+    }
+  },
+  "figma": {
+    "accessToken": "figd_tF6hULsPUpA0oqKaYHZeVLjVrdhH7_uwvhRTIfmu",
+    "fileId": "3846:33500",
+    "nodeIds": [
+      "3846:33501",
+      "3846:33502",
+      "3846:33503",
+      "3846:33504",
+      "3846:33505",
+      "3846:33506"
+    ],
+    "frames": [
+      {
+        "id": "3846:33500",
+        "name": "Frame 11975",
+        "type": "FRAME",
+        "width": 1504,
+        "height": 864.17,
+        "children": [
+          {
+            "id": "3846:33501",
+            "name": "Hero Title",
+            "type": "TEXT",
+            "x": 37.5,
+            "y": 0,
+            "width": 1429,
+            "height": 198.58,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.9639,
+                  "g": 1,
+                  "b": 0.918
+                }
+              }
+            ]
+          },
+          {
+            "id": "3846:33503",
+            "name": "Description Card",
+            "type": "FRAME",
+            "x": -108.5,
+            "y": 652,
+            "width": 571,
+            "height": 261,
+            "effects": [
+              {
+                "type": "BACKGROUND_BLUR",
+                "radius": 100
+              }
+            ],
+            "fills": [
+              {
+                "type": "SOLID",
+                "opacity": 0.05,
+                "color": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "components": {
+      "buttons": {
+        "main": {
+          "id": "3846:33506",
+          "name": "main button",
+          "type": "INSTANCE",
+          "width": 265,
+          "height": 70,
+          "cornerRadius": 65,
+          "fills": [
+            {
+              "type": "SOLID",
+              "color": {
+                "r": 0.8353,
+                "g": 0.4511,
+                "b": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    "styles": {
+      "colors": {
+        "primary": "#1C3625",
+        "secondary": "#DBE9B3",
+        "accent": "#D57300",
+        "text": "#F6FFE9"
+      },
+      "typography": {
+        "heading": {
+          "fontFamily": "Montserrat",
+          "sizes": {
+            "h1": {
+              "size": 96,
+              "lineHeight": 1.1,
+              "letterSpacing": -0.02
+            }
+          }
+        }
+      },
+      "effects": {
+        "blur": {
+          "navigation": {
+            "type": "BACKGROUND_BLUR",
+            "radius": 100
+          }
+        }
+      }
+    }
+  }
+} 
