@@ -37,15 +37,15 @@ const Blog: React.FC = () => {
   ];
 
   return (
-    <section className="bg-light w-full">
+    <section className="w-full">
       <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
         <div className="flex flex-col items-start gap-12">
           {/* Header section */}
-          <div className="flex flex-col md:flex-row items-start justify-between gap-[13.3125rem] w-full mb-[2.5rem]">
+          <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
             <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
               Keep up<br /><strong>informed</strong>
             </h2>
-            <p className="body-M text-secondary max-w-[35rem]">
+            <p className="body-M text-secondary max-w-[36rem]">
               Stay updated with our latest news and insights about biodiversity and ecological preservation.
             </p>
           </div>
@@ -58,7 +58,7 @@ const Blog: React.FC = () => {
                   <img 
                     src={mainPost.image} 
                     alt={mainPost.title}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover" style={{ borderRadius: 'var(--radius-md)' }}
                   />
                 </div>
                 <div className="flex flex-col gap-2">
@@ -84,7 +84,7 @@ const Blog: React.FC = () => {
                       <img 
                         src={post.image} 
                         alt={post.title}
-                        className="absolute inset-0 w-full h-full object-cover"
+                        className="absolute inset-0 w-full h-full object-cover" style={{ borderRadius: 'var(--radius-md)' }}
                       />
                     </div>
                     <div className="flex flex-col gap-2 flex-1">

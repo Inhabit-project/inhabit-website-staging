@@ -36,15 +36,16 @@ const FAQ: React.FC = () => {
   };
 
   return (
-    <section className="relative w-full min-h-screen bg-secondary">
+    <section className="relative w-full min-h-screen  background-gradient-dark">
       <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24 flex flex-col">
         <div className="flex flex-col items-end gap-24">
           {/* Header section */}
-          <div className="flex flex-col md:flex-row items-end justify-between gap-[13.3125rem] w-full mb-[2.5rem]">
+          <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
             <h2 className="heading-2 text-light max-w-[40.9375rem]">
-              <strong>FAQS</strong>
+              Frequently Asked<br />
+              <strong>Questions</strong>
             </h2>
-            <p className="body-M text-light max-w-[35rem]">
+            <p className="body-M text-light max-w-[36rem]">
               Find answers to common questions about our ecosystem protection and stewardship programs.
             </p>
           </div>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Nunito+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Nunito+Sans:wght@300;400;500;600;700&family=Abel:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -16,22 +16,39 @@
     --font-size-sm: clamp(0.875rem, 0.8vw + 0.6rem, 1rem);
     --font-size-xs: clamp(0.75rem, 0.7vw + 0.5rem, 0.875rem);
   
+    /* Border Radius */
+    --radius-xs: 0.25rem;  /* 4px */
+    --radius-sm: 0.5rem;   /* 8px */
+    --radius-md: 1rem;     /* 16px */
+    --radius-lg: 1.5rem;   /* 24px */
+    --radius-xl: 2rem;     /* 32px */
+    --radius-2xl: 2.5rem;  /* 40px */
+    --radius-3xl: 3rem;    /* 48px */
+    --radius-full: 9999px;
+  
+    /* Gap sizes */
+    --gap-xl: clamp(4rem, 5vw + 2rem, 13.3125rem); /* Responsive gap that scales from 4rem to 13.3125rem */
+  
     /* Typography Styles */
     --body-L: clamp(2rem, 2vw + 1.5rem, 2.5rem); /* 32px with fluid scaling */
     --body-M: clamp(1.5rem, 1.5vw + 1rem, 1.5rem); /* 24px with fluid scaling */
     --body-S: clamp(1rem, 1vw + 0.75rem, 1.125rem); /* 16px with fluid scaling */
-    --eyebrow: clamp(0.875rem, 0.8vw + 0.6rem, 1rem);
+    --eyebrow: clamp(0.9rem, 0.8vw + 0.6rem, 0.9rem);
     
     /* Colors */
     --color-primary: #D57300;
     --color-secondary: #1C3625;
     --color-light: #F6FFEA;
     --color-green-soft: #DBEAB2;
+    --color-bright-green: #162F08;
     --color-background: var(--color-secondary);
     --color-accent: var(--color-primary);
     --color-text: var(--color-light);
     --color-orange: var(--color-primary);
-    
+    --light-gradient: linear-gradient(90deg, #DEEDCB 2.26%, #F6FFEA 50.64%, #DEEDCB 99.01%);
+    --dark-gradient: linear-gradient(90deg, #1C3625 2.26%, #2E4F22 50.64%, #1C3625 99.01%);
+    --background-gradient-light: var(--light-gradient, linear-gradient(90deg, #DEEDCB 2.26%, #F6FFEA 50.64%, #DEEDCB 99.01%));
+    --background-gradient-dark: var(--dark-gradient, linear-gradient(90deg, #1C3625 2.26%, #2E4F22 50.64%, #1C3625 99.01%));
     /* Spacing */
     --spacing-xs: clamp(0.5rem, 0.5vw + 0.25rem, 0.75rem);
     --spacing-sm: clamp(0.75rem, 0.75vw + 0.5rem, 1rem);
@@ -51,7 +68,7 @@
     --size-container-max: 1920px;
     --size-container: clamp(var(--size-container-min), 100vw, var(--size-container-max));
     --size-font: calc(var(--size-container) / (var(--size-container-ideal) / var(--size-unit)));
-
+ 
     @media (min-width: 1600px) {
       .container {
           max-width: 1600px;
@@ -65,6 +82,7 @@
       --size-container-ideal: 834; /* screen-size in design - no px */
       --size-container-min: 768px;
       --size-container-max: 991px;
+      --gap-xl: clamp(3rem, 4vw + 1.5rem, 8rem); /* Smaller gap for tablet */
     }
   }
 
@@ -74,6 +92,7 @@
       --size-container-ideal: 390; /* screen-size in design - no px */
       --size-container-min: 480px;
       --size-container-max: 767px;
+      --gap-xl: clamp(2rem, 3vw + 1rem, 4rem); /* Even smaller gap for mobile landscape */
     }
   }
 
@@ -83,6 +102,7 @@
       --size-container-ideal: 440; /* screen-size in design - no px */
       --size-container-min: 0px;
       --size-container-max: 479px;
+      --gap-xl: clamp(1.5rem, 2vw + 0.75rem, 3rem); /* Smallest gap for mobile portrait */
     }
   }
 
@@ -92,17 +112,54 @@
     -moz-osx-font-smoothing: grayscale;
     height: 100%;
   }
-
+  *,
+::after,
+::before {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
   body {
     @apply bg-light text-primary font-nunito m-0 min-h-screen;
     height: 100%;
     scrollbar-width: none;
-  }
-/* Hide scrollbar for Chrome, Safari and Opera */
-::-webkit-scrollbar {
-  display: none;
+    background: var(--light-gradient);
+    text-wrap: balance;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: subpixel-antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-scroll-chaining: none;
+    overscroll-behavior: none;
+}
+@media (min-width: 991px) {
+    * {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
 }
 
+input,
+textarea {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+    -ms-overflow-style: none;
+    display: none;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-hide {
   -ms-overflow-style: none;  /* IE and Edge */
@@ -116,7 +173,7 @@
   }
 
   button, .button {
-    @apply font-ibm-sans font-normal;
+    @apply font-abel tracking-abel uppercase;
   }
 
   .font-size-xs {
@@ -130,7 +187,7 @@
   /* Heading Scale */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
-    font-weight: 300;
+    font-weight: 500;
     color: var(--heading-color-light);
   }
 
@@ -258,7 +315,7 @@
     font-family: 'Nunito Sans', sans-serif;
     font-size: var(--body-M);
     font-weight: 300;
-    line-height: 1.5;
+    line-height: 1.2;
     color: var(--color-text);
   }
 
@@ -272,39 +329,92 @@
 
   /* Eyebrow Text */
   .eyebrow {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'Abel', sans-serif;
     font-size: var(--eyebrow);
     font-weight: 400;
     line-height: 1.5;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.08rem;
     text-transform: uppercase;
     color: var(--color-text);
   }
 
   /* Navigation Text */
   .nav-text {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'Abel', sans-serif;
     font-size: var(--font-size-xs);
     font-weight: 400;
     line-height: 1.5;
-    letter-spacing: -0.04em;
+    letter-spacing: 0.08rem;
     text-transform: uppercase;
     color: var(--color-text);
   }
 
   /* Button Text */
   .button-text {
-    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    font-family: 'Abel', sans-serif;
     font-size: var(--font-size-xs);
     font-weight: 400;
     line-height: 1.5;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.08rem;
     text-transform: uppercase;
+  }
+
+  /* Responsive Gap Utility */
+  .responsive-gap {
+    gap: var(--gap-xl);
   }
 }
 
-
-
 .bg-menu-backdrop {
     background-color: rgb(25 48 22 / 50%);
+}
+
+/* Add this to globals.css */
+.hover-scale-up {
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.hover-scale-up:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.background-gradient-dark {
+    background: var(--background-gradient-dark);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+/* Horizontal Scroll Section for GSAP */
+.horizontal-scroll-section {
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 4rem;
+}
+.pin-wrap {
+  display: flex;
+  flex-wrap: nowrap;
+  width: max-content;
+  height: 100%;
+}
+.horizontal-slide {
+  flex: 0 0 100vw;
+  max-width: 100vw;
+  min-height: 60vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+@media (max-width: 991px) {
+  .horizontal-slide {
+    min-height: 50vh;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
 }

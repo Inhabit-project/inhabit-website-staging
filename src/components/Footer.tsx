@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (
@@ -29,7 +30,7 @@ const Footer: React.FC = () => {
           {/* Right Side Content */}
           <div className="w-full lg:w-[55%] flex flex-col mt-16 lg:mt-0">
             {/* Main Content Area */}
-            <div className="flex-1 flex flex-col lg:flex-row lg:pr-[clamp(1.5rem,5vw,6.25rem)] gap-16 lg:gap-8">
+            <div className="flex-1 flex flex-col lg:flex-row lg:pr-[clamp(1.5rem,5vw,6.25rem)] gap-16 lg:gap-24">
               {/* Combined Section: Connect, Location, Newsletter, Social */}
               <div className="w-full lg:w-[45%] flex flex-col justify-between lg:py-16">
                 {/* Top Group */}
@@ -41,19 +42,19 @@ const Footer: React.FC = () => {
                     </h3>
                     <a
                       href="mailto:hello@inhabit.one"
-                      className="nav-text text-light hover:opacity-80"
+                      className="base-text text-light hover:opacity-80"
                     >
-                      HELLO@INHABIT.ONE
+                      hello@inhabit.one
                     </a>
                   </div>
 
                   {/* Location Section */}
                   <div>
                     <h3 className="eyebrow text-light mb-2">
-                      CONNECT
+                      LOCATION
                     </h3>
-                    <p className="nav-text text-light">
-                      TIERRA KILWA, PALOMINO, LA GUAJIRA, COLOMBIA
+                    <p className="base-text text-light">
+                    Tierra Kilwa, Palomino, La Guajira, Colombia
                     </p>
                   </div>
                 </div>
@@ -65,21 +66,21 @@ const Footer: React.FC = () => {
                     <h3 className="eyebrow text-light mb-2">
                       NEWSLETTER
                     </h3>
-                    <p className="nav-text text-light mb-4">
-                      SUSCRIBE TO HAVE THE BEST UPDATES FROM US!
+                    <p className="base-text text-light mb-4">
+                    Suscribe to have the best updates from us!
                     </p>
                     <div className="flex flex-col gap-3">
                       <input
                         type="email"
                         placeholder="Your email"
-                        className="w-full h-[2.8125rem] bg-white/5 backdrop-blur-[18.9px] border-[0.5px] border-[#F6FFEA]/20 rounded-input px-4 text-light font-ibm-mono text-base placeholder:text-[#F6FFEA]/50 focus:outline-none"
+                        className="w-full h-[2.8125rem] bg-gradient-to-b from-white/40 to-white/0 backdrop-blur-[60px] border-[0.5px] border-[#F6FFEA]/40 rounded-input px-4 text-light font-ibm-mono text-base placeholder:text-[#F6FFEA]/50 focus:outline-none"
                       />
                       <label className="flex items-center gap-2 cursor-pointer">
-                        <div className="relative w-[1.125rem] h-[1.125rem] border-[0.5px] border-[#F6FFEA] rounded">
+                        <div className="relative w-[1.125rem] h-[1.125rem] border-[0.5px] border-[#F6FFEA] rounded bg-white/5 backdrop-blur-[18.9px]">
                           <input type="checkbox" className="absolute opacity-0 w-full h-full cursor-pointer" />
                         </div>
-                        <span className="eyebrow text-light text-xs">
-                          I ACCEPT THE PRIVACY POLICY
+                        <span className="base-text text-light text-xs ">
+                        I accept the privacy policy
                         </span>
                       </label>
                     </div>
@@ -108,23 +109,26 @@ const Footer: React.FC = () => {
 
               {/* Menu Section */}
               <div className="w-full lg:w-[45%] lg:py-16">
-                <nav className="flex flex-col gap-4">
+                <h3 className="eyebrow text-light mb-2">
+                  MENU
+                </h3>
+                <nav className="flex flex-col gap-4 ">
                   {[
-                    'HOME',
-                    'HUBS',
-                    'STEWARDSHIP NFT',
-                    'ABOUT US',
-                    'PROJECTS',
-                    'BLOG',
-                    'CONTACTS'
+                    { label: 'home', path: '/' },
+                    { label: 'hubs', path: '/hubs' },
+                    { label: 'stewardship Nft', path: '/stewardship-nft' },
+                    { label: 'about Us', path: '/about' },
+                    { label: 'projects', path: '/projects' },
+                    { label: 'blog', path: '/blog' },
+                    { label: 'contacts', path: '/contacts' }
                   ].map((item) => (
-                    <a
-                      key={item}
-                      href="#"
-                      className="nav-text text-light hover:opacity-80"
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className="base-text text-light hover:opacity-80 capitalize base-text"
                     >
-                      {item}
-                    </a>
+                      <span className="base-text">{item.label}</span>
+                    </Link>
                   ))}
                 </nav>
               </div>

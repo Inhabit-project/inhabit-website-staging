@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import './styles/globals.css'
+import { scrollManager } from './utils/scrollManager'
 
 // Import fonts
 import '@fontsource/montserrat/300.css' // Light
@@ -13,6 +14,9 @@ import '@fontsource/nunito-sans/600.css'
 import '@fontsource/ibm-plex-sans-condensed/400.css'
 import '@fontsource/ibm-plex-sans-condensed/600.css'
 import '@fontsource/prompt/300.css' // Light
+
+// Initialize smooth scrolling
+scrollManager.init();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

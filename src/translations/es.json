@@ -1,0 +1,40 @@
+{
+  "navigation": {
+    "home": "INICIO",
+    "hubs": "CENTROS",
+    "stewardshipNFT": "NFT DE ADMINISTRACIÓN",
+    "aboutUs": "ACERCA DE NOSOTROS",
+    "projects": "PROYECTOS",
+    "blog": "BLOG",
+    "contacts": "CONTACTOS"
+  },
+  "hero": {
+    "title": "<strong>Únete a nosotros</strong> para dar forma a un <strong>corredor global</strong> de <strong>biodiversidad</strong>",
+    "description": "INHABIT protege ecosistemas vitales e impulsa la innovación rural a través de centros bioculturales liderados por la comunidad",
+    "scrollButton": "DESPLÁZATE PARA VER EL VIDEO"
+  },
+  "menu": {
+    "downloadWhitePaper": "descargar libro blanco"
+  },
+  "home": {
+    "welcome": "Bienvenido a nuestro sitio web",
+    "description": "Proporcionamos los mejores servicios para sus necesidades"
+  },
+  "about": {
+    "title": "Acerca de Nosotros",
+    "description": "Somos una empresa dedicada a la excelencia"
+  },
+  "services": {
+    "title": "Nuestros Servicios",
+    "service1": "Servicio 1",
+    "service2": "Servicio 2",
+    "service3": "Servicio 3"
+  },
+  "contact": {
+    "title": "Contáctenos",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "message": "Mensaje",
+    "send": "Enviar"
+  }
+} 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 
 interface Testimonial {
   image: string;
@@ -16,132 +15,96 @@ interface Partner {
 const Testimonials: React.FC = () => {
   const testimonials: Testimonial[] = [
     {
-      image: "/assets/testimonials/testimonial-1.jpg",
-      role: "ceo lorem ipsum",
-      name: "Pepita Perez",
-      quote: "Each HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times. These \"living seed hubs\" hosts an \"inner corridor\" within the land, connecting fragmented landscapes and serving as a refuge for endangered species."
+      image: "/assets/logos/testimonial-image.png",
+      role: "CEO ECONETWORK",
+      name: "ANNIE VASQUEZ",
+      quote: "\" Each HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times. \""
     },
     {
-      image: "/assets/testimonials/testimonial-1.jpg",
-      role: "ceo lorem ipsum",
-      name: "Pepita Perez",
-      quote: "Each HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times. These \"living seed hubs\" hosts an \"inner corridor\" within the land, connecting fragmented landscapes and serving as a refuge for endangered species."
+      image: "/assets/logos/testimonial-image.png",
+      role: "CEO ECONETWORK",
+      name: "ANNIE VASQUEZ",
+      quote: "\" Each HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times. \""
     },
     {
-      image: "/assets/testimonials/testimonial-1.jpg",
-      role: "ceo lorem ipsum",
-      name: "Pepita Perez",
-      quote: "Each HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times. These \"living seed hubs\" hosts an \"inner corridor\" within the land, connecting fragmented landscapes and serving as a refuge for endangered species."
+      image: "/assets/logos/testimonial-image.png",
+      role: "CEO ECONETWORK",
+      name: "ANNIE VASQUEZ",
+      quote: "\" Each HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times. \""
     }
   ];
 
   const partners: Partner[] = [
-    { logo: "/assets/testimonials/logo-1.jpg", name: "Partner 1" },
-    { logo: "/assets/testimonials/logo-1.jpg", name: "Partner 2" },
-    { logo: "/assets/testimonials/logo-1.jpg", name: "Partner 3" },
-    { logo: "/assets/testimonials/logo-1.jpg", name: "Partner 4" },
-    { logo: "/assets/testimonials/logo-1.jpg", name: "Partner 5" }
+    { logo: '/assets/logos/partner-logo-1.png', name: 'Partner 1' },
+    { logo: '/assets/logos/partner-logo-2.png', name: 'Partner 2' },
+    { logo: '/assets/logos/partner-logo-3.png', name: 'Partner 3' },
+    { logo: '/assets/logos/partner-logo-4.png', name: 'Partner 4' },
+    { logo: '/assets/logos/partner-logo-5.png', name: 'Partner 5' }
   ];
 
   return (
-    <section className="bg-secondary py-[6.4375rem] overflow-x-hidden ">
-      <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)]">
-        <div className="flex flex-col items-start ">
-          {/* Header section */}
-          <div className="flex flex-col md:flex-row items-start justify-between gap-[13.3125rem] w-full mb-[2.5rem]">
-            <h2 className="heading-2 text-light max-w-[40.9375rem]">
-              Meet our<br /><strong>Allies</strong>
-            </h2>
-            <p className="body-M text-light max-w-[35rem]">
-              Stewardship NFTs are blockchain-verified contracts that give fractional rights to protect ecosystems on tokenized plots of land.
-            </p>
+    <section className="bg-gradient-to-r from-[#1C3625] via-[#2E4F22] to-[#1C3625] py-8 md:py-16 lg:py-[6.5rem] px-4 md:px-8 lg:px-[6.25rem] overflow-x-hidden flex flex-col gap-8 md:gap-16 lg:gap-[3.75rem]">
+      <div className="w-full">
+        {/* Header section */}
+        <div className="flex flex-col md:flex-row items-start justify-between w-full gap-6 md:gap-8">
+          <h2 className="font-prompt font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]">
+            Meet our<br /><strong>Allies</strong>
+          </h2>
+          <p className="font-nunito font-light text-xl md:text-2xl lg:text-[1.75rem] leading-[1.24em] text-[#F6FFEA] max-w-full md:max-w-[36rem]">
+            Stewardship NFTs are blockchain-verified contracts that give fractional rights to protect ecosystems on tokenized plots of land.
+          </p>
+        </div>
+      </div>
+
+      {/* Testimonial */}
+      <div className="bg-[#162F08] border border-white/20 rounded-[1.7rem] shadow-[inset_0px_0px_2.7px_rgba(61,27,114,1)] backdrop-blur-[1233px] p-6 md:p-8 lg:p-[3.4rem] w-full">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-[3.4rem] w-full">
+          <div className="w-full md:w-[33%] h-60 md:h-auto rounded-[1.3rem] overflow-hidden">
+            <img 
+              src="/assets/logos/testimonial-image.png" 
+              alt="Testimonial" 
+              className="w-full h-full object-cover"
+            />
           </div>
-
-          {/* Testimonials Grid */}
-          <div className="flex flex-col w-full">
-            {/* Testimonial Cards */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-[6rem]">
-              {testimonials.map((testimonial, index) => (
-                <div 
-                  key={index}
-                  className="bg-[#0F2717] rounded-[20px] overflow-hidden"
-                >
-                  <div className="flex flex-col h-full">
-                    <div className="p-8 flex flex-col gap-6">
-                      <div className="w-[120px] h-[120px] rounded-[20px] overflow-hidden self-end">
-                        <img 
-                          src={testimonial.image} 
-                          alt={testimonial.name} 
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="flex flex-col gap-4">
-                        <span className="text-white/80 font-ibm-mono-plex-mono text-sm uppercase">
-                          {testimonial.role}
-                        </span>
-                        <h3 className="text-white font-montserrat text-[2.5rem] leading-[1.2]">
-                          {testimonial.name}
-                        </h3>
-                        <p className="text-white/80 font-nunito text-base leading-[1.5]">
-                          {testimonial.quote}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Partner Logos Slider */}
-            <div className="relative w-full overflow-hidden">
-              <motion.div
-                className="flex gap-8"
-                animate={{
-                  x: [0, -1000],
-                }}
-                transition={{
-                  x: {
-                    repeat: Infinity,
-                    repeatType: "loop",
-                    duration: 20,
-                    ease: "linear",
-                  },
-                }}
-              >
-                {/* First set of logos */}
-                {partners.map((partner, index) => (
-                  <div 
-                    key={`first-${index}`}
-                    className="bg-white/57 backdrop-blur-[15.48px] rounded-[8.7px] p-[20.87px] shadow-[0px_0px_47.83px_rgba(0,0,0,0.1)] flex-shrink-0"
-                  >
-                    <div className="w-[276.52px] h-[104.35px] rounded-[12.17px] overflow-hidden">
-                      <img
-                        src={partner.logo}
-                        alt={partner.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </div>
-                ))}
-                {/* Duplicate set for seamless loop */}
-                {partners.map((partner, index) => (
-                  <div 
-                    key={`second-${index}`}
-                    className="bg-white/57 backdrop-blur-[15.48px] rounded-[8.7px] p-[20.87px] shadow-[0px_0px_47.83px_rgba(0,0,0,0.1)] flex-shrink-0"
-                  >
-                    <div className="w-[276.52px] h-[104.35px] rounded-[12.17px] overflow-hidden">
-                      <img
-                        src={partner.logo}
-                        alt={partner.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-            </div>
+          <div className="flex flex-col gap-4 md:gap-[2rem] flex-1">
+            <h3 className="font-abel text-white text-base tracking-[0.07em] uppercase">
+              ANNIE VASQUEZ
+            </h3>
+            <p className="font-nunito text-white text-xl md:text-3xl lg:text-[2.5rem] leading-[1.1em]">
+              &quot; Each HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times. &quot;
+            </p>
+            <span className="font-nunito text-white text-base md:text-lg lg:text-[1.37rem] leading-[1.36em] tracking-[-0.015em]">
+              CEO ECONETWORK
+            </span>
           </div>
         </div>
+      </div>
+
+      <div className="w-full">
+        {/* Partners header */}
+        <div className="flex flex-row items-start justify-between w-full mb-6 md:mb-10">
+          <h2 className="font-prompt font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]">
+            Our<br /><strong>Partners</strong>
+          </h2>
+        </div>
+      </div>
+
+      {/* Partner Logos */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-[2rem] w-full">
+        {partners.map((partner, index) => (
+          <div 
+            key={index}
+            className="bg-white/5 rounded-[0.5rem] shadow-[0px_0px_47.8px_rgba(0,0,0,0.1)] backdrop-blur-[15.5px] p-3 h-20 md:h-[9.1rem] w-full"
+          >
+            <div className="w-full h-full rounded-[0.75rem] overflow-hidden flex items-center justify-center">
+              <img
+                src={partner.logo}
+                alt={partner.name}
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

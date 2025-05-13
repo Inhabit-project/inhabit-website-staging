@@ -1,22 +1,19 @@
 import React from 'react';
+import { ReactSVG } from 'react-svg';
 
 const Highlight = () => {
   return (
-    <div className="relative w-full min-h-screen bg-secondary flex items-center justify-center overflow-hidden">
+    <div className="relative w-full min-h-screen background-gradient-dark flex items-center justify-center overflow-hidden">
       <div className="absolute mt-[12rem] opacity-30">
-        <img
-          src="/assets/topographic-map.svg"
-          alt="Topographic Map"
-          className="w-full h-full object-cover align-center"
-        />
+        <ReactSVG src="/assets/topographic-map.svg" />
       </div>
       <div className="relative z-10 max-w-6xl mx-auto px-4 text-center">
         <p className="eyebrow text-light mb-5">
           WHAT ARE NFTS
         </p>
-        <h2 className="text-light">
+        <h3 className="text-light">
           Stewardship NFTs are blockchain-verified contracts that give fractional rights to protect ecosystems on tokenized plots of land.
-        </h2>
+        </h3>
       </div>
       
       {/* Location Markers */}

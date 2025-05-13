@@ -1,0 +1,40 @@
+{
+  "navigation": {
+    "home": "HOME",
+    "hubs": "HUBS",
+    "stewardshipNFT": "STEWARDSHIP NFT",
+    "aboutUs": "ABOUT US",
+    "projects": "PROJECTS",
+    "blog": "BLOG",
+    "contacts": "CONTACTS"
+  },
+  "hero": {
+    "title": "<strong>Join us</strong> in shaping a <strong>global corridor</strong> of <strong>biodiversity</strong>",
+    "description": "INHABIT protects vital ecosystems and drives rural innovation through community-led bio-cultural hubs",
+    "scrollButton": "SCROLL TO WATCH THE VIDEO"
+  },
+  "menu": {
+    "downloadWhitePaper": "download white paper"
+  },
+  "home": {
+    "welcome": "Welcome to our website",
+    "description": "We provide the best services for your needs"
+  },
+  "about": {
+    "title": "About Us",
+    "description": "We are a company dedicated to excellence"
+  },
+  "services": {
+    "title": "Our Services",
+    "service1": "Service 1",
+    "service2": "Service 2",
+    "service3": "Service 3"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send"
+  }
+} 

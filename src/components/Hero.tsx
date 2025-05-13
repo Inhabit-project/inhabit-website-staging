@@ -1,7 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Menu from './Menu';
 
 const Hero: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="relative w-full min-h-screen bg-secondary flex flex-col">
       {/* Background Image */}
@@ -22,9 +25,10 @@ const Hero: React.FC = () => {
       <div className="relative mt-[7rem] w-full">
         {/* Centered Title Container */}
         <div className="flex justify-center mb-[17rem]">
-          <h1 className="heading-1 text-center max-w-[89.3125rem]">
-            <strong>Join us</strong> in shaping a <strong>global corridor</strong> of <strong>biodiversity</strong>
-          </h1>
+          <h1 
+            className="heading-1 text-center max-w-[89.3125rem]"
+            dangerouslySetInnerHTML={{ __html: t('hero.title') }}
+          />
         </div>
 
         {/* Left-aligned Content Container */}
@@ -34,17 +38,15 @@ const Hero: React.FC = () => {
             <div className="relative max-w-[28rem]">
               <div className="bg-white/5 backdrop-blur-[100px] p-8 rounded-xl border border-white/20">
                 <p className="body-M text-light">
-                  INHABIT protects vital ecosystems and drives rural innovation through community-led bio-cultural hubs
+                  {t('hero.description')}
                 </p>
               </div>
 
               {/* CTA Button */}
-              <button className="mt-4 flex items-center h-[4.2rem] bg-[var(--color-accent)] hover:bg-[var(--color-accent)]/90 text-light rounded-button backdrop-blur-[6px] transition-colors">
-                <div className="flex items-center gap-2 px-4">
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 3v18M5 14l7 7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span className="button-text text-light">WATCH THE VIDEO</span>
+              <button className="mt-4 flex items-center h-[4.2rem] bg-[var(--color-accent)] hover:bg-[var(--color-green-soft)] text-light hover:text-secondary rounded-button backdrop-blur-[6px] transition-all duration-200 group">
+                <div className="flex items-center gap-2 px-6">
+                  <img src="/icons/mouse-icon.svg" alt="Mouse" className="w-4 h-4 group-hover:invert" />
+                  <span className="button-text text-sm tracking-[0.02em] uppercase">{t('hero.scrollButton')}</span>
                 </div>
                 <div className="flex items-center px-4">
                   <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
