@@ -1,4 +1,10 @@
 import Lenis from 'lenis';
+// Integrate with GSAP ScrollTrigger if present
+let ScrollTrigger: any = null;
+try {
+  // Dynamically require to avoid errors if GSAP is not present
+  ScrollTrigger = require('gsap/ScrollTrigger').ScrollTrigger;
+} catch (e) {}
 
 class ScrollManager {
   private lenis: Lenis | null = null;
@@ -10,6 +16,11 @@ class ScrollManager {
       wheelMultiplier: 1,
       touchMultiplier: 2,
     });
+
+    // Integrate with GSAP ScrollTrigger if available
+    if (ScrollTrigger && this.lenis) {
+      this.lenis.on('scroll', ScrollTrigger.update);
+    }
 
     this.addScrollListener();
   }

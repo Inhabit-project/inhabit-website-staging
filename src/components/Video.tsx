@@ -115,7 +115,7 @@ const Video: React.FC = () => {
           </p>
           
           {/* Main heading */}
-          <h2 className="heading-2 text-light max-w-[1000px]">
+          <h2 className="heading-2 text-light max-w-[1100px]">
             Pioneering <span className="highlighted-text">global corridors</span> to <span className="highlighted-text">protect</span> vital ecosystems and foster <span className="highlighted-text">bio-cultural innovation.</span>
           </h2>
         </div>

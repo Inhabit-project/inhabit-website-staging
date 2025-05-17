@@ -1,28 +1,49 @@
 import React from 'react';
 
 interface InternalPagesHeroProps {
-  title: string;
-  strong: string;
+  variant: 'hubs' | 'stewardship' | 'about';
 }
 
-const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({
-  title,
-  strong,
-}) => {
+const heroContent = {
+  hubs: {
+    title: 'Bio-cultural',
+    strong: 'Hubs',
+    description: '"HUBS are like "Migratory Gardens"—they exist in the real world but behave differently; they are "spaces of transition", new ways of relating to ourselves and nature. Places to learn the deepest practices and skills for inhabiting and stewarding lands"',
+    image: '/assets/hubs-hero.webp',
+    alt: 'Hubs Hero',
+  },
+  stewardship: {
+    title: 'Stewardship',
+    strong: 'NFT',
+    description: 'The Stewardship NFT aims to revolutionise restoration by pioneering a new conservation model that actively involves everyone—offering real benefits and opportunities to reconnect with nature through hands-on ecological stewardship',
+    image: '/assets/nft-hero.jpg',
+    alt: 'Stewardship NFT Hero',
+  },
+  about: {
+    title: 'About',
+    strong: 'Us',
+    description: "To contribute on the conservation and regeneration of bio-cultural diversity by facilitating the creation of a global physical corridor that protects vital ecosystems. ",
+    image: '/assets/about-us-hero.webp',
+    alt: 'About Us Hero',
+  },
+};
+
+const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({ variant }) => {
+  const { title, strong, description, image, alt } = heroContent[variant];
   return (
     <section className="w-full flex flex-col items-center justify-center py-24 background-gradient-light mt-24">
       <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col items-start gap-8">
         {/* Header section */}
         <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
             <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
-              Bio-cultural<br /><strong>Hubs</strong>
+              {title}<br /><strong>{strong}</strong>
             </h2>
             <p className="body-M text-secondary max-w-[36rem]">
-            "HUBS are like “Migratory Gardens”—they exist in the real world but behave differently; they are "spaces of transition", new ways of relating to ourselves and nature. Places to learn the deepest practices and skills for inhabiting and stewarding lands"
+            {description}
             </p>
           </div>
         <div className="w-full flex justify-center">
-          <img src="/assets/hubs-hero.jpg" alt="Hubs Hero" className="w-full  object-cover" />
+          <img src={image} alt={alt} className="w-full  object-cover" />
         </div>
       </div>
     </section>

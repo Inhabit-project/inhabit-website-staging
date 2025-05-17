@@ -7,10 +7,10 @@ import CriteriaCardsSection from './CriteriaCardsSection';
 const Hubs: React.FC = () => (
   <>
     <ImageSection
-      eyebrow="discover inhabit"
+      eyebrow="where are the hubs located"
       heading={
         <>
-          Pioneering <span className="highlighted-text">global corridors</span> to <span className="highlighted-text">protect</span> vital ecosystems and foster <span className="highlighted-text">bio-cultural innovation.</span>
+          The first <span className="highlighted-text">three HUBS</span> are located in the<span className="highlighted-text"> Sierra Nevada de Santa Marta, </span> considered the <span className="highlighted-text">Heart of the World.</span>
         </>
       }
       imageSrc="/assets/sierra.jpg"

@@ -62,14 +62,14 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
         {/* Navigation Arrows */}
         <button 
           onClick={handlePrev}
-          className="absolute left-[5%] top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-white/10 backdrop-blur-[50px] border border-white/50 flex items-center justify-center group transition-all duration-300 hover:border-white hover:bg-white/20"
+          className="absolute left-[5%] top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-white/10 backdrop-blur-3xl border border-white/50 flex items-center justify-center group transition-all duration-300 hover:border-white hover:bg-white/20"
         >
           <div className="w-0 h-0 border-t-[0.75rem] border-t-transparent border-r-[1.25rem] border-r-secondary border-b-[0.75rem] border-b-transparent mr-1" />
         </button>
         
         <button 
           onClick={handleNext}
-          className="absolute right-[5%] top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-white/10 backdrop-blur-[50px] border border-white/50 flex items-center justify-center group transition-all duration-300 hover:border-white hover:bg-white/20"
+          className="absolute right-[5%] top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-white/10 backdrop-blur-3xl border border-white/50 flex items-center justify-center group transition-all duration-300 hover:border-white hover:bg-white/20"
         >
           <div className="w-0 h-0 border-t-[0.75rem] border-t-transparent border-l-[1.25rem] border-l-secondary border-b-[0.75rem] border-b-transparent ml-1" />
         </button>

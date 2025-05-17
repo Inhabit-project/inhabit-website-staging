@@ -9,7 +9,7 @@ const NFTGrid: React.FC = () => {
           <h2 className="heading-2 text-light max-w-[40.9375rem]">
             Our innovative <br /><strong>NFTs</strong>
           </h2>
-          <p className="body-M text-light max-w-[36rem]">
+          <p className="body-M text-light max-w-[35rem]">
             Stewardship NFTs are blockchain-verified contracts that give fractional rights
             to protect ecosystems on tokenized plots of land.
           </p>
@@ -21,7 +21,7 @@ const NFTGrid: React.FC = () => {
           <div className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}>
             <div className="absolute top-2 right-2 hover-scale-up">
               <a href="#" className="block ">
-                <div className="bg-white/20 backdrop-blur-[31.64px] rounded-[var(--radius-3xl)] p-3 border">
+                <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-3 border">
                   <svg 
                     width="35" 
                     height="35" 
@@ -86,11 +86,11 @@ const NFTGrid: React.FC = () => {
               </div>
             </div>
           </div>
-          {/* NFT Card 1 */}
+          {/* NFT Card 2 */}
           <div className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}>
             <div className="absolute top-2 right-2 hover-scale-up">
               <a href="#" className="block ">
-                <div className="bg-white/20 backdrop-blur-[31.64px] rounded-[var(--radius-3xl)] p-3 border">
+                <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-3 border">
                   <svg 
                     width="35" 
                     height="35" 
@@ -155,11 +155,11 @@ const NFTGrid: React.FC = () => {
               </div>
             </div>
           </div>
-          {/* NFT Card 1 */}
+          {/* NFT Card 3 */}
           <div className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}>
             <div className="absolute top-2 right-2 hover-scale-up">
               <a href="#" className="block ">
-                <div className="bg-white/20 backdrop-blur-[31.64px] rounded-[var(--radius-3xl)] p-3 border">
+                <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-3 border">
                   <svg 
                     width="35" 
                     height="35" 
@@ -224,11 +224,12 @@ const NFTGrid: React.FC = () => {
               </div>
             </div>
           </div>
-          {/* NFT Card 1 */}
+         
+          {/* NFT Card 4 */}
           <div className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}>
             <div className="absolute top-2 right-2 hover-scale-up">
               <a href="#" className="block ">
-                <div className="bg-white/20 backdrop-blur-[31.64px] rounded-[var(--radius-3xl)] p-3 border">
+                <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-3 border">
                   <svg 
                     width="35" 
                     height="35" 

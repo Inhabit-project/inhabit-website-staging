@@ -50,14 +50,14 @@ const Testimonials: React.FC = () => {
           <h2 className="font-prompt font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]">
             Meet our<br /><strong>Allies</strong>
           </h2>
-          <p className="font-nunito font-light text-xl md:text-2xl lg:text-[1.75rem] leading-[1.24em] text-[#F6FFEA] max-w-full md:max-w-[36rem]">
+          <p className="font-nunito font-light text-xl md:text-2xl lg:text-[1.75rem] leading-[1.24em] text-[#F6FFEA] max-w-full md:max-w-[35rem]">
             Stewardship NFTs are blockchain-verified contracts that give fractional rights to protect ecosystems on tokenized plots of land.
           </p>
         </div>
       </div>
 
       {/* Testimonial */}
-      <div className="bg-[#162F08] border border-white/20 rounded-[1.7rem] shadow-[inset_0px_0px_2.7px_rgba(61,27,114,1)] backdrop-blur-[1233px] p-6 md:p-8 lg:p-[3.4rem] w-full">
+      <div className="bg-[#162F08] border border-white/20 rounded-[1.7rem] shadow-[inset_0px_0px_2.7px_rgba(61,27,114,1)] backdrop-blur-6xl p-6 md:p-8 lg:p-[3.4rem] w-full">
         <div className="flex flex-col md:flex-row gap-6 md:gap-[3.4rem] w-full">
           <div className="w-full md:w-[33%] h-60 md:h-auto rounded-[1.3rem] overflow-hidden">
             <img 
@@ -94,7 +94,7 @@ const Testimonials: React.FC = () => {
         {partners.map((partner, index) => (
           <div 
             key={index}
-            className="bg-white/5 rounded-[0.5rem] shadow-[0px_0px_47.8px_rgba(0,0,0,0.1)] backdrop-blur-[15.5px] p-3 h-20 md:h-[9.1rem] w-full"
+            className="bg-white/5 rounded-[0.5rem] shadow-[0px_0px_47.8px_rgba(0,0,0,0.1)] backdrop-blur-md p-3 h-20 md:h-[9.1rem] w-full"
           >
             <div className="w-full h-full rounded-[0.75rem] overflow-hidden flex items-center justify-center">
               <img

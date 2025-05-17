@@ -36,14 +36,14 @@ const Hero: React.FC = () => {
           <div className="w-full max-w-container px-[clamp(1.5rem,5vw,6.25rem)]">
             {/* Description Card */}
             <div className="relative max-w-[28rem]">
-              <div className="bg-white/5 backdrop-blur-[100px] p-8 rounded-xl border border-white/20">
+              <div className="bg-white/5 backdrop-blur-5xl p-8 rounded-xl border border-white/20">
                 <p className="body-M text-light">
                   {t('hero.description')}
                 </p>
               </div>
 
               {/* CTA Button */}
-              <button className="mt-4 flex items-center h-[4.2rem] bg-[var(--color-accent)] hover:bg-[var(--color-green-soft)] text-light hover:text-secondary rounded-button backdrop-blur-[6px] transition-all duration-200 group">
+              <button className="mt-4 flex items-center h-[4.2rem] bg-[var(--color-accent)] hover:bg-[var(--color-green-soft)] text-light hover:text-secondary rounded-button backdrop-blur-sm transition-all duration-200 group">
                 <div className="flex items-center gap-2 px-6">
                   <img src="/icons/mouse-icon.svg" alt="Mouse" className="w-4 h-4 group-hover:invert" />
                   <span className="button-text text-sm tracking-[0.02em] uppercase">{t('hero.scrollButton')}</span>

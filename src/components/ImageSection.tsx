@@ -28,7 +28,7 @@ const ImageSection: React.FC<ImageSectionProps> = ({ eyebrow, heading, imageSrc,
             {eyebrow}
           </p>
           {/* Main heading */}
-          <h2 className="heading-2 text-light max-w-[1000px]">
+          <h2 className="heading-2 text-light max-w-[1100px]">
             {heading}
           </h2>
         </div>

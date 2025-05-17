@@ -15,6 +15,7 @@
     --font-size-base: clamp(1rem, 1vw + 0.75rem, 1.125rem);
     --font-size-sm: clamp(0.875rem, 0.8vw + 0.6rem, 1rem);
     --font-size-xs: clamp(0.75rem, 0.7vw + 0.5rem, 0.875rem);
+    --font-size-h5: 3rem; /* 48px */
   
     /* Border Radius */
     --radius-xs: 0.25rem;  /* 4px */
@@ -74,6 +75,18 @@
           max-width: 1600px;
       }
   } 
+
+    /* New CSS variables for backdrop-blur */
+    --blur-xs: 4px;
+    --blur-sm: 6px;
+    --blur-md: 12px;
+    --blur-lg: 18.9px;
+    --blur-xl: 30px;
+    --blur-2xl: 31.64px;
+    --blur-3xl: 50px;
+    --blur-4xl: 60px;
+    --blur-5xl: 100px;
+    --blur-6xl: 1233px;
   }
 
   /* Tablet */
@@ -129,10 +142,9 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-overflow-scrolling: touch;
-    -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-scroll-chaining: none;
-    overscroll-behavior: none;
+    overscroll-behavior: auto; /* was none, changed for scroll compatibility */
 }
 @media (min-width: 991px) {
     * {
@@ -162,8 +174,8 @@ textarea {
 }
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  /* -ms-overflow-style: none;  IE and Edge */
+  /* scrollbar-width: none;  Firefox */
 }
   .container {
     width: 100%;
@@ -215,8 +227,11 @@ textarea {
   }
 
   h5 {
-    font-size: var(--font-size-lg);
-    line-height: 1.4;
+    font-family: 'Montserrat', sans-serif;
+    font-size: var(--font-size-h5);
+    font-weight: 600;
+    line-height: 1.05;
+    color: var(--heading-color-light);
   }
 
   h6 {
@@ -288,9 +303,9 @@ textarea {
 
   .heading-5 {
     font-family: 'Montserrat', sans-serif;
-    font-size: var(--font-size-lg);
-    font-weight: 400;
-    line-height: 1.4;
+    font-size: var(--font-size-h5);
+    font-weight: 600;
+    line-height: 1.05;
     color: var(--heading-color-light);
   }
 
@@ -363,6 +378,71 @@ textarea {
   .responsive-gap {
     gap: var(--gap-xl);
   }
+
+  /* Button Styles */
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-light);
+    border-radius: var(--radius-full);
+    font-family: 'Abel', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.75rem 2rem;
+    transition: background 0.2s, color 0.2s;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    backdrop-filter: blur(var(--blur-sm));
+    height: 3.5rem;
+    min-height: 3.5rem;
+  }
+  .btn-primary:hover, .btn-primary:focus {
+    background: var(--color-green-soft);
+    color: var(--color-secondary);
+  }
+  .btn-primary svg {
+    stroke: var(--color-light);
+    fill: none;
+    transition: stroke 0.2s;
+  }
+  .btn-primary:hover svg, .btn-primary:focus svg {
+    stroke: var(--color-secondary);
+  }
+  .btn-secondary {
+    background: var(--color-green-soft);
+    color: var(--color-secondary);
+    border: none;
+    border-radius: var(--radius-full);
+    font-family: 'Abel', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.75rem 2rem;
+    transition: background 0.2s, color 0.2s;
+    outline: none;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 3.5rem;
+    min-height: 3.5rem;
+  }
+  .btn-secondary:hover, .btn-secondary:focus {
+    background: var(--color-accent);
+    color: var(--color-light);
+  }
+  .btn-secondary svg {
+    stroke: var(--color-secondary);
+    fill: none;
+    transition: stroke 0.2s;
+  }
+  .btn-secondary:hover svg, .btn-secondary:focus svg {
+    stroke: var(--color-light);
+  }
 }
 
 .bg-menu-backdrop {
@@ -418,3 +498,15 @@ textarea {
     padding-bottom: 2rem;
   }
 }
+
+/* Utility classes for backdrop-blur using CSS variables */
+.backdrop-blur-xs { backdrop-filter: blur(var(--blur-xs)); }
+.backdrop-blur-sm { backdrop-filter: blur(var(--blur-sm)); }
+.backdrop-blur-md { backdrop-filter: blur(var(--blur-md)); }
+.backdrop-blur-lg { backdrop-filter: blur(var(--blur-lg)); }
+.backdrop-blur-xl { backdrop-filter: blur(var(--blur-xl)); }
+.backdrop-blur-2xl { backdrop-filter: blur(var(--blur-2xl)); }
+.backdrop-blur-3xl { backdrop-filter: blur(var(--blur-3xl)); }
+.backdrop-blur-4xl { backdrop-filter: blur(var(--blur-4xl)); }
+.backdrop-blur-5xl { backdrop-filter: blur(var(--blur-5xl)); }
+.backdrop-blur-6xl { backdrop-filter: blur(var(--blur-6xl)); }

@@ -19,7 +19,7 @@ const CTA: React.FC = () => {
         <div className="w-full max-w-[120rem] rounded-[20px] overflow-hidden">
           <div className="flex flex-col md:flex-row">
             {/* Text and Buttons Container with semi-transparent background */}
-            <div className="w-full md:w-[70%] p-6 md:p-12 bg-secondary/80 backdrop-blur-[18.9px]">
+            <div className="w-full md:w-[70%] p-6 md:p-12 bg-secondary/80 backdrop-blur-lg">
               <h3 className="heading-3 text-light text-center md:text-left">
                 Join us in <span className="text-primary">shaping a global corridor</span>.<br />
                 <span className="text-primary">Become a guardian</span>, trace the corridor,<br />
@@ -29,12 +29,12 @@ const CTA: React.FC = () => {
               {/* Buttons */}
               <div className="mt-8 md:mt-12 flex flex-col md:flex-row gap-4 justify-center md:justify-start">
                 {/* Primary Button (Orange) */}
-                <button className="h-[3.5rem] md:h-[4.375rem] bg-primary hover:bg-primary/90 backdrop-blur-[6px] rounded-button flex items-center group transition-colors">
+                <button className="btn-primary">
                   <div className="flex items-center gap-2 px-4 md:px-6">
                     <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
                       <path d="M12 3v18M5 14l7 7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                    <span className="button-text text-light">
+                    <span className="button-text ">
                       Discover inhabit
                     </span>
                   </div>
@@ -46,12 +46,12 @@ const CTA: React.FC = () => {
                 </button>
 
                 {/* Secondary Button (Green) */}
-                <button className="h-[3.5rem] md:h-[4.375rem] bg-green-soft hover:bg-green-soft/90 backdrop-blur-[6px] rounded-button flex items-center group transition-colors">
+                <button className="btn-secondary">
                   <div className="flex items-center gap-2 px-4 md:px-6">
                     <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M12 3v18M5 14l7 7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                    <span className="button-text text-secondary">
+                    <span className="button-text ">
                       Discover inhabit
                     </span>
                   </div>

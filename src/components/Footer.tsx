@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
       />
 
       {/* Blur Overlay */}
-      <div className="absolute inset-0 bg-white/5 backdrop-blur-[60px] border-[0.5px] border-white/20" />
+      <div className="absolute inset-0 bg-white/5 backdrop-blur-4xl border-[0.5px] border-white/20" />
 
       {/* Content */}
       <div className="relative z-10 w-full min-h-screen flex flex-col py-[5rem]">
@@ -73,10 +73,10 @@ const Footer: React.FC = () => {
                       <input
                         type="email"
                         placeholder="Your email"
-                        className="w-full h-[2.8125rem] bg-gradient-to-b from-white/40 to-white/0 backdrop-blur-[60px] border-[0.5px] border-[#F6FFEA]/40 rounded-input px-4 text-light font-ibm-mono text-base placeholder:text-[#F6FFEA]/50 focus:outline-none"
+                        className="w-full h-[2.8125rem] bg-white/10 backdrop-blur-xs border-[0.5px] border-[#F6FFEA]/40 rounded-input px-4 text-light font-ibm-mono text-base placeholder:text-[#F6FFEA]/50 focus:outline-none"
                       />
                       <label className="flex items-center gap-2 cursor-pointer">
-                        <div className="relative w-[1.125rem] h-[1.125rem] border-[0.5px] border-[#F6FFEA] rounded bg-white/5 backdrop-blur-[18.9px]">
+                        <div className="relative w-[1.125rem] h-[1.125rem] border-[0.5px] border-[#F6FFEA] rounded bg-white/5 backdrop-blur-lg">
                           <input type="checkbox" className="absolute opacity-0 w-full h-full cursor-pointer" />
                         </div>
                         <span className="base-text text-light text-xs ">
