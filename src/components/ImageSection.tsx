@@ -33,7 +33,7 @@ const ImageSection: React.FC<ImageSectionProps> = ({ eyebrow, heading, imageSrc,
           </h2>
         </div>
         {/* Image container */}
-        <div className="self-end w-full md:w-[45rem] h-[16rem] md:h-[22rem] rounded-[28px] overflow-hidden mt-12">
+        <div className="self-end w-full md:w-[45rem] h-[16rem] md:h-[22rem] rounded-xl overflow-hidden mt-12">
           <img 
             src={imageSrc} 
             alt={imageAlt} 

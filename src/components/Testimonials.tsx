@@ -43,7 +43,7 @@ const Testimonials: React.FC = () => {
   ];
 
   return (
-    <section className="bg-gradient-to-r from-[#1C3625] via-[#2E4F22] to-[#1C3625] py-8 md:py-16 lg:py-[6.5rem] px-4 md:px-8 lg:px-[6.25rem] overflow-x-hidden flex flex-col gap-8 md:gap-16 lg:gap-[3.75rem]">
+    <section className="background-gradient-dark py-8 md:py-16 lg:py-[6.5rem] px-4 md:px-8 lg:px-[6.25rem] overflow-x-hidden flex flex-col gap-8 md:gap-16 lg:gap-[3.75rem]">
       <div className="w-full">
         {/* Header section */}
         <div className="flex flex-col md:flex-row items-start justify-between w-full gap-6 md:gap-8">
@@ -61,20 +61,20 @@ const Testimonials: React.FC = () => {
         <div className="flex flex-col md:flex-row gap-6 md:gap-[3.4rem] w-full">
           <div className="w-full md:w-[33%] h-60 md:h-auto rounded-[1.3rem] overflow-hidden">
             <img 
-              src="/assets/logos/testimonial-image.png" 
+              src="/assets/louise.webp" 
               alt="Testimonial" 
               className="w-full h-full object-cover"
             />
           </div>
           <div className="flex flex-col gap-4 md:gap-[2rem] flex-1">
             <h3 className="font-abel text-white text-base tracking-[0.07em] uppercase">
-              ANNIE VASQUEZ
+            Louise Borreani
             </h3>
             <p className="font-nunito text-white text-xl md:text-3xl lg:text-[2.5rem] leading-[1.1em]">
-              &quot; Each HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times. &quot;
+              &quot; Inhabit is a powerful expression of how decentralized tools can support nature stewardship communities. It stands as one of the most concrete manifestations of the green crypto research we’ve been conducting at Ecofrontiers and it's so inspiring to see it come to life. &quot;
             </p>
-            <span className="font-nunito text-white text-base md:text-lg lg:text-[1.37rem] leading-[1.36em] tracking-[-0.015em]">
-              CEO ECONETWORK
+            <span className="font-nunito text-white text-base body-M leading-[1.36em] tracking-[-0.015em]">
+            Co-founder, Ecofrontiers
             </span>
           </div>
         </div>

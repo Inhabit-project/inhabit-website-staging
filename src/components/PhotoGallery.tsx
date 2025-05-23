@@ -248,34 +248,48 @@ export default function PhotoGallery() {
     }
   }
 
+  // Add your gallery images here
+  const images = [
+    { src: '/assets/images/img1.webp', alt: 'Photo 1' },
+    { src: '/assets/images/img2.webp', alt: 'Photo 2' },
+    { src: '/assets/images/img3.webp', alt: 'Photo 3' },
+    { src: '/assets/images/img4.webp', alt: 'Photo 4' },
+    { src: '/assets/images/img5.webp', alt: 'Photo 5' },
+  ];
+
   return (
     <div ref={galleryRef} className="gallery relative w-full h-screen overflow-hidden flex flex-col justify-end">
       <ul
         ref={cardsRef}
-        className="cards absolute w-80 h-[28rem] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing"
+        className="cards absolute w-[38rem] h-[32rem] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
-        {Array.from({ length: 31 }, (_, i) => (
+        {images.map((img, i) => (
           <li
             key={i}
-            className="list-none p-0 m-0 w-80 h-[28rem] text-center leading-[28rem] text-2xl bg-[#9d7cce] absolute top-0 left-0 rounded-[0.8rem]"
+            className="list-none p-0 m-0 w-[38rem] h-[32rem] flex items-center justify-center absolute top-0 left-0 rounded-[1.2rem] bg-white/0"
           >
-            {i}
+            <img
+              src={img.src}
+              alt={img.alt}
+              className="w-full h-full object-cover rounded-[1.2rem]"
+              draggable={false}
+            />
           </li>
         ))}
       </ul>
 
       {/* Drag indicator that appears on hover */}
       {isHovering && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-[28rem] pointer-events-none z-10 flex items-center justify-center">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[38rem] h-[32rem] pointer-events-none z-10 flex items-center justify-center">
           <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center text-sm font-medium shadow-lg">
             Drag
           </div>
         </div>
       )}
 
-      <div className="actions w-full flex justify-center absolute left-1/2 bottom-8 -translate-x-1/2">
+      <div className="actions w-full flex justify-center absolute left-1/2 bottom-8 -translate-x-1/2" style={{ width: '38rem' }}>
         <button
           onClick={handlePrev}
           className="inline-block outline-none border-none py-3 px-6 bg-[#414141] bg-gradient-to-b from-[#575757] to-[#414141] text-shadow-[0px_1px_0px_#414141] shadow-[0px_1px_0px_#414141] text-white no-underline m-0 mb-[10px] rounded-[4px] font-normal uppercase font-semibold cursor-pointer text-xl leading-[18px] hover:bg-[#57a818] hover:bg-gradient-to-b hover:from-[#57a818] hover:to-[#4d9916] hover:text-shadow-[0px_1px_0px_#32610e] hover:shadow-[0px_1px_0px_#fefefe] hover:text-white hover:no-underline"

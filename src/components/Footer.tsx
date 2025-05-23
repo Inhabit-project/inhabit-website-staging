@@ -73,7 +73,7 @@ const Footer: React.FC = () => {
                       <input
                         type="email"
                         placeholder="Your email"
-                        className="w-full h-[2.8125rem] bg-white/10 backdrop-blur-xs border-[0.5px] border-[#F6FFEA]/40 rounded-input px-4 text-light font-ibm-mono text-base placeholder:text-[#F6FFEA]/50 focus:outline-none"
+                        className="input-main"
                       />
                       <label className="flex items-center gap-2 cursor-pointer">
                         <div className="relative w-[1.125rem] h-[1.125rem] border-[0.5px] border-[#F6FFEA] rounded bg-white/5 backdrop-blur-lg">
@@ -120,7 +120,7 @@ const Footer: React.FC = () => {
                     { label: 'about Us', path: '/about' },
                     { label: 'projects', path: '/projects' },
                     { label: 'blog', path: '/blog' },
-                    { label: 'contacts', path: '/contacts' }
+                    { label: 'contact', path: '/contact' }
                   ].map((item) => (
                     <Link
                       key={item.path}

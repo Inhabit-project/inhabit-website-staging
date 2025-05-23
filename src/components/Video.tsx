@@ -22,11 +22,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     const params = new URLSearchParams(url.search);
     params.set('autoplay', autoplay ? '1' : '0');
     
-    // Add start time parameter (#t=2s format for Vimeo)
-    if (startTime > 0) {
-      params.set('t', `${startTime}s`);
-    }
-    
     // Add other necessary parameters
     params.set('h', 'f023472b60');
     params.set('badge', '0');
@@ -35,7 +30,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     params.set('app_id', '58479');
     
     // Reconstruct the URL
-    return `${url.origin}${url.pathname}?${params.toString()}`;
+    let finalUrl = `${url.origin}${url.pathname}?${params.toString()}`;
+    // Add start time as a fragment (Vimeo uses #t=2s)
+    if (startTime > 0) {
+      finalUrl += `#t=${startTime}s`;
+    }
+    return finalUrl;
   }, [videoUrl, startTime, autoplay]);
 
   return (
@@ -55,7 +55,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   );
 };
 
-const Video: React.FC = () => {
+interface VideoProps {
+  showVideo?: boolean;
+}
+
+const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isVideoPreloaded, setIsVideoPreloaded] = useState(false);
   const videoContainerRef = useRef<HTMLDivElement>(null);
@@ -116,14 +120,14 @@ const Video: React.FC = () => {
           
           {/* Main heading */}
           <h2 className="heading-2 text-light max-w-[1100px]">
-            Pioneering <span className="highlighted-text">global corridors</span> to <span className="highlighted-text">protect</span> vital ecosystems and foster <span className="highlighted-text">bio-cultural innovation.</span>
+            Pioneering <span className="highlighted-text">global corridors</span> to <span className="highlighted-text">protect</span> vital ecosystems and foster <span className="highlighted-text">biocultural innovation.</span>
           </h2>
         </div>
 
         {/* Video container */}
         <div 
           ref={videoContainerRef}
-          className="self-end w-full md:w-[45rem] h-[16rem] md:h-[22rem] rounded-[28px] overflow-hidden"
+          className="self-end w-full md:w-[45rem] h-[16rem] md:h-[22rem] rounded-xl overflow-hidden"
           onMouseEnter={preloadVideo}
         >
           {/* Video placeholder with background image */}
@@ -149,7 +153,7 @@ const Video: React.FC = () => {
       </div>
 
       {/* Video Popup */}
-      {isPopupOpen && (
+      {isPopupOpen && showVideo && (
         <div 
           className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
           onClick={(e) => {
@@ -159,19 +163,18 @@ const Video: React.FC = () => {
             }
           }}
         >
-          <div className="relative w-full h-full max-w-[90vw] max-h-[90vh] aspect-video">
-            {/* Close button */}
-            <button
-              onClick={() => setIsPopupOpen(false)}
-              className="absolute -top-10 right-0 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-[4.125px] flex items-center justify-center transition-all duration-300 group"
-              aria-label="Close video"
-            >
-              <div className="relative w-3 h-3">
-                <div className="absolute top-1/2 left-0 w-3 h-[1.5px] bg-white rotate-45 group-hover:bg-orange-500 transition-colors duration-300" />
-                <div className="absolute top-1/2 left-0 w-3 h-[1.5px] bg-white -rotate-45 group-hover:bg-orange-500 transition-colors duration-300" />
-              </div>
-            </button>
-
+          {/* Absolute close button at top right of popup */}
+          <button
+            onClick={() => setIsPopupOpen(false)}
+            className="absolute top-4 right-4 w-10 h-10 z-50 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-[4.125px] flex items-center justify-center transition-all duration-300 group"
+            aria-label="Close video"
+          >
+            <div className="relative w-4 h-4">
+              <div className="absolute top-1/2 left-0 w-4 h-[2px] bg-white rotate-45 group-hover:bg-orange-500 transition-colors duration-300" />
+              <div className="absolute top-1/2 left-0 w-4 h-[2px] bg-white -rotate-45 group-hover:bg-orange-500 transition-colors duration-300" />
+            </div>
+          </button>
+          <div className="relative w-full h-full max-w-[100vw] max-h-[98vh] aspect-video">
             <VideoPlayer 
               videoUrl="https://player.vimeo.com/video/1079195883" 
               startTime={2}

@@ -8,6 +8,8 @@ import HubsPage from './pages/HubsPage';
 import AboutUsPage from './pages/AboutUsPage';
 import StewardshipNFTPage from './pages/StewardshipNFTPage';
 import ScrollToTop from './components/ScrollToTop';
+import Checkout from './components/Checkout';
+import BlogPage from './pages/BlogPage';
 
 const App: React.FC = () => {
   return (
@@ -18,6 +20,8 @@ const App: React.FC = () => {
         <Route path="/hubs" element={<HubsPage />} />
         <Route path="/about" element={<AboutUsPage />} />
         <Route path="/stewardship-nft" element={<StewardshipNFTPage />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/blog" element={<BlogPage />} />
       </Routes>
     </Router>
   );

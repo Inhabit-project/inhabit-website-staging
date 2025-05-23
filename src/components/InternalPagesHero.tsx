@@ -6,9 +6,9 @@ interface InternalPagesHeroProps {
 
 const heroContent = {
   hubs: {
-    title: 'Bio-cultural',
+    title: 'biocultural',
     strong: 'Hubs',
-    description: '"HUBS are like "Migratory Gardens"—they exist in the real world but behave differently; they are "spaces of transition", new ways of relating to ourselves and nature. Places to learn the deepest practices and skills for inhabiting and stewarding lands"',
+    description: 'HUBS are like "Migratory Gardens"—they exist in the real world but behave differently; they are "spaces of transition", new ways of relating to ourselves and nature. Places to learn the deepest practices and skills for inhabiting and stewarding lands',
     image: '/assets/hubs-hero.webp',
     alt: 'Hubs Hero',
   },
@@ -22,7 +22,7 @@ const heroContent = {
   about: {
     title: 'About',
     strong: 'Us',
-    description: "To contribute on the conservation and regeneration of bio-cultural diversity by facilitating the creation of a global physical corridor that protects vital ecosystems. ",
+    description: "Our vision is to contribute to the conservation and regeneration of biocultural diversity by facilitating the creation of a global physical corridor that protects vital ecosystems and drives rural social innovation",
     image: '/assets/about-us-hero.webp',
     alt: 'About Us Hero',
   },
@@ -43,7 +43,7 @@ const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({ variant }) => {
             </p>
           </div>
         <div className="w-full flex justify-center">
-          <img src={image} alt={alt} className="w-full  object-cover" />
+          <img src={image} alt={alt} className="w-full rounded-xl object-cover" />
         </div>
       </div>
     </section>

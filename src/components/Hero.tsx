@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import Menu from './Menu';
+import { scrollManager } from '../utils/scrollManager';
 
-const Hero: React.FC = () => {
+interface HeroProps {
+  scrollToRef?: React.RefObject<HTMLElement>;
+}
+
+const Hero: React.FC<HeroProps> = ({ scrollToRef }) => {
   const { t } = useTranslation();
+
+  const handleScrollClick = () => {
+    if (scrollToRef && scrollToRef.current) {
+      scrollManager.scrollTo(scrollToRef.current, { duration: 1.2 });
+    }
+  };
 
   return (
     <div className="relative w-full min-h-screen bg-secondary flex flex-col">
@@ -43,9 +54,12 @@ const Hero: React.FC = () => {
               </div>
 
               {/* CTA Button */}
-              <button className="mt-4 flex items-center h-[4.2rem] bg-[var(--color-accent)] hover:bg-[var(--color-green-soft)] text-light hover:text-secondary rounded-button backdrop-blur-sm transition-all duration-200 group">
+              <button
+                className="mt-4 flex items-center h-[4.2rem] bg-[var(--color-accent)] hover:bg-[var(--color-green-soft)] text-light hover:text-secondary rounded-button backdrop-blur-sm transition-all duration-200 group"
+                onClick={handleScrollClick}
+              >
                 <div className="flex items-center gap-2 px-6">
-                  <img src="/icons/mouse-icon.svg" alt="Mouse" className="w-4 h-4 group-hover:invert" />
+                  <img src="/icons/mouse-icon.svg" alt="Mouse" className="w-4 h-4 hero-mouse-icon" />
                   <span className="button-text text-sm tracking-[0.02em] uppercase">{t('hero.scrollButton')}</span>
                 </div>
                 <div className="flex items-center px-4">

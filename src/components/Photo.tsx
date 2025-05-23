@@ -14,7 +14,7 @@ const Photo: React.FC = () => {
           
           <div className="absolute bottom-4 md:bottom-auto md:top-[clamp(1.5rem,5vw,6.25rem)] right-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-secondary/80 backdrop-blur-lg p-4 md:p-8 rounded-[20px] mx-4 md:mx-0">
             <p className="body-M text-light">
-              By buying an NFT you become a lifelong steward of a specific Hub, allowing you to monitor and participate in important decisions that affect these ecosystems, and gain exclusive access to bio-cultural experiences, events, workshops, visit the hubs and explore the whole Corridor.
+              By buying an NFT you become a lifelong steward of a specific Hub, allowing you to monitor and participate in important decisions that affect these ecosystems, and gain exclusive access to biocultural experiences, events, workshops, visit the hubs and explore the whole Corridor.
             </p>
           </div>
         </div>
@@ -31,7 +31,7 @@ const Photo: React.FC = () => {
           
           <div className="absolute bottom-4 md:bottom-auto md:top-[clamp(1.5rem,5vw,6.25rem)] left-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-secondary/80 backdrop-blur-lg p-4 md:p-8 rounded-[20px] mx-4 md:mx-0">
             <p className="body-M text-light">
-              The funds raised from these NFTs are used to acquire degraded lands and transform them into Bio-Cultural Hubs.
+              The funds raised from these NFTs are used to acquire degraded lands and transform them into biocultural Hubs.
               These areas are protected under the INHABIT land tenure framework—a pioneering model of natural reserves that grants legal rights to nature, redefining land protection and stewardship at a new level.
             </p>
           </div>

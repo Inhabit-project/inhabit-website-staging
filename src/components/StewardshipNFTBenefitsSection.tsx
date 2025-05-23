@@ -17,25 +17,25 @@ const benefits = [
     icon: '/assets/benefit-icons/benefit-icon-3.svg',
     eyebrow: 'STEWARDSHIP RIGHTS',
     title: 'Legal Protector of the land',
-    description: `You become part of a legal system of guarantee that recognises Nature as a subject with rights on a specific piece of land.\n\nThis framework, aligned with the Declaration of the Rights of Nature and bio-cultural principles, helps each of us reclaim our role as guardians of the living ecosystems we depend on—and of which we are an inseparable part.`,
+    description: `You become part of a legal system of guarantee that recognises Nature as a subject with rights on a specific piece of land.\n\nThis framework, aligned with the Declaration of the Rights of Nature and biocultural principles, helps each of us reclaim our role as guardians of the living ecosystems we depend on—and of which we are an inseparable part.`,
   },
   {
     icon: '/assets/benefit-icons/benefit-icon-4.svg',
     eyebrow: 'IMPACT RIGHTS',
     title: 'Impact Monitoring',
-    description: `Track the progress of the land you help protect through real-time data and geolocation narratives.\n\nFollow its transformation into a bio-cultural hub with regular updates, visual maps, and impact reports. See KPIs on tree planting, biodiversity growth, and local community impact—all showing your contribution to regeneration in action.`,
+    description: `Track the progress of the land you help protect through real-time data and geolocation narratives.\n\nFollow its transformation into a biocultural hub with regular updates, visual maps, and impact reports. See KPIs on tree planting, biodiversity growth, and local community impact—all showing your contribution to regeneration in action.`,
   },
   {
     icon: '/assets/benefit-icons/benefit-icon-5.svg',
     eyebrow: 'GOVERNANCE RIGHTS',
     title: 'Inhabit DAO access',
-    description: `You receive governance rights over specific matters as a land guarantor.\n\nYou have a say in decisions involving unexpected changes in land use, shifts in Hub management, or unforeseen events that could affect the relationship between stakeholders and the land—or pose a threat to the Rights of Nature and the integrity of the bio-cultural mission.`,
+    description: `You receive governance rights over specific matters as a land guarantor.\n\nYou have a say in decisions involving unexpected changes in land use, shifts in Hub management, or unforeseen events that could affect the relationship between stakeholders and the land—or pose a threat to the Rights of Nature and the integrity of the biocultural mission.`,
   },
   {
     icon: '/assets/benefit-icons/benefit-icon-6.svg',
     eyebrow: 'UTILITY RIGHTS',
-    title: 'Exclusive Bio-cultural Access',
-    description: `You gain access to bio-cultural experiences, events, and workshops within the corridor's HUBS, deepening your connection with the land and the bio-culture of a territory.\n\nBenefits include free or discounted stays and meals, exclusive access to unique experiences, and educational content on reforestation, permaculture, bio-construction, and more.`,
+    title: 'Exclusive biocultural Access',
+    description: `You gain access to biocultural experiences, events, and workshops within the corridor's HUBS, deepening your connection with the land and the bio-culture of a territory.\n\nBenefits include free or discounted stays and meals, exclusive access to unique experiences, and educational content on reforestation, permaculture, bio-construction, and more.`,
   },
 ];
 

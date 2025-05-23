@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { scrollManager } from '../utils/scrollManager';
 
 const LanguageButton = styled.button`
   background: none;
@@ -50,22 +51,22 @@ const Menu: React.FC = () => {
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
+    function handleLenisScroll(e: any) {
+      const currentScrollY = e.scroll;
       if (currentScrollY > lastScrollY) {
-        // Scrolling down
         setIsVisible(false);
       } else {
-        // Scrolling up
         setIsVisible(true);
       }
-      
       setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    }
+    // Wait for Lenis to be initialized
+    if (scrollManager && (scrollManager as any).lenis) {
+      (scrollManager as any).lenis.on('scroll', handleLenisScroll);
+      return () => {
+        (scrollManager as any).lenis.off('scroll', handleLenisScroll);
+      };
+    }
   }, [lastScrollY]);
 
   const menuLinks = [
@@ -75,7 +76,7 @@ const Menu: React.FC = () => {
     { label: t('navigation.aboutUs'), path: '/about' },
     { label: t('navigation.projects'), path: '/projects' },
     { label: t('navigation.blog'), path: '/blog' },
-    { label: t('navigation.contacts'), path: '/contacts' },
+    { label: t('navigation.contact'), path: '/contact' },
   ];
 
   const changeLanguage = (lng: string) => {

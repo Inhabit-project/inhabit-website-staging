@@ -37,15 +37,15 @@ const Blog: React.FC = () => {
   ];
 
   return (
-    <section className="w-full">
+    <section className="background-gradient-light w-full">
       <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
         <div className="flex flex-col items-start gap-12">
           {/* Header section */}
-          <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
-            <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
-              Keep up<br /><strong>informed</strong>
+          <div className="flex flex-col md:flex-row items-start justify-between gap-[13.3125rem] w-full mb-[2.5rem]">
+            <h2 className="heading-2 text-secondary max-w-[40.9375rem]" style={{ color: 'var(--color-secondary)' }}>
+              Keep up<br /><strong style={{ color: 'var(--color-secondary)' }}>informed</strong>
             </h2>
-            <p className="body-M text-secondary max-w-[36rem]">
+            <p className="body-M text-secondary max-w-[35rem]" style={{ color: 'var(--color-secondary)' }}>
               Stay updated with our latest news and insights about biodiversity and ecological preservation.
             </p>
           </div>
@@ -58,17 +58,17 @@ const Blog: React.FC = () => {
                   <img 
                     src={mainPost.image} 
                     alt={mainPost.title}
-                    className="absolute inset-0 w-full h-full object-cover" style={{ borderRadius: 'var(--radius-md)' }}
+                    className="absolute inset-0 w-full h-full object-cover rounded-xl"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <span className="eyebrow text-[#276732]">
+                  <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>
                     {mainPost.date}
                   </span>
-                  <h3 className="heading-3 text-[#0B1E12]">
+                  <h3 className="heading-3" style={{ color: 'var(--color-secondary)' }}>
                     {mainPost.title}
                   </h3>
-                  <p className="body-S text-secondary">
+                  <p className="body-S" style={{ color: 'var(--color-secondary)' }}>
                     {mainPost.content}
                   </p>
                 </div>
@@ -84,17 +84,17 @@ const Blog: React.FC = () => {
                       <img 
                         src={post.image} 
                         alt={post.title}
-                        className="absolute inset-0 w-full h-full object-cover" style={{ borderRadius: 'var(--radius-md)' }}
+                        className="absolute inset-0 w-full h-full object-cover rounded-lg"
                       />
                     </div>
                     <div className="flex flex-col gap-2 flex-1">
-                      <span className="eyebrow text-[#276732]">
+                      <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>
                         {post.date}
                       </span>
-                      <h3 className="heading-4 text-[#0B1E12]">
+                      <h3 className="heading-4" style={{ color: 'var(--color-secondary)' }}>
                         {post.title}
                       </h3>
-                      <p className="body-S text-secondary">
+                      <p className="body-S" style={{ color: 'var(--color-secondary)' }}>
                         {post.content}
                       </p>
                     </div>

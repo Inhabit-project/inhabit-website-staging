@@ -29,7 +29,7 @@ const NFTWorksSection2: React.FC = () => (
             Fund the implementation
           </h3>
           <p className="body-M font-light text-[var(--color-secondary)]" style={{ fontWeight: 300 }}>
-            Funds are used for four key actions: acquiring and protecting degraded lands, restoring their ecosystems, transforming them into thriving Bio-Cultural HUBS, and improving our regenerative model to ensure long-term impact, scalability, and glocal community engagement.
+            Funds are used for four key actions: acquiring and protecting degraded lands, restoring their ecosystems, transforming them into thriving biocultural HUBS, and improving our regenerative model to ensure long-term impact, scalability, and glocal community engagement.
           </p>
         </div>
       </div>

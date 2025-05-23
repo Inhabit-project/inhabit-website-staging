@@ -28,34 +28,34 @@ const CTA: React.FC = () => {
 
               {/* Buttons */}
               <div className="mt-8 md:mt-12 flex flex-col md:flex-row gap-4 justify-center md:justify-start">
+                
                 {/* Primary Button (Orange) */}
-                <button className="btn-primary">
-                  <div className="flex items-center gap-2 px-4 md:px-6">
-                    <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                      <path d="M12 3v18M5 14l7 7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <span className="button-text ">
-                      Discover inhabit
-                    </span>
+                <button
+                  className="mt-0 flex items-center h-[4.2rem] bg-[var(--color-accent)] hover:bg-[var(--color-green-soft)] text-light hover:text-secondary rounded-button backdrop-blur-sm transition-all duration-200 group"
+                >
+                  <div className="flex items-center gap-2 px-6">
+                    <img src="/icons/mouse-icon.svg" alt="Mouse" className="w-4 h-4 hero-mouse-icon" />
+                    <span className="button-text text-sm tracking-[0.02em] uppercase">Discover Inhabit</span>
                   </div>
-                  <div className="flex items-center px-3 md:px-4 border-l border-white/20">
-                    <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="white">
+                  <div className="flex items-center px-4">
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                 </button>
 
                 {/* Secondary Button (Green) */}
+                
                 <button className="btn-secondary">
                   <div className="flex items-center gap-2 px-4 md:px-6">
-                    <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <svg className="w-5 h-5 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M12 3v18M5 14l7 7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                     <span className="button-text ">
-                      Discover inhabit
+                      Become a Guardian
                     </span>
                   </div>
-                  <div className="flex items-center px-3 md:px-4 border-l border-secondary/20">
+                  <div className="flex items-center px-3 md:px-4 ">
                     <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
@@ -68,7 +68,7 @@ const CTA: React.FC = () => {
             <div className="relative w-full md:w-[30%]">
               <div className="absolute inset-0 bg-secondary/30"></div>
               <img 
-                src="/assets/cta-img.jpg" 
+                src="/assets/cta-img.webp" 
                 alt="People planting trees" 
                 className="w-full h-full object-cover aspect-[4/3]"
               />

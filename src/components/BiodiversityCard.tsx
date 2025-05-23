@@ -36,7 +36,7 @@ const BiodiversityCard: React.FC<BiodiversityCardProps> = ({
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      className="w-full bg-[#DBEAB2] border border-[#B6B6B6] rounded-[28px] p-6 md:p-[50px]"
+      className="w-full bg-[#DBEAB2] border border-[#B6B6B6] radius-2xl p-6 md:p-[50px]"
     >
       <div className="flex flex-col md:flex-row items-start justify-between">
         <span className="font-nunito-sans font-light text-base tracking-[-0.04em] text-black mb-6 md:mb-0">

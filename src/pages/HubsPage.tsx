@@ -1,7 +1,7 @@
 import React from 'react';
 import Menu from '../components/Menu';
 import InternalPagesHero from '../components/InternalPagesHero';
-import Hubs from '../components/Hubs';
+import HubsMain from '../components/HubsMain';
 import CTA from '../components/CTA';
 import Blog from '../components/Blog';
 import FAQ from '../components/FAQ';
@@ -11,7 +11,7 @@ const HubsPage: React.FC = () => (
   <div className="min-h-screen background-gradient-light">
     <Menu />
     <InternalPagesHero variant="hubs" />
-    <Hubs />
+    <HubsMain />
     <CTA />
     <Blog />
     <FAQ />

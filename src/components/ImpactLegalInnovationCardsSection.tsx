@@ -34,12 +34,12 @@ const impactCards = [
 
 const ImpactLegalInnovationCardsSection: React.FC = () => {
   return (
-    <section className="w-full flex flex-col items-center bg-gradient-to-r from-[#E2EDD3] via-[#F2F8EA] to-[#E2EDD3] py-24 px-[clamp(1.5rem,5vw,6.25rem)]">
+    <section className="w-full flex flex-col items-center background-gradient-light py-24 px-[clamp(1.5rem,5vw,6.25rem)]">
       <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full max-w-[120rem] mx-auto mb-[2.5rem]">
         <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
           Impact of our<br /><strong>legal innovation</strong>
         </h2>
-        <p className="body-M text-secondary max-w-[36rem]">
+        <p className="body-M text-secondary max-w-[35rem]">
           The INHABIT stewardship-based restoration model is designed to become the most robust and effective approach to ensure long-term protection and regeneration of lands, while engaging everyone in ecosystem stewardship.
         </p>
       </div>

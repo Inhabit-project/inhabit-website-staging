@@ -6,11 +6,11 @@
     "aboutUs": "ABOUT US",
     "projects": "PROJECTS",
     "blog": "BLOG",
-    "contacts": "CONTACTS"
+    "contact": "contact"
   },
   "hero": {
     "title": "<strong>Join us</strong> in shaping a <strong>global corridor</strong> of <strong>biodiversity</strong>",
-    "description": "INHABIT protects vital ecosystems and drives rural innovation through community-led bio-cultural hubs",
+    "description": "INHABIT protects vital ecosystems and drives rural innovation through community-led biocultural hubs",
     "scrollButton": "SCROLL TO WATCH THE VIDEO"
   },
   "menu": {

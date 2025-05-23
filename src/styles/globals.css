@@ -381,24 +381,23 @@ textarea {
 
   /* Button Styles */
   .btn-primary {
+    align-items: center;
+    height: 4.2rem;
     background: var(--color-accent);
     color: var(--color-light);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-button, 2.5rem);
     font-family: 'Abel', sans-serif;
     font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    padding: 0.75rem 2rem;
     transition: background 0.2s, color 0.2s;
     border: none;
     outline: none;
     font-size: 1rem;
-    display: inline-flex;
-    align-items: center;
     gap: 0.5rem;
     backdrop-filter: blur(var(--blur-sm));
-    height: 3.5rem;
-    min-height: 3.5rem;
+    min-height: 4.2rem;
+    padding: 0;
   }
   .btn-primary:hover, .btn-primary:focus {
     background: var(--color-green-soft);
@@ -413,23 +412,23 @@ textarea {
     stroke: var(--color-secondary);
   }
   .btn-secondary {
+    align-items: center;
+    height: 4.2rem;
     background: var(--color-green-soft);
     color: var(--color-secondary);
-    border: none;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-button, 2.5rem);
     font-family: 'Abel', sans-serif;
     font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    padding: 0.75rem 2rem;
     transition: background 0.2s, color 0.2s;
+    border: none;
     outline: none;
     font-size: 1rem;
-    display: inline-flex;
-    align-items: center;
     gap: 0.5rem;
-    height: 3.5rem;
-    min-height: 3.5rem;
+    backdrop-filter: blur(var(--blur-sm));
+    min-height: 4.2rem;
+    padding: 0;
   }
   .btn-secondary:hover, .btn-secondary:focus {
     background: var(--color-accent);
@@ -443,10 +442,26 @@ textarea {
   .btn-secondary:hover svg, .btn-secondary:focus svg {
     stroke: var(--color-light);
   }
+
+  /* Main input style for forms */
+  .input-main {
+    width: 100%;
+    height: 2.9rem;
+    background-color: rgba(180, 218, 190, 0.199);
+    @apply backdrop-blur-xs border rounded-input px-4 text-light body-S focus:outline-primary ;
+    border-width: 1px;
+    border-color: var(--color-green-soft);
+    font-size: 1rem;
+    font-weight: 400;
+  }
+  .input-main::placeholder {
+    color: #F6FFEA80;
+    opacity: 1;
+  }
 }
 
 .bg-menu-backdrop {
-    background-color: rgb(25 48 22 / 50%);
+    background-color: rgb(25 48 22 / 30%);
 }
 
 /* Add this to globals.css */
@@ -510,3 +525,12 @@ textarea {
 .backdrop-blur-4xl { backdrop-filter: blur(var(--blur-4xl)); }
 .backdrop-blur-5xl { backdrop-filter: blur(var(--blur-5xl)); }
 .backdrop-blur-6xl { backdrop-filter: blur(var(--blur-6xl)); }
+
+.hero-mouse-icon {
+  filter: invert(1) brightness(2) grayscale(1);
+  transition: filter 0.2s;
+}
+.group:hover .hero-mouse-icon,
+.group:focus .hero-mouse-icon {
+  filter: none;
+}

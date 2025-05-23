@@ -24,7 +24,7 @@ const StewardshipNFTPage: React.FC = () => (
           you can travel, safeguard, and <span className="highlighted-text">regenerate biodiversity</span>.
         </>
       }
-      imageSrc="/assets/figma-images/stewardship-nft2.webp"
+      imageSrc="/assets/power-nft.webp"
       imageAlt="Stewardship NFT Benefits"
     />
     <NFTWorksSection />

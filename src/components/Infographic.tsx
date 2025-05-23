@@ -106,7 +106,7 @@ const Infographic: React.FC = () => {
               <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
                 Land Tenure<br /><strong>Framework</strong>
               </h2>
-              <p className="body-M text-secondary max-w-[36rem]">
+              <p className="body-M text-secondary max-w-[35rem]">
                 INHABIT stewardship-based restoration model, is designed to become the most robust and effective approach to ensure the long-term protection and regeneration of degraded lands, while actively engaging everyone in ecosystem stewardship.
               </p>
             </div>
@@ -159,7 +159,7 @@ const Infographic: React.FC = () => {
             <div className="w-full lg:w-2/5 max-w-6xl flex flex-col self-end">
               <h2 className="heading-2 text-secondary mb-6">Guardians</h2>
               <p className="body-M text-secondary">
-                A family of change-makers, receiving permanent usage rights and restoration financing to ensure the regeneration and conservation of the land, to develop an innovative bio-cultural HUB, and to expand the corridor safeguard, and gain access to these thriving hubs, along with numerous benefits as they travel the Corridor.
+                A family of change-makers, receiving permanent usage rights and restoration financing to ensure the regeneration and conservation of the land, to develop an innovative biocultural HUB, and to expand the corridor safeguard, and gain access to these thriving hubs, along with numerous benefits as they travel the Corridor.
               </p>
             </div>
             <div className="w-full lg:w-3/5 flex self-center justify-center">

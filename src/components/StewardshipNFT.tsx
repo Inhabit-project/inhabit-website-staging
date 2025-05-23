@@ -10,10 +10,10 @@ const StewardshipNFT: React.FC = () => {
             <h2 className="heading-2 text-light max-w-[40.9375rem]">
               Stewardship<br /><strong>NFTs</strong>
             </h2>
-            <p className="body-M text-light max-w-[36rem]">
+            <p className="body-M text-light max-w-[35rem]">
               Your digital key to lifelong stewardship of unique ecosystems.
               Each NFT represents a direct connection to a specific conservation area,
-              granting you rights and exclusive access to bio-cultural experiences.
+              granting you rights and exclusive access to biocultural experiences.
             </p>
           </div>
 

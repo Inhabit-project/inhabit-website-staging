@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const NFTGrid: React.FC = () => {
   return (
@@ -21,7 +22,7 @@ const NFTGrid: React.FC = () => {
           <div className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}>
             <div className="absolute top-2 right-2 hover-scale-up">
               <a href="#" className="block ">
-                <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-3 border">
+                <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
                   <svg 
                     width="35" 
                     height="35" 
@@ -60,7 +61,7 @@ const NFTGrid: React.FC = () => {
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-4">
-                    <p className="text-[3.5rem] font-ibm-sans text-center text-white tracking-[-2px]">$ 50 USD</p>
+                    <p className="text-[3.5rem] font-abel text-center text-white tracking-[-2px]">$ 50 USD</p>
                     <div className="flex justify-center items-center gap-3">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#DBEAB2" strokeWidth="0.45" />
@@ -76,13 +77,13 @@ const NFTGrid: React.FC = () => {
                       </svg>
                     </div>
                   </div>
-                  <p className="text-[1rem] text-center text-[#DBEAB2] tracking-[-2.5%]">2439 Available membership</p>
+                  <p className="text-[1rem] text-center text-green-soft tracking-[-2.5%]">2439 Available membership</p>
                 </div>
-                <button className="w-full rounded-[var(--radius-3xl)] p-2 transition-all duration-300 group" style={{ background: 'var(--color-primary)', color: 'var(--color-light)' }}>
-                  <div className="flex items-center justify-center gap-2 px-4 py-2">
-                    <span className="text-[1.12rem] tracking-[2%] group-hover:text-secondary transition-colors duration-300">CHECK THIS NFT</span>
-                  </div>
-                </button>
+                <Link to="/checkout" className="btn-primary w-full flex items-center justify-center group">
+                  <span className="button-text group-hover:text-secondary transition-colors duration-300">
+                    CHECK THIS NFT
+                  </span>
+                </Link>
               </div>
             </div>
           </div>
@@ -90,7 +91,7 @@ const NFTGrid: React.FC = () => {
           <div className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}>
             <div className="absolute top-2 right-2 hover-scale-up">
               <a href="#" className="block ">
-                <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-3 border">
+                <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
                   <svg 
                     width="35" 
                     height="35" 
@@ -129,7 +130,7 @@ const NFTGrid: React.FC = () => {
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-4">
-                    <p className="text-[3.5rem] font-ibm-sans text-center text-white tracking-[-2px]">$ 50 USD</p>
+                    <p className="text-[3.5rem] font-abel text-center text-white tracking-[-2px]">$ 50 USD</p>
                     <div className="flex justify-center items-center gap-3">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#DBEAB2" strokeWidth="0.45" />
@@ -145,13 +146,13 @@ const NFTGrid: React.FC = () => {
                       </svg>
                     </div>
                   </div>
-                  <p className="text-[1rem] text-center text-[#DBEAB2] tracking-[-2.5%]">2439 Available membership</p>
+                  <p className="text-[1rem] text-center text-green-soft tracking-[-2.5%]">2439 Available membership</p>
                 </div>
-                <button className="w-full rounded-[var(--radius-3xl)] p-2 transition-all duration-300 group" style={{ background: 'var(--color-primary)', color: 'var(--color-light)' }}>
-                  <div className="flex items-center justify-center gap-2 px-4 py-2">
-                    <span className="text-[1.12rem] tracking-[2%] group-hover:text-secondary transition-colors duration-300">CHECK THIS NFT</span>
-                  </div>
-                </button>
+                <Link to="/checkout" className="btn-primary w-full flex items-center justify-center group">
+                  <span className="button-text group-hover:text-secondary transition-colors duration-300">
+                    CHECK THIS NFT
+                  </span>
+                </Link>
               </div>
             </div>
           </div>
@@ -159,7 +160,7 @@ const NFTGrid: React.FC = () => {
           <div className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}>
             <div className="absolute top-2 right-2 hover-scale-up">
               <a href="#" className="block ">
-                <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-3 border">
+                <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
                   <svg 
                     width="35" 
                     height="35" 
@@ -198,7 +199,7 @@ const NFTGrid: React.FC = () => {
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-4">
-                    <p className="text-[3.5rem] font-ibm-sans text-center text-white tracking-[-2px]">$ 50 USD</p>
+                    <p className="text-[3.5rem] font-abel text-center text-white tracking-[-2px]">$ 50 USD</p>
                     <div className="flex justify-center items-center gap-3">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#DBEAB2" strokeWidth="0.45" />
@@ -214,13 +215,13 @@ const NFTGrid: React.FC = () => {
                       </svg>
                     </div>
                   </div>
-                  <p className="text-[1rem] text-center text-[#DBEAB2] tracking-[-2.5%]">2439 Available membership</p>
+                  <p className="text-[1rem] text-center text-green-soft tracking-[-2.5%]">2439 Available membership</p>
                 </div>
-                <button className="w-full rounded-[var(--radius-3xl)] p-2 transition-all duration-300 group" style={{ background: 'var(--color-primary)', color: 'var(--color-light)' }}>
-                  <div className="flex items-center justify-center gap-2 px-4 py-2">
-                    <span className="text-[1.12rem] tracking-[2%] group-hover:text-secondary transition-colors duration-300">CHECK THIS NFT</span>
-                  </div>
-                </button>
+                <Link to="/checkout" className="btn-primary w-full flex items-center justify-center group">
+                  <span className="button-text group-hover:text-secondary transition-colors duration-300">
+                    CHECK THIS NFT
+                  </span>
+                </Link>
               </div>
             </div>
           </div>
@@ -229,7 +230,7 @@ const NFTGrid: React.FC = () => {
           <div className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}>
             <div className="absolute top-2 right-2 hover-scale-up">
               <a href="#" className="block ">
-                <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-3 border">
+                <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
                   <svg 
                     width="35" 
                     height="35" 
@@ -268,7 +269,7 @@ const NFTGrid: React.FC = () => {
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-4">
-                    <p className="text-[3.5rem] font-ibm-sans text-center text-white tracking-[-2px]">$ 50 USD</p>
+                    <p className="text-[3.5rem] font-abel text-center text-white tracking-[-2px]">$ 50 USD</p>
                     <div className="flex justify-center items-center gap-3">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#DBEAB2" strokeWidth="0.45" />
@@ -284,13 +285,13 @@ const NFTGrid: React.FC = () => {
                       </svg>
                     </div>
                   </div>
-                  <p className="text-[1rem] text-center text-[#DBEAB2] tracking-[-2.5%]">2439 Available membership</p>
+                  <p className="text-[1rem] text-center text-green-soft tracking-[-2.5%]">2439 Available membership</p>
                 </div>
-                <button className="w-full rounded-[var(--radius-3xl)] p-2 transition-all duration-300 group" style={{ background: 'var(--color-primary)', color: 'var(--color-light)' }}>
-                  <div className="flex items-center justify-center gap-2 px-4 py-2">
-                    <span className="text-[1.12rem] tracking-[2%] group-hover:text-secondary transition-colors duration-300">CHECK THIS NFT</span>
-                  </div>
-                </button>
+                <Link to="/checkout" className="btn-primary w-full flex items-center justify-center group">
+                  <span className="button-text group-hover:text-secondary transition-colors duration-300">
+                    CHECK THIS NFT
+                  </span>
+                </Link>
               </div>
             </div>
           </div>

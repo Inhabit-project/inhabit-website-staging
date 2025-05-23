@@ -53,7 +53,7 @@ const NFTWorksSection: React.FC = () => (
           <img
             src="/assets/nft-works/nft-works-step2-image.webp"
             alt="NFT Implementation Illustration"
-            className="w-full max-w-[100%] h-auto"
+            className="w-full max-w-[100%] h-auto mix-blend-multiply"
           />
         </div>
         {/* Text Content */}
@@ -71,7 +71,7 @@ const NFTWorksSection: React.FC = () => (
               Fund the implementation
             </h3>
             <p className="body-M font-light text-[var(--color-secondary)]" style={{ fontWeight: 300 }}>
-              Funds are used for four key actions: acquiring and protecting degraded lands, restoring their ecosystems, transforming them into thriving Bio-Cultural HUBS, and improving our regenerative model to ensure long-term impact, scalability, and glocal community engagement.
+              Funds are used for four key actions: acquiring and protecting degraded lands, restoring their ecosystems, transforming them into thriving biocultural HUBS, and improving our regenerative model to ensure long-term impact, scalability, and glocal community engagement.
             </p>
           </div>
         </div>
