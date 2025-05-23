@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import BiodiversityCardsSection from './BiodiversityCardsSection';
 import ImpactLegalInnovationCardsSection from './ImpactLegalInnovationCardsSection';
+import { scrollManager } from '../utils/scrollManager';
 
 const cardVariants = {
   hidden: { y: 100, opacity: 0 },
@@ -85,6 +86,9 @@ const Infographic: React.FC = () => {
       const pinWrapWidth = pinWrap.scrollWidth;
       setSpacerHeight(pinWrapWidth);
       ScrollTrigger.refresh();
+      if (scrollManager && typeof scrollManager.update === 'function') {
+        scrollManager.update();
+      }
     };
     window.addEventListener('resize', handleResize);
 
@@ -92,6 +96,47 @@ const Infographic: React.FC = () => {
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
       window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // --- NEW: Wait for all images to load, then refresh ScrollTrigger and Lenis ---
+  useEffect(() => {
+    const horizontalSection = horizontalRef.current;
+    if (!horizontalSection) return;
+    const images = horizontalSection.querySelectorAll('img');
+    let loaded = 0;
+    const total = images.length;
+    if (total === 0) {
+      ScrollTrigger.refresh();
+      if (scrollManager && typeof scrollManager.update === 'function') {
+        scrollManager.update();
+      }
+      return;
+    }
+    function onLoad() {
+      loaded++;
+      if (loaded === total) {
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+          if (scrollManager && typeof scrollManager.update === 'function') {
+            scrollManager.update();
+          }
+        }, 100);
+      }
+    }
+    images.forEach(img => {
+      if (img.complete) {
+        onLoad();
+      } else {
+        img.addEventListener('load', onLoad);
+        img.addEventListener('error', onLoad);
+      }
+    });
+    return () => {
+      images.forEach(img => {
+        img.removeEventListener('load', onLoad);
+        img.removeEventListener('error', onLoad);
+      });
     };
   }, []);
 

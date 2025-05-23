@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import Menu from '../components/Menu';
 import Hero from '../components/Hero';
 import Video from '../components/Video';
@@ -14,9 +14,18 @@ import CTA from '../components/CTA';
 import Blog from '../components/Blog';
 import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
+import { scrollManager } from '../utils/scrollManager';
 
 const MainPage: React.FC = () => {
   const videoSectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollManager && typeof scrollManager.update === 'function') {
+      setTimeout(() => {
+        scrollManager.update();
+      }, 200);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen background-gradient-light">
