@@ -1,5 +1,4 @@
 import React from 'react';
-import '@fontsource/ibm-plex-sans-condensed/400.css';
 import '@fontsource/nunito-sans/400.css';
 import './i18n';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -10,6 +9,10 @@ import StewardshipNFTPage from './pages/StewardshipNFTPage';
 import ScrollToTop from './components/ScrollToTop';
 import Checkout from './components/Checkout';
 import BlogPage from './pages/BlogPage';
+import NuiyanzhiPage from './pages/NuiyanzhiPage';
+import AguaDeLunaPage from './pages/AguaDeLunaPage';
+import AtacamaPage from './pages/AtacamaPage';
+import './utils/gsap';
 
 const App: React.FC = () => {
   return (
@@ -22,6 +25,9 @@ const App: React.FC = () => {
         <Route path="/stewardship-nft" element={<StewardshipNFTPage />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/blog" element={<BlogPage />} />
+        <Route path="/hubs/nuiyanzhi" element={<NuiyanzhiPage />} />
+        <Route path="/hubs/agua-de-luna" element={<AguaDeLunaPage />} />
+        <Route path="/hubs/atacama" element={<AtacamaPage />} />
       </Routes>
     </Router>
   );

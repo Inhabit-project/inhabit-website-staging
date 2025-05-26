@@ -13,10 +13,10 @@ const hubCards = [
   },
   {
     image: '/assets/hub-2.jpg',
-    title: 'Amazonia Biodiversity Hub',
-    subtitle: 'Amazon Rainforest',
+    title: 'Agua de Luna Biodiversity Hub',
+    subtitle: 'Agua de Luna Reserve',
     eyebrow: 'BIODIVERSITY HOTSPOT:',
-    description: 'A sanctuary for rare species and a center for research and education, blending modern science with indigenous wisdom.',
+    description: 'A sanctuary for rare species and a center for research and education, blending modern science with indigenous wisdom at Agua de Luna.',
     coordinates: '19° 25′ 42″ N; 99° 7′ 39″ O',
     markerStyle: 'top-[10rem] right-[12rem]'
   },

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DownloadButton from './DownloadButton';
+import { useNavigate } from 'react-router-dom';
 
 interface HubSubsectionsProps {
   backgroundImage: string;
@@ -10,14 +11,9 @@ interface HubSubsectionsProps {
   visionHeading: string;
   visionText: string;
   onDownload?: () => void;
+  sliderImages: string[];
+  navigateTo: string;
 }
-
-const sliderImages = [
-  '/assets/footer-bg.webp',
-  '/assets/forest.jpg',
-  '/assets/photo-2.webp',
-  '/assets/sierra.jpg',
-];
 
 const HubSubsections: React.FC<HubSubsectionsProps> = ({
   backgroundImage,
@@ -28,9 +24,12 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
   visionHeading,
   visionText,
   onDownload,
+  sliderImages,
+  navigateTo,
 }) => {
   const [current, setCurrent] = useState(0);
   const bgImage = sliderImages[current];
+  const navigate = useNavigate();
 
   const handlePrev = () => setCurrent((prev) => (prev === 0 ? sliderImages.length - 1 : prev - 1));
   const handleNext = () => setCurrent((prev) => (prev === sliderImages.length - 1 ? 0 : prev + 1));
@@ -55,6 +54,7 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
           <button
             className="btn-primary flex items-center gap-2 px-6"
             type="button"
+            onClick={() => navigate(navigateTo)}
           >
             Become a Steward for this Hub
             <svg

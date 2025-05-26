@@ -45,7 +45,7 @@ const FAQ: React.FC = () => {
               Frequently Asked<br />
               <strong>Questions</strong>
             </h2>
-            <p className="body-M text-light max-w-[36rem]">
+            <p className="body-M text-light max-w-[35rem]">
               Find answers to common questions about our ecosystem protection and stewardship programs.
             </p>
           </div>
@@ -89,4 +89,73 @@ const FAQ: React.FC = () => {
   );
 };
 
-export default FAQ; 
+export default FAQ;
+
+export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string }[]; title?: string; description?: string }> = ({ faqItems, title, description }) => {
+  const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+  const defaultFaqItems = [
+    {
+      question: "What is a Stewardship NFT?",
+      answer: "A Stewardship NFT is a digital asset that grants you rights and benefits related to a specific land or project, supporting conservation and restoration efforts.",
+    },
+    {
+      question: "How do I become a guardian?",
+      answer: "You can become a guardian by purchasing a Stewardship NFT and participating in the stewardship community.",
+    },
+    {
+      question: "What are the benefits of being a guardian?",
+      answer: "Guardians receive exclusive access to restoration tools, immersive experiences, and direct ties to ecological and spiritual knowledge.",
+    },
+    {
+      question: "Can I transfer my NFT?",
+      answer: "Yes, Stewardship NFTs are transferable and can be sold or gifted to others.",
+    },
+  ];
+  const items = faqItems || defaultFaqItems;
+  return (
+    <section className="relative w-full min-h-screen background-gradient-light">
+      <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24 flex flex-col">
+        <div className="flex flex-col items-end gap-24">
+          {/* Header section */}
+          <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
+            <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
+              {title || 'Frequently Asked'}<br />
+              <strong>{description || 'Questions'}</strong>
+            </h2>
+          </div>
+          {/* FAQ Items */}
+          <div className="w-full max-w-[50rem] ml-auto text-secondary ">
+            {items.map((item, index) => (
+              <div key={index} className="border-b border-[#1B3A2B]/20 last:border-b-0">
+                <div 
+                  className="flex items-center justify-between py-6 cursor-pointer group"
+                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                >
+                  <h3 className=" text-secondary body-M">
+                    {item.question}
+                  </h3>
+                  <button 
+                    className={`w-8 h-8 rounded-full bg-secondary/10 backdrop-blur-[7.5px] border border-[#1B3A2B]/50 flex items-center justify-center transition-all duration-300 group-hover:border-secondary group-hover:bg-secondary/20 ${openIndex === index ? 'rotate-45' : ''}`}
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8 3.333v9.334M3.333 8h9.334" stroke="#1B3A2B" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                  </button>
+                </div>
+                <div 
+                  className={`overflow-hidden transition-all duration-300 ${
+                    openIndex === index ? 'max-h-[500px] opacity-100 pb-6' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <p className="text-secondary/80 font-nunito text-base leading-[1.5]">
+                    {item.answer}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}; 

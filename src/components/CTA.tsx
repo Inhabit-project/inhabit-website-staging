@@ -45,13 +45,12 @@ const CTA: React.FC = () => {
                 </button>
 
                 {/* Secondary Button (Green) */}
-                
-                <button className="btn-secondary">
+                <button className="btn-secondary flex items-center h-[4.2rem] bg-[var(--color-green-soft)] hover:bg-[var(--color-accent)] text-secondary hover:text-light rounded-button backdrop-blur-sm transition-all duration-200 group">
                   <div className="flex items-center gap-2 px-4 md:px-6">
                     <svg className="w-5 h-5 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M12 3v18M5 14l7 7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                    <span className="button-text ">
+                    <span className="button-text text-sm tracking-[0.02em] uppercase">
                       Become a Guardian
                     </span>
                   </div>

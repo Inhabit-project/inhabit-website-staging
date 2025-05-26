@@ -36,5 +36,326 @@
     "email": "Email",
     "message": "Message",
     "send": "Send"
+  },
+  "aboutUsPage": {
+    "eyebrow": "Builders, Visionaries, Regenerators.",
+    "heading": "Together, <span class=\"highlighted-text\">we are building</span> the foundations of a <span class=\"highlighted-text\">regenerative future</span>, one hub, one corridor, one community, one story at a time.",
+    "teamImageAlt": "INHABIT Team",
+    "sasTitle": "INHABIT",
+    "sasSubtitle": "S.A.S",
+    "sasText": "Founded in 2020, INHABIT develops innovative legal, economic, and educational tools focused on protecting vital ecosystems and driving rural social innovation. INHABIT creates social business solutions that effectively engage diverse stakeholders in land use change, biodiversity conservation, and biocultural activation.\n\nOn the ground, INHABIT implements ecological corridors at both small and large scales, ecosystem restoration, urban and Artscape projects, along with initiatives focused on land security, rural transition, and rural social innovation.\n\nINHABIT is a pioneer in developing tools to expand the corridor globally, such as the land tenure framework for biocultural Hubs. This approach facilitates the creation of a regenerative, functional, and equitable land tenure model and introduces an innovative ReFi model for decentralized finance that seeks to involve everyone in this mission.",
+    "foundationTitle": "INHABIT",
+    "foundationSubtitle": "Foundation",
+    "foundationText": "The INHABIT Foundation is a non-profit organization designed to serve as the legal body of a new land tenure framework that effectively enforces the Rights of Nature and the Rights of Earth Stewards, as well as stewardship-based regeneration principles in specific territories.\nThe Foundation supports 'Rural Change Agents'—farmers, individuals, and organizations—by securing land tenure, providing restoration funding, granting access to education, and fostering a supportive community around them, enabling their role as catalysts for long-term regeneration, ecological and cultural resilience, climate justice, and locally-led territorial governance."
+  },
+  "hubsMain": {
+    "eyebrow": "Where are the hubs located?",
+    "heading": "The first <span class=\"highlighted-text\">three HUBS</span> are located in the <span class=\"highlighted-text\">Sierra Nevada de Santa Marta,</span> considered the <span class=\"highlighted-text\">Heart of the World.</span>",
+    "nuiyanzhi": {
+      "label": "Knowledge Center for Restoration",
+      "title": "ÑUIYANZHI",
+      "description": "Since 2021, the family of Amelia, Juan, and their son León have lived and cared for Ñuiyanzhi in partnership with the Kogi elders of the Kaggaba tribe, from the Sierra Nevada de Santa Marta.",
+      "visionHeading": "HUB VISION",
+      "visionText": "The Ñuiyanzhi Hub is a living laboratory where ecological restoration meets ancestral knowledge. It regenerates soils degraded by overgrazing, monocultures, and agrochemicals, creating a biodiversity hotspot for endangered species. As a training center, it combines hands-on learning with indigenous and academic wisdom. NFT guardians gain exclusive access to restoration tools, immersive experiences, and direct links to Kogi ecological and spiritual knowledge."
+    },
+    "aguaDeLuna": {
+      "label": "Biodiversity Hotspot",
+      "title": "Agua de Luna",
+      "description": "The Agua de Luna hub is a sanctuary for rare species and a center for research and education, combining modern science with indigenous wisdom.",
+      "visionHeading": "HUB VISION",
+      "visionText": "The Agua de Luna Hub is dedicated to preserving the world's largest rainforest, supporting local communities, and fostering global collaboration for conservation."
+    },
+    "atacama": {
+      "label": "Desert Innovation",
+      "title": "ATACAMA",
+      "description": "The Atacama hub pioneers sustainable living in arid environments, focusing on water conservation and renewable energy.",
+      "visionHeading": "HUB VISION",
+      "visionText": "The Atacama Hub demonstrates how life can thrive in extreme conditions, inspiring new solutions for a changing climate."
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "description": "Questions about the Nuiyanzhi Hub",
+    "items": [
+      {
+        "question": "What makes the Nuiyanzhi Hub unique?",
+        "answer": "The Nuiyanzhi Hub is a living laboratory where ecological restoration meets ancestral knowledge, combining indigenous wisdom with modern science."
+      },
+      {
+        "question": "How can I become a guardian of Nuiyanzhi?",
+        "answer": "You can become a guardian by acquiring a Stewardship NFT for Nuiyanzhi and participating in our restoration and stewardship programs."
+      },
+      {
+        "question": "What are the main objectives of the Hub?",
+        "answer": "The main objectives are ecological restoration, knowledge exchange, community participation, and sustainable land management."
+      },
+      {
+        "question": "Can I visit the Nuiyanzhi Hub?",
+        "answer": "Yes, NFT guardians and stewards have exclusive opportunities to visit, learn, and participate in hands-on experiences at the Hub."
+      }
+    ]
+  },
+  "mainPage": {
+    "hero": {
+      "title": "<strong>Join us</strong> in shaping a <strong>global corridor</strong> of <strong>biodiversity</strong>",
+      "description": "INHABIT protects vital ecosystems and drives rural innovation through community-led biocultural hubs",
+      "scrollButton": "SCROLL TO WATCH THE VIDEO"
+    },
+    "video": {
+      "eyebrow": "discover inhabit",
+      "heading": "Pioneers of <span class=\"highlighted-text\">global corridors</span> to <span class=\"highlighted-text\">protect</span> vital ecosystems and foster <span class=\"highlighted-text\">biocultural innovation</span>."
+    },
+    "hubs": {
+      "title": "Bio-cultural <br> <strong>Hubs</strong>",
+      "description": "Located in different bioregions, the HUBS are important biodiversity hotspots and learning centers that preserve and share ecological resources and living knowledge to shape the corridor.",
+      "cards": [
+        {
+          "title": "Ñuiyanzhi Biocultural HUB",
+          "subtitle": "Sierra Nevada de Santa Marta",
+          "eyebrow": "SOIL RESTORATION AND BIOCLIMATIC ARCHITECTURE:",
+          "description": "Action-research between traditional and academic knowledge by Amelia Carrillo Pardo and Juan Duque"
+        },
+        {
+          "title": "AguaDeLuna Biodiversity Hub",
+          "subtitle": "Amazon Rainforest",
+          "eyebrow": "BIODIVERSITY HOTSPOT:",
+          "description": "A sanctuary for rare species and a center for research and education, combining modern science and indigenous wisdom."
+        },
+        {
+          "title": "Atacama Innovation Hub",
+          "subtitle": "Atacama Desert",
+          "eyebrow": "DESERT INNOVATION:",
+          "description": "Pioneers in sustainable living in arid environments, focused on water conservation and renewable energy."
+        }
+      ]
+    },
+    "photoGallery": {
+      "title": "Photo Gallery"
+    },
+    "stewardshipNFT": {
+      "title": "Stewardship NFTs",
+      "description": "Your digital key to lifelong stewardship of unique ecosystems. Each NFT represents a direct connection to a specific conservation area, granting you rights and exclusive access to biocultural experiences."
+    },
+    "highlight": {
+      "eyebrow": "WHAT ARE NFTS?",
+      "description": "Stewardship NFTs are blockchain-verified contracts that grant fractional rights to protect ecosystems in tokenized land parcels."
+    },
+    "photo": {
+      "section1": "By purchasing an NFT you become a lifelong guardian of a specific Hub, allowing you to monitor and participate in important decisions affecting these ecosystems, and gain exclusive access to biocultural experiences, events, workshops, visit the hubs, and explore the entire Corridor.",
+      "section2": "Funds raised from these NFTs are used to acquire degraded lands and transform them into biocultural Hubs. These areas are protected under the INHABIT land tenure framework—a pioneering model of nature reserves that grants legal rights to nature, redefining land protection and stewardship to a new level."
+    },
+    "nftGrid": {
+      "title": "Our innovative <strong>NFTs</strong>",
+      "description": "Stewardship NFTs are blockchain-verified contracts that grant fractional rights to protect ecosystems in tokenized land parcels.",
+      "checkThisNFT": "CHECK THIS NFT",
+      "availableMembership": "Available memberships"
+    },
+    "infographic": {
+      "landTenureTitle": "Land Tenure Framework",
+      "landTenureDescription": "The INHABIT stewardship-based restoration model is designed to be the most robust and effective approach to ensure the long-term protection and regeneration of degraded lands, actively involving everyone in ecosystem stewardship.",
+      "nftStewardsTitle": "NFT Stewards",
+      "nftStewardsDescription": "People from anywhere in the world can become lifelong protectors of nature, with the ability to monitor, safeguard, and access these thriving hubs, along with numerous benefits as they travel the Corridor.",
+      "natureTitle": "Nature",
+      "natureDescription": "Nature is considered an entity with rights within the land boundaries, according to the Declaration of the Rights of Nature (e.g., the right to self-regulation, restoration, protection, decision-making...)",
+      "guardiansTitle": "Guardians",
+      "guardiansDescription": "A family of change agents, who receive permanent use rights and restoration funding, ensuring the regeneration and conservation of the land, developing an innovative biocultural HUB, and expanding corridor protection."
+    },
+    "testimonials": {
+      "title": "Meet our <strong>Allies</strong>",
+      "description": "Stewardship NFTs are blockchain-verified contracts that grant fractional rights to protect ecosystems in tokenized land parcels.",
+      "testimonial": {
+        "name": "Louise Borreani",
+        "quote": "Inhabit is a powerful expression of how decentralized tools can support nature stewardship communities. It is one of the most concrete manifestations of the green crypto research we have done at Ecofrontiers and it is inspiring to see it come to life.",
+        "role": "Co-founder, Ecofrontiers"
+      },
+      "partnersTitle": "Our <strong>Partners</strong>"
+    },
+    "cta": {
+      "title": "Join in shaping a global corridor.<br /><span class=\"text-primary\">Become a guardian</span>, travel the corridor,<br />and be a <span class=\"text-primary\">catalyst for impact!</span>",
+      "discover": "Discover Inhabit",
+      "becomeGuardian": "Become a Guardian"
+    },
+    "blog": {
+      "title": "Stay<br /><strong>informed</strong>",
+      "description": "Stay up to date with our latest news and insights on biodiversity and ecological preservation."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "description": "Find answers to common questions about our ecosystem protection and stewardship programs.",
+      "items": [
+        {
+          "question": "What exactly is a Stewardship NFT?",
+          "answer": "A Stewardship NFT represents your commitment to biodiversity conservation. It is a unique digital asset that connects you directly with conservation initiatives within our global biodiversity corridor."
+        },
+        {
+          "question": "How does my NFT purchase help conservation?",
+          "answer": "Your NFT purchase directly funds on-the-ground conservation efforts. Funds go towards protecting and restoring critical habitats, supporting local communities, and maintaining the biodiversity corridor infrastructure."
+        },
+        {
+          "question": "What benefits do I receive as an NFT holder?",
+          "answer": "As an NFT holder, you get exclusive access to impact reports, virtual and physical site visits, community events, and voting rights in certain conservation decisions. You also become part of a growing community of conservation guardians."
+        },
+        {
+          "question": "Can I transfer or sell my Stewardship NFT?",
+          "answer": "Yes, Stewardship NFTs are transferable. You can sell or gift your NFT to others who share your commitment to conservation, though we encourage long-term stewardship for greater impact."
+        },
+        {
+          "question": "What makes this project different from other NFTs?",
+          "answer": "Our NFTs have real impact, directly supporting biodiversity conservation. They are backed by scientific research, community engagement, and tangible conservation outcomes, not just digital art or speculation."
+        }
+      ]
+    },
+    "footer": {
+      "connect": "CONNECT",
+      "location": "LOCATION",
+      "locationText": "Tierra Kilwa, Palomino, La Guajira, Colombia",
+      "newsletter": "NEWSLETTER",
+      "newsletterText": "Subscribe to get the best updates from us!",
+      "emailPlaceholder": "Your email",
+      "acceptPolicy": "I accept the privacy policy",
+      "menu": "MENU",
+      "copyright": "COPYRIGHT 2025 ALL RIGHTS RESERVED DESIGNED BY FERNANDA HERRERA"
+    },
+    "biodiversityCardsSection": {
+      "title": "Biodiversity Cards Section",
+      "cards": [
+        {
+          "number": "001",
+          "title": "Biodiversity Hotspots",
+          "description": "Each HUB must generate and host a vast reservoir of biodiversity and living knowledge specific to a unique ecosystem, essential to face the challenges of our time. These 'living seed hubs' host an 'internal corridor' within the land, connecting fragmented landscapes and serving as refuges for endangered species."
+        },
+        {
+          "number": "002",
+          "title": "Community Participation",
+          "description": "Local communities are fundamental to the success of each HUB. Their traditional knowledge and active participation ensure the sustainable management and protection of these vital ecosystems."
+        },
+        {
+          "number": "003",
+          "title": "Research and Education",
+          "description": "HUBs function as living laboratories for scientific research and environmental education, fostering innovation and knowledge exchange for ecosystem restoration."
+        },
+        {
+          "number": "004",
+          "title": "Sustainable Practices",
+          "description": "Implement sustainable land management practices that balance ecological health with human needs, ensuring the long-term viability of ecosystems."
+        }
+      ]
+    },
+    "impactLegalInnovationCardsSection": {
+      "title": "Impact of our<br /><strong>legal innovation</strong>",
+      "description": "The INHABIT stewardship-based restoration model is designed to be the most robust and effective approach to ensure the long-term protection and regeneration of lands, involving everyone in ecosystem stewardship.",
+      "cards": [
+        {
+          "number": "01",
+          "title": "Nature",
+          "subtitle": "Rights",
+          "description": "This framework permanently protects the land by recognizing it as a legal entity with rights, and grants specific rights and benefits to those who support its protection and regeneration."
+        },
+        {
+          "number": "02",
+          "title": "Guardians",
+          "subtitle": "Rights",
+          "description": "This framework grants permanent use rights and restoration funding to land guardians, creating the essential conditions for long-term regeneration and corridor expansion."
+        },
+        {
+          "number": "03",
+          "title": "NFT Guardians",
+          "subtitle": "Rights",
+          "description": "This framework grants NFT guardians stewardship rights over the land, acting as guarantors of nature's rights. It allows them to monitor and support restoration while enjoying exclusive benefits and access to biodiversity hotspots and essential knowledge."
+        },
+        {
+          "number": "04",
+          "title": "Compliance",
+          "subtitle": "Rights",
+          "description": "Smart contracts ensure that the entire framework and actors' rights are transparently enforced and verified, providing a reliable digital system for compliance tracking and enabling meaningful participation in restoration initiatives along the Corridor."
+        }
+      ]
+    },
+    "criteriaCardsSection": {
+      "title": "Four Criteria <br /><strong>To Be a HUB</strong>",
+      "description": "The INHABIT framework envisions that each HUB develops four key fields to become a biocultural HUB, each developing according to its own vision and uniqueness."
+    },
+    "criteriaCardsSection2": {
+      "cards": [
+        {
+          "number": "01",
+          "title": "Protect",
+          "subtitle": "Nature",
+          "description": "Acquire and permanently protect lands under the innovative INHABIT legal framework, recognizing ecosystems as legal entities with protected rights, and granting specific rights and benefits to those who support their regeneration."
+        },
+        {
+          "number": "02",
+          "title": "Restore",
+          "subtitle": "Ecosystems",
+          "description": "Fund long-term stewardship-based land regeneration through three-year programs, restoring the full diversity and functionality of the ecosystem, not just planting trees."
+        },
+        {
+          "number": "03",
+          "title": "Transform",
+          "subtitle": "Society",
+          "description": "Fund the development of hubs dedicated to unique fields of knowledge, fostering the production and dissemination of wisdom, and actively working to expand the corridor and broaden access to transformative knowledge for all."
+        },
+        {
+          "number": "04",
+          "title": "Enhance",
+          "subtitle": "Benefits",
+          "description": "Develop an improved and more valuable version of the Stewardship NFT, offering greater benefits to NFT holders and further expanding the corridor."
+        }
+      ]
+    }
+  },
+  "nuiyanzhiPage": {
+    "theVision": "The Vision",
+    "theGuardians": "The Guardians",
+    "theLand": "The Land",
+    "faq": {
+      "title": "Frequently Asked",
+      "description": "Questions about Nuiyanzhi Hub",
+      "items": [
+        {"question": "What makes the Nuiyanzhi Hub unique?", "answer": "Nuiyanzhi Hub is a living laboratory where ecological restoration meets ancestral knowledge, blending indigenous wisdom with modern science."},
+        {"question": "How can I become a guardian of Nuiyanzhi?", "answer": "You can become a guardian by acquiring a Stewardship NFT for Nuiyanzhi and participating in our restoration and stewardship programs."},
+        {"question": "What are the main goals of the Hub?", "answer": "The main goals are ecological restoration, knowledge sharing, community engagement, and sustainable land management."},
+        {"question": "Can I visit the Nuiyanzhi Hub?", "answer": "Yes, NFT stewards and guardians have exclusive opportunities to visit, learn, and participate in hands-on experiences at the Hub."}
+      ]
+    }
+  },
+  "amazonPage": {
+    "title": "AguaDeLuna Hub Details Page"
+  },
+  "atacamaPage": {
+    "title": "Atacama Hub Details Page"
+  },
+  "nftTable": {
+    "minFundraise": "MINIMUM FUNDRAISE",
+    "fullFundraise": "FULL FUNDRAISE",
+    "landRights": "LAND RIGHTS",
+    "lifeLongMembership": "Life-long Membership & Stewardship",
+    "lifeLongMembershipDesc": "You gain lifelong stewardship and utility rights over a tokenized real-world land.",
+    "legalProtector": "Legal Protector of the land",
+    "legalProtectorDesc": "You become part of the legal system of guarantee that recognizes Nature as a subject with rights on a specific land related to this membership, in line with the Declaration of the Rights of Nature and Biocultural principles.",
+    "governanceRights": "GOVERNANCE RIGHTS",
+    "daoAccess": "Inhabit DAO access",
+    "daoAccessDesc": "You receive governance rights over specific matters as a land guarantor. You have a say in decisions regarding unexpected changes in land use, shifts in Hub management, or any unforeseen events that could alter the relationship between stakeholders and the land or threaten the Rights of Nature.",
+    "utilityRights": "UTILITY RIGHTS",
+    "freeAccommodation": "Free accommodation",
+    "freeMeals": "Free meals",
+    "accommodationDiscount": "Accommodation discount",
+    "mealDiscount": "Meal discount",
+    "discountedWorkshops": "Discounted workshops",
+    "educationRights": "EDUCATION RIGHTS",
+    "accessEducational": "Access to educational contents",
+    "accessEducationalDesc": "About inhabiting knowledge and techniques",
+    "basicLevel": "Basic level contents",
+    "mediumLevel": "Medium level contents",
+    "fullLevel": "Full level contents",
+    "assetRights": "ASSET RIGHTS",
+    "futureUpgrades": "Future NFT upgrades",
+    "futureUpgradesDesc": "As an early backer, you are entitled to receive future versions of the NFT for free, which will include additional rights and benefits as the project evolves in the NFT 2.0 (conditional on development).",
+    "artRights": "ART RIGHTS",
+    "badgeArt": "Badge of legal protector via exclusive ArtWork by <span class='text-orange-400 font-bold'>Jeisson Castillo</span>",
+    "badgeArtDesc": "Each ArtPiece represents a Migratory Floating Garden from the HUB's ecosystem, featuring a native species vital to that habitat and tied to levels of care in Kogui ancestral thinking. The unique Art Badge symbolizes your legal stewardship connection to a specific piece of land, which you can use to travel and activate the corridor.",
+    "monitoringRights": "MONITORING RIGHTS",
+    "monitoringAccess": "Impact Monitoring access via <span class='text-orange-400 font-bold'>MAP HERE</span>",
+    "monitoringAccessDesc": "Track the progress of the land you help protect through real-time data mapping and geolocation narratives. Follow the transformation of the land into a bio-cultural hub. You receive regular real-time data and impact reports, geolocation, visual mapping, and key performance indicators (KPIs) detailing progress in areas like tree planting, biodiversity increase, and local community impact."
   }
 } 
