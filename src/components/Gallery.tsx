@@ -39,12 +39,9 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
     const result = [];
     const length = images.length;
 
-    // Add previous images
+    // Add previous and next images using normalizeIndex
     for (let i = -2; i <= 2; i++) {
-      let index = currentIndex + i;
-      if (index < 0) index = length + index;
-      if (index >= length) index = index - length;
-      
+      const index = normalizeIndex(currentIndex + i);
       result.push({
         index,
         position: i,

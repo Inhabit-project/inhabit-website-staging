@@ -44,7 +44,7 @@ const BiodiversityCard: React.FC<BiodiversityCardProps> = ({
         </span>
         <div className="flex flex-col md:flex-row justify-center items-start md:items-center gap-8 md:gap-[227px]">
           <div className="w-full md:w-[620px] flex flex-col gap-6 md:gap-[31px]">
-            <h3 className="font-prompt font-light text-[32px] md:text-[40px] leading-[1.2] text-[#1C3625] whitespace-pre-line">
+            <h3 className=" font-light text-[32px] md:text-[40px] leading-[1.2] text-[#1C3625] whitespace-pre-line">
               {title}
             </h3>
             <p className="font-nunito-sans font-light text-base leading-[1.24] text-black whitespace-pre-line">

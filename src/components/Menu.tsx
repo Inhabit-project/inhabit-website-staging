@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { scrollManager } from '../utils/scrollManager';
 
 const LanguageButton = styled.button`
   background: none;
@@ -51,8 +50,8 @@ const Menu: React.FC = () => {
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
-    function handleLenisScroll(e: any) {
-      const currentScrollY = e.scroll;
+    function handleScroll() {
+      const currentScrollY = window.scrollY;
       if (currentScrollY > lastScrollY) {
         setIsVisible(false);
       } else {
@@ -60,13 +59,10 @@ const Menu: React.FC = () => {
       }
       setLastScrollY(currentScrollY);
     }
-    // Wait for Lenis to be initialized
-    if (scrollManager && (scrollManager as any).lenis) {
-      (scrollManager as any).lenis.on('scroll', handleLenisScroll);
-      return () => {
-        (scrollManager as any).lenis.off('scroll', handleLenisScroll);
-      };
-    }
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [lastScrollY]);
 
   const menuLinks = [

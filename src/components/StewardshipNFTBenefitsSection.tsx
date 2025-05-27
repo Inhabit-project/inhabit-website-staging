@@ -2,37 +2,37 @@ import React from 'react';
 
 const benefits = [
   {
-    icon: '/assets/benefit-icons/benefit-icon-1.svg',
+    icon: '/assets/icons/6.svg',
     eyebrow: 'ASSET RIGHT',
     title: 'Life-long Membership',
     description: `You gain lifelong stewardship and utility rights over tokenized real-world lands.\n\nAs an early backer, you'll receive future NFT versions for free as it evolves over time, entitling you to increasing benefits and returns, with added rights and features offered by the Stewardship NFT 2.0—subject to development`,
   },
   {
-    icon: '/assets/benefit-icons/benefit-icon-2.svg',
+    icon: '/assets/icons/2.svg',
     eyebrow: 'ART RIGHTS',
     title: 'Badge of legal protector',
     description: `You receive a unique Artwork created by an exclusive artist. Each piece represents a Migratory Floating Garden from the ecosystem where the HUB is located, featuring a native animal or plant vital to that habitat.\n\nThe unique Art Badge represents your legal stewardship connection to a specific piece of land, granting you access to travel and activate the corridor.`,
   },
   {
-    icon: '/assets/benefit-icons/benefit-icon-3.svg',
+    icon: '/assets/icons/4.svg',
     eyebrow: 'STEWARDSHIP RIGHTS',
     title: 'Legal Protector of the land',
     description: `You become part of a legal system of guarantee that recognises Nature as a subject with rights on a specific piece of land.\n\nThis framework, aligned with the Declaration of the Rights of Nature and biocultural principles, helps each of us reclaim our role as guardians of the living ecosystems we depend on—and of which we are an inseparable part.`,
   },
   {
-    icon: '/assets/benefit-icons/benefit-icon-4.svg',
+    icon: '/assets/icons/3.svg',
     eyebrow: 'IMPACT RIGHTS',
     title: 'Impact Monitoring',
     description: `Track the progress of the land you help protect through real-time data and geolocation narratives.\n\nFollow its transformation into a biocultural hub with regular updates, visual maps, and impact reports. See KPIs on tree planting, biodiversity growth, and local community impact—all showing your contribution to regeneration in action.`,
   },
   {
-    icon: '/assets/benefit-icons/benefit-icon-5.svg',
+    icon: '/assets/icons/5.svg',
     eyebrow: 'GOVERNANCE RIGHTS',
     title: 'Inhabit DAO access',
     description: `You receive governance rights over specific matters as a land guarantor.\n\nYou have a say in decisions involving unexpected changes in land use, shifts in Hub management, or unforeseen events that could affect the relationship between stakeholders and the land—or pose a threat to the Rights of Nature and the integrity of the biocultural mission.`,
   },
   {
-    icon: '/assets/benefit-icons/benefit-icon-6.svg',
+    icon: '/assets/icons/1.svg',
     eyebrow: 'UTILITY RIGHTS',
     title: 'Exclusive biocultural Access',
     description: `You gain access to biocultural experiences, events, and workshops within the corridor's HUBS, deepening your connection with the land and the bio-culture of a territory.\n\nBenefits include free or discounted stays and meals, exclusive access to unique experiences, and educational content on reforestation, permaculture, bio-construction, and more.`,

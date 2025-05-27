@@ -9,6 +9,7 @@ import ImageSection from '../components/ImageSection';
 import InfoCard from '../components/InfoCard';
 import { InfoCardRightImage } from '../components/InfoCard';
 import MeetOurTeam from '../components/MeetOurTeam';
+import LogosSection from '../components/LogosSection';
 
 const AboutUsPage: React.FC = () => (
   <div className="min-h-screen background-gradient-light">
@@ -35,11 +36,12 @@ const AboutUsPage: React.FC = () => (
       logoSrc="/assets/foundation-logo.svg"
       logoAlt="INHABIT Logo"
       text={`The INHABIT Foundation is a non-profit organisation designed to serve as the legal body of a new land tenure framework that effectively enforces the Rights of Nature and Land Stewards' Rights, as well as the principles of stewardship-based regeneration in specific territories.
- The Foundation supports “Rural Change Makers”—farmers, individuals, and organisations—by securing land tenure, providing restoration funding, granting access to education, and fostering a supportive community around them, enabling their role as catalysts of regeneration, long-term ecological and cultural resilience, and locally led climate justice and territorial governance.`}
+ The Foundation supports "Rural Change Makers"—farmers, individuals, and organisations—by securing land tenure, providing restoration funding, granting access to education, and fostering a supportive community around them, enabling their role as catalysts of regeneration, long-term ecological and cultural resilience, and locally led climate justice and territorial governance.`}
       imageSrc="/assets/inhabit-foundation.webp"
       imageAlt="Vision Card"
     />
     <MeetOurTeam />
+    <LogosSection showBuilders showPartners />
     {/* Main About Us content goes here, e.g. <AboutUs /> */}
     <CTA />
     <Blog />
