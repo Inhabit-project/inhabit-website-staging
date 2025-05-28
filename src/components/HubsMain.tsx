@@ -48,23 +48,23 @@ const Hubs: React.FC = () => {
           '/assets/1Hub/hub-view-2.webp',
           '/assets/1Hub/hub-view-3.webp',
         ]}
-        navigateTo="/hubs/agua-de-luna"
+        navigateTo="/hubs/amazonia"
       />
       <HubSubsections
         backgroundImage="/assets/photo-2.webp"
         mapImage="/assets/mapa3.png"
-        label={t('hubsMain.atacama.label')}
-        title={t('hubsMain.atacama.title')}
-        description={t('hubsMain.atacama.description')}
-        visionHeading={t('hubsMain.atacama.visionHeading')}
-        visionText={t('hubsMain.atacama.visionText')}
+        label={t('hubsMain.TierraKilwa.label')}
+        title={t('hubsMain.TierraKilwa.title')}
+        description={t('hubsMain.TierraKilwa.description')}
+        visionHeading={t('hubsMain.TierraKilwa.visionHeading')}
+        visionText={t('hubsMain.TierraKilwa.visionText')}
         onDownload={() => {}}
         sliderImages={[
           '/assets/1Hub/hub-view-1.webp',
           '/assets/1Hub/hub-view-2.webp',
           '/assets/1Hub/hub-view-3.webp',
         ]}
-        navigateTo="/hubs/atacama"
+        navigateTo="/hubs/TierraKilwa"
       />
       <CriteriaCardsSection />
     </>

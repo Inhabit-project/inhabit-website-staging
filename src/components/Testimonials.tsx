@@ -45,7 +45,7 @@ const Testimonials: React.FC = () => {
 
   return (
     <>
-      <section className="background-gradient-dark py-8 md:py-16 lg:py-[6.5rem] px-4 md:px-8 lg:px-[6.25rem] overflow-x-hidden flex flex-col gap-8 md:gap-16 lg:gap-[3.75rem]">
+      <section className="background-gradient-dark py-8 md:py-16 lg:py-[6.5rem] px-4 md:px-8 lg:px-[6.25rem] overflow-x-hidden flex flex-col gap-8 md:gap-16 lg:gap-[3.75rem]  scroll-container">
         <div className="w-full">
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between w-full gap-6 md:gap-8">

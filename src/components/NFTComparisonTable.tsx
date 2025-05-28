@@ -74,7 +74,7 @@ const NFTComparisonTable: React.FC = () => {
             <td className="px-6 py-4 font-bold border border-white" colSpan={9}>MONITORING RIGHTS</td>
           </tr>
           <tr>
-            <td className="px-6 py-4 border border-white">Impact Monitoring access via <span className="text-orange-400 font-bold">MAP HERE</span><br/><span className="text-xs font-normal">Track the progress of the land you help protect through real-time data mapping and geolocation narratives. Follow the transformation of the land into a bio-cultural hub. You receive regular real-time data and impact reports, geolocation, visual mapping, and key performance indicators (KPIs) detailing progress in areas like tree planting, biodiversity increase, and local community impact.</span></td>
+            <td className="px-6 py-4 border border-white">Impact Monitoring access via <span className="text-orange-400 font-bold">MAP HERE</span><br/><span className="text-xs font-normal">Track the progress of the land you help protect through real-time data mapping and geolocation narratives. Follow the transformation of the land into a Biocultural hub. You receive regular real-time data and impact reports, geolocation, visual mapping, and key performance indicators (KPIs) detailing progress in areas like tree planting, biodiversity increase, and local community impact.</span></td>
             {[CheckIcon(), EmptyCheckIcon(), CheckIcon(), CheckIcon(), CheckIcon(), CheckIcon(), CheckIcon(), CheckIcon()].map((icon, i) => <td key={i} className="px-4 py-4 text-center border border-white">{icon}</td>)}
           </tr>
           {/* UTILITY RIGHTS */}

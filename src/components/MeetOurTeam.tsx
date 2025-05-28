@@ -1,60 +1,155 @@
-import React from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 
 const teamMembers = [
   {
     name: 'Luca Urbano',
-    role: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed congue interdum ligula a dignissim.',
-    image: '/assets/team/luca-urbano.jpg',
+    role: 'Social entrepreneur and farmer with 13 years experience in regenerative business development, ecosystem restoration, agroecology, agroforestry, social and inclusive supply chains. Grew up in Congo, established the first Moringa supply chain based on food forest systems. Co-founder of several social businesses focused on food and IT.',
+    image: '/assets/team/luca.webp',
     linkedin: '#',
   },
-  // ...add more team members as needed (use the same placeholder for now)
+  {
+    name: 'Dror Noi',
+    role: 'Social entrepreneur and permaculture designer passionate about decentralized and regenerative cultures/agriculture. Grew up in Israel, established the first center for Social Innovation in TLV. Co-Founder of Yumajai & Partner at Inside-hub. Manages a permaculture farm in Colombia.',
+    image: '/assets/team/dror.webp',
+    linkedin: '#',
+  },
+  {
+    name: 'Chiara Trotto',
+    role: 'Bachelor of Social Sciences in cooperation and development, facilitator and trainer in project formulation, social entrepreneur, 13+ years of experience in sustainable agro-food chains, social innovation, and non-formal education with communities in Europe, Africa, and Latin America.',
+    image: '/assets/team/chiara.webp',
+    linkedin: '#',
+  },
+  {
+    name: 'Talya Weinberg',
+    role: 'Global impact strategist, social clown, and integral artist, expert in ecosystemic and human regeneration. Co-founder of Yumajai and Heart Spaces methodology, integrating art, ecology, ancestral wisdom, and education to inspire global change.',
+    image: '/assets/team/talya.webp',
+    linkedin: '#',
+  },
+  {
+    name: 'Amelia Maria Carrillo',
+    role: 'Attorney with a Master\'s in Territorial Studies, experienced in environmental law and legal territorial protection frameworks from a biocultural perspective. Founder of the Foundation of Mother Earth operating across Colombia.',
+    image: '/assets/team/amelia.webp',
+    linkedin: '#',
+  },
+  {
+    name: 'Junior Rojaas',
+    role: 'Senior developer and entrepreneur with 11+ years in software development, specializing in blockchain and cryptocurrencies. CTO of Futswap and CEO of Intechchain, leading projects in decentralized finance and technological solutions.',
+    image: '/assets/team/junior.webp',
+    linkedin: '#',
+  },
+  {
+    name: 'Juan Pablo Lievano',
+    role: 'Economist and MA in anthropology with 13+ years of experience in sustainable rural development, climate change, project management, and financial evaluation of small farmer agribusiness models. Founder of two natural reserves in Colombia.',
+    image: '/assets/team/juan.webp',
+    linkedin: '#',
+  },
+  {
+    name: 'Gaia Pagano',
+    role: 'Bachelor of Social Sciences, Master in Innovation and Development, Human Rights and Culture of Peace. Coordinator at Pontificia Universidad Javeriana, 12+ years in peace and reconciliation, intercultural relations, and dialogue projects with indigenous and Afro-descendant communities.',
+    image: '/assets/team/Gaia-pagano.webp',
+    linkedin: '#',
+  },
+
 ];
 
-// Fill with 12 placeholders for demo
-while (teamMembers.length < 12) {
-  teamMembers.push({
-    name: 'Luka Urbano',
-    role: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed congue interdum ligula a dignissim.',
-    image: '/assets/team/luca-urbano.jpg',
-    linkedin: '#',
-  });
-}
+const MeetOurTeam: React.FC = () => {
+  const [expanded, setExpanded] = useState<number | null>(null);
+  const descRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [heights, setHeights] = useState<number[]>([]);
 
-const MeetOurTeam: React.FC = () => (
-  <section className="w-full py-20 px-4 background-gradient-light">
-    <div className="container">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12 gap-6">
-        <div>
-          <h2 className="heading-2 text-secondary mb-2">Meet our <strong><br />Team</strong></h2>
-        </div>
-        <p className="body-M text-secondary max-w-xl">
-          We are purpose-driven entrepreneurs, farmers, artists, facilitators — Experts in law, restoration, technology and rural development—united to reinvest ways of inhabiting Earth
-        </p>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {teamMembers.map((member, idx) => (
-          <div key={idx} className="relative rounded-2xl overflow-hidden shadow-lg group">
-            <img src={member.image} alt={member.name} className="w-full h-64 object-cover" />
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-            {/* LinkedIn icon */}
-            <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="absolute top-4 right-4 z-10 bg-white/20 rounded-full p-2 hover:bg-white/40 transition">
-              <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-white">
-                <path d="M16 8a6 6 0 0 1 6 6v5h-4v-5a2 2 0 0 0-4 0v5h-4v-9h4v1.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <rect x="2" y="9" width="4" height="12" rx="2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <circle cx="4" cy="4" r="2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </a>
-            {/* Name and role */}
-            <div className="absolute bottom-0 left-0 w-full p-4 z-10">
-              <h3 className="font-montserrat text-lg font-semibold text-white mb-1">{member.name}</h3>
-              <p className="font-nunito text-sm text-white/90 leading-snug">{member.role}</p>
-            </div>
+  useLayoutEffect(() => {
+    setHeights(
+      teamMembers.map((_, idx) =>
+        descRefs.current[idx]?.scrollHeight || 0
+      )
+    );
+  }, [expanded]);
+
+  return (
+    <section className="w-full py-20 px-4 background-gradient-light scroll-container">
+      <div className="container">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12 gap-6">
+          <div>
+            <h2 className="heading-2 text-secondary mb-2">Meet our <strong><br />Team</strong></h2>
           </div>
-        ))}
+          <p className="body-M text-secondary max-w-xl">
+            We are purpose-driven entrepreneurs, farmers, artists, facilitators — Experts in law, restoration, technology and rural development—united to reinvest ways of inhabiting Earth
+          </p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {teamMembers.map((member, idx) => {
+            const excerpt = member.role.length > 60 ? member.role.slice(0, 60).trim() + '…' : member.role;
+            const isExpanded = expanded === idx;
+            return (
+              <div key={idx} className="relative rounded-xl overflow-hidden shadow-lg group">
+                <img src={member.image} alt={member.name} className="w-full h-140 object-cover" />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 blur-sm" />
+                {/* LinkedIn icon */}
+                <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="absolute top-2 right-2 z-10 bg-menu-backdrop backdrop-blur-lg rounded-full p-2 hover:bg-green-800/90 transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24" className="text-white">
+                    <path className="st0" fill="#fff" d="M80.111 25.6c-29.028 0-48.023 20.547-48.023 47.545 0 26.424 18.459 47.584 46.893 47.584h.573c29.601 0 47.999-21.16 47.999-47.584-.543-26.998-18.398-47.545-47.442-47.545zm-48.111 128h96v320.99h-96v-320.99zm323.631-7.822c-58.274 0-84.318 32.947-98.883 55.996v1.094h-.726c.211-.357.485-.713.726-1.094v-48.031h-96.748c1.477 31.819 0 320.847 0 320.847h96.748v-171.241c0-10.129.742-20.207 3.633-27.468 7.928-20.224 25.965-41.185 56.305-41.185 39.705 0 67.576 31.057 67.576 76.611v163.283h97.717v-176.313c0-104.053-54.123-152.499-126.347-152.499z"/>
+                  </svg>
+                </a>
+                {/* Name and role */}
+                <div className="absolute bottom-0 left-0 p-4 z-10 rounded-lg backdrop-blur-lg m-4">
+                  <h3 className="font-montserrat text-lg font-semibold text-white mb-1">{member.name}</h3>
+                  <div
+                    ref={el => descRefs.current[idx] = el}
+                    className="font-nunito text-sm text-white/90 leading-snug overflow-hidden relative"
+                    style={{
+                      maxHeight: isExpanded ? (heights[idx] ? heights[idx] + 20 : 200) : 40,
+                      opacity: 1,
+                      minHeight: 24,
+                      transition: 'max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
+                    }}
+                  >
+                    {/* Excerpt (always rendered, fades out when expanded) */}
+                    <span
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        width: '100%',
+                        opacity: isExpanded ? 0 : 1,
+                        pointerEvents: isExpanded ? 'none' : 'auto',
+                        transition: 'opacity 0.3s',
+                        zIndex: 2,
+                        background: 'transparent',
+                      }}
+                    >
+                      {excerpt}
+                    </span>
+                    {/* Full text (always rendered, fades in when expanded) */}
+                    <span
+                      style={{
+                        display: 'block',
+                        opacity: isExpanded ? 1 : 0,
+                        transition: 'opacity 0.3s',
+                        zIndex: 1,
+                        position: 'relative',
+                      }}
+                    >
+                      {member.role}
+                    </span>
+                  </div>
+                  {member.role.length > 60 && (
+                    <button
+                      className="mt-2 underline hover:opacity-80 focus:outline-none block"
+                      style={{ color: 'var(--color-green-soft)' }}
+                      onClick={() => setExpanded(isExpanded ? null : idx)}
+                    >
+                      {isExpanded ? 'Show less' : 'Read more'}
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default MeetOurTeam; 

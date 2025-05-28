@@ -35,7 +35,7 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
   const handleNext = () => setCurrent((prev) => (prev === sliderImages.length - 1 ? 0 : prev + 1));
 
   return (
-    <section className="relative w-full min-h-screen flex items-center overflow-hidden">
+    <section className="relative w-full min-h-screen flex items-center overflow-hidden scroll-container">
       {/* Background image slider */}
       <div className="absolute inset-0 w-full h-full z-0 transition-all duration-700">
         <img

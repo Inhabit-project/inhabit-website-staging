@@ -80,18 +80,20 @@ const Menu: React.FC = () => {
   };
 
   return (
-    <div className={`fixed top-0 left-0 right-0 h-[5.5rem] bg-menu-backdrop backdrop-blur-lg z-50 transition-transform duration-300 ${
+    <div className={`fixed top-0 left-0 right-0 h-[5rem] bg-menu-backdrop backdrop-blur-lg z-50 transition-transform duration-300 no-snap ${
       isVisible ? 'translate-y-0' : '-translate-y-full'
     }`}>
       <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] h-full">
         <div className="flex items-center justify-between h-full">
           {/* Logo */}
           <div className="flex items-center gap-4">
-            <img src="/assets/logo.svg" alt="INHABIT" className="h-[1.75rem]" />
+            <Link to="/">
+              <img src="/assets/logo.svg" alt="INHABIT" className="h-[1.75rem]" />
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="font-ibm-mono font-size-xs hidden lg:flex gap-8">
+          <div className="font-size-xs hidden lg:flex gap-8">
             {menuLinks.map((item) => (
               <Link
                 key={item.path}

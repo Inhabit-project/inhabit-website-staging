@@ -17,7 +17,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef }) => {
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-secondary flex flex-col">
+    <div className="relative w-full min-h-screen bg-secondary flex flex-col no-snap">
       {/* Background Image */}
       <div 
         className="absolute inset-0 w-full h-full"
@@ -33,7 +33,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef }) => {
       <Menu />
 
       {/* Hero Content */}
-      <div className="relative mt-[7rem] w-full">
+      <div className="relative mt-[7rem] w-full ">
         {/* Centered Title Container */}
         <div className="flex justify-center mb-[17rem]">
           <h1 

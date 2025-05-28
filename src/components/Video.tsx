@@ -97,7 +97,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
     };
   }, [preloadVideo]);
 
-  return (
+  return ( 
     <section className="relative w-full background-gradient-dark flex flex-col items-center">
       {/* Background with decorative elements */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
@@ -181,7 +181,9 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
               autoplay={true}
             />
           </div>
+          
         </div>
+        
       )}
     </section>
   );

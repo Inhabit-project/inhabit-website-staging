@@ -58,19 +58,19 @@
       "visionHeading": "VISIÓN DEL HUB",
       "visionText": "El Hub Ñuiyanzhi es un laboratorio viviente donde la restauración ecológica se encuentra con el conocimiento ancestral. Regenera suelos degradados por el sobrepastoreo, monocultivos y agroquímicos, creando un punto caliente de biodiversidad para especies en peligro de extinción. Como centro de formación, combina el aprendizaje práctico con la sabiduría indígena y académica. Los guardianes NFT obtienen acceso exclusivo a herramientas de restauración, experiencias inmersivas y vínculos directos con el conocimiento ecológico y espiritual Kogi."
     },
-    "AguaDeLuna": {
+    "aguaDeLuna": {
       "label": "Punto Caliente de Biodiversidad",
       "title": "AguaDeLuna",
       "description": "El hub AguaDeLuna es un santuario para especies raras y un centro de investigación y educación, combinando la ciencia moderna con la sabiduría indígena.",
       "visionHeading": "VISIÓN DEL HUB",
       "visionText": "El Hub AguaDeLuna está dedicado a preservar la selva tropical más grande del mundo, apoyando a las comunidades locales y fomentando la colaboración global para la conservación."
     },
-    "atacama": {
+    "TierraKilwa": {
       "label": "Innovación en el Desierto",
-      "title": "ATACAMA",
-      "description": "El hub Atacama es pionero en vida sostenible en ambientes áridos, enfocándose en la conservación del agua y la energía renovable.",
+      "title": "TierraKilwa",
+      "description": "El hub TierraKilwa es pionero en vida sostenible en ambientes áridos, enfocándose en la conservación del agua y la energía renovable.",
       "visionHeading": "VISIÓN DEL HUB",
-      "visionText": "El Hub Atacama demuestra cómo la vida puede prosperar en condiciones extremas, inspirando nuevas soluciones para un clima cambiante."
+      "visionText": "El Hub TierraKilwa demuestra cómo la vida puede prosperar en condiciones extremas, inspirando nuevas soluciones para un clima cambiante."
     }
   },
   "faq": {
@@ -106,7 +106,7 @@
       "heading": "Pioneros de <span class=\"highlighted-text\">corredores globales</span> para <span class=\"highlighted-text\">proteger</span> ecosistemas vitales y fomentar la <span class=\"highlighted-text\">innovación biocultural</span>."
     },
     "hubs": {
-      "title": "Bio-cultural <br> <strong>Hubs</strong>",
+      "title": "Biocultural <br> <strong>Hubs</strong>",
       "description": "Ubicados en diferentes bioregiones, los HUBS son importantes puntos calientes de biodiversidad y centros de aprendizaje que preservan y comparten recursos ecológicos y conocimiento vivo para dar forma al corredor.",
       "cards": [
         {
@@ -122,8 +122,8 @@
           "description": "Un santuario para especies raras y un centro de investigación y educación, combinando ciencia moderna y sabiduría indígena."
         },
         {
-          "title": "Atacama Innovation Hub",
-          "subtitle": "Desierto de Atacama",
+          "title": "TierraKilwa Innovation Hub",
+          "subtitle": "Desierto de TierraKilwa",
           "eyebrow": "INNOVACIÓN EN EL DESIERTO:",
           "description": "Pioneros en vida sostenible en ambientes áridos, enfocados en la conservación del agua y la energía renovable."
         }
@@ -355,7 +355,7 @@
   "amazonPage": {
     "title": "Página de Detalles del Hub AguaDeLuna"
   },
-  "atacamaPage": {
-    "title": "Página de Detalles del Hub Atacama"
+  "TierraKilwaPage": {
+    "title": "Página de Detalles del Hub TierraKilwa"
   }
 } 

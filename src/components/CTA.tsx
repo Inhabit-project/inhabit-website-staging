@@ -2,7 +2,7 @@ import React from 'react';
 
 const CTA: React.FC = () => {
   return (
-    <section className="relative min-h-screen w-full overflow-hidden">
+    <section className="relative min-h-screen w-full overflow-hidden scroll-container">
       {/* Background Image */}
       <div 
         className="absolute inset-0 w-full h-full"

@@ -4,7 +4,20 @@ import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { Draggable } from "gsap/Draggable"
 
-export default function PhotoGallery() {
+interface PhotoGalleryProps {
+  images: {
+    src: string;
+    alt?: string;
+  }[];
+}
+
+export default function PhotoGallery({ images = [
+  { src: '/assets/images/img1.webp', alt: 'Photo 1' },
+  { src: '/assets/images/img2.webp', alt: 'Photo 2' },
+  { src: '/assets/images/img3.webp', alt: 'Photo 3' },
+  { src: '/assets/images/img4.webp', alt: 'Photo 4' },
+  { src: '/assets/images/img5.webp', alt: 'Photo 5' },
+] }: PhotoGalleryProps) {
   const galleryRef = useRef<HTMLDivElement>(null)
   const cardsRef = useRef<HTMLUListElement>(null)
   const cardsItemsRef = useRef<HTMLLIElement[]>([])
@@ -247,15 +260,6 @@ export default function PhotoGallery() {
       return null
     }
   }
-
-  // Add your gallery images here
-  const images = [
-    { src: '/assets/images/img1.webp', alt: 'Photo 1' },
-    { src: '/assets/images/img2.webp', alt: 'Photo 2' },
-    { src: '/assets/images/img3.webp', alt: 'Photo 3' },
-    { src: '/assets/images/img4.webp', alt: 'Photo 4' },
-    { src: '/assets/images/img5.webp', alt: 'Photo 5' },
-  ];
 
   return (
     <div ref={galleryRef} className="gallery relative w-full h-screen overflow-hidden flex flex-col justify-end">

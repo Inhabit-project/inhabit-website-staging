@@ -113,7 +113,7 @@ export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string 
   ];
   const items = faqItems || defaultFaqItems;
   return (
-    <section className="relative w-full min-h-screen background-gradient-light">
+    <section className="relative w-full min-h-screen background-gradient-light scroll-container">
       <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24 flex flex-col">
         <div className="flex flex-col items-end gap-24">
           {/* Header section */}

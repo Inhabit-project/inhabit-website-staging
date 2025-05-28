@@ -35,7 +35,6 @@ const MainPage: React.FC = () => {
         <Video />
       </div>
       <Hubs />
-      <PhotoGallery />
       <StewardshipNFT />
       <Highlight />
       <Photo />

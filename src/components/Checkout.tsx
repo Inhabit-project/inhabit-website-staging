@@ -190,7 +190,7 @@ const Checkout: React.FC<CheckoutProps> = ({ membershipId }) => {
                   <td className="py-3 px-6 align-top">
                     <span className="font-bold">Impact Monitoring access</span><br />
                     Track the progress of the land you help protect through real-time data mapping and geolocation narratives <span className="text-[#D57300] underline cursor-pointer">MAP HERE</span>.<br />
-                    Follow the transformation of the land into a bio-cultural hub. You receive regular real-time data and impact reports, geolocation, visual mapping, and key performance indicators (KPIs) detailing progress in areas like tree planting, biodiversity increase, and local community impact.
+                    Follow the transformation of the land into a Biocultural hub. You receive regular real-time data and impact reports, geolocation, visual mapping, and key performance indicators (KPIs) detailing progress in areas like tree planting, biodiversity increase, and local community impact.
                   </td>
                   <td className="py-3 px-6 text-center align-top" rowSpan={2}>
                     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" className="mx-auto">

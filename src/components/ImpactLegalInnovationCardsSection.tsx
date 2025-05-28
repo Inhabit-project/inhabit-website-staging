@@ -34,7 +34,7 @@ const impactCards = [
 
 const ImpactLegalInnovationCardsSection: React.FC = () => {
   return (
-    <section className="w-full flex flex-col items-center background-gradient-light py-24 px-[clamp(1.5rem,5vw,6.25rem)]">
+    <section className="w-full flex flex-col items-center background-gradient-light py-24 px-[clamp(1.5rem,5vw,6.25rem)] scroll-container">
       <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full max-w-[120rem] mx-auto mb-[2.5rem]">
         <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
           Impact of our<br /><strong>legal innovation</strong>

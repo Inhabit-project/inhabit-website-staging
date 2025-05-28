@@ -6,6 +6,7 @@
 
 @layer base {
   :root {
+    background-color: #F6FFEA;
     /* Base sizes */
     --font-size-4xl: clamp(2.5rem, 4vw + 1.5rem, 6.875rem); /* 40px to 110px */
     --font-size-3xl: clamp(2rem, 3vw + 1rem, 5rem); /* 32px to 80px */
@@ -121,6 +122,7 @@
 
   html {
     @apply font-nunito;
+    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     height: 100%;
@@ -130,6 +132,8 @@
 ::before {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+    scroll-snap-type: y mandatory;
+    scroll-snap-align: start;
 }
   body {
     @apply bg-light text-primary font-nunito m-0 min-h-screen;
@@ -145,7 +149,8 @@
     scrollbar-width: none;
     -ms-scroll-chaining: none;
     overscroll-behavior: auto; /* was none, changed for scroll compatibility */
-}
+    
+  }
 @media (min-width: 991px) {
     * {
         -webkit-touch-callout: none;
@@ -182,6 +187,8 @@ textarea {
     height: 100%;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+    scroll-snap-type: y mandatory;
+    scroll-snap-align: start;
   }
 
   button, .button {
@@ -534,3 +541,21 @@ textarea {
 .group:focus .hero-mouse-icon {
   filter: none;
 }
+
+/* Enable scroll snap for vertical sections only in specific containers */
+.scroll-snap-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: auto;
+  height: 100vh;
+}
+.scroll-snap-section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+}
+
+section {
+  scroll-snap-type: y mandatory;
+  scroll-snap-align: start;
+  overflow: auto;
+}
+

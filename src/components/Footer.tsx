@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="relative w-full min-h-screen bg-secondary">
+    <footer className="relative w-full min-h-screen bg-secondary no-snap">
       {/* Background Image */}
       <div
         className="absolute inset-0 w-full h-full"

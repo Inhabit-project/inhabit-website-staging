@@ -2,7 +2,7 @@ import React from 'react';
 
 const StewardshipNFT: React.FC = () => {
   return (
-    <section className="relative w-full background-gradient-dark flex flex-col items-center">
+    <section className="relative w-full background-gradient-dark flex flex-col items-center scroll-container">
       <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
         <div className="flex flex-col items-start gap-6">
           {/* Header section */}

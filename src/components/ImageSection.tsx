@@ -9,7 +9,7 @@ interface ImageSectionProps {
 
 const ImageSection: React.FC<ImageSectionProps> = ({ eyebrow, heading, imageSrc, imageAlt = '' }) => {
   return (
-    <section className="relative w-full background-gradient-dark flex flex-col items-center">
+    <section className="relative w-full background-gradient-dark flex flex-col items-center scroll-container">
       {/* Background with decorative elements */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <img 

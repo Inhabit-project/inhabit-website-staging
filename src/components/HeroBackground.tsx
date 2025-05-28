@@ -27,7 +27,7 @@ function AnimatedSphere() {
 
 export function HeroBackground() {
   return (
-    <div className="absolute inset-0 -z-10">
+    <div className="absolute inset-0 -z-10 no-snap">
       <Canvas>
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} />

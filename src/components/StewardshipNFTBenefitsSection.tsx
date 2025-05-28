@@ -41,7 +41,7 @@ const benefits = [
 
 const StewardshipNFTBenefitsSection: React.FC = () => (
   <section
-    className="w-full py-24 px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col items-center"
+    className="w-full py-24 px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col items-center  scroll-container"
     style={{ background: 'var(--background-gradient-light)' }}
   >
     <div className="max-w-[120rem] w-full mx-auto flex flex-col md:flex-row justify-between gap-8 mb-16">

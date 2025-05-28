@@ -4,8 +4,8 @@ import gsap from 'gsap';
 const hubCards = [
   {
     image: '/assets/hub-1.jpg',
-    title: 'Ñuiyanzhi Biocultural HUB',
-    subtitle: 'Sierra Nevada de Santa Marta',
+    title: 'Ñuiyanzhi',
+    subtitle: 'Biocultural HUB',
     eyebrow: 'SOIL RESTORATION & BIOCLIMATIC ARCHITECTURE:',
     description: 'Action Research Between Traditional and Academic Knowledge By Amelia Carrillo Pardo and Juan Duque',
     coordinates: '19° 25′ 42″ N; 99° 7′ 39″ O',
@@ -13,8 +13,8 @@ const hubCards = [
   },
   {
     image: '/assets/hub-2.jpg',
-    title: 'Agua de Luna Biodiversity Hub',
-    subtitle: 'Agua de Luna Reserve',
+    title: 'Agua de Luna',
+    subtitle: 'Biodiversity Hub',
     eyebrow: 'BIODIVERSITY HOTSPOT:',
     description: 'A sanctuary for rare species and a center for research and education, blending modern science with indigenous wisdom at Agua de Luna.',
     coordinates: '19° 25′ 42″ N; 99° 7′ 39″ O',
@@ -22,8 +22,8 @@ const hubCards = [
   },
   {
     image: '/assets/hub-3.jpg',
-    title: 'Atacama Innovation Hub',
-    subtitle: 'Atacama Desert',
+    title: 'TierraKilwa Innovation Hub',
+    subtitle: 'TierraKilwa Desert',
     eyebrow: 'DESERT INNOVATION:',
     description: 'Pioneering sustainable living in arid environments, focusing on water conservation and renewable energy.',
     coordinates: '19° 25′ 42″ N; 99° 7′ 39″ O',
@@ -78,14 +78,14 @@ const Hubs: React.FC = () => {
   }, [selectedHub]);
 
   return (
-    <section className="relative bg-gradient-light w-full flex flex-col items-center">
+    <section className="relative bg-gradient-light w-full flex flex-col items-center scroll-container">
       {/* Content */}
       <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
         <div className="flex flex-col items-start gap-12">
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between gap-[13.3125rem] w-full">
             <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
-              Bio-cultural<br /><strong>Hubs</strong>
+              Biocultural<br /><strong>Hubs</strong>
             </h2>
             <p className="body-M text-secondary max-w-[35rem]">
               Located across bioregions, HUBS are important biodiversity hotspots and learning centres that preserve and share ecological resources and living knowledge to shape the corridor.
