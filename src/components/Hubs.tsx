@@ -22,8 +22,8 @@ const hubCards = [
   },
   {
     image: '/assets/hub-3.jpg',
-    title: 'TierraKilwa Innovation Hub',
-    subtitle: 'TierraKilwa Desert',
+    title: 'Tierra Kilwa ',
+    subtitle: 'Innovation Hub',
     eyebrow: 'DESERT INNOVATION:',
     description: 'Pioneering sustainable living in arid environments, focusing on water conservation and renewable energy.',
     coordinates: '19° 25′ 42″ N; 99° 7′ 39″ O',

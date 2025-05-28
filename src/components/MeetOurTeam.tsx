@@ -8,21 +8,46 @@ const teamMembers = [
     linkedin: '#',
   },
   {
-    name: 'Dror Noi',
-    role: 'Social entrepreneur and permaculture designer passionate about decentralized and regenerative cultures/agriculture. Grew up in Israel, established the first center for Social Innovation in TLV. Co-Founder of Yumajai & Partner at Inside-hub. Manages a permaculture farm in Colombia.',
-    image: '/assets/team/dror.webp',
-    linkedin: '#',
-  },
-  {
     name: 'Chiara Trotto',
     role: 'Bachelor of Social Sciences in cooperation and development, facilitator and trainer in project formulation, social entrepreneur, 13+ years of experience in sustainable agro-food chains, social innovation, and non-formal education with communities in Europe, Africa, and Latin America.',
     image: '/assets/team/chiara.webp',
     linkedin: '#',
   },
   {
+    name: 'Dror Noi',
+    role: 'Social entrepreneur and permaculture designer passionate about decentralized and regenerative cultures/agriculture. Grew up in Israel, established the first center for Social Innovation in TLV. Co-Founder of Yumajai & Partner at Inside-hub. Manages a permaculture farm in Colombia.',
+    image: '/assets/team/dror.webp',
+    linkedin: '#',
+  },
+  
+  {
     name: 'Talya Weinberg',
     role: 'Global impact strategist, social clown, and integral artist, expert in ecosystemic and human regeneration. Co-founder of Yumajai and Heart Spaces methodology, integrating art, ecology, ancestral wisdom, and education to inspire global change.',
     image: '/assets/team/talya.webp',
+    linkedin: '#',
+  },
+  {
+    name: 'Amelia Maria Carrillo',
+    role: 'Attorney with a Master\'s in Territorial Studies, experienced in environmental law and legal territorial protection frameworks from a biocultural perspective. Founder of the Foundation of Mother Earth operating across Colombia.',
+    image: '/assets/team/amelia.webp',
+    linkedin: '#',
+  },
+  {
+    name: 'Junior Rojaas',
+    role: 'Senior developer and entrepreneur with 11+ years in software development, specializing in blockchain and cryptocurrencies. CTO of Futswap and CEO of Intechchain, leading projects in decentralized finance and technological solutions.',
+    image: '/assets/team/junior.webp',
+    linkedin: '#',
+  },
+  {
+    name: 'Gaia Pagano',
+    role: 'Bachelor of Social Sciences, Master in Innovation and Development, Human Rights and Culture of Peace. Coordinator at Pontificia Universidad Javeriana, 12+ years in peace and reconciliation, intercultural relations, and dialogue projects with indigenous and Afro-descendant communities.',
+    image: '/assets/team/Gaia-pagano.webp',
+    linkedin: '#',
+  },
+  {
+    name: 'Juan Pablo Lievano',
+    role: 'Economist and MA in anthropology with 13+ years of experience in sustainable rural development, climate change, project management, and financial evaluation of small farmer agribusiness models. Founder of two natural reserves in Colombia.',
+    image: '/assets/team/juan.webp',
     linkedin: '#',
   },
   {
