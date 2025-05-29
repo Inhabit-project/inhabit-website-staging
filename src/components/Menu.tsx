@@ -121,15 +121,17 @@ const Menu: React.FC = () => {
                 ES
               </LanguageButton>
             </div>
-            <button className="flex items-center h-[3.375rem] bg-[var(--color-green-soft)] hover:bg-[var(--color-accent)] px-2 rounded-button backdrop-blur-[6px] transition-all duration-200 group">
-              <div className="flex items-center gap-2 px-4">
-                <svg className="w-6 h-6 transition-colors duration-200 group-hover:[&>path]:stroke-[var(--color-light)]" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" style={{stroke: 'var(--color-secondary)'}}>
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M14 2v6h6M12 18v-6M9 15l3 3 3-3" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <span className="button-text text-secondary group-hover:text-light transition-colors duration-200">{t('menu.downloadWhitePaper')}</span>
-              </div>
-            </button>
+            <a href="https://docsend.com/view/z34fcq8w3f8hgz7h" target="_blank" rel="noopener noreferrer">
+              <button className="flex items-center h-[3.375rem] bg-[var(--color-green-soft)] hover:bg-[var(--color-accent)] px-2 rounded-button backdrop-blur-[6px] transition-all duration-200 group">
+                <div className="flex items-center gap-2 px-4">
+                  <svg className="w-6 h-6 transition-colors duration-200 group-hover:[&>path]:stroke-[var(--color-light)]" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" style={{stroke: 'var(--color-secondary)'}}>
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M14 2v6h6M12 18v-6M9 15l3 3 3-3" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span className="button-text text-secondary group-hover:text-light transition-colors duration-200">{t('menu.downloadWhitePaper')}</span>
+                </div>
+              </button>
+            </a>
           </div>
 
           {/* Hamburger for mobile */}
@@ -177,15 +179,17 @@ const Menu: React.FC = () => {
                 ES
               </LanguageButton>
             </div>
-            <button className="flex items-center h-[3.375rem] bg-[var(--color-green-soft)] hover:bg-[var(--color-accent)] px-4 rounded-button backdrop-blur-[6px] transition-all duration-200 group mt-4">
-              <div className="flex items-center gap-2">
-                <svg className="w-6 h-6 transition-colors duration-200 group-hover:[&>path]:stroke-[var(--color-light)]" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" style={{stroke: 'var(--color-secondary)'}}>
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M14 2v6h6M12 18v-6M9 15l3 3 3-3" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <span className="button-text text-secondary group-hover:text-light transition-colors duration-200">{t('menu.downloadWhitePaper')}</span>
-              </div>
-            </button>
+            <a href="https://docsend.com/view/z34fcq8w3f8hgz7h" target="_blank" rel="noopener noreferrer">
+              <button className="flex items-center h-[3.375rem] bg-[var(--color-green-soft)] hover:bg-[var(--color-accent)] px-4 rounded-button backdrop-blur-[6px] transition-all duration-200 group mt-4">
+                <div className="flex items-center gap-2">
+                  <svg className="w-6 h-6 transition-colors duration-200 group-hover:[&>path]:stroke-[var(--color-light)]" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" style={{stroke: 'var(--color-secondary)'}}>
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M14 2v6h6M12 18v-6M9 15l3 3 3-3" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span className="button-text text-secondary group-hover:text-light transition-colors duration-200">{t('menu.downloadWhitePaper')}</span>
+                </div>
+              </button>
+            </a>
           </div>
           {/* Click outside to close */}
           <div className="fixed inset-0 z-40" onClick={() => setMobileOpen(false)} />

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const NFTGrid: React.FC = () => {
   return (
     <section className="relative w-full background-gradient-dark mt-0 scroll-container">
-      <div className="max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-40">
+      <div className="max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
         {/* Header section */}
         <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
           <h2 className="heading-2 text-light max-w-[40.9375rem]">
@@ -17,10 +17,10 @@ const NFTGrid: React.FC = () => {
         </div>
 
         {/* NFT Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* NFT Card 1 */}
           <div className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}>
-            <div className="absolute top-2 right-2 hover-scale-up">
+            <div className="absolute top-4 right-4 hover-scale-up">
               <a href="#" className="block ">
                 <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
                   <svg 
@@ -52,16 +52,18 @@ const NFTGrid: React.FC = () => {
             <div className="relative flex flex-col items-end gap-4">
               <div className="w-full flex flex-col gap-4">
                 <h3 className="text-[2rem] font-montserrat text-center text-white">TITI</h3>
-                <div className="relative w-full aspect-[3/3] rounded-[var(--radius-md)] overflow-hidden border border-white/15">
-                  <img
-                    src="/assets/nft/titi.jpg"
-                    alt="NFT Card 1"
-                    className="w-full h-full object-cover"
-                  />
+                <div className="relative w-full flex justify-center">
+                  <div className="aspect-[3/3] rounded-[var(--radius-md)] overflow-hidden border border-white/15 flex items-center justify-center" style={{ width: '90%', height: '90%' }}>
+                    <img
+                      src="/assets/nft/titi.jpg"
+                      alt="NFT Card 1"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-4">
-                    <p className="text-[3.5rem] font-abel text-center text-white tracking-[-2px]">$ 50 USD</p>
+                    <p className="text-[3rem] leading-none font-abel text-center text-white tracking-[-2px]">$ 50 USD</p>
                     <div className="flex justify-center items-center gap-3">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#DBEAB2" strokeWidth="0.45" />
@@ -89,7 +91,7 @@ const NFTGrid: React.FC = () => {
           </div>
           {/* NFT Card 2 */}
           <div className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}>
-            <div className="absolute top-2 right-2 hover-scale-up">
+            <div className="absolute top-4 right-4 hover-scale-up">
               <a href="#" className="block ">
                 <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
                   <svg 
@@ -121,16 +123,18 @@ const NFTGrid: React.FC = () => {
             <div className="relative flex flex-col items-end gap-4">
               <div className="w-full flex flex-col gap-4">
                 <h3 className="text-[2rem] font-montserrat text-center text-white">TITI</h3>
-                <div className="relative w-full aspect-[3/3] rounded-[var(--radius-md)] overflow-hidden border border-white/15">
-                  <img
-                    src="/assets/nft/titi.jpg"
-                    alt="NFT Card 1"
-                    className="w-full h-full object-cover"
-                  />
+                <div className="relative w-full flex justify-center">
+                  <div className="aspect-[3/3] rounded-[var(--radius-md)] overflow-hidden border border-white/15 flex items-center justify-center" style={{ width: '90%', height: '90%' }}>
+                    <img
+                      src="/assets/nft/titi.jpg"
+                      alt="NFT Card 1"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-4">
-                    <p className="text-[3.5rem] font-abel text-center text-white tracking-[-2px]">$ 50 USD</p>
+                    <p className="text-[3rem] leading-none font-abel text-center text-white tracking-[-2px]">$ 50 USD</p>
                     <div className="flex justify-center items-center gap-3">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#DBEAB2" strokeWidth="0.45" />
@@ -158,7 +162,7 @@ const NFTGrid: React.FC = () => {
           </div>
           {/* NFT Card 3 */}
           <div className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}>
-            <div className="absolute top-2 right-2 hover-scale-up">
+            <div className="absolute top-4 right-4 hover-scale-up">
               <a href="#" className="block ">
                 <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
                   <svg 
@@ -190,16 +194,18 @@ const NFTGrid: React.FC = () => {
             <div className="relative flex flex-col items-end gap-4">
               <div className="w-full flex flex-col gap-4">
                 <h3 className="text-[2rem] font-montserrat text-center text-white">TITI</h3>
-                <div className="relative w-full aspect-[3/3] rounded-[var(--radius-md)] overflow-hidden border border-white/15">
-                  <img
-                    src="/assets/nft/titi.jpg"
-                    alt="NFT Card 1"
-                    className="w-full h-full object-cover"
-                  />
+                <div className="relative w-full flex justify-center">
+                  <div className="aspect-[3/3] rounded-[var(--radius-md)] overflow-hidden border border-white/15 flex items-center justify-center" style={{ width: '90%', height: '90%' }}>
+                    <img
+                      src="/assets/nft/titi.jpg"
+                      alt="NFT Card 1"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-4">
-                    <p className="text-[3.5rem] font-abel text-center text-white tracking-[-2px]">$ 50 USD</p>
+                    <p className="text-[3rem] leading-none font-abel text-center text-white tracking-[-2px]">$ 50 USD</p>
                     <div className="flex justify-center items-center gap-3">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#DBEAB2" strokeWidth="0.45" />
@@ -228,7 +234,7 @@ const NFTGrid: React.FC = () => {
          
           {/* NFT Card 4 */}
           <div className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}>
-            <div className="absolute top-2 right-2 hover-scale-up">
+            <div className="absolute top-4 right-4 hover-scale-up">
               <a href="#" className="block ">
                 <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
                   <svg 
@@ -260,16 +266,18 @@ const NFTGrid: React.FC = () => {
             <div className="relative flex flex-col items-end gap-4">
               <div className="w-full flex flex-col gap-4">
                 <h3 className="text-[2rem] font-montserrat text-center text-white">TITI</h3>
-                <div className="relative w-full aspect-[3/3] rounded-[var(--radius-md)] overflow-hidden border border-white/15">
-                  <img
-                    src="/assets/nft/titi.jpg"
-                    alt="NFT Card 1"
-                    className="w-full h-full object-cover"
-                  />
+                <div className="relative w-full flex justify-center">
+                  <div className="aspect-[3/3] rounded-[var(--radius-md)] overflow-hidden border border-white/15 flex items-center justify-center" style={{ width: '90%', height: '90%' }}>
+                    <img
+                      src="/assets/nft/titi.jpg"
+                      alt="NFT Card 1"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-4">
-                    <p className="text-[3.5rem] font-abel text-center text-white tracking-[-2px]">$ 50 USD</p>
+                    <p className="text-[3rem] leading-none font-abel text-center text-white tracking-[-2px]">$ 50 USD</p>
                     <div className="flex justify-center items-center gap-3">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#DBEAB2" strokeWidth="0.45" />

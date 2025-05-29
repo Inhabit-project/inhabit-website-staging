@@ -1,11 +1,11 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
-import BiodiversityCard from './BiodiversityCard';
+import React, { useRef, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import BiodiversityCard from './BiodiversityCard';
 import BiodiversityCardsSection from './BiodiversityCardsSection';
 import ImpactLegalInnovationCardsSection from './ImpactLegalInnovationCardsSection';
-import { scrollManager } from '../utils/scrollManager';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const cardVariants = {
   hidden: { y: 100, opacity: 0 },
@@ -44,187 +44,167 @@ const cards = [
 ];
 
 const Infographic: React.FC = () => {
-  const ref = useRef(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const horizontalRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [showBelowContent, setShowBelowContent] = useState(false);
-  const [spacerHeight, setSpacerHeight] = useState(0);
+  const [showBelowContent] = useState(true);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    const horizontalSection = horizontalRef.current;
-    if (!horizontalSection) return;
-    const pinWrap = horizontalSection.querySelector('.pin-wrap') as HTMLElement;
+    const section = sectionRef.current;
+    const container = horizontalRef.current;
+    if (!section || !container) return;
+
+    // Get the width to scroll
+    const pinWrap = container.querySelector('.pin-wrap') as HTMLElement;
     if (!pinWrap) return;
+    const slides = Array.from(pinWrap.children) as HTMLElement[];
     const pinWrapWidth = pinWrap.scrollWidth;
     const horizontalScrollLength = pinWrapWidth - window.innerWidth;
 
-    // Set the spacer height to the scroll distance
-    setSpacerHeight(pinWrapWidth);
+    // Calculate snap points for slides 2, 3, 4 (index 1, 2, 3)
+    const snapPoints = slides.map((slide, i) => {
+      if (i === 0) return null; // No snap for first slide
+      return -slide.offsetLeft;
+    }).filter(x => x !== null);
+    const snapValues = snapPoints.map(x => x! / -horizontalScrollLength);
 
-    gsap.to(pinWrap, {
-      x: -horizontalScrollLength,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: horizontalSection,
-        start: 'top top',
-        end: () => `+=${pinWrapWidth}`,
-        pin: true,
-        scrub: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onLeave: () => setShowBelowContent(true),
-        onEnterBack: () => setShowBelowContent(false),
-      },
-    });
-
-    setShowBelowContent(false);
-
-    // Recalculate on resize
-    const handleResize = () => {
-      if (!pinWrap) return;
-      const pinWrapWidth = pinWrap.scrollWidth;
-      setSpacerHeight(pinWrapWidth);
-      ScrollTrigger.refresh();
-      if (scrollManager && typeof scrollManager.update === 'function') {
-        scrollManager.update();
-      }
-    };
-    window.addEventListener('resize', handleResize);
+    // Set up GSAP horizontal scroll with snapping
+    const ctx = gsap.context(() => {
+      gsap.to(pinWrap, {
+        x: -horizontalScrollLength,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: () => `+=${pinWrapWidth}`,
+          pin: true,
+          scrub: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          snap: snapValues.length > 0 ? {
+            snapTo: (value) => {
+              // value is a progress (0-1), map to closest snapValue
+              let closest = snapValues[0];
+              let minDist = Math.abs(value - snapValues[0]);
+              for (let i = 1; i < snapValues.length; i++) {
+                const dist = Math.abs(value - snapValues[i]);
+                if (dist < minDist) {
+                  minDist = dist;
+                  closest = snapValues[i];
+                }
+              }
+              return closest;
+            },
+            duration: 0.5,
+            ease: 'power1.inOut',
+          } : false,
+        },
+      });
+    }, section);
 
     // Cleanup
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  // --- NEW: Wait for all images to load, then refresh ScrollTrigger and Lenis ---
-  useEffect(() => {
-    const horizontalSection = horizontalRef.current;
-    if (!horizontalSection) return;
-    const images = horizontalSection.querySelectorAll('img');
-    let loaded = 0;
-    const total = images.length;
-    if (total === 0) {
-      ScrollTrigger.refresh();
-      if (scrollManager && typeof scrollManager.update === 'function') {
-        scrollManager.update();
-      }
-      return;
-    }
-    function onLoad() {
-      loaded++;
-      if (loaded === total) {
-        setTimeout(() => {
-          ScrollTrigger.refresh();
-          if (scrollManager && typeof scrollManager.update === 'function') {
-            scrollManager.update();
-          }
-        }, 100);
-      }
-    }
-    images.forEach(img => {
-      if (img.complete) {
-        onLoad();
-      } else {
-        img.addEventListener('load', onLoad);
-        img.addEventListener('error', onLoad);
-      }
-    });
-    return () => {
-      images.forEach(img => {
-        img.removeEventListener('load', onLoad);
-        img.removeEventListener('error', onLoad);
-      });
+      ctx.revert();
     };
   }, []);
 
   return (
-    <section className="relative w-full flex flex-col items-center background-gradient-light">
-      {/* Horizontal Scroll Section */}
-      <div ref={horizontalRef} className="horizontal-scroll-section w-full overflow-hidden" style={{ position: 'relative' }}>
-        <div className="pin-wrap flex flex-nowrap">
-          {/* Slide 1: Land Tenure Framework */}
-          <div className="horizontal-slide w-screen flex-shrink-0 flex flex-col items-start justify-center px-[clamp(1.5rem,5vw,6.25rem)]">
-            <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
-              <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
-                Land Tenure<br /><strong>Framework</strong>
-              </h2>
-              <p className="body-M text-secondary max-w-[35rem]">
-                INHABIT stewardship-based restoration model, is designed to become the most robust and effective approach to ensure the long-term protection and regeneration of degraded lands, while actively engaging everyone in ecosystem stewardship.
-              </p>
-            </div>
-            <div className="self-center relative overflow-hidden">
-              <img 
-                src="/assets/infographic-1.webp" 
-                alt="Land Tenure Framework Infographic"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
-          {/* Slide 2: NFT Stewards */}
-          <div className="horizontal-slide w-screen flex-shrink-0 flex flex-col lg:flex-row items-end justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] mb-[5rem]">
-            <div className="w-full lg:w-2/5 max-w-6xl flex flex-col justify-end">
-              <h2 className="heading-2 text-secondary mb-6">NFT Stewards</h2>
-              <p className="body-M text-secondary">
-                Individuals from anywhere in the world can become lifelong protectors of nature, empowered to monitor, safeguard, and gain access to these thriving hubs, along with numerous benefits as they travel the Corridor.
-              </p>
-            </div>
-            <div className="w-full lg:w-3/5 flex self-center justify-center">
-              <div className="w-[43.75rem] h-[43.75rem]">
+    <section ref={sectionRef} className="relative w-full flex flex-col items-center background-gradient-light">
+      {/* Horizontal Scroll Section (GSAP ScrollTrigger with Snap) */}
+      <div style={{ position: 'relative', width: '100%' }}>
+        <div
+          ref={horizontalRef}
+          className="w-full overflow-x-auto overflow-y-hidden"
+          style={{
+            WebkitOverflowScrolling: 'touch',
+            overflowX: 'auto',
+            overflowY: 'hidden',
+            width: '100%',
+            scrollBehavior: 'smooth',
+            // Remove scrollSnapType
+          }}
+        >
+          <div className="pin-wrap flex flex-nowrap min-w-max">
+            {/* Slide 1: Land Tenure Framework */}
+            <div className="horizontal-slide w-screen flex-shrink-0 flex flex-col items-start justify-center px-[clamp(1.5rem,5vw,6.25rem)]">
+              <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
+                <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
+                  Land Tenure<br /><strong>Framework</strong>
+                </h2>
+                <p className="body-M text-secondary max-w-[35rem]">
+                  INHABIT stewardship-based restoration model, is designed to become the most robust and effective approach to ensure the long-term protection and regeneration of degraded lands, while actively engaging everyone in ecosystem stewardship.
+                </p>
+              </div>
+              <div className="self-center relative overflow-hidden">
                 <img 
-                  src="/assets/stewards-illustration.svg" 
-                  alt="NFT Stewards Illustration"
-                  className="w-full h-full object-contain"
+                  src="/assets/infographic-1.webp" 
+                  alt="Land Tenure Framework Infographic"
+                  className="w-full h-full object-cover"
+                  onLoad={() => ScrollTrigger.refresh()}
                 />
               </div>
             </div>
-          </div>
-          {/* Slide 3: Nature */}
-          <div className="horizontal-slide w-screen flex-shrink-0 flex flex-col lg:flex-row items-start justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] mb-[5rem]">
-            <div className="w-full lg:w-2/5 max-w-6xl flex flex-col justify-start">
-              <h2 className="heading-2 text-secondary mb-6">Nature</h2>
-              <p className="body-M text-secondary">
-                Nature is considered an entity with rights within the land borders, in accordance with the Declaration of Rights of Nature (e.g. the right to autoregulation, restoration, protection, decision-making...)
-              </p>
-            </div>
-            <div className="w-full lg:w-3/5 flex self-center justify-center">
-              <div className="w-[43.75rem] h-[43.75rem]">
-                <img 
-                  src="/assets/nature-illustration.svg" 
-                  alt="Nature Illustration"
-                  className="w-full h-full object-contain"
-                />
+            {/* Slide 2: NFT Stewards */}
+            <div className="horizontal-slide w-screen flex-shrink-0 flex flex-col lg:flex-row items-end justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] mb-[5rem]">
+              <div className="w-full lg:w-2/5 max-w-6xl flex flex-col justify-end">
+                <h2 className="heading-2 text-secondary mb-6">NFT Stewards</h2>
+                <p className="body-M text-secondary">
+                  Individuals from anywhere in the world can become lifelong protectors of nature, empowered to monitor, safeguard, and gain access to these thriving hubs, along with numerous benefits as they travel the Corridor.
+                </p>
+              </div>
+              <div className="w-full lg:w-3/5 flex self-center justify-center">
+                <div className="w-[43.75rem] h-[43.75rem]">
+                  <img 
+                    src="/assets/stewards-illustration.svg" 
+                    alt="NFT Stewards Illustration"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          {/* Slide 4: Guardians */}
-          <div className="horizontal-slide w-screen flex-shrink-0 flex flex-col lg:flex-row   gap-8 px-[clamp(1.5rem,5vw,6.25rem)] mb-[5rem]">
-            <div className="w-full lg:w-2/5 max-w-6xl flex flex-col self-end">
-              <h2 className="heading-2 text-secondary mb-6">Guardians</h2>
-              <p className="body-M text-secondary">
-                A family of change-makers, receiving permanent usage rights and restoration financing to ensure the regeneration and conservation of the land, to develop an innovative biocultural HUB, and to expand the corridor safeguard, and gain access to these thriving hubs, along with numerous benefits as they travel the Corridor.
-              </p>
+            {/* Slide 3: Nature */}
+            <div className="horizontal-slide w-screen flex-shrink-0 flex flex-col lg:flex-row items-start justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] mb-[5rem]">
+              <div className="w-full lg:w-2/5 max-w-6xl flex flex-col justify-start">
+                <h2 className="heading-2 text-secondary mb-6">Nature</h2>
+                <p className="body-M text-secondary">
+                  Nature is considered an entity with rights within the land borders, in accordance with the Declaration of Rights of Nature (e.g. the right to autoregulation, restoration, protection, decision-making...)
+                </p>
+              </div>
+              <div className="w-full lg:w-3/5 flex self-center justify-center">
+                <div className="w-[43.75rem] h-[43.75rem]">
+                  <img 
+                    src="/assets/nature-illustration.svg" 
+                    alt="Nature Illustration"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </div>
             </div>
-            <div className="w-full lg:w-3/5 flex self-center justify-center">
-              <div className="w-[43.75rem] h-[43.75rem]">
-                <img 
-                  src="/assets/guardians-illustration.svg" 
-                  alt="NFT Stewards Illustration"
-                  className="w-full h-full object-contain"
-                />
+            {/* Slide 4: Guardians */}
+            <div className="horizontal-slide w-screen flex-shrink-0 flex flex-col lg:flex-row   gap-8 px-[clamp(1.5rem,5vw,6.25rem)] mb-[5rem]">
+              <div className="w-full lg:w-2/5 max-w-6xl flex flex-col self-end">
+                <h2 className="heading-2 text-secondary mb-6">Guardians</h2>
+                <p className="body-M text-secondary">
+                  A family of change-makers, receiving permanent usage rights and restoration financing to ensure the regeneration and conservation of the land, to develop an innovative biocultural HUB, and to expand the corridor safeguard, and gain access to these thriving hubs, along with numerous benefits as they travel the Corridor.
+                </p>
+              </div>
+              <div className="w-full lg:w-3/5 flex self-center justify-center">
+                <div className="w-[43.75rem] h-[43.75rem]">
+                  <img 
+                    src="/assets/guardians-illustration.svg" 
+                    alt="NFT Stewards Illustration"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {/* Spacer to prevent overlap */}
-      <div style={{ width: '100%', height: spacerHeight }} aria-hidden="true" />
-      {/* New Impact Cards Section */}
-      <ImpactLegalInnovationCardsSection />
+      {/* New Impact Cards Section (appears after horizontal scroll) */}
+      {showBelowContent && <ImpactLegalInnovationCardsSection />}
     </section>
   );
 };
 
-export default Infographic; 
+export default Infographic;

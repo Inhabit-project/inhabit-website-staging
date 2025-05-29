@@ -3,31 +3,28 @@ import gsap from 'gsap';
 
 const hubCards = [
   {
-    image: '/assets/hub-1.jpg',
+    image: '/assets/hub-1.webp',
     title: 'Ñuiyanzhi',
-    subtitle: 'Biocultural HUB',
-    eyebrow: 'SOIL RESTORATION & BIOCLIMATIC ARCHITECTURE:',
+    eyebrow: 'SOIL RESTORATION & BIOCLIMATIC ARCHITECTURE',
     description: 'Action Research Between Traditional and Academic Knowledge By Amelia Carrillo Pardo and Juan Duque',
-    coordinates: '19° 25′ 42″ N; 99° 7′ 39″ O',
-    markerStyle: 'top-[10rem] left-[48rem]'
+    coordinates: '11° 15′ 49″ N; 73° 53′ 28″ W',
+    position: { top: 'clamp(6rem,11vw,14rem)', right: 'clamp(6rem,12vw,18rem)' }
   },
   {
-    image: '/assets/hub-2.jpg',
+    image: '/assets/hub-2.webp',
     title: 'Agua de Luna',
-    subtitle: 'Biodiversity Hub',
-    eyebrow: 'BIODIVERSITY HOTSPOT:',
+    eyebrow: 'Peace and reconnection',
     description: 'A sanctuary for rare species and a center for research and education, blending modern science with indigenous wisdom at Agua de Luna.',
-    coordinates: '19° 25′ 42″ N; 99° 7′ 39″ O',
-    markerStyle: 'top-[10rem] right-[12rem]'
+    coordinates: '11° 11′ 15″ N; 73° 28′ 58″ W',
+    position: { top: 'clamp(5rem,10vw,12rem)', left: 'clamp(10rem,30vw,32rem)' }
   },
   {
-    image: '/assets/hub-3.jpg',
+    image: '/assets/hub-3.webp',
     title: 'Tierra Kilwa ',
-    subtitle: 'Innovation Hub',
-    eyebrow: 'DESERT INNOVATION:',
-    description: 'Pioneering sustainable living in arid environments, focusing on water conservation and renewable energy.',
-    coordinates: '19° 25′ 42″ N; 99° 7′ 39″ O',
-    markerStyle: 'top-[10rem] left-[30rem]'
+    eyebrow: 'Food, regeneration, art, and social entrepreneurship ',
+    description: 'Pioneering sustainable living in arid environments, focusing on water conservation .',
+    coordinates: '11° 14′ 48″ N; 73° 32′ 51″ W',
+    position: { top: 'clamp(5rem,10vw,12rem)', left: 'clamp(16rem,48vw,52rem)' }
   }
 ];
 
@@ -37,6 +34,7 @@ const Hubs: React.FC = () => {
   const cardRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const cardContentRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   // Animate card in with GSAP
   useEffect(() => {
@@ -78,7 +76,11 @@ const Hubs: React.FC = () => {
   }, [selectedHub]);
 
   return (
-    <section className="relative bg-gradient-light w-full flex flex-col items-center scroll-container">
+    <section
+      ref={sectionRef}
+      className="relative w-full flex flex-col items-center background-gradient-light"
+      style={{ minHeight: '100vh' }}
+    >
       {/* Content */}
       <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
         <div className="flex flex-col items-start gap-12">
@@ -107,25 +109,25 @@ const Hubs: React.FC = () => {
             {hubCards.map((hub, idx) => (
               <button
                 key={idx}
-                className={`absolute ${hub.markerStyle} flex flex-row items-start group focus:outline-none`}
+                className="absolute flex flex-row items-start group focus:outline-none"
                 onClick={() => setSelectedHub(idx)}
                 aria-label={`Show info for ${hub.title}`}
-                style={{ zIndex: 2 }}
+                style={{ ...hub.position, zIndex: 2 }}
               >
                 {/* Marker with vertical line and base */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', height: '6.5rem', position: 'relative',  }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', height: '8rem', position: 'relative',  }}>
                   <img
                     src="/assets/map-marker.svg"
                     alt="Map marker"
-                    style={{ width: '3rem', height: 'auto', display: 'block', zIndex: 2 }}
+                    className="w-6 md:w-8 lg:w-10"
+                    style={{ height: 'auto', display: 'block', zIndex: 2 }}
                   />
-                 
                 </div>
                 {/* Text to the right of the marker */}
                 <div className="flex flex-col items-start">
-                  <span className="text-white marker-underline text-left" style={{ fontFamily: 'Abel, sans-serif', fontSize: '1rem', fontWeight: 400 }}>{hub.title}</span>
-                  <span className="text-white marker-underline text-left" style={{ fontFamily: 'Abel, sans-serif', fontSize: '1rem', fontWeight: 400 }}>{hub.coordinates.split(';')[0]}</span>
-                  <span className="text-white marker-underline text-left" style={{ fontFamily: 'Abel, sans-serif', fontSize: '1rem', fontWeight: 400 }}>{hub.coordinates.split(';')[1]}</span>
+                  <span className="text-white marker-underline text-left text-xs md:text-base" style={{ fontFamily: 'Abel, sans-serif', fontWeight: 400 }}>{hub.title}</span>
+                  <span className="text-white marker-underline text-left text-xs md:text-base" style={{ fontFamily: 'Abel, sans-serif', fontWeight: 400 }}>{hub.coordinates.split(';')[0]}</span>
+                  <span className="text-white marker-underline text-left text-xs md:text-base" style={{ fontFamily: 'Abel, sans-serif', fontWeight: 400 }}>{hub.coordinates.split(';')[1]}</span>
                 </div>
               </button>
             ))}
@@ -134,8 +136,13 @@ const Hubs: React.FC = () => {
             {selectedHub !== null && (
               <div
                 ref={cardRef}
-                className="absolute top-[1rem] right-[10%] w-[28rem] h-[38rem] rounded-xl overflow-hidden"
-                style={{zIndex: 3}}
+                className="absolute w-[28rem] h-[38rem] rounded-xl overflow-hidden"
+                style={{
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  zIndex: 3
+                }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
               >
@@ -155,30 +162,17 @@ const Hubs: React.FC = () => {
                     {/* Close button */}
                     <div className="flex justify-end -mt-4">
                       <button
-                        className="w-10 h-10 rounded-full bg-white/50 backdrop-blur-[50px] border border-[#EFEFEF]/50 flex items-center justify-center group transition-all duration-300 hover:border-white hover:bg-white/80 text-black"
+                        className="w-10 h-10 rounded-full bg-white/30 backdrop-blur-[50px] border border-[#EFEFEF]/50 flex items-center justify-center group transition-all duration-300 hover:border-white hover:bg-white/50 text-white"
                         onClick={() => setSelectedHub(null)}
                         aria-label="Close hub card"
-                        style={{ position: 'absolute', top: 0, right: 0 }}
+                        style={{ position: 'absolute', top: 10, right: 10 }}
                       >
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M6 6L14 14M14 6L6 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                         </svg>
                       </button>
                     </div>
-                    {/* Navigation button */}
-                    <div className="flex justify-end mt-8">
-                      <button
-                        className="w-16 h-16 rounded-4xl bg-white/30 backdrop-blur-[50px] border border-[#EFEFEF]/50 flex items-center justify-center group transition-all duration-300 hover:border-white hover:bg-white/40"
-                        onClick={() => setSelectedHub((selectedHub + 1) % hubCards.length)}
-                        aria-label="Next hub"
-                      >
-                        <img 
-                          src="/assets/figma-images/hub-card-arrow.svg" 
-                          alt="Next" 
-                          className="w-6 h-6"
-                        />
-                      </button>
-                    </div>
+                    
 
                     {/* Spacer */}
                     <div className="flex-grow min-h-[120px]"></div>
@@ -189,12 +183,19 @@ const Hubs: React.FC = () => {
                       <h3 className="text-white text-[1.6rem] font-montserrat font-regular leading-[1.2] mb-2 card-animate">
                         {hubCards[selectedHub].title}
                       </h3>
-                      <h4 className="text-white text-[1.1rem] font-montserrat font-light leading-[1.2] mb-4 card-animate">
-                        {hubCards[selectedHub].subtitle}
-                      </h4>
                       <p className="text-white text-sm tracking-[-0.015em] font-nunito card-animate">
                         {hubCards[selectedHub].description}
                       </p>
+                      {/* Call to Action Button aligned right */}
+                      <div className="flex justify-end w-full">
+                        <a
+                          href="/hubs"
+                          className="btn-primary-sm mt-2 px-2 py-2 transition-all duration-300 hover:bg-primary-dark focus:outline-none card-animate"
+                          style={{ minWidth: '10rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                        >
+                          Know our hubs
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
