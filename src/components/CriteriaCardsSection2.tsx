@@ -34,7 +34,10 @@ const criteriaCards = [
 
 const CriteriaCardsSection2: React.FC = () => {
   return (
-    <section className="w-full flex flex-col items-center background-gradient-light py-24 px-[clamp(1.5rem,5vw,6.25rem)]">
+    <section
+      className="w-full flex flex-col items-center py-24 px-[clamp(1.5rem,5vw,6.25rem)]"
+      style={{ background: 'background-gradient-light' }}
+    >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[107.5rem] mx-auto">
         {criteriaCards.map((card, idx) => (
           <ImpactCard key={idx} {...card} />

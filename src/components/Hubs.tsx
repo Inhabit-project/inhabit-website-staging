@@ -186,7 +186,7 @@ const Hubs: React.FC = () => {
                       <p className="text-white text-sm tracking-[-0.015em] font-nunito card-animate">
                         {hubCards[selectedHub].description}
                       </p>
-                      {/* Call to Action Button aligned right */}
+                      {/* Call to Action Button aligned right 
                       <div className="flex justify-end w-full">
                         <a
                           href="/hubs"
@@ -195,7 +195,7 @@ const Hubs: React.FC = () => {
                         >
                           Know our hubs
                         </a>
-                      </div>
+                      </div>*/}
                     </div>
                   </div>
                 </div>

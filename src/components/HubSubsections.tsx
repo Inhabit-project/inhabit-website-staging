@@ -13,6 +13,8 @@ interface HubSubsectionsProps {
   onDownload?: () => void;
   sliderImages: string[];
   navigateTo: string;
+  inactive?: boolean;
+  buttonText?: string;
 }
 
 const HubSubsections: React.FC<HubSubsectionsProps> = ({
@@ -26,6 +28,8 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
   onDownload,
   sliderImages,
   navigateTo,
+  inactive = false,
+  buttonText,
 }) => {
   const [current, setCurrent] = useState(0);
   const bgImage = sliderImages[current];
@@ -52,11 +56,12 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
         {/* Download button */}
         <div className="absolute top-0 right-16 z-30">
           <button
-            className="btn-primary flex items-center gap-2 px-6"
+            className={`btn-primary flex items-center gap-2 px-6${inactive ? ' inactive' : ''}`}
             type="button"
-            onClick={() => navigate(navigateTo)}
+            onClick={inactive ? undefined : () => navigate(navigateTo)}
+            disabled={inactive}
           >
-            Become a Steward for this Hub
+            {inactive ? (buttonText || 'Hub coming soon') : (buttonText || 'Become a Steward for this Hub')}
             <svg
               width="20"
               height="20"

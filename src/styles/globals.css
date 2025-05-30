@@ -418,6 +418,17 @@ textarea {
   .btn-primary:hover svg, .btn-primary:focus svg {
     stroke: var(--color-secondary);
   }
+  .btn-primary.inactive,
+  .btn-primary:disabled {
+    background: #BDBDBD;
+    color: #F6FFEA;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  .btn-primary.inactive svg,
+  .btn-primary:disabled svg {
+    stroke: #F6FFEA;
+  }
   .btn-secondary {
     align-items: center;
     height: 3.8rem;
@@ -448,6 +459,17 @@ textarea {
   }
   .btn-secondary:hover svg, .btn-secondary:focus svg {
     stroke: var(--color-light);
+  }
+  .btn-secondary.inactive,
+  .btn-secondary:disabled {
+    background: #E0E0E0;
+    color: #A0A0A0;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  .btn-secondary.inactive svg,
+  .btn-secondary:disabled svg {
+    stroke: #A0A0A0;
   }
 
   /* Main input style for forms */
@@ -591,5 +613,10 @@ section {
   scroll-snap-type: y mandatory;
   scroll-snap-align: start;
   overflow: auto;
+}
+
+.four-oh-four-number {
+  font-family: abel;
+  font-size: clamp(18rem, 38vw, 28rem);
 }
 

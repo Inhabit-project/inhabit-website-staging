@@ -103,6 +103,8 @@ const Hubs: React.FC = () => {
           '/assets/2Hub/hub-view-3.webp',
         ]}
         navigateTo="/hubs/aguaDeLuna"
+        inactive={true}
+        buttonText="Hub coming soon"
       />
       <HubSubsections
         backgroundImage="/assets/photo-2.webp"
@@ -119,6 +121,8 @@ const Hubs: React.FC = () => {
           '/assets/3Hub/hub-view-3.webp',
         ]}
         navigateTo="/hubs/TierraKilwa"
+        inactive={true}
+        buttonText="Hub coming soon"
       />
       <CriteriaCardsSection />
     </>

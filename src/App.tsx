@@ -13,6 +13,7 @@ import AguaDeLunaPage from './pages/AguaDeLunaPage';
 import TierraKilwaPage from './pages/TierraKilwaPage';
 import './utils/gsap';
 import { useScrollToTopOnNavigation } from './utils/scrollToTopOnNavigation';
+import FourOhFourPage from './pages/404';
 
 function ScrollToTopOnNavigation() {
   useScrollToTopOnNavigation();
@@ -33,6 +34,7 @@ const App: React.FC = () => {
         <Route path="/hubs/nuiyanzhi" element={<NuiyanzhiPage />} />
         <Route path="/hubs/agua-de-luna" element={<AguaDeLunaPage />} />
         <Route path="/hubs/TierraKilwa" element={<TierraKilwaPage />} />
+        <Route path="*" element={<FourOhFourPage />} />
       </Routes>
     </Router>
   );
