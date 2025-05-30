@@ -10,6 +10,7 @@ import StewardshipNFTBenefitsSection from '../components/StewardshipNFTBenefitsS
 import Highlight from '../components/Highlight';
 import NFTWorksSection from '../components/NFTWorksSection';
 import CriteriaCardsSection2 from '../components/CriteriaCardsSection2';
+import NFTGrid from '../components/NFTGrid';
 
 
 const StewardshipNFTPage: React.FC = () => (
@@ -27,12 +28,13 @@ const StewardshipNFTPage: React.FC = () => (
       imageSrc="/assets/power-nft.webp"
       imageAlt="Stewardship NFT Benefits"
     />
+    <StewardshipNFTBenefitsSection /> 
+    <Highlight />
     <NFTWorksSection />
     <CriteriaCardsSection2 />
-    <StewardshipNFTBenefitsSection />
-    <Highlight />
-    <CTA />
+    <NFTGrid />
     <Blog />
+    <CTA />
     <FAQ />
     <Footer />
   </div>
