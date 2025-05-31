@@ -29,7 +29,7 @@ const content = {
       title: 'TIERRA KILWA',
       description: 'Luca, Chiara, and their daughter Gea are social entrepreneurs stewarding Kilwa, where they will establish La Fábrica del Arte blending art and ecology to spark regeneration across the region.',
       visionHeading: 'HUB VISION',
-      visionText: 'Tierra Kilwa, La Fábrica del Arte is a movement where art, nature, and community unite to reimagine the relationship between humans and the land. Focused on regenerative and social entrepreneurship, it empowers local communities through art and ecological restoration. By fostering creativity and sustainable business models, we nurture innovation and offer education in life skills and ecological stewardship. La Fábrica del Arte is the first step in a global vision of bio-cultural corridors, merging conservation with art and regenerative enterprise for a thriving future.'
+      visionText: 'Tierra Kilwa, La Fábrica del Arte is a learning center where art, nature, and community unite to reimagine the relationship between humans and the territory. Focused on social entrepreneurship, it empowers local communities through art and ecological stewardship. By fostering regenerative business models, it nurtures rural innovation, offering education in life skills to spread art and empower changemaker entrepreneurs throughout the corridor. Kilwa aims to become a reference point for resilient food systems, through agroforestry, agroecology, and diverse food sovereignty practices.'
     }
   },
   es: {

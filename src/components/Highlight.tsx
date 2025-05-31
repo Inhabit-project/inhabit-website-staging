@@ -12,28 +12,25 @@ const Highlight = () => {
           WHAT ARE NFTS
         </p>
         <h3 className="text-light">
-          Stewardship NFTs are blockchain-verified contracts that give fractional rights to protect ecosystems on tokenized plots of land.
+          Stewardship NFTs are <strong className="text-orange highlight-strong">blockchain-verified contracts</strong> that give fractional rights <strong className="text-orange highlight-strong">to protect ecosystems</strong> on tokenized <strong className="text-orange highlight-strong">plots</strong> of land
         </h3>
       </div>
       
       {/* Location Markers */}
-      <div className="absolute top-10 right-10 text-green-soft">
-        <LocationMarker coordinates="19° 25′ 42″ N; 99° 7′ 39″ O" />
-      </div>
       <div className="absolute bottom-48 right-48 text-green-soft">
-        <LocationMarker coordinates="19° 25′ 42″ N; 99° 7′ 39″ O" />
+        <LocationMarker name="Ñuiyanzhi" coordinates="11° 15′ 49″ N; 73° 53′ 28″ W" />
       </div>
       <div className="absolute bottom-40 left-32 text-green-soft">
-        <LocationMarker coordinates="19° 25′ 42″ N; 99° 7′ 39″ O" />
+        <LocationMarker name="Agua de Luna" coordinates="11° 11′ 15″ N; 73° 28′ 58″ W" />
       </div>
       <div className="absolute top-56 left-[25%] text-green-soft">
-        <LocationMarker coordinates="19° 25′ 42″ N; 99° 7′ 39″ O" />
+        <LocationMarker name="Tierra Kilwa" coordinates="11° 14′ 48″ N; 73° 32′ 51″ W" />
       </div>
     </div>
   );
 };
 
-const LocationMarker = ({ coordinates }: { coordinates: string }) => {
+const LocationMarker = ({ name, coordinates }: { name: string, coordinates: string }) => {
   return (
     <div className="flex flex-col items-start">
       <div className="flex items-center gap-2 mb-1">
@@ -42,7 +39,7 @@ const LocationMarker = ({ coordinates }: { coordinates: string }) => {
           <div className="w-2 h-2 rounded-full bg-green-soft absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
         </div>
         <div className="eyebrow text-green-soft">
-          NOMBRE DEL LUGAR
+          {name}
         </div>
       </div>
       <div className="eyebrow text-green-soft">

@@ -1,14 +1,14 @@
 import React from 'react';
 
 interface InternalPagesHeroProps {
-  variant: 'hubs' | 'stewardship' | 'about';
+  variant: 'hubs' | 'stewardship' | 'about' | 'nuiyanzhi';
 }
 
 const heroContent = {
   hubs: {
     title: 'biocultural',
     strong: 'Hubs',
-    description: 'HUBS are like “Migratory Gardens”—they exist in the real world but behave differently; they are "spaces of transition", to experiment ways of relating to ourselves and nature. Places to learn the deepest practices for inhabiting and stewarding lands',
+    description: 'HUBS are like "Migratory Gardens"—they exist in the real world but behave differently; they are "spaces of transition", to experiment ways of relating to ourselves and nature. Places to learn the deepest practices for inhabiting and stewarding lands',
     image: '/assets/hubs-hero.webp',
     alt: 'Hubs Hero',
   },
