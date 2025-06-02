@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 const Footer: React.FC = () => {
   return (
@@ -69,39 +71,96 @@ const Footer: React.FC = () => {
                     <p className="base-text text-light mb-4">
                     Suscribe to have the best updates from us!
                     </p>
-                    <div className="flex flex-col gap-3">
-                      <input
-                        type="email"
-                        placeholder="Your email"
-                        className="input-main"
-                      />
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <div className="relative w-[1.125rem] h-[1.125rem] border-[0.5px] border-[#F6FFEA] rounded bg-white/5 backdrop-blur-lg">
-                          <input type="checkbox" className="absolute opacity-0 w-full h-full cursor-pointer" />
-                        </div>
-                        <span className="base-text text-light text-xs ">
-                        I accept the privacy policy
-                        </span>
-                      </label>
-                    </div>
+                    <Formik
+                      initialValues={{ email: '', privacy: false }}
+                      validationSchema={Yup.object({
+                        email: Yup.string().email('Invalid email address').required('Required'),
+                        privacy: Yup.boolean().oneOf([true], 'You must accept the privacy policy'),
+                      })}
+                      onSubmit={async (values, { setSubmitting, resetForm, setStatus }) => {
+                        setStatus(undefined);
+                        try {
+                          // Mailchimp POST URL (replace with your own Mailchimp form action URL)
+                          const mailchimpUrl = 'https://YOUR_MAILCHIMP_URL';
+                          const formData = new FormData();
+                          formData.append('EMAIL', values.email);
+                          // Add other fields if needed
+                          const response = await fetch(mailchimpUrl, {
+                            method: 'POST',
+                            mode: 'no-cors',
+                            body: formData,
+                          });
+                          setStatus('Thank you for subscribing!');
+                          resetForm();
+                        } catch (error) {
+                          setStatus('There was an error. Please try again.');
+                        } finally {
+                          setSubmitting(false);
+                        }
+                      }}
+                    >
+                      {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status }) => (
+                        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+                          <input
+                            type="email"
+                            name="email"
+                            placeholder="Your email"
+                            className="input-main"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.email}
+                          />
+                          {errors.email && touched.email && (
+                            <div className="text-orange-400 text-xs">{errors.email}</div>
+                          )}
+                          <label className="flex items-center gap-2 cursor-pointer">
+                            <div className="relative w-[1.125rem] h-[1.125rem] border-[0.5px] border-[#F6FFEA] rounded bg-white/5 backdrop-blur-lg">
+                              <input
+                                type="checkbox"
+                                name="privacy"
+                                className="absolute opacity-0 w-full h-full cursor-pointer"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                checked={values.privacy}
+                              />
+                              <span className={`absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none ${values.privacy ? '' : 'hidden'}`}>
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M3 7L6 10L11 4" stroke="#F6FFEA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                              </span>
+                            </div>
+                            <span className="base-text text-light text-xs ">
+                              I accept the privacy policy
+                            </span>
+                          </label>
+                          {errors.privacy && touched.privacy && (
+                            <div className="text-orange-400 text-xs">{errors.privacy}</div>
+                          )}
+                          <button type="submit" className="btn-primary-sm mt-2 w-[12rem]" disabled={isSubmitting}>
+                            {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+                          </button>
+                          {status && <div className="text-green-400 text-xs mt-2">{status}</div>}
+                        </form>
+                      )}
+                    </Formik>
                   </div>
                 </div>
 
                 {/* Bottom Group */}
                 <div>
                   {/* Social Links */}
-                  <div className="flex gap-6">
-                    <a href="#" className="w-5 h-5 hover:opacity-80">
-                      <img src="/assets/figma-images/twitter.svg" alt="Twitter" className="w-full h-full" />
+                  <div className="flex gap-12">
+                    <a href="https://x.com/Inhabit_Hubs" target="_blank" rel="noopener noreferrer" className="w-5 h-5 hover:opacity-80">
+                      <img src="/assets/icons/twitter.svg" alt="Twitter" className="w-full h-full" />
                     </a>
-                    <a href="#" className="w-5 h-5 hover:opacity-80">
-                      <img src="/assets/figma-images/linkedin.svg" alt="LinkedIn" className="w-full h-full" />
+                    <a href="https://www.linkedin.com/company/inhabithubs" target="_blank" rel="noopener noreferrer" className="w-5 h-5 hover:opacity-80">
+                      <img src="/assets/icons/linkedin.svg" alt="LinkedIn" className="w-full h-full" />
                     </a>
-                    <a href="#" className="w-5 h-5 hover:opacity-80">
-                      <img src="/assets/figma-images/medium.svg" alt="Medium" className="w-full h-full" />
+                    <a href="https://medium.com/@INHABIT_hubs" target="_blank" rel="noopener noreferrer" className="w-5 h-5 hover:opacity-80">
+                      <img src="/assets/icons/medium.svg" alt="Medium" className="w-full h-full" />
                     </a>
-                    <a href="#" className="w-5 h-5 hover:opacity-80">
-                      <img src="/assets/figma-images/youtube.svg" alt="YouTube" className="w-full h-full" />
+                    <a href="https://www.instagram.com/inhabit_hubs" target="_blank" rel="noopener noreferrer" className="w-5 h-5 hover:opacity-80">
+                      <img src="/assets/icons/instagram.svg" alt="Instagram" className="w-full h-full" />
                     </a>
                   </div>
                 </div>

@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    background-color: #F6FFEA;
+    background-color: linear-gradient(90deg, #DEEDCB 2.26%, #F6FFEA 50.64%, #DEEDCB 99.01%);
     /* Base sizes */
     --font-size-4xl: clamp(2.5rem, 4vw + 1.5rem, 6.875rem); /* 40px to 110px */
     --font-size-3xl: clamp(2rem, 3vw + 1rem, 5rem); /* 32px to 80px */

@@ -133,7 +133,8 @@
       "title": "Photo Gallery"
     },
     "stewardshipNFT": {
-      "title": "Stewardship NFTs",
+      "title": "Stewardship",
+      "subtitle": "<strong>NFTs</strong>",
       "description": "Your digital key to lifelong stewardship of unique ecosystems. Each NFT represents a direct connection to a specific conservation area, granting you rights and exclusive access to biocultural experiences."
     },
     "highlight": {

@@ -1,34 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
-
-const hubCards = [
-  {
-    image: '/assets/hub-1.webp',
-    title: 'Ñuiyanzhi',
-    eyebrow: 'SOIL RESTORATION & BIOCLIMATIC ARCHITECTURE',
-    description: 'Action Research Between Traditional and Academic Knowledge By Amelia Carrillo Pardo and Juan Duque',
-    coordinates: '11° 15′ 49″ N; 73° 53′ 28″ W',
-    position: { top: 'clamp(6rem,11vw,14rem)', right: 'clamp(6rem,12vw,18rem)' }
-  },
-  {
-    image: '/assets/hub-2.webp',
-    title: 'Agua de Luna',
-    eyebrow: 'Peace and reconnection',
-    description: 'A sanctuary for rare species and a center for research and education, blending modern science with indigenous wisdom at Agua de Luna.',
-    coordinates: '11° 11′ 15″ N; 73° 28′ 58″ W',
-    position: { top: 'clamp(5rem,10vw,12rem)', left: 'clamp(10rem,30vw,32rem)' }
-  },
-  {
-    image: '/assets/hub-3.webp',
-    title: 'Tierra Kilwa ',
-    eyebrow: 'Food, regeneration, art, and social entrepreneurship ',
-    description: 'Pioneering sustainable living in arid environments, focusing on water conservation .',
-    coordinates: '11° 14′ 48″ N; 73° 32′ 51″ W',
-    position: { top: 'clamp(5rem,10vw,12rem)', left: 'clamp(16rem,48vw,52rem)' }
-  }
-];
+import { useTranslation } from 'react-i18next';
 
 const Hubs: React.FC = () => {
+  const { t } = useTranslation();
   const [selectedHub, setSelectedHub] = useState<number | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -75,6 +50,34 @@ const Hubs: React.FC = () => {
     }
   }, [selectedHub]);
 
+  // Use translation for hub cards
+  const hubCards = [
+    {
+      image: '/assets/hub-1.webp',
+      title: t('mainPage.hubs.cards.0.title'),
+      eyebrow: t('mainPage.hubs.cards.0.eyebrow'),
+      description: t('mainPage.hubs.cards.0.description'),
+      coordinates: '11° 15′ 49″ N; 73° 53′ 28″ W',
+      position: { top: 'clamp(6rem,11vw,14rem)', right: 'clamp(6rem,12vw,18rem)' }
+    },
+    {
+      image: '/assets/hub-2.webp',
+      title: t('mainPage.hubs.cards.1.title'),
+      eyebrow: t('mainPage.hubs.cards.1.eyebrow'),
+      description: t('mainPage.hubs.cards.1.description'),
+      coordinates: '11° 11′ 15″ N; 73° 28′ 58″ W',
+      position: { top: 'clamp(5rem,10vw,12rem)', left: 'clamp(10rem,30vw,32rem)' }
+    },
+    {
+      image: '/assets/hub-3.webp',
+      title: t('mainPage.hubs.cards.2.title'),
+      eyebrow: t('mainPage.hubs.cards.2.eyebrow'),
+      description: t('mainPage.hubs.cards.2.description'),
+      coordinates: '11° 14′ 48″ N; 73° 32′ 51″ W',
+      position: { top: 'clamp(5rem,10vw,12rem)', left: 'clamp(16rem,48vw,52rem)' }
+    }
+  ];
+
   return (
     <section
       ref={sectionRef}
@@ -86,11 +89,9 @@ const Hubs: React.FC = () => {
         <div className="flex flex-col items-start gap-12">
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between gap-[13.3125rem] w-full">
-            <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
-              Biocultural<br /><strong>Hubs</strong>
-            </h2>
+            <h2 className="heading-2 text-secondary max-w-[40.9375rem]" dangerouslySetInnerHTML={{ __html: t('mainPage.hubs.title') }} />
             <p className="body-M text-secondary max-w-[35rem]">
-              Located across bioregions, HUBS are important biodiversity hotspots and learning centres that preserve and share ecological resources and living knowledge to shape the corridor.
+              {t('mainPage.hubs.description')}
             </p>
           </div>
 

@@ -30,28 +30,35 @@ const CTA: React.FC = () => {
               <div className="mt-8 md:mt-12 flex flex-col md:flex-row gap-4 justify-center md:justify-start">
                 
                 {/* Primary Button (Orange) */}
-                <button
-                  className="mt-0 flex items-center h-[4.2rem] bg-[var(--color-accent)] hover:bg-[var(--color-green-soft)] text-light hover:text-secondary rounded-button backdrop-blur-sm transition-all duration-200 group"
-                >
+                
+                <a
+                  href="mailto:hello@inhabit.earth"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-0 flex items-center h-[4.2rem] bg-[var(--color-accent)] hover:bg-[var(--color-green-soft)] text-light hover:text-secondary rounded-button backdrop-blur-sm transition-all duration-200 group no-underline"
+                > 
                   <div className="flex items-center gap-2 px-6">
-                    <img src="/icons/mouse-icon.svg" alt="Mouse" className="w-4 h-4 hero-mouse-icon" />
-                    <span className="button-text text-sm tracking-[0.02em] uppercase">Discover Inhabit</span>
+                    <img src="assets/icons/Chield_check_light.svg" alt="shield" className="w-5 h-5" />
+                    <span className="button-text text-sm tracking-[0.02em] uppercase">Become a Guardian</span>
                   </div>
                   <div className="flex items-center px-4">
                     <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
-                </button>
+                </a>
 
                 {/* Secondary Button (Green) */}
-                <button className="btn-secondary flex items-center h-[4.2rem] bg-[var(--color-green-soft)] hover:bg-[var(--color-accent)] text-secondary hover:text-light rounded-button backdrop-blur-sm transition-all duration-200 group">
+                <a
+                  href="mailto:hello@inhabit.earth"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary flex items-center h-[4.2rem] bg-[var(--color-green-soft)] hover:bg-[var(--color-accent)] text-secondary hover:text-light rounded-button backdrop-blur-sm transition-all duration-200 group no-underline"
+                >
                   <div className="flex items-center gap-2 px-4 md:px-6">
-                    <svg className="w-5 h-5 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M12 3v18M5 14l7 7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
+                  <img src="assets/icons/User_add_alt_fill.svg" alt="shield" className="w-5 h-5" />
                     <span className="button-text text-sm tracking-[0.02em] uppercase">
-                      Become a Guardian
+                      Support Inhabit
                     </span>
                   </div>
                   <div className="flex items-center px-3 md:px-4 ">
@@ -59,7 +66,7 @@ const CTA: React.FC = () => {
                       <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
-                </button>
+                </a>
               </div>
             </div>
 

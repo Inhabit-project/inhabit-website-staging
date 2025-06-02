@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface VideoPlayerProps {
   videoUrl: string;
@@ -12,6 +13,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   autoplay = true 
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const { t } = useTranslation();
   
   // Construct the video URL with parameters
   const getVideoUrl = useCallback(() => {
@@ -44,7 +46,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       width="100%"
       height="100%"
       src={getVideoUrl()}
-      title="Shaping a Global Corridor: We are all Guardians"
+      title={t('mainPage.hero.title')}
       frameBorder="0"
       allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
       referrerPolicy="strict-origin-when-cross-origin"
@@ -63,6 +65,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isVideoPreloaded, setIsVideoPreloaded] = useState(false);
   const videoContainerRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   // Function to preload the video when user hovers over the thumbnail
   const preloadVideo = useCallback(() => {
@@ -115,13 +118,11 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
         <div className="flex flex-col gap-3">
           {/* Eyebrow text */}
           <p className="eyebrow text-light">
-            discover inhabit
+            {t('mainPage.video.eyebrow')}
           </p>
           
           {/* Main heading */}
-          <h2 className="heading-2 text-light max-w-[1100px]">
-            Pioneering <span className="highlighted-text">global corridors</span> to <span className="highlighted-text">protect</span> vital ecosystems and foster <span className="highlighted-text">biocultural innovation.</span>
-          </h2>
+          <h2 className="heading-2 text-light max-w-[1100px]" dangerouslySetInnerHTML={{ __html: t('mainPage.video.heading') }} />
         </div>
 
         {/* Video container */}
@@ -167,7 +168,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
           <button
             onClick={() => setIsPopupOpen(false)}
             className="absolute top-4 right-4 w-10 h-10 z-50 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-[4.125px] flex items-center justify-center transition-all duration-300 group"
-            aria-label="Close video"
+            aria-label={t('common.closeVideo', 'Close video')}
           >
             <div className="relative w-4 h-4">
               <div className="absolute top-1/2 left-0 w-4 h-[2px] bg-white rotate-45 group-hover:bg-orange-500 transition-colors duration-300" />

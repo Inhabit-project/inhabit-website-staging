@@ -133,7 +133,8 @@
       "title": "Galería de Fotos"
     },
     "stewardshipNFT": {
-      "title": "NFTs de Custodia",
+      "title": "Custodia",
+      "subtitle": "<strong>NFTs</strong>",
       "description": "Tu llave digital para la custodia vitalicia de ecosistemas únicos. Cada NFT representa una conexión directa con un área de conservación específica, otorgándote derechos y acceso exclusivo a experiencias bioculturales."
     },
     "highlight": {

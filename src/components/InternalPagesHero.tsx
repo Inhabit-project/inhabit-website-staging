@@ -2,6 +2,11 @@ import React from 'react';
 
 interface InternalPagesHeroProps {
   variant: 'hubs' | 'stewardship' | 'about' | 'nuiyanzhi';
+  title?: string;
+  strong?: string;
+  description?: string;
+  image?: string;
+  alt?: string;
 }
 
 const heroContent = {
@@ -35,22 +40,22 @@ const heroContent = {
   },
 };
 
-const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({ variant }) => {
-  const { title, strong, description, image, alt } = heroContent[variant];
+const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({ variant, title, strong, description, image, alt }) => {
+  const content = heroContent[variant];
   return (
     <section className="w-full flex flex-col items-center justify-center py-32 background-gradient-light">
       <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col items-start gap-8">
         {/* Header section */}
         <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
             <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
-              {title}<br /><strong>{strong}</strong>
+              {(title || content.title)}<br /><strong>{(strong || content.strong)}</strong>
             </h2>
             <p className="body-M text-secondary max-w-[36rem]">
-            {description}
+            {(description || content.description)}
             </p>
           </div>
         <div className="w-full flex justify-center">
-          <img src={image} alt={alt} className="w-full rounded-xl object-cover" />
+          <img src={image || content.image} alt={alt || content.alt} className="w-full rounded-xl object-cover" />
         </div>
       </div>
     </section>
