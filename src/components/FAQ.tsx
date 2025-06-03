@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface FAQItem {
   question: string;
@@ -6,30 +7,10 @@ interface FAQItem {
 }
 
 const FAQ: React.FC = () => {
+  const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const faqItems: FAQItem[] = [
-    {
-      question: "What exactly is a Stewardship NFT?",
-      answer: "A Stewardship NFT represents your commitment to supporting biodiversity conservation. It's a unique digital asset that directly connects you to specific conservation initiatives within our global biodiversity corridor."
-    },
-    {
-      question: "How does my NFT purchase help conservation?",
-      answer: "Your NFT purchase directly funds on-the-ground conservation efforts. The proceeds go towards protecting and restoring critical habitats, supporting local communities, and maintaining the biodiversity corridor infrastructure."
-    },
-    {
-      question: "What benefits do I receive as an NFT holder?",
-      answer: "As an NFT holder, you gain exclusive access to conservation impact reports, virtual and physical visits to conservation sites, community events, and voting rights on certain conservation decisions. You're also part of a growing community of conservation stewards."
-    },
-    {
-      question: "Can I transfer or sell my Stewardship NFT?",
-      answer: "Yes, Stewardship NFTs are transferable. You can sell or gift your NFT to others who share your commitment to conservation, though we encourage long-term stewardship for maximum impact."
-    },
-    {
-      question: "What makes this different from other NFT projects?",
-      answer: "Our NFTs have real-world impact, directly supporting biodiversity conservation. They're backed by scientific research, community engagement, and tangible conservation outcomes, not just digital art or speculation."
-    }
-  ];
+  const faqItems: FAQItem[] = (t('mainPage.faq.items', { returnObjects: true }) as FAQItem[]);
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -42,11 +23,10 @@ const FAQ: React.FC = () => {
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
             <h2 className="heading-2 text-light max-w-[40.9375rem]">
-              Frequently Asked<br />
-              <strong>Questions</strong>
+              <span dangerouslySetInnerHTML={{ __html: t('mainPage.faq.title') }} />
             </h2>
             <p className="body-M text-light max-w-[35rem]">
-              Find answers to common questions about our ecosystem protection and stewardship programs.
+              {t('mainPage.faq.description')}
             </p>
           </div>
 

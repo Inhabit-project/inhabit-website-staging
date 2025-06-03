@@ -1,85 +1,110 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const teamMembers = [
   {
-    name: 'Luca Urbano',
-    role: 'Social entrepreneur and farmer with 13 years experience in regenerative business development, ecosystem restoration, agroecology, agroforestry, social and inclusive supply chains. Grew up in Congo, established the first Moringa supply chain based on food forest systems. Co-founder of several social businesses focused on food and IT.',
+    key: 0,
     image: '/assets/team/luca.webp',
     linkedin: 'https://www.linkedin.com/in/luca-urbano-36ab33a0/',
   },
   {
-    name: 'Chiara Trotto',
-    role: 'Bachelor of Social Sciences in cooperation and development, facilitator and trainer in project formulation, social entrepreneur, 13+ years of experience in sustainable agro-food chains, social innovation, and non-formal education with communities in Europe, Africa, and Latin America.',
+    key: 1,
     image: '/assets/team/chiara.webp',
     linkedin: 'https://www.linkedin.com/in/chiara-trotto/',
   },
   {
-    name: 'Dror Noi',
-    role: 'Social entrepreneur and permaculture designer passionate about decentralized and regenerative cultures/agriculture. Grew up in Israel, established the first center for Social Innovation in TLV. Co-Founder of Yumajai & Partner at Inside-hub. Manages a permaculture farm in Colombia.',
+    key: 2,
     image: '/assets/team/dror.webp',
     linkedin: 'https://www.linkedin.com/in/drornoi/',
   },
-  
   {
-    name: 'Talya Weinberg',
-    role: 'Global impact strategist, social clown, and integral artist, expert in ecosystemic and human regeneration. Co-founder of Yumajai and Heart Spaces methodology, integrating art, ecology, ancestral wisdom, and education to inspire global change.',
+    key: 3,
     image: '/assets/team/talya.webp',
     linkedin: 'https://www.linkedin.com/in/talya-weinberg/',
   },
   {
-    name: 'Amelia Maria Carrillo',
-    role: 'Attorney with a Master\'s in Territorial Studies, experienced in environmental law and legal territorial protection frameworks from a biocultural perspective. Founder of the Foundation of Mother Earth operating across Colombia.',
+    key: 4,
     image: '/assets/team/amelia.webp',
     linkedin: 'https://www.linkedin.com/in/amar-madre-tierra-75a684296/',
   },
   {
-    name: 'Junior Rojaas',
-    role: 'Senior developer and entrepreneur with 11+ years in software development, specializing in blockchain and cryptocurrencies. CTO of Futswap and CEO of Intechchain, leading projects in decentralized finance and technological solutions.',
+    key: 5,
     image: '/assets/team/junior.webp',
     linkedin: 'https://www.linkedin.com/in/rojasjuniore/',
   },
   {
-    name: 'Gaia Pagano',
-    role: 'Bachelor of Social Sciences, Master in Innovation and Development, Human Rights and Culture of Peace. Coordinator at Pontificia Universidad Javeriana, 12+ years in peace and reconciliation, intercultural relations, and dialogue projects with indigenous and Afro-descendant communities.',
+    key: 6,
     image: '/assets/team/Gaia-pagano.webp',
     linkedin: 'https://www.linkedin.com/in/gaia-pagano-magnolia/',
   },
   {
-    name: 'Juan Pablo Lievano',
-    role: 'Economist and MA in anthropology with 13+ years of experience in sustainable rural development, climate change, project management, and financial evaluation of small farmer agribusiness models. Founder of two natural reserves in Colombia.',
+    key: 7,
     image: '/assets/team/juan.webp',
     linkedin: '#',
   },
   {
-    name: 'Mohamd Ibrahim',
-    role: 'Network and satellite communications engineer, ICT expert for over 20 years. He grew up in Congo (D.R.) where he founded several Internet service providers, earth stations and data centres that brought reliable, redundant, secure and affordable connectivity to Africa. Expert in Cybersecurity, hosting, System Administration, Network routing and optimization, blockchain engineering and Artificial Intelligence. ',
+    key: 8,
     image: '/assets/team/mohamd.webp',
     linkedin: 'https://www.linkedin.com/in/mohamadhibrahim/',
   },
   {
-    name: 'Celia Mercado',
-    role: '10 years of experience as an eco-psycho-social transformation facilitator. Industrial engineer, Master in Rural Development, and specialized in Transpersonal-Integral Psychology. She leads sustainable projects and fosters inclusive initiatives within rural communities in Colombia. With the INHABIT Foundation, she actively co-creates biocultural methodologies and supports territorial regeneration through community-based stewardship strategies.',
+    key: 9,
     image: '/assets/team/celia.webp',
     linkedin: '#',
   },
   {
-    name: 'Juan Diego Agudelo',
-    role: 'A developer with 4 years of experience specializing in real-world asset tokenization and blockchain interoperability. His work focuses on process traceability, capital distribution, and asset tokenization. Committed to blockchain for good, he designs systems that support the creation, collective governance, and long-term stewardship of physical commons, fostering regenerative, community-driven economies.',
+    key: 10,
     image: '/assets/team/JuanDiego.webp',
     linkedin: 'https://www.linkedin.com/in/juandiegoagudelom/',
   },
   {
-    name: 'Fernanda Herrera',
-    role: 'Visual designer with 12 years of experience in the field of digital project development, working as UI and UX designer for websites and applications, many of these websites have been fully developed from the conceptualization phase of the design to the code development itself, usually using Html5, css3 and basic javascript or CMS like wordpress, webflow, etc. I have basic knowledge in frameworks such as vue, react, angular, python and ruby on rails, microintreactions and advanced web animations.',
+    key: 11,
     image: '/assets/team/fernanda.webp',
     linkedin: 'https://www.linkedin.com/in/fernanda-herrera/',
   },
 ];
 
+const fallbackNameKeys = [
+  'aboutUsPage.team.0.name',
+  'aboutUsPage.team.1.name',
+  'aboutUsPage.team.2.name',
+  'aboutUsPage.team.3.name',
+  'aboutUsPage.team.4.name',
+  'aboutUsPage.team.5.name',
+  'aboutUsPage.team.6.name',
+  'aboutUsPage.team.7.name',
+  'aboutUsPage.team.8.name',
+  'aboutUsPage.team.9.name',
+  'aboutUsPage.team.10.name',
+  'aboutUsPage.team.11.name',
+];
+const fallbackRoleKeys = [
+  'aboutUsPage.team.0.role',
+  'aboutUsPage.team.1.role',
+  'aboutUsPage.team.2.role',
+  'aboutUsPage.team.3.role',
+  'aboutUsPage.team.4.role',
+  'aboutUsPage.team.5.role',
+  'aboutUsPage.team.6.role',
+  'aboutUsPage.team.7.role',
+  'aboutUsPage.team.8.role',
+  'aboutUsPage.team.9.role',
+  'aboutUsPage.team.10.role',
+  'aboutUsPage.team.11.role',
+];
+
 const MeetOurTeam: React.FC = () => {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState<number | null>(null);
   const descRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [heights, setHeights] = useState<number[]>([]);
+
+  // Fetch the team array with returnObjects: true for i18next array support
+  const teamArray = t('aboutUsPage.team', { returnObjects: true }) as { name: string; role: string }[];
+
+  // Fallbacks use translation keys for name/role
+  const fallbackName = fallbackNameKeys.map((key) => t(key));
+  const fallbackRole = fallbackRoleKeys.map((key) => t(key));
 
   useLayoutEffect(() => {
     setHeights(
@@ -94,20 +119,24 @@ const MeetOurTeam: React.FC = () => {
       <div className="container">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12 gap-6">
           <div>
-            <h2 className="heading-2 text-secondary mb-2">Meet our <strong><br />Team</strong></h2>
+            <h2 className="heading-2 text-secondary mb-2">
+              <span dangerouslySetInnerHTML={{ __html: t('aboutUsPage.teamTitle') }} />
+            </h2>
           </div>
           <p className="body-M text-secondary max-w-xl">
-            We are purpose-driven entrepreneurs, farmers, artists, facilitators — Experts in law, restoration, technology and rural development—united to reinvest ways of inhabiting Earth
+            {t('aboutUsPage.teamSubtitle')}
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {teamMembers.map((member, idx) => {
-            const excerpt = member.role.length > 60 ? member.role.slice(0, 60).trim() + '…' : member.role;
+            const name = teamArray?.[idx]?.name || fallbackName[idx];
+            const role = teamArray?.[idx]?.role || fallbackRole[idx];
+            const excerpt = role.length > 60 ? role.slice(0, 60).trim() + '…' : role;
             const isExpanded = expanded === idx;
             return (
               <div key={idx} className="relative rounded-xl overflow-hidden shadow-lg group flex flex-col h-full bg-[#1B3A2B]">
                 <div className="w-full" style={{height: '30rem', overflow: 'hidden'}}>
-                  <img src={member.image} alt={member.name} className="w-full h-full object-cover" style={{objectFit: 'cover', width: '100%', height: '100%'}} />
+                  <img src={member.image} alt={name} className="w-full h-full object-cover" style={{objectFit: 'cover', width: '100%', height: '100%'}} />
                 </div>
                 {/* Gradient overlay */}
                 <div className="absolute inset-0 blur-sm pointer-events-none" />
@@ -119,7 +148,7 @@ const MeetOurTeam: React.FC = () => {
                 </a>
                 {/* Name and role */}
                 <div className="flex-1 flex flex-col justify-end absolute bottom-0 left-0 p-4 z-10 rounded-lg backdrop-blur-lg m-4 w-[calc(100%-2rem)]">
-                  <h3 className="font-montserrat text-lg font-semibold text-white mb-1">{member.name}</h3>
+                  <h3 className="font-montserrat text-lg font-semibold text-white mb-1">{name}</h3>
                   <div
                     ref={el => descRefs.current[idx] = el}
                     className="font-nunito text-sm text-white/90 leading-snug overflow-hidden relative"
@@ -156,16 +185,16 @@ const MeetOurTeam: React.FC = () => {
                         position: 'relative',
                       }}
                     >
-                      {member.role}
+                      {role}
                     </span>
                   </div>
-                  {member.role.length > 60 && (
+                  {role.length > 60 && (
                     <button
                       className="mt-2 underline hover:opacity-80 focus:outline-none block self-start"
                       style={{ color: 'var(--color-green-soft)' }}
                       onClick={() => setExpanded(isExpanded ? null : idx)}
                     >
-                      {isExpanded ? 'Show less' : 'Read more'}
+                      {isExpanded ? t('aboutUsPage.teamShowLess') : t('aboutUsPage.teamReadMore')}
                     </button>
                   )}
                 </div>

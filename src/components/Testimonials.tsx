@@ -1,5 +1,6 @@
 import React from 'react';
 import LogosSection from './LogosSection';
+import { useTranslation } from 'react-i18next';
 
 interface Testimonial {
   image: string;
@@ -14,6 +15,7 @@ interface Partner {
 }
 
 const Testimonials: React.FC = () => {
+  const { t } = useTranslation();
   const testimonials: Testimonial[] = [
     {
       image: "/assets/logos/testimonial-image.png",
@@ -50,10 +52,10 @@ const Testimonials: React.FC = () => {
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between w-full gap-6 md:gap-8">
             <h2 className=" font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]">
-              Meet our<br /><strong>Allies</strong>
+              <span dangerouslySetInnerHTML={{ __html: t('mainPage.testimonials.title') }} />
             </h2>
             <p className="font-nunito font-light text-xl md:text-2xl lg:text-[1.75rem] leading-[1.24em] text-[#F6FFEA] max-w-full md:max-w-[35rem]">
-              Stewardship NFTs are blockchain-verified contracts that give fractional rights to protect ecosystems on tokenized plots of land.
+              {t('mainPage.testimonials.description')}
             </p>
           </div>
         </div>
@@ -73,7 +75,7 @@ const Testimonials: React.FC = () => {
               Louise Borreani
               </h3>
               <p className="font-nunito text-white text-xl md:text-3xl lg:text-[2.5rem] leading-[1.1em]">
-                &quot; Inhabit is a powerful expression of how decentralized tools can support nature stewardship communities. It stands as one of the most concrete manifestations of the green crypto research we've been conducting at Ecofrontiers and it's so inspiring to see it come to life. &quot;
+                {t('mainPage.testimonials.testimonial.quote')}
               </p>
               <span className="font-nunito text-white text-base body-M leading-[1.36em] tracking-[-0.015em]">
               Co-founder, Ecofrontiers

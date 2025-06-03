@@ -46,7 +46,61 @@
     "sasText": "Fundada en 2020, INHABIT desarrolla herramientas legales, económicas y educativas innovadoras enfocadas en proteger ecosistemas vitales e impulsar la innovación social rural. INHABIT crea soluciones de negocio social que involucran eficazmente a diversos actores en el cambio de uso de la tierra, la conservación de la biodiversidad y la activación biocultural.\n\nEn el terreno, INHABIT implementa corredores ecológicos a pequeña y gran escala, restauración de ecosistemas, proyectos urbanos y de Artscape, junto con iniciativas centradas en la seguridad de la tierra, la transición rural y la innovación social rural.\n\nINHABIT es pionera en el desarrollo de herramientas para expandir el corredor a nivel mundial, como el marco de tenencia de la tierra para Hubs bioculturales. Este enfoque facilita la creación de un modelo de tenencia de la tierra regenerativo, funcional y equitativo e introduce un modelo ReFi innovador para finanzas descentralizadas que busca involucrar a todos en esta misión.",
     "foundationTitle": "INHABIT",
     "foundationSubtitle": "Fundación",
-    "foundationText": "La Fundación INHABIT es una organización sin fines de lucro diseñada para servir como el cuerpo legal de un nuevo marco de tenencia de la tierra que hace cumplir eficazmente los Derechos de la Naturaleza y los Derechos de los Guardianes de la Tierra, así como los principios de regeneración basada en la custodia en territorios específicos.\nLa Fundación apoya a los \"Agentes de Cambio Rural\"—agricultores, individuos y organizaciones—asegurando la tenencia de la tierra, proporcionando fondos para la restauración, otorgando acceso a la educación y fomentando una comunidad de apoyo a su alrededor, permitiendo su papel como catalizadores de la regeneración, resiliencia ecológica y cultural a largo plazo, y justicia climática y gobernanza territorial liderada localmente."
+    "foundationText": "La Fundación INHABIT es una organización sin fines de lucro diseñada para servir como el cuerpo legal de un nuevo marco de tenencia de la tierra que hace cumplir eficazmente los Derechos de la Naturaleza y los Derechos de los Guardianes de la Tierra, así como los principios de regeneración basada en la custodia en territorios específicos.\nLa Fundación apoya a los \"Agentes de Cambio Rural\"—agricultores, individuos y organizaciones—asegurando la tenencia de la tierra, proporcionando fondos para la restauración, otorgando acceso a la educación y fomentando una comunidad de apoyo a su alrededor, permitiendo su papel como catalizadores de la regeneración, resiliencia ecológica y cultural a largo plazo, y justicia climática y gobernanza territorial liderada localmente.",
+    "team": [
+      {
+        "name": "Luca Urbano",
+        "role": "Emprendedor social y agricultor con 13 años de experiencia en desarrollo de negocios regenerativos, restauración de ecosistemas, agroecología, agroforestería y cadenas de suministro sociales e inclusivas. Creció en Congo, estableció la primera cadena de suministro de Moringa basada en sistemas de bosques comestibles. Cofundador de varios negocios sociales enfocados en alimentos y tecnología."
+      },
+      {
+        "name": "Chiara Trotto",
+        "role": "Licenciada en Ciencias Sociales en cooperación y desarrollo, facilitadora y formadora en formulación de proyectos, emprendedora social, más de 13 años de experiencia en cadenas agroalimentarias sostenibles, innovación social y educación no formal con comunidades en Europa, África y América Latina."
+      },
+      {
+        "name": "Dror Noi",
+        "role": "Emprendedor social y diseñador de permacultura apasionado por las culturas/agriculturas descentralizadas y regenerativas. Creció en Israel, fundó el primer centro de Innovación Social en TLV. Cofundador de Yumajai y socio en Inside-hub. Administra una finca de permacultura en Colombia."
+      },
+      {
+        "name": "Talya Weinberg",
+        "role": "Estratega de impacto global, payasa social y artista integral, experta en regeneración ecosistémica y humana. Cofundadora de Yumajai y de la metodología Heart Spaces, integrando arte, ecología, sabiduría ancestral y educación para inspirar el cambio global."
+      },
+      {
+        "name": "Amelia Maria Carrillo",
+        "role": "Abogada con Maestría en Estudios Territoriales, experta en derecho ambiental y marcos legales de protección territorial desde una perspectiva biocultural. Fundadora de la Fundación Madre Tierra que opera en toda Colombia."
+      },
+      {
+        "name": "Junior Rojaas",
+        "role": "Desarrollador senior y emprendedor con más de 11 años en desarrollo de software, especializado en blockchain y criptomonedas. CTO de Futswap y CEO de Intechchain, liderando proyectos en finanzas descentralizadas y soluciones tecnológicas."
+      },
+      {
+        "name": "Gaia Pagano",
+        "role": "Licenciada en Ciencias Sociales, Máster en Innovación y Desarrollo, Derechos Humanos y Cultura de Paz. Coordinadora en la Pontificia Universidad Javeriana, más de 12 años en proyectos de paz y reconciliación, relaciones interculturales y diálogo con comunidades indígenas y afrodescendientes."
+      },
+      {
+        "name": "Juan Pablo Lievano",
+        "role": "Economista y Magíster en antropología con más de 13 años de experiencia en desarrollo rural sostenible, cambio climático, gestión de proyectos y evaluación financiera de modelos agroempresariales de pequeños agricultores. Fundador de dos reservas naturales en Colombia."
+      },
+      {
+        "name": "Mohamd Ibrahim",
+        "role": "Ingeniero en redes y comunicaciones satelitales, experto en TIC con más de 20 años de experiencia. Creció en Congo (R.D.), donde fundó varios proveedores de servicios de Internet, estaciones terrestres y centros de datos que llevaron conectividad confiable, redundante, segura y asequible a África. Experto en ciberseguridad, hosting, administración de sistemas, enrutamiento y optimización de redes, ingeniería blockchain e inteligencia artificial."
+      },
+      {
+        "name": "Celia Mercado",
+        "role": "10 años de experiencia como facilitadora de transformación eco-psico-social. Ingeniera industrial, Máster en Desarrollo Rural y especializada en Psicología Transpersonal-Integral. Lidera proyectos sostenibles e impulsa iniciativas inclusivas en comunidades rurales de Colombia. Con la Fundación INHABIT, co-crea metodologías bioculturales y apoya la regeneración territorial a través de estrategias de custodia comunitaria."
+      },
+      {
+        "name": "Juan Diego Agudelo",
+        "role": "Desarrollador con 4 años de experiencia especializado en tokenización de activos del mundo real e interoperabilidad blockchain. Su trabajo se centra en la trazabilidad de procesos, distribución de capital y tokenización de activos. Comprometido con el blockchain para el bien, diseña sistemas que apoyan la creación, gobernanza colectiva y custodia a largo plazo de bienes comunes físicos, fomentando economías regenerativas y comunitarias."
+      },
+      {
+        "name": "Fernanda Herrera",
+        "role": "Diseñadora visual con 12 años de experiencia en desarrollo de proyectos digitales, trabajando como diseñadora UI y UX para sitios web y aplicaciones. Muchos de estos sitios han sido desarrollados completamente desde la conceptualización hasta el desarrollo del código, generalmente usando Html5, css3 y javascript básico o CMS como wordpress, webflow, etc. Tengo conocimientos básicos en frameworks como vue, react, angular, python y ruby on rails, microinteracciones y animaciones web avanzadas."
+      }
+    ],
+    "teamTitle": "Conoce a nuestro <strong><br />Equipo</strong>",
+    "teamSubtitle": "Somos emprendedores, agricultores, artistas y facilitadores con propósito — Expertos en derecho, restauración, tecnología y desarrollo rural—unidos para reinventar las formas de habitar la Tierra",
+    "teamShowLess": "Ver menos",
+    "teamReadMore": "Leer más"
   },
   "hubsMain": {
     "eyebrow": "¿Dónde están ubicados los hubs?",
@@ -132,14 +186,16 @@
     "photoGallery": {
       "title": "Galería de Fotos"
     },
-    "stewardshipNFT": {
-      "title": "Custodia",
-      "subtitle": "<strong>NFTs</strong>",
-      "description": "Tu llave digital para la custodia vitalicia de ecosistemas únicos. Cada NFT representa una conexión directa con un área de conservación específica, otorgándote derechos y acceso exclusivo a experiencias bioculturales."
+    "stewardshipNFTPage": {
+      "imageSection": {
+        "eyebrow": "El poder de nuestros NFTs",
+        "heading": "Tener un <span class=\"highlighted-text\">NFT</span> te convierte en <span class=\"highlighted-text\">co-creador de un corredor global</span>, uno que puedes recorrer, salvaguardar y <span class=\"highlighted-text\">regenerar biodiversidad</span>.",
+        "imageAlt": "Beneficios del NFT de Custodia"
+      }
     },
     "highlight": {
-      "eyebrow": "¿QUÉ SON LOS NFTS?",
-      "description": "Los NFTs de custodia son contratos verificados en blockchain que otorgan derechos fraccionarios para proteger ecosistemas en parcelas de tierra tokenizadas."
+      "title": "¿QUÉ SON LOS NFTS?",
+      "description": "Los NFTs de custodia son <strong class=\"text-orange highlight-strong\">contratos verificados en blockchain</strong> que otorgan derechos fraccionarios <strong class=\"text-orange highlight-strong\">para proteger ecosistemas</strong> en <strong class=\"text-orange highlight-strong\">parcelas</strong> de tierra tokenizadas"
     },
     "photo": {
       "section1": "Al comprar un NFT te conviertes en guardián vitalicio de un Hub específico, permitiéndote monitorear y participar en decisiones importantes que afectan estos ecosistemas, y obtener acceso exclusivo a experiencias bioculturales, eventos, talleres, visitar los hubs y explorar todo el Corredor.",
@@ -152,7 +208,7 @@
       "availableMembership": "Membresías disponibles"
     },
     "infographic": {
-      "landTenureTitle": "Marco de Tenencia de la Tierra",
+      "landTenureTitle": "Marco de Tenencia<br /><strong>de la Tierra</strong>",
       "landTenureDescription": "El modelo de restauración basado en la custodia de INHABIT está diseñado para ser el enfoque más robusto y efectivo para garantizar la protección y regeneración a largo plazo de tierras degradadas, involucrando activamente a todos en la custodia de los ecosistemas.",
       "nftStewardsTitle": "Guardianes NFT",
       "nftStewardsDescription": "Personas de cualquier parte del mundo pueden convertirse en protectores vitalicios de la naturaleza, con la capacidad de monitorear, salvaguardar y acceder a estos hubs prósperos, junto con numerosos beneficios al recorrer el Corredor.",
@@ -169,10 +225,10 @@
         "quote": "Inhabit es una poderosa expresión de cómo las herramientas descentralizadas pueden apoyar a las comunidades de custodia de la naturaleza. Es una de las manifestaciones más concretas de la investigación cripto-verde que hemos realizado en Ecofrontiers y es inspirador verla cobrar vida.",
         "role": "Cofundadora, Ecofrontiers"
       },
-      "partnersTitle": "Nuestros <strong>Socios</strong>"
+      "partnersTitle": "Nuestros <br /> <strong>Socios</strong>"
     },
     "cta": {
-      "title": "Únete a dar forma a un corredor global.<br /><span class=\"text-primary\">Conviértete en guardián</span>, recorre el corredor,<br />y sé un <span class=\"text-primary\">catalizador de impacto!</span>",
+      "title": "Únete para formar a un corredor global. <span class=\"highlighted-text\">Conviértete en guardián,</span> visita el corredor, y sé un <span class=\"highlighted-text\">catalizador de impacto!</span>",
       "discover": "Descubre Inhabit",
       "becomeGuardian": "Conviértete en Guardián"
     },
@@ -181,7 +237,7 @@
       "description": "Mantente actualizado con nuestras últimas noticias y perspectivas sobre biodiversidad y preservación ecológica."
     },
     "faq": {
-      "title": "Preguntas Frecuentes",
+      "title": "Preguntas <br /><strong>Frecuentes</strong>",
       "description": "Encuentra respuestas a preguntas comunes sobre nuestros programas de protección y custodia de ecosistemas.",
       "items": [
         {
@@ -336,6 +392,94 @@
       "monitoringRights": "DERECHOS DE MONITOREO",
       "monitoringAccess": "Acceso a Monitoreo de Impacto vía <span class='text-orange-400 font-bold'>MAPA AQUÍ</span>",
       "monitoringAccessDesc": "Sigue el progreso de la tierra que ayudas a proteger mediante mapeo de datos en tiempo real y narrativas de geolocalización. Observa la transformación de la tierra en un hub biocultural. Recibes datos e informes de impacto en tiempo real, geolocalización, mapeo visual e indicadores clave de desempeño (KPIs) sobre avances en áreas como plantación de árboles, aumento de biodiversidad e impacto en la comunidad local."
+    },
+    "stewardshipNFTBenefits": {
+      "title": "¿Qué obtienes?<br /><strong>Al comprar</strong>",
+      "description": "Un activo digital de edición limitada, transferible y permanente, que otorga a su propietario derechos de custodia y uso de por vida a través de un contrato de membresía verificado en blockchain.",
+      "0": {
+        "eyebrow": "DERECHO DE ACTIVO",
+        "title": "Membresía y Custodia de por vida",
+        "description": "Obtienes derechos de custodia y uso de por vida sobre tierras reales tokenizadas.\n\nComo patrocinador inicial, recibirás futuras versiones del NFT de forma gratuita a medida que evolucione, con beneficios y derechos adicionales ofrecidos por el NFT de Custodia 2.0—sujeto a desarrollo."
+      },
+      "1": {
+        "eyebrow": "DERECHOS DE ARTE",
+        "title": "Insignia de protector legal",
+        "description": "Recibes una obra de arte única creada por un artista exclusivo. Cada pieza representa un Jardín Flotante Migratorio del ecosistema donde se ubica el HUB, con una especie nativa vital para ese hábitat.\n\nLa insignia artística representa tu conexión legal de custodia con una parcela específica, permitiéndote recorrer y activar el corredor."
+      },
+      "2": {
+        "eyebrow": "DERECHOS DE CUSTODIA",
+        "title": "Protector legal de la tierra",
+        "description": "Formas parte de un sistema legal de garantía que reconoce a la Naturaleza como sujeto de derechos en una parcela específica.\n\nEste marco, alineado con la Declaración de los Derechos de la Naturaleza y los principios bioculturales, nos ayuda a reclamar nuestro rol como guardianes de los ecosistemas vivos de los que dependemos y de los que somos parte inseparable."
+      },
+      "3": {
+        "eyebrow": "DERECHOS DE IMPACTO",
+        "title": "Monitoreo de Impacto",
+        "description": "Sigue el progreso de la tierra que ayudas a proteger mediante datos en tiempo real y narrativas de geolocalización.\n\nObserva su transformación en un hub biocultural con actualizaciones regulares, mapas visuales e informes de impacto. Consulta KPIs sobre plantación de árboles, aumento de biodiversidad e impacto en la comunidad local—todo mostrando tu contribución a la regeneración en acción."
+      },
+      "4": {
+        "eyebrow": "DERECHOS DE GOBERNANZA",
+        "title": "Acceso a Inhabit DAO",
+        "description": "Recibes derechos de gobernanza sobre asuntos específicos como garante de la tierra.\n\nPuedes opinar sobre cambios inesperados en el uso de la tierra, cambios en la gestión del Hub o cualquier evento imprevisto que pueda alterar la relación entre los actores y la tierra o amenazar los Derechos de la Naturaleza y la integridad de la misión biocultural."
+      },
+      "5": {
+        "eyebrow": "DERECHOS DE USO",
+        "title": "Acceso biocultural exclusivo",
+        "description": "Obtienes acceso a experiencias bioculturales, eventos y talleres dentro de los HUBS del corredor, profundizando tu conexión con la tierra y la biocultura de un territorio.\n\nLos beneficios incluyen estadías y comidas gratuitas o con descuento, acceso exclusivo a experiencias únicas y contenido educativo sobre reforestación, permacultura, bioconstrucción y más."
+      }
+    },
+    "team": [
+      {
+        "name": "Luca Urbano",
+        "role": "Emprendedor social y agricultor con 13 años de experiencia en desarrollo de negocios regenerativos, restauración de ecosistemas, agroecología, agroforestería y cadenas de suministro sociales e inclusivas. Creció en Congo, estableció la primera cadena de suministro de Moringa basada en sistemas de bosques comestibles. Cofundador de varios negocios sociales enfocados en alimentos y tecnología."
+      },
+      {
+        "name": "Chiara Trotto",
+        "role": "Licenciada en Ciencias Sociales en cooperación y desarrollo, facilitadora y formadora en formulación de proyectos, emprendedora social, más de 13 años de experiencia en cadenas agroalimentarias sostenibles, innovación social y educación no formal con comunidades en Europa, África y América Latina."
+      },
+      {
+        "name": "Dror Noi",
+        "role": "Emprendedor social y diseñador de permacultura apasionado por las culturas/agriculturas descentralizadas y regenerativas. Creció en Israel, fundó el primer centro de Innovación Social en TLV. Cofundador de Yumajai y socio en Inside-hub. Administra una finca de permacultura en Colombia."
+      },
+      {
+        "name": "Talya Weinberg",
+        "role": "Estratega de impacto global, payasa social y artista integral, experta en regeneración ecosistémica y humana. Cofundadora de Yumajai y de la metodología Heart Spaces, integrando arte, ecología, sabiduría ancestral y educación para inspirar el cambio global."
+      },
+      {
+        "name": "Amelia Maria Carrillo",
+        "role": "Abogada con Maestría en Estudios Territoriales, experta en derecho ambiental y marcos legales de protección territorial desde una perspectiva biocultural. Fundadora de la Fundación Madre Tierra que opera en toda Colombia."
+      },
+      {
+        "name": "Junior Rojaas",
+        "role": "Desarrollador senior y emprendedor con más de 11 años en desarrollo de software, especializado en blockchain y criptomonedas. CTO de Futswap y CEO de Intechchain, liderando proyectos en finanzas descentralizadas y soluciones tecnológicas."
+      },
+      {
+        "name": "Gaia Pagano",
+        "role": "Licenciada en Ciencias Sociales, Máster en Innovación y Desarrollo, Derechos Humanos y Cultura de Paz. Coordinadora en la Pontificia Universidad Javeriana, más de 12 años en proyectos de paz y reconciliación, relaciones interculturales y diálogo con comunidades indígenas y afrodescendientes."
+      },
+      {
+        "name": "Juan Pablo Lievano",
+        "role": "Economista y Magíster en antropología con más de 13 años de experiencia en desarrollo rural sostenible, cambio climático, gestión de proyectos y evaluación financiera de modelos agroempresariales de pequeños agricultores. Fundador de dos reservas naturales en Colombia."
+      },
+      {
+        "name": "Mohamd Ibrahim",
+        "role": "Ingeniero en redes y comunicaciones satelitales, experto en TIC con más de 20 años de experiencia. Creció en Congo (R.D.), donde fundó varios proveedores de servicios de Internet, estaciones terrestres y centros de datos que llevaron conectividad confiable, redundante, segura y asequible a África. Experto en ciberseguridad, hosting, administración de sistemas, enrutamiento y optimización de redes, ingeniería blockchain e inteligencia artificial."
+      },
+      {
+        "name": "Celia Mercado",
+        "role": "10 años de experiencia como facilitadora de transformación eco-psico-social. Ingeniera industrial, Máster en Desarrollo Rural y especializada en Psicología Transpersonal-Integral. Lidera proyectos sostenibles e impulsa iniciativas inclusivas en comunidades rurales de Colombia. Con la Fundación INHABIT, co-crea metodologías bioculturales y apoya la regeneración territorial a través de estrategias de custodia comunitaria."
+      },
+      {
+        "name": "Juan Diego Agudelo",
+        "role": "Desarrollador con 4 años de experiencia especializado en tokenización de activos del mundo real e interoperabilidad blockchain. Su trabajo se centra en la trazabilidad de procesos, distribución de capital y tokenización de activos. Comprometido con el blockchain para el bien, diseña sistemas que apoyan la creación, gobernanza colectiva y custodia a largo plazo de bienes comunes físicos, fomentando economías regenerativas y comunitarias."
+      },
+      {
+        "name": "Fernanda Herrera",
+        "role": "Diseñadora visual con 12 años de experiencia en desarrollo de proyectos digitales, trabajando como diseñadora UI y UX para sitios web y aplicaciones. Muchos de estos sitios han sido desarrollados completamente desde la conceptualización hasta el desarrollo del código, generalmente usando Html5, css3 y javascript básico o CMS como wordpress, webflow, etc. Tengo conocimientos básicos en frameworks como vue, react, angular, python y ruby on rails, microinteracciones y animaciones web avanzadas."
+      }
+    ],
+    "logosSection": {
+      "buildersTitle": "Nuestros <br /> <strong>Constructores</strong>",
+      "partnersTitle": "Nuestros <br /> <strong>Socios</strong>"
     }
   },
   "nuiyanzhiPage": {
@@ -358,5 +502,192 @@
   },
   "TierraKilwaPage": {
     "title": "Página de Detalles del Hub TierraKilwa"
+  },
+  "privacyPolicy": {
+    "title": "Política de Privacidad",
+    "intro": "Esta política explica cómo INHABIT recopila, usa y protege tu información personal cuando usas nuestro sitio web.",
+    "dataProtectionAndManagementPolicy": "Política de Protección y Gestión de Datos",
+    "dataProtectionAndManagementPolicyDescription": "Esta Política de Protección y Gestión de Datos describe las políticas de INHABIT respecto a la recolección, uso y manejo de la información que recopilamos cuando usas nuestro sitio web.",
+    "dataProtectionAndManagementPolicyRevised": "Podemos modificar esta Política de Privacidad en cualquier momento sin previo aviso y publicaremos la Política de Privacidad revisada en el Servicio. La Política de Privacidad revisada entrará en vigor 180 días después de su publicación en el Servicio, y tu acceso o uso continuado del Servicio después de esa fecha constituirá tu aceptación de la Política de Privacidad revisada.",
+    "howWeUse": "¿Cómo usamos su información?",
+    "howWeUseDescription": "Usaremos la información que recopilamos sobre ti para los siguientes propósitos:",
+    "awareness": "Concienciación",
+    "nftDistribution": "Distribución de NFT",
+    "socialization": "Socialización",
+    "buildingSupportNetworks": "Construcción de redes de apoyo",
+    "reportingToMembers": "Informes a miembros",
+    "governance": "Gobernanza",
+    "reportingToInstitutions": "Informes a instituciones según la ley",
+    "support": "Soporte",
+    "howWeUseAdditional": "Si deseamos usar tu información para cualquier otro propósito, solicitaremos tu consentimiento y usaremos tu información solo después de recibirlo, y solo para los fines para los que otorgamos consentimiento, a menos que la ley exija lo contrario.",
+    "howWeShare": "¿Cómo compartimos su información?",
+    "howWeShareDescription": "No transferiremos tu información personal a terceros sin solicitar tu consentimiento, excepto en circunstancias limitadas como se describe a continuación:",
+    "analytics": "Analítica",
+    "howWeShareAdditional": "Exigimos a dichos terceros que usen la información personal que les transferimos solo para el propósito para el que fue transferida y que la retengan no más tiempo del necesario para cumplir ese propósito.",
+    "howWeShareDisclosure": "También podemos divulgar tu información personal para los siguientes propósitos:",
+    "complyWithApplicableLaws": "Cumplir con leyes, regulaciones, órdenes judiciales u otros procesos legales aplicables",
+    "enforceAgreements": "Hacer cumplir tus acuerdos con nosotros, incluida esta Política de Privacidad",
+    "respondToClaims": "Responder a reclamaciones de que tu uso del Servicio viola los derechos de terceros",
+    "ifServiceMerged": "Si el Servicio o nuestra empresa se fusiona o es adquirida por otra empresa, tu información será uno de los activos transferidos al nuevo propietario",
+    "yourRights": "Tus derechos",
+    "yourRightsDescription": "Según la ley aplicable, puedes tener derecho a acceder, rectificar o eliminar tu información personal, recibir una copia de la misma, restringir u oponerte al procesamiento activo de tu información, solicitar que compartamos (transfiramos) tu información con otra entidad, retirar el consentimiento que nos has dado para procesar tu información, presentar una queja ante una autoridad legal y otros derechos que puedan ser relevantes según la ley aplicable.",
+    "cookies": "Cookies",
+    "cookiesDescription": "Para más información sobre cómo usamos cookies y tus opciones respecto a estas tecnologías de seguimiento, consulta nuestra Política de Cookies.",
+    "security": "Seguridad",
+    "securityDescription": "La seguridad de tu información es importante para nosotros, y aplicaremos medidas de seguridad razonables para evitar la pérdida, mal uso o alteración no autorizada de la información bajo nuestro control.",
+    "complaintsOfficer": "Oficial de Quejas / Oficial de Protección de Datos",
+    "complaintsOfficerDescription": "Si tienes alguna pregunta o inquietud sobre el procesamiento de tu información, puedes contactar a nuestro Oficial de Protección de Datos / Oficial de Quejas.",
+    "creationDate": "Fecha de creación: 20 de marzo de 2025",
+    "personalDataProtectionPolicy": "Política de Protección de Datos Personales",
+    "personalDataProtectionPolicy.purpose": "1. Propósito",
+    "personalDataProtectionPolicy.purposeDescription": "Este manual cumple con lo dispuesto en el literal k) del artículo 17 de la Ley 1581 de 2012...",
+    "personalDataProtectionPolicy.disclosure": "INHABIT CO S.A.S. se compromete a proteger la veracidad, confidencialidad, transparencia, integridad y seguridad de la información personal que los titulares nos confían.",
+    "personalDataProtectionPolicy.scope": "2. Alcance",
+    "personalDataProtectionPolicy.scopeDescription": "El Manual de Políticas y Procedimientos para la Protección de Datos Personales se basa en lo establecido en la Ley 1581 de 2012 y el Decreto 1377 de 2013...",
+    "personalDataProtectionPolicy.informationOfTheDataController": "3. Información del Responsable del Tratamiento",
+    "personalDataProtectionPolicy.companyName": "Razón social: INHABIT CO S.A.S.",
+    "personalDataProtectionPolicy.address": "Dirección: AV. 4 A Oeste # 1 Oeste - 93, Cali, Valle del Cauca, Colombia",
+    "personalDataProtectionPolicy.email": "Correo electrónico: luca@inhabit.one",
+    "personalDataProtectionPolicy.telephone": "Teléfono: +57 315 7255514",
+    "personalDataProtectionPolicy.toWhomIsTheDataProcessingPolicyAddressed": "4. ¿A quién va dirigida la política de tratamiento de datos?",
+    "personalDataProtectionPolicy.toWhomIsTheDataProcessingPolicyAddressedDescription": "Esta Política de Tratamiento de Datos Personales está dirigida a todos los que tengan alguna relación con la Compañía: Miembros, tutores, organizaciones aliadas, proveedores.",
+    "personalDataProtectionPolicy.purposeOfProcessing": "5. Finalidad del Tratamiento",
+    "personalDataProtectionPolicy.purposeOfProcessingMembers": "Miembros: ...",
+    "personalDataProtectionPolicy.purposeOfProcessingGuardians": "Tutores: ...",
+    "personalDataProtectionPolicy.purposeOfProcessingPartnerOrganizations": "Organizaciones aliadas: ...",
+    "personalDataProtectionPolicy.purposeOfProcessingSuppliers": "Proveedores o contratistas: ...",
+    "personalDataProtectionPolicy.definitions": "6. Definiciones",
+    "personalDataProtectionPolicy.authorization": "Autorización: ...",
+    "personalDataProtectionPolicy.database": "Base de datos: ...",
+    "personalDataProtectionPolicy.personalData": "Datos personales: ...",
+    "personalDataProtectionPolicy.dataProcessor": "Encargado del tratamiento: ...",
+    "personalDataProtectionPolicy.dataController": "Responsable del tratamiento: ...",
+    "personalDataProtectionPolicy.dataSubject": "Titular de los datos: ...",
+    "personalDataProtectionPolicy.processing": "Tratamiento: ...",
+    "personalDataProtectionPolicy.sensitiveData": "Datos sensibles: ...",
+    "personalDataProtectionPolicy.publicData": "Datos públicos: ...",
+    "personalDataProtectionPolicy.privacyNotice": "Aviso de privacidad: ...",
+    "personalDataProtectionPolicy.privacyNoticeDescription": "El aviso de privacidad debe contener, como mínimo, la siguiente información: ...",
+    "personalDataProtectionPolicy.principles": "7. Principios",
+    "personalDataProtectionPolicy.principleOfPurpose": "Principio de finalidad: ...",
+    "personalDataProtectionPolicy.principleOfFreedom": "Principio de libertad: ...",
+    "personalDataProtectionPolicy.principleOfTruthfulness": "Principio de veracidad o calidad: ...",
+    "personalDataProtectionPolicy.principleOfTransparency": "Principio de transparencia: ...",
+    "personalDataProtectionPolicy.principleOfRestrictedAccess": "Principio de acceso y circulación restringida: ...",
+    "personalDataProtectionPolicy.principleOfSecurity": "Principio de seguridad: ...",
+    "personalDataProtectionPolicy.principleOfConfidentiality": "Principio de confidencialidad: ...",
+    "personalDataProtectionPolicy.authorizationDescription": "La recolección, almacenamiento, uso, circulación o supresión de datos personales por parte de INHABIT CO S.A.S., según lo indicado en el proceso de membresía, requerirá el consentimiento libre, previo, expreso e informado del titular.",
+    "personalDataProtectionPolicy.authorizationMechanisms": "Mecanismos para otorgar la autorización: ...",
+    "personalDataProtectionPolicy.authorizationProof": "Prueba de la autorización: ...",
+    "personalDataProtectionPolicy.authorizationRevocation": "Revocatoria de la autorización: ...",
+    "personalDataProtectionPolicy.rightsAndDuties": "9. Derechos y deberes",
+    "personalDataProtectionPolicy.rightsAndDutiesDescription": "Derechos de los titulares: ...",
+    "personalDataProtectionPolicy.rightsOfDataSubjects": "Conocer, actualizar y rectificar sus datos personales ante INHABIT CO S.A.S.",
+    "personalDataProtectionPolicy.legalStanding": "Legitimación para el ejercicio de los derechos del titular: ...",
+    "personalDataProtectionPolicy.duties": "Deberes de INHABIT CO S.A.S. respecto al tratamiento de datos personales: ...",
+    "personalDataProtectionPolicy.rightOfAccess": "Derecho de acceso: ...",
+    "personalDataProtectionPolicy.rightOfAccessDescription": "INHABIT CO S.A.S. establecerá y mantendrá mecanismos simples y ágiles que permitan a los titulares acceder y conocer si sus datos están siendo tratados...",
+    "personalDataProtectionPolicy.rightToUpdate": "Derecho de actualización, rectificación y supresión: ...",
+    "personalDataProtectionPolicy.rightToUpdateClaims": "Reclamos: ...",
+    "personalDataProtectionPolicy.rightToUpdateClaimsDescription": "El reclamo debe incluir al menos la siguiente información: ...",
+    "personalDataProtectionPolicy.rightToUpdateClaimsProof": "Una vez recibido el reclamo completo, ...",
+    "personalDataProtectionPolicy.rightToUpdateRevocation": "Implementación del procedimiento para garantizar el derecho a presentar reclamos: ...",
+    "personalDataProtectionPolicy.rightToUpdateRevocationDescription": "El titular podrá, en cualquier momento y de forma gratuita, solicitar a INHABIT CO S.A.S. la rectificación, actualización o supresión de sus datos personales, previa acreditación de su identidad.",
+    "personalDataProtectionPolicy.rightToUpdateImplementation": "Para tramitar las solicitudes recibidas, INHABIT CO S.A.S. podrá utilizar los mismos canales de atención y comunicación ...",
+    "personalDataProtectionPolicy.informationSecurity": "10. Seguridad de la información",
+    "personalDataProtectionPolicy.informationSecurityDescription": "De acuerdo con el principio de seguridad establecido en la Ley 1581 de 2012, INHABIT CO S.A.S. adoptará las medidas técnicas, humanas y administrativas necesarias para garantizar la seguridad de los registros...",
+    "personalDataProtectionPolicy.finalProvisions": "11. Disposiciones finales",
+    "personalDataProtectionPolicy.finalProvisionsDescription": "La Presidencia es designada como responsable de la adopción e implementación de las obligaciones establecidas en la Ley 1581 de 2012.",
+    "personalDataProtectionPolicy.validity": "12. Vigencia",
+    "personalDataProtectionPolicy.validityDescription": "Este documento entrará en vigor a partir de la fecha de publicación y difusión.",
+    "cookiePolicy": "Política de Cookies",
+    "cookiePolicyDescription": "El acceso a este sitio web puede implicar el uso de cookies. Las cookies son pequeñas cantidades de información almacenadas en el navegador utilizado por cada usuario...",
+    "cookiePolicyAdditional": "Las cookies son procedimientos automáticos para recopilar información relacionada con las preferencias determinadas por el usuario durante su visita al sitio web...",
+    "cookiePolicyInformation": "La información recopilada a través de cookies puede incluir la fecha y hora de las visitas al sitio web, las páginas vistas, el tiempo pasado en el sitio web y los sitios visitados antes y después de la visita.",
+    "cookiePolicyPersonalData": "Las cookies que permiten identificar a una persona se consideran datos personales. Por lo tanto, se aplicará la Política de Privacidad descrita anteriormente.",
+    "cookiePolicyDisabling": "Deshabilitar, rechazar y eliminar cookies",
+    "cookiePolicyDisablingDescription": "El usuario puede deshabilitar, rechazar y eliminar las cookies, total o parcialmente, instaladas en su dispositivo a través de la configuración de su navegador...",
+    "annexNo1": "Anexo No. 1",
+    "annexNo1NotificationTemplate": "Plantilla de notificación para obtener la autorización del titular para la recolección, uso y tratamiento de sus datos personales",
+    "annexNo1Declaration": "Declaración y autorización para consultar, reportar y compartir información",
+    "annexNo1Authorization": "Autorizo expresa e irrevocablemente a INHABIT CO S.A.S., a quien represento o a quien cedo mis derechos, o a quien contrate para el ejercicio de estos derechos, sus obligaciones o su posición contractual en cualquier calidad, en relación con los productos o servicios de los cuales soy titular principal o conjunto, o como su representante, a consultar, solicitar, suministrar, reportar, procesar, obtener, recopilar, compilar, conformar, intercambiar, modificar, usar, analizar, estudiar, retener, recibir y enviar mis datos personales...",
+    "annexNo1Note": "* Nota: Este formulario debe ser firmado para su validez y atención y presentado en original a INHABIT CO S.A.S., que, como responsable del tratamiento, tramitará el reclamo dentro de los plazos establecidos por la ley, a partir del día siguiente a la fecha de recepción."
+  },
+  "stewardshipNFTPage": {
+    "imageSection": {
+      "eyebrow": "El poder de nuestros NFTs",
+      "heading": "Tener un <span class=\"highlighted-text\">NFT</span> te convierte en <span class=\"highlighted-text\">co-creador de un corredor global</span>, uno que puedes recorrer, salvaguardar y <span class=\"highlighted-text\">regenerar biodiversidad</span>.",
+      "imageAlt": "Beneficios del NFT de Custodia"
+    }
+  },
+  "stewardshipNFTBenefits": {
+    "title": "¿Qué obtienes?<br /><strong>Al comprar</strong>",
+    "description": "Un activo digital de edición limitada, transferible y permanente, que otorga a su propietario derechos de custodia y uso de por vida a través de un contrato de membresía verificado en blockchain.",
+    "0": {
+      "eyebrow": "DERECHO DE ACTIVO",
+      "title": "Membresía y Custodia de por vida",
+      "description": "Obtienes derechos de custodia y uso de por vida sobre tierras reales tokenizadas.\n\nComo patrocinador inicial, recibirás futuras versiones del NFT de forma gratuita a medida que evolucione, con beneficios y derechos adicionales ofrecidos por el NFT de Custodia 2.0—sujeto a desarrollo."
+    },
+    "1": {
+      "eyebrow": "DERECHOS DE ARTE",
+      "title": "Insignia de protector legal",
+      "description": "Recibes una obra de arte única creada por un artista exclusivo. Cada pieza representa un Jardín Flotante Migratorio del ecosistema donde se ubica el HUB, con una especie nativa vital para ese hábitat.\n\nLa insignia artística representa tu conexión legal de custodia con una parcela específica, permitiéndote recorrer y activar el corredor."
+    },
+    "2": {
+      "eyebrow": "DERECHOS DE CUSTODIA",
+      "title": "Protector legal de la tierra",
+      "description": "Formas parte de un sistema legal de garantía que reconoce a la Naturaleza como sujeto de derechos en una parcela específica.\n\nEste marco, alineado con la Declaración de los Derechos de la Naturaleza y los principios bioculturales, nos ayuda a reclamar nuestro rol como guardianes de los ecosistemas vivos de los que dependemos y de los que somos parte inseparable."
+    },
+    "3": {
+      "eyebrow": "DERECHOS DE IMPACTO",
+      "title": "Monitoreo de Impacto",
+      "description": "Sigue el progreso de la tierra que ayudas a proteger mediante datos en tiempo real y narrativas de geolocalización.\n\nObserva su transformación en un hub biocultural con actualizaciones regulares, mapas visuales e informes de impacto. Consulta KPIs sobre plantación de árboles, aumento de biodiversidad e impacto en la comunidad local—todo mostrando tu contribución a la regeneración en acción."
+    },
+    "4": {
+      "eyebrow": "DERECHOS DE GOBERNANZA",
+      "title": "Acceso a Inhabit DAO",
+      "description": "Recibes derechos de gobernanza sobre asuntos específicos como garante de la tierra.\n\nPuedes opinar sobre cambios inesperados en el uso de la tierra, cambios en la gestión del Hub o cualquier evento imprevisto que pueda alterar la relación entre los actores y la tierra o amenazar los Derechos de la Naturaleza y la integridad de la misión biocultural."
+    },
+    "5": {
+      "eyebrow": "DERECHOS DE USO",
+      "title": "Acceso biocultural exclusivo",
+      "description": "Obtienes acceso a experiencias bioculturales, eventos y talleres dentro de los HUBS del corredor, profundizando tu conexión con la tierra y la biocultura de un territorio.\n\nLos beneficios incluyen estadías y comidas gratuitas o con descuento, acceso exclusivo a experiencias únicas y contenido educativo sobre reforestación, permacultura, bioconstrucción y más."
+    }
+  },
+  "nftWorksSection": {
+    "title": "¿Cómo funciona el NFT?<br /><strong>En dos pasos</strong>",
+    "description": "Los metadatos cifrados del NFT contienen el marco legal, geolocalización de la tierra, registro de título, términos de membresía, obras de arte—garantizando protección permanente y cumplimiento de derechos de los participantes.",
+    "steps": [
+      {
+        "title": "Compra un NFT y conviértete en guardián",
+        "description": "Obtienes derechos de custodia y uso de por vida sobre una parcela específica, pudiendo monitorear y participar en decisiones importantes que afectan estos ecosistemas, y recibir beneficios exclusivos para visitar los hubs y explorar todo el Corredor."
+      },
+      {
+        "title": "Financia la implementación",
+        "description": "Los fondos se usan para cuatro acciones clave: adquirir y proteger tierras degradadas, restaurar sus ecosistemas, transformarlas en HUBS bioculturales prósperos y mejorar nuestro modelo regenerativo para asegurar impacto a largo plazo, escalabilidad y participación glocal."
+      }
+    ]
+  },
+  "internalPagesHero": {
+    "hubs": {
+      "title": "biocultural",
+      "strong": "Hubs",
+      "description": "Los HUBS son como 'Jardines Migratorios': existen en el mundo real pero se comportan de manera diferente; son 'espacios de transición' para experimentar nuevas formas de relacionarnos con nosotros mismos y la naturaleza. Lugares para aprender las prácticas más profundas de habitar y custodiar la tierra."
+    },
+    "stewardship": {
+      "title": "Custodia",
+      "strong": "NFT",
+      "description": "El NFT de Custodia busca revolucionar la restauración al crear un nuevo modelo de conservación que involucra activamente a todos—ofreciendo beneficios reales y oportunidades para reconectar con la naturaleza a través de la custodia ecológica práctica."
+    },
+    "about": {
+      "title": "Acerca de",
+      "strong": "Nosotros",
+      "description": "Nuestra visión es contribuir a la conservación y regeneración de la diversidad biocultural facilitando la creación de un corredor físico global que proteja ecosistemas vitales e impulse la innovación social rural."
+    },
+    "nuiyanzhi": {
+      "title": "Ñuiyanzhi",
+      "strong": "Hub",
+      "description": "Sanando suelos degradados y reforestando áreas clave, restaura la funcionalidad del ecosistema y crea un refugio para especies en peligro, permitiendo el movimiento de la vida silvestre a través de un corredor ecológico interno que reconecta paisajes fragmentados."
+    }
   }
 } 

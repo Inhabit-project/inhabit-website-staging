@@ -2,8 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
 
 const Footer: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <footer className="relative w-full min-h-screen bg-secondary no-snap">
       {/* Background Image */}
@@ -40,7 +42,7 @@ const Footer: React.FC = () => {
                   {/* Connect Section */}
                   <div>
                     <h3 className="eyebrow text-light mb-2">
-                      CONNECT
+                      {t('mainPage.footer.connect')}
                     </h3>
                     <a
                       href="mailto:hello@inhabit.one"
@@ -53,10 +55,10 @@ const Footer: React.FC = () => {
                   {/* Location Section */}
                   <div>
                     <h3 className="eyebrow text-light mb-2">
-                      LOCATION
+                      {t('mainPage.footer.location')}
                     </h3>
                     <p className="base-text text-light">
-                    Tierra Kilwa, Palomino, La Guajira, Colombia
+                      {t('mainPage.footer.locationText')}
                     </p>
                   </div>
                 </div>
@@ -66,10 +68,10 @@ const Footer: React.FC = () => {
                   {/* Newsletter Section */}
                   <div>
                     <h3 className="eyebrow text-light mb-2">
-                      NEWSLETTER
+                      {t('mainPage.footer.newsletter')}
                     </h3>
                     <p className="base-text text-light mb-4">
-                    Suscribe to have the best updates from us!
+                      {t('mainPage.footer.newsletterText')}
                     </p>
                     <Formik
                       initialValues={{ email: '', privacy: false }}
@@ -104,7 +106,7 @@ const Footer: React.FC = () => {
                           <input
                             type="email"
                             name="email"
-                            placeholder="Your email"
+                            placeholder={t('mainPage.footer.emailPlaceholder')}
                             className="input-main"
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -130,7 +132,7 @@ const Footer: React.FC = () => {
                               </span>
                             </div>
                             <span className="base-text text-light text-xs ">
-                              I accept the privacy policy
+                              {t('mainPage.footer.acceptPolicy')}
                             </span>
                           </label>
                           {errors.privacy && touched.privacy && (
@@ -169,17 +171,17 @@ const Footer: React.FC = () => {
               {/* Menu Section */}
               <div className="w-full lg:w-[45%] lg:py-16">
                 <h3 className="eyebrow text-light mb-2">
-                  MENU
+                  {t('mainPage.footer.menu')}
                 </h3>
                 <nav className="flex flex-col gap-4 ">
                   {[
-                    { label: 'home', path: '/' },
-                    { label: 'hubs', path: '/hubs' },
-                    { label: 'stewardship Nft', path: '/stewardship-nft' },
-                    { label: 'about Us', path: '/about' },
-                    { label: 'projects', path: '/projects' },
-                    { label: 'blog', path: '/blog' },
-                    { label: 'contact', path: '/contact' }
+                    { label: t('navigation.home'), path: '/' },
+                    { label: t('navigation.hubs'), path: '/hubs' },
+                    { label: t('navigation.stewardshipNFT'), path: '/stewardship-nft' },
+                    { label: t('navigation.aboutUs'), path: '/about' },
+                    { label: t('navigation.projects'), path: '/projects' },
+                    { label: t('navigation.blog'), path: '/blog' },
+                    { label: t('navigation.contact'), path: '/contact' }
                   ].map((item) => (
                     <Link
                       key={item.path}
@@ -198,7 +200,7 @@ const Footer: React.FC = () => {
         {/* Copyright Section */}
         <div className="h-[5.5rem] px-6 lg:pl-[clamp(1.5rem,5vw,6.25rem)] flex items-center">
           <p className="nav-text text-light text-xs">
-            COPYRIGHT 2025 ALL RIGHTS RESERVED DESIGNED BY FERNANDA HERRERA
+            {t('mainPage.footer.copyright')}
           </p>
         </div>
       </div>

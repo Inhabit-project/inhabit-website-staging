@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import BiodiversityCardsSection from './BiodiversityCardsSection';
 import ImpactLegalInnovationCardsSection from './ImpactLegalInnovationCardsSection';
+import { useTranslation } from 'react-i18next';
 
 const cardVariants = {
   hidden: { y: 100, opacity: 0 },
@@ -48,6 +49,7 @@ const Infographic: React.FC = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [showBelowContent, setShowBelowContent] = useState(false);
   const [spacerHeight, setSpacerHeight] = useState(0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -104,10 +106,10 @@ const Infographic: React.FC = () => {
           <div className="horizontal-slide w-screen flex-shrink-0 flex flex-col items-start justify-center px-[clamp(1.5rem,5vw,6.25rem)]">
             <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
               <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
-                Land Tenure<br /><strong>Framework</strong>
+                <span dangerouslySetInnerHTML={{ __html: t('mainPage.infographic.landTenureTitle') }} />
               </h2>
               <p className="body-M text-secondary max-w-[36rem]">
-                INHABIT stewardship-based restoration model, is designed to become the most robust and effective approach to ensure the long-term protection and regeneration of degraded lands, while actively engaging everyone in ecosystem stewardship.
+                {t('mainPage.infographic.landTenureDescription')}
               </p>
             </div>
             <div className="self-center relative overflow-hidden">
@@ -121,9 +123,11 @@ const Infographic: React.FC = () => {
           {/* Slide 2: NFT Stewards */}
           <div className="horizontal-slide w-screen flex-shrink-0 flex flex-col lg:flex-row items-end justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] mb-[5rem]">
             <div className="w-full lg:w-2/5 max-w-6xl flex flex-col justify-end">
-              <h2 className="heading-2 text-secondary mb-6">NFT Stewards</h2>
+              <h2 className="heading-2 text-secondary mb-6">
+                <span dangerouslySetInnerHTML={{ __html: t('mainPage.infographic.nftStewardsTitle') }} />
+              </h2>
               <p className="body-M text-secondary">
-                Individuals from anywhere in the world can become lifelong protectors of nature, empowered to monitor, safeguard, and gain access to these thriving hubs, along with numerous benefits as they travel the Corridor.
+                {t('mainPage.infographic.nftStewardsDescription')}
               </p>
             </div>
             <div className="w-full lg:w-3/5 flex self-center justify-center">
@@ -139,9 +143,11 @@ const Infographic: React.FC = () => {
           {/* Slide 3: Nature */}
           <div className="horizontal-slide w-screen flex-shrink-0 flex flex-col lg:flex-row items-start justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] mb-[5rem]">
             <div className="w-full lg:w-2/5 max-w-6xl flex flex-col justify-start">
-              <h2 className="heading-2 text-secondary mb-6">Nature</h2>
+              <h2 className="heading-2 text-secondary mb-6">
+                <span dangerouslySetInnerHTML={{ __html: t('mainPage.infographic.natureTitle') }} />
+              </h2>
               <p className="body-M text-secondary">
-                Nature is considered an entity with rights within the land borders, in accordance with the Declaration of Rights of Nature (e.g. the right to autoregulation, restoration, protection, decision-making...)
+                {t('mainPage.infographic.natureDescription')}
               </p>
             </div>
             <div className="w-full lg:w-3/5 flex self-center justify-center">
@@ -157,9 +163,11 @@ const Infographic: React.FC = () => {
           {/* Slide 4: Guardians */}
           <div className="horizontal-slide w-screen flex-shrink-0 flex flex-col lg:flex-row   gap-8 px-[clamp(1.5rem,5vw,6.25rem)] mb-[5rem]">
             <div className="w-full lg:w-2/5 max-w-6xl flex flex-col self-end">
-              <h2 className="heading-2 text-secondary mb-6">Guardians</h2>
+              <h2 className="heading-2 text-secondary mb-6">
+                <span dangerouslySetInnerHTML={{ __html: t('mainPage.infographic.guardiansTitle') }} />
+              </h2>
               <p className="body-M text-secondary">
-                A family of change-makers, receiving permanent usage rights and restoration financing to ensure the regeneration and conservation of the land, to develop an innovative bio-cultural HUB, and to expand the corridor safeguard, and gain access to these thriving hubs, along with numerous benefits as they travel the Corridor.
+                {t('mainPage.infographic.guardiansDescription')}
               </p>
             </div>
             <div className="w-full lg:w-3/5 flex self-center justify-center">

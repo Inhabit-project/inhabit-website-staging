@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Logo {
   logo: string;
@@ -101,6 +102,7 @@ const Marquee: React.FC<{ logos: Logo[] }> = ({ logos }) => {
 };
 
 const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, showPartners, allies: alliesProp, builders: buildersProp, partners: partnersProp }) => {
+  const { t } = useTranslation();
   const alliesToShow = alliesProp || allies;
   const buildersToShow = buildersProp || builders;
   const partnersToShow = partnersProp || partners;
@@ -112,7 +114,7 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
             <section>
               <div className="flex flex-row items-start justify-between w-full mb-6 md:mb-10">
                 <h2 className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]">
-                  Our<br /><strong>Allies</strong>
+                  <span dangerouslySetInnerHTML={{ __html: t('mainPage.testimonials.partnersTitle') }} />
                 </h2>
               </div>
               <Marquee logos={alliesToShow} />
@@ -122,7 +124,7 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
             <section>
               <div className="flex flex-row items-start justify-between w-full mb-6 md:mb-10">
                 <h2 className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]">
-                  Our<br /><strong>Builders</strong>
+                  <span dangerouslySetInnerHTML={{ __html: t('mainPage.logosSection.buildersTitle') }} />
                 </h2>
               </div>
               <Marquee logos={buildersToShow} />
@@ -132,7 +134,7 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
             <section>
               <div className="flex flex-row items-start justify-between w-full mb-6 md:mb-10">
                 <h2 className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]">
-                  Our<br /><strong>Partners</strong>
+                  <span dangerouslySetInnerHTML={{ __html: t('mainPage.logosSection.partnersTitle') }} />
                 </h2>
               </div>
               <Marquee logos={partnersToShow} />

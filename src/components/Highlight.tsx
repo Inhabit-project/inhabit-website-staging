@@ -1,7 +1,9 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
+import { useTranslation } from 'react-i18next';
 
 const Highlight = () => {
+  const { t } = useTranslation();
   return (
     <div className="relative w-full min-h-screen background-gradient-dark flex items-center justify-center overflow-hidden">
       <div className="absolute mt-[12rem] opacity-30">
@@ -9,11 +11,9 @@ const Highlight = () => {
       </div>
       <div className="relative z-10 max-w-6xl mx-auto px-4 text-center">
         <p className="eyebrow text-light mb-5">
-          WHAT ARE NFTS
+          {t('mainPage.highlight.title')}
         </p>
-        <h3 className="text-light">
-          Stewardship NFTs are <strong className="text-orange highlight-strong">blockchain-verified contracts</strong> that give fractional rights <strong className="text-orange highlight-strong">to protect ecosystems</strong> on tokenized <strong className="text-orange highlight-strong">plots</strong> of land
-        </h3>
+        <h3 className="text-light" dangerouslySetInnerHTML={{ __html: t('mainPage.highlight.description') }} />
       </div>
       
       {/* Location Markers */}

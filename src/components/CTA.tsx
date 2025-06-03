@@ -1,6 +1,8 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const CTA: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <section className="relative min-h-screen w-full overflow-hidden scroll-container">
       {/* Background Image */}
@@ -21,9 +23,7 @@ const CTA: React.FC = () => {
             {/* Text and Buttons Container with semi-transparent background */}
             <div className="w-full md:w-[70%] p-6 md:p-12 bg-secondary/80 backdrop-blur-lg">
               <h3 className="heading-3 text-light text-center md:text-left">
-                Join us in <span className="text-primary">shaping a global corridor</span>.<br />
-                <span className="text-primary">Become a guardian</span>, trace the corridor,<br />
-                and be a <span className="text-primary">catalyst for impact !</span>
+                <span dangerouslySetInnerHTML={{ __html: t('mainPage.cta.title') }} />
               </h3>
 
               {/* Buttons */}
@@ -39,7 +39,7 @@ const CTA: React.FC = () => {
                 > 
                   <div className="flex items-center gap-2 px-6">
                     <img src="assets/icons/Chield_check_light.svg" alt="shield" className="w-5 h-5" />
-                    <span className="button-text text-sm tracking-[0.02em] uppercase">Become a Guardian</span>
+                    <span className="button-text text-sm tracking-[0.02em] uppercase">{t('mainPage.cta.becomeGuardian')}</span>
                   </div>
                   <div className="flex items-center px-4">
                     <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -58,7 +58,7 @@ const CTA: React.FC = () => {
                   <div className="flex items-center gap-2 px-4 md:px-6">
                   <img src="assets/icons/User_add_alt_fill.svg" alt="shield" className="w-5 h-5" />
                     <span className="button-text text-sm tracking-[0.02em] uppercase">
-                      Support Inhabit
+                      {t('mainPage.cta.discover')}
                     </span>
                   </div>
                   <div className="flex items-center px-3 md:px-4 ">

@@ -1,18 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const NFTGrid: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <section className="relative w-full background-gradient-dark mt-0 scroll-container">
       <div className="max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
         {/* Header section */}
         <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
           <h2 className="heading-2 text-light max-w-[40.9375rem]">
-            Our innovative <br /><strong>NFTs</strong>
+            <span dangerouslySetInnerHTML={{ __html: t('mainPage.nftGrid.title') }} />
           </h2>
           <p className="body-M text-light max-w-[35rem]">
-            Stewardship NFTs are blockchain-verified contracts that give fractional rights
-            to protect ecosystems on tokenized plots of land.
+            {t('mainPage.nftGrid.description')}
           </p>
         </div>
 
@@ -79,11 +80,11 @@ const NFTGrid: React.FC = () => {
                       </svg>
                     </div>
                   </div>
-                  <p className="text-[1rem] text-center text-green-soft tracking-[-2.5%]">2439 Available membership</p>
+                  <p className="text-[1rem] text-center text-green-soft tracking-[-2.5%]">2439 {t('mainPage.nftGrid.availableMembership')}</p>
                 </div>
                 <Link to="/checkout" className="btn-primary w-full flex items-center justify-center group">
                   <span className="button-text group-hover:text-secondary transition-colors duration-300">
-                    CHECK THIS NFT
+                    {t('mainPage.nftGrid.checkThisNFT')}
                   </span>
                 </Link>
               </div>
@@ -150,11 +151,11 @@ const NFTGrid: React.FC = () => {
                       </svg>
                     </div>
                   </div>
-                  <p className="text-[1rem] text-center text-green-soft tracking-[-2.5%]">2439 Available membership</p>
+                  <p className="text-[1rem] text-center text-green-soft tracking-[-2.5%]">2439 {t('mainPage.nftGrid.availableMembership')}</p>
                 </div>
                 <Link to="/checkout" className="btn-primary w-full flex items-center justify-center group">
                   <span className="button-text group-hover:text-secondary transition-colors duration-300">
-                    CHECK THIS NFT
+                    {t('mainPage.nftGrid.checkThisNFT')}
                   </span>
                 </Link>
               </div>
@@ -221,11 +222,11 @@ const NFTGrid: React.FC = () => {
                       </svg>
                     </div>
                   </div>
-                  <p className="text-[1rem] text-center text-green-soft tracking-[-2.5%]">2439 Available membership</p>
+                  <p className="text-[1rem] text-center text-green-soft tracking-[-2.5%]">2439 {t('mainPage.nftGrid.availableMembership')}</p>
                 </div>
                 <Link to="/checkout" className="btn-primary w-full flex items-center justify-center group">
                   <span className="button-text group-hover:text-secondary transition-colors duration-300">
-                    CHECK THIS NFT
+                    {t('mainPage.nftGrid.checkThisNFT')}
                   </span>
                 </Link>
               </div>
@@ -293,11 +294,11 @@ const NFTGrid: React.FC = () => {
                       </svg>
                     </div>
                   </div>
-                  <p className="text-[1rem] text-center text-green-soft tracking-[-2.5%]">2439 Available membership</p>
+                  <p className="text-[1rem] text-center text-green-soft tracking-[-2.5%]">2439 {t('mainPage.nftGrid.availableMembership')}</p>
                 </div>
                 <Link to="/checkout" className="btn-primary w-full flex items-center justify-center group">
                   <span className="button-text group-hover:text-secondary transition-colors duration-300">
-                    CHECK THIS NFT
+                    {t('mainPage.nftGrid.checkThisNFT')}
                   </span>
                 </Link>
               </div>

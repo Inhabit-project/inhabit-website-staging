@@ -50,7 +50,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       frameBorder="0"
       allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
       referrerPolicy="strict-origin-when-cross-origin"
-      allowFullScreen
       className="w-full h-full"
       loading="lazy"
     />
@@ -68,37 +67,24 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
   const { t } = useTranslation();
 
   // Function to preload the video when user hovers over the thumbnail
-  const preloadVideo = useCallback(() => {
-    if (!isVideoPreloaded) {
-      const preloadLink = document.createElement('link');
-      preloadLink.rel = 'preload';
-      preloadLink.href = 'https://player.vimeo.com/video/1079195883';
-      preloadLink.as = 'document';
-      document.head.appendChild(preloadLink);
-      setIsVideoPreloaded(true);
-    }
-  }, [isVideoPreloaded]);
-
-  // Use Intersection Observer to preload the video when thumbnail comes into view
+  // Removed ineffective preload logic for Vimeo player
+  // Use Intersection Observer to trigger any other effects if needed
   useEffect(() => {
     if (!videoContainerRef.current) return;
-    
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          preloadVideo();
+          // No preload logic needed
           observer.disconnect();
         }
       },
       { threshold: 0.1 }
     );
-    
     observer.observe(videoContainerRef.current);
-    
     return () => {
       observer.disconnect();
     };
-  }, [preloadVideo]);
+  }, []);
 
   return ( 
     <section className="relative w-full background-gradient-dark flex flex-col items-center">
@@ -129,7 +115,6 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
         <div 
           ref={videoContainerRef}
           className="self-end w-full md:w-[45rem] h-[16rem] md:h-[22rem] rounded-xl overflow-hidden"
-          onMouseEnter={preloadVideo}
         >
           {/* Video placeholder with background image */}
           <div 
