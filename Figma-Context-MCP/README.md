@@ -1,3 +1,5 @@
+# Framelink Figma MCP Server
+
 <a href="https://www.framelink.ai/?utm_source=github&utm_medium=readme&utm_campaign=readme" target="_blank" rel="noopener">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://www.framelink.ai/github/HeaderDark.png" />
@@ -23,13 +25,17 @@
   </a>
 </div>
 
-<br/>
+---
 
-Give [Cursor](https://cursor.sh/), [Windsurf](https://codeium.com/windsurf), [Cline](https://cline.bot/), and other AI-powered coding tools access to your Figma files with this [Model Context Protocol](https://modelcontextprotocol.io/introduction) server.
+## Features
 
-When Cursor has access to Figma design data, it's **way** better at one-shotting designs accurately than alternative approaches like pasting screenshots.
+- **Seamless Figma Integration**: Access Figma design data directly from your IDE or coding agent.
+- **Optimized for AI Tools**: Designed for Cursor, Windsurf, Cline, and other AI-powered coding tools.
+- **Simplified Figma API**: Translates Figma API responses into concise, relevant context for code generation.
+- **Cross-Platform**: Works on MacOS, Linux, and Windows.
+- **Easy Setup**: Quick configuration with your Figma API key.
 
-<h3><a href="https://www.framelink.ai/docs/quickstart?utm_source=github&utm_medium=readme&utm_campaign=readme">See quickstart instructions →</a></h3>
+---
 
 ## Demo
 
@@ -37,26 +43,34 @@ When Cursor has access to Figma design data, it's **way** better at one-shotting
 
 [![Watch the video](https://img.youtube.com/vi/6G9yb-LrEqg/maxresdefault.jpg)](https://youtu.be/6G9yb-LrEqg)
 
-## How it works
+---
+
+## How it Works
 
 1. Open your IDE's chat (e.g. agent mode in Cursor).
 2. Paste a link to a Figma file, frame, or group.
 3. Ask Cursor to do something with the Figma file—e.g. implement the design.
-4. Cursor will fetch the relevant metadata from Figma and use it to write your code.
+4. Cursor fetches the relevant metadata from Figma and uses it to write your code.
 
 This MCP server is specifically designed for use with Cursor. Before responding with context from the [Figma API](https://www.figma.com/developers/api), it simplifies and translates the response so only the most relevant layout and styling information is provided to the model.
 
 Reducing the amount of context provided to the model helps make the AI more accurate and the responses more relevant.
 
+---
+
 ## Getting Started
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v14 or higher recommended)
+- A [Figma API access token](https://help.figma.com/hc/en-us/articles/8085703771159-Manage-personal-access-tokens)
+
+### Installation & Configuration
 
 Many code editors and other AI clients use a configuration file to manage MCP servers.
 
-The `figma-developer-mcp` server can be configured by adding the following to your configuration file.
+The `figma-developer-mcp` server can be configured by adding the following to your configuration file:
 
-> NOTE: You will need to create a Figma access token to use this server. Instructions on how to create a Figma API access token can be found [here](https://help.figma.com/hc/en-us/articles/8085703771159-Manage-personal-access-tokens).
-
-### MacOS / Linux
+#### MacOS / Linux
 
 ```json
 {
@@ -69,7 +83,7 @@ The `figma-developer-mcp` server can be configured by adding the following to yo
 }
 ```
 
-### Windows
+#### Windows
 
 ```json
 {
@@ -82,11 +96,58 @@ The `figma-developer-mcp` server can be configured by adding the following to yo
 }
 ```
 
-If you need more information on how to configure the Framelink Figma MCP server, see the [Framelink docs](https://www.framelink.ai/docs/quickstart?utm_source=github&utm_medium=readme&utm_campaign=readme).
+> **Note:** Replace `YOUR-KEY` with your actual Figma API key.
+
+For more information, see the [Framelink docs](https://www.framelink.ai/docs/quickstart?utm_source=github&utm_medium=readme&utm_campaign=readme).
+
+---
+
+## Usage
+
+1. Start your IDE and ensure the MCP server is configured as above.
+2. Open the chat or agent mode.
+3. Paste a Figma file, frame, or group link.
+4. Ask your coding agent to implement or analyze the design.
+
+**Example:**
+- _"Implement this Figma frame as a React component."_
+- _"Extract all color styles from this Figma file."_
+
+---
+
+## Contributing
+
+Contributions are welcome! To contribute:
+1. Fork this repository.
+2. Create a new branch for your feature or fix.
+3. Make your changes and commit them.
+4. Open a pull request describing your changes.
+
+Please see the [issues page](https://github.com/GLips/Figma-Context-MCP/issues) for ideas and discussion.
+
+---
+
+## License
+
+This project is licensed under the [MIT License](https://github.com/GLips/Figma-Context-MCP/blob/main/LICENSE).
+
+---
+
+## Support & Contact
+
+- [Framelink Docs](https://www.framelink.ai/docs/quickstart?utm_source=github&utm_medium=readme&utm_campaign=readme)
+- [Discord Community](https://framelink.ai/discord)
+- [Twitter: @glipsman](https://twitter.com/glipsman)
+
+For bug reports or feature requests, please open an [issue](https://github.com/GLips/Figma-Context-MCP/issues).
+
+---
 
 ## Star History
 
 <a href="https://star-history.com/#GLips/Figma-Context-MCP"><img src="https://api.star-history.com/svg?repos=GLips/Figma-Context-MCP&type=Date" alt="Star History Chart" width="600" /></a>
+
+---
 
 ## Learn More
 
