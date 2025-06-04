@@ -13,7 +13,17 @@ const Blog: React.FC = () => {
 
   // Get main post and small posts from translations
   const mainPost = t('mainPage.blogPosts.main', { returnObjects: true }) as BlogPost;
-  const smallPosts = t('mainPage.blogPosts.small', { returnObjects: true }) as BlogPost[];
+  let smallPosts = t('mainPage.blogPosts.small', { returnObjects: true }) as unknown;
+
+  // Ensure smallPosts is always an array
+  if (!Array.isArray(smallPosts)) {
+    // If it's an object with numeric keys, convert to array
+    if (smallPosts && typeof smallPosts === 'object') {
+      smallPosts = Object.values(smallPosts);
+    } else {
+      smallPosts = [];
+    }
+  }
 
   return (
     <section className="background-gradient-light w-full">
@@ -57,7 +67,7 @@ const Blog: React.FC = () => {
             {/* Small Blog Posts */}
             <div className="lg:w-1/2">
               <div className="flex flex-col gap-[1.125rem]">
-                {smallPosts.map((post, index) => (
+                {(smallPosts as BlogPost[]).map((post, index) => (
                   <div key={index} className="flex gap-5">
                     <div className="relative aspect-[4/3] w-1/3">
                       <img 
@@ -88,4 +98,4 @@ const Blog: React.FC = () => {
   );
 };
 
-export default Blog; 
+export default Blog;

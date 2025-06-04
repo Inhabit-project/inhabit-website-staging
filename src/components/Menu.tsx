@@ -93,7 +93,7 @@ const Menu: React.FC = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="font-size-xs hidden lg:flex gap-8">
+          <nav role="navigation" aria-label="Main navigation" className="font-size-xs hidden lg:flex gap-8">
             {menuLinks.map((item) => (
               <Link
                 key={item.path}
@@ -103,7 +103,7 @@ const Menu: React.FC = () => {
                 {item.label}
               </Link>
             ))}
-          </div>
+          </nav>
 
           {/* Desktop Right side buttons */}
           <div className="hidden lg:flex items-center gap-4">
@@ -153,7 +153,7 @@ const Menu: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <nav className="flex flex-col items-center gap-6 mt-12">
+            <nav role="navigation" aria-label="Mobile navigation" className="flex flex-col items-center gap-6 mt-12">
               {menuLinks.map((item) => (
                 <Link
                   key={item.path}

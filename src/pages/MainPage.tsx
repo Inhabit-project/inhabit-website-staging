@@ -28,24 +28,28 @@ const MainPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen background-gradient-light">
+    <>
+      {/* Skip to main content link for accessibility */}
+      <a href="#main-content" className="sr-only focus:not-sr-only absolute top-2 left-2 bg-white text-black p-2 z-50 rounded">Skip to main content</a>
       <Menu />
-      <Hero scrollToRef={videoSectionRef} />
-      <div ref={videoSectionRef}>
-        <Video />
-      </div>
-      <Hubs />
-      <StewardshipNFT />
-      <Highlight />
-      <Photo />
-      <NFTGrid />
-      <Infographic />
-      <Testimonials />
-      <CTA />
-      <Blog />
-      <FAQ />
+      <main id="main-content" tabIndex={-1}>
+        <Hero scrollToRef={videoSectionRef} />
+        <div ref={videoSectionRef}>
+          <Video />
+        </div>
+        <Hubs />
+        <StewardshipNFT />
+        <Highlight />
+        <Photo />
+        <NFTGrid />
+        <Infographic />
+        <Testimonials />
+        <CTA />
+        <Blog />
+        <FAQ />
+      </main>
       <Footer />
-    </div>
+    </>
   );
 };
 

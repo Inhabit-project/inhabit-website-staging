@@ -416,6 +416,34 @@
     "logosSection": {
       "buildersTitle": "Our <br /> <strong>Builders</strong>",
       "partnersTitle": "Our <br /> <strong>Partners</strong>"
+    },
+    "blogPosts": {
+      "main": {
+        "date": "20.05.2025",
+        "title": "Biodiversity Hotspots",
+        "content": "Every HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times. These \"living seed hubs\" can be used by animals and humans to transport and disperse seeds, spreading biodiversity throughout the Corridor.",
+        "image": "/assets/blog/blog-main.jpg"
+      },
+      "small": [
+        {
+          "date": "20.05.2025",
+          "title": "Biodiversity Hotspots",
+          "content": "Every HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times.",
+          "image": "/assets/blog/blog-1.jpg"
+        },
+        {
+          "date": "20.05.2025",
+          "title": "Biodiversity Hotspots",
+          "content": "Every HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times.",
+          "image": "/assets/blog/blog-2.jpg"
+        },
+        {
+          "date": "20.05.2025",
+          "title": "Biodiversity Hotspots",
+          "content": "Every HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times.",
+          "image": "/assets/blog/blog-3.jpg"
+        }
+      ]
     }
   },
   "nuiyanzhiPage": {

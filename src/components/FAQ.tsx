@@ -35,14 +35,16 @@ const FAQ: React.FC = () => {
             {faqItems.map((item, index) => (
               <div key={index} className="border-b border-[#F6FFEA]/20 last:border-b-0">
                 <div 
-                  className="flex items-center justify-between py-6 cursor-pointer group"
-                  onClick={() => toggleAccordion(index)}
+                  className="flex items-center justify-between py-6 group"
                 >
                   <h3 className="text-white body-M">
                     {item.question}
                   </h3>
                   <button 
                     className={`w-8 h-8 rounded-full bg-white/30 backdrop-blur-[7.5px] border border-[#EFEFEF]/50 flex items-center justify-center transition-all duration-300 group-hover:border-white group-hover:bg-white/40 ${openIndex === index ? 'rotate-45' : ''}`}
+                    aria-expanded={openIndex === index}
+                    aria-controls={`faq-answer-${index}`}
+                    onClick={() => toggleAccordion(index)}
                   >
                     <img 
                       src="/assets/faq-plus-icon.svg" 
@@ -52,6 +54,7 @@ const FAQ: React.FC = () => {
                   </button>
                 </div>
                 <div 
+                  id={`faq-answer-${index}`}
                   className={`overflow-hidden transition-all duration-300 ${
                     openIndex === index ? 'max-h-[500px] opacity-100 pb-6' : 'max-h-0 opacity-0'
                   }`}
