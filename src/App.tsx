@@ -16,6 +16,8 @@ import { useScrollToTopOnNavigation } from './utils/scrollToTopOnNavigation';
 import FourOhFourPage from './pages/404';
 import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import ContactPage from './pages/ContactPage';
+import ProjectsPage from './pages/ProjectsPage';
 
 function ScrollToTopOnNavigation() {
   useScrollToTopOnNavigation();
@@ -38,6 +40,8 @@ const App: React.FC = () => {
         <Route path="/hubs/TierraKilwa" element={<TierraKilwaPage />} />
         <Route path="/terms" element={<TermsAndConditionsPage />} />
         <Route path="/privacy" element={<PrivacyPolicyPage />} />
+        <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="*" element={<FourOhFourPage />} />
       </Routes>
     </Router>

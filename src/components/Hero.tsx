@@ -33,11 +33,11 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef }) => {
       <Menu />
 
       {/* Hero Content */}
-      <div className="relative mt-[7rem] w-full ">
+      <div className="relative mt-[7rem] w-full h-[80vh] flex flex-col justify-between">
         {/* Centered Title Container */}
-        <div className="flex justify-center mb-[17rem]">
+        <div className="flex justify-center">
           <h1 
-            className="heading-1 text-center max-w-[89.3125rem]"
+            className="heading-1 text-center max-w-[92rem]"
             dangerouslySetInnerHTML={{ __html: t('hero.title') }}
           />
         </div>

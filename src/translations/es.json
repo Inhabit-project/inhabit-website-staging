@@ -9,7 +9,7 @@
     "contact": "CONTACTOS"
   },
   "hero": {
-    "title": "<strong>Únete a nosotros</strong> para dar forma a un <strong>corredor global</strong> de <strong>biodiversidad</strong>",
+    "title": "<strong>Únete</strong> para dar forma a un <strong>corredor global</strong> de <strong>biodiversidad</strong>",
     "description": "INHABIT protege ecosistemas vitales e impulsa la innovación rural a través de centros bioculturales liderados por la comunidad",
     "scrollButton": "DESPLÁZATE PARA VER EL VIDEO"
   },
@@ -195,7 +195,7 @@
     },
     "highlight": {
       "title": "¿QUÉ SON LOS NFTS?",
-      "description": "Los NFTs de custodia son <strong class=\"text-orange highlight-strong\">contratos verificados en blockchain</strong> que otorgan derechos fraccionarios <strong class=\"text-orange highlight-strong\">para proteger ecosistemas</strong> en <strong class=\"text-orange highlight-strong\">parcelas</strong> de tierra tokenizadas"
+      "description": "Los NFTs de custodia son <span class=\"text-orange highlighted-text\">contratos verificados en blockchain</span> que otorgan derechos fraccionarios <span class=\"text-orange highlighted-text\">para proteger ecosistemas</span> en <span class=\"text-orange highlighted-text\">parcelas</span> de tierra tokenizadas"
     },
     "photo": {
       "section1": "Al comprar un NFT te conviertes en guardián vitalicio de un Hub específico, permitiéndote monitorear y participar en decisiones importantes que afectan estos ecosistemas, y obtener acceso exclusivo a experiencias bioculturales, eventos, talleres, visitar los hubs y explorar todo el Corredor.",
@@ -235,6 +235,34 @@
     "blog": {
       "title": "Mantente<br /><strong>informado</strong>",
       "description": "Mantente actualizado con nuestras últimas noticias y perspectivas sobre biodiversidad y preservación ecológica."
+    },
+    "blogPosts": {
+      "main": {
+        "date": "20.05.2025",
+        "title": "Puntos calientes de biodiversidad",
+        "content": "Cada HUB debe generar y albergar un vasto reservorio de biodiversidad y conocimiento vivo específico de un ecosistema único, esencial para afrontar los desafíos de nuestro tiempo. Estos 'hubs semilla vivientes' pueden ser utilizados por animales y humanos para transportar y dispersar semillas, expandiendo la biodiversidad a lo largo del Corredor.",
+        "image": "/assets/blog/blog-main.jpg"
+      },
+      "small": [
+        {
+          "date": "20.05.2025",
+          "title": "Puntos calientes de biodiversidad",
+          "content": "Cada HUB debe generar y albergar un vasto reservorio de biodiversidad y conocimiento vivo específico de un ecosistema único, esencial para afrontar los desafíos de nuestro tiempo.",
+          "image": "/assets/blog/blog-1.jpg"
+        },
+        {
+          "date": "20.05.2025",
+          "title": "Puntos calientes de biodiversidad",
+          "content": "Cada HUB debe generar y albergar un vasto reservorio de biodiversidad y conocimiento vivo específico de un ecosistema único, esencial para afrontar los desafíos de nuestro tiempo.",
+          "image": "/assets/blog/blog-2.jpg"
+        },
+        {
+          "date": "20.05.2025",
+          "title": "Puntos calientes de biodiversidad",
+          "content": "Cada HUB debe generar y albergar un vasto reservorio de biodiversidad y conocimiento vivo específico de un ecosistema único, esencial para afrontar los desafíos de nuestro tiempo.",
+          "image": "/assets/blog/blog-3.jpg"
+        }
+      ]
     },
     "faq": {
       "title": "Preguntas <br /><strong>Frecuentes</strong>",
@@ -414,7 +442,7 @@
       "3": {
         "eyebrow": "DERECHOS DE IMPACTO",
         "title": "Monitoreo de Impacto",
-        "description": "Sigue el progreso de la tierra que ayudas a proteger mediante datos en tiempo real y narrativas de geolocalización.\n\nObserva su transformación en un hub biocultural con actualizaciones regulares, mapas visuales e informes de impacto. Consulta KPIs sobre plantación de árboles, aumento de biodiversidad e impacto en la comunidad local—todo mostrando tu contribución a la regeneración en acción."
+        "description": "Sigue el progreso de la tierra que ayudas a proteger mediante datos en tiempo real y narrativas de geolocalización.\n\nObserva su transformación en un hub biocultural con actualizaciones regulares, mapas visuales e informes de impacto. Consulta KPIs sobre plantación de árboles, aumento de biodiversidad e impacto en la comunidad—todo mostrando tu contribución a la regeneración en acción."
       },
       "4": {
         "eyebrow": "DERECHOS DE GOBERNANZA",
@@ -480,6 +508,20 @@
     "logosSection": {
       "buildersTitle": "Nuestros <br /> <strong>Constructores</strong>",
       "partnersTitle": "Nuestros <br /> <strong>Socios</strong>"
+    },
+    "nftWorksSection": {
+      "title": "Asi funciona el NFT<br /><strong>En dos pasos</strong>",
+      "description": "Los metadatos cifrados del NFT contienen el marco legal, geolocalización de la tierra, registro de título, términos de membresía, obras de arte—garantizando protección permanente y cumplimiento de derechos de los participantes.",
+      "steps": [
+        {
+          "title": "Compra un NFT y conviértete en guardián",
+          "description": "Obtienes derechos de custodia y uso de por vida sobre una parcela específica, pudiendo monitorear y participar en decisiones importantes que afectan estos ecosistemas, y recibir beneficios exclusivos para visitar los hubs y explorar todo el Corredor."
+        },
+        {
+          "title": "Financia la implementación",
+          "description": "Los fondos se usan para cuatro acciones clave: adquirir y proteger tierras degradadas, restaurar sus ecosistemas, transformarlas en HUBS bioculturales prósperos y mejorar nuestro modelo regenerativo para asegurar impacto a largo plazo, escalabilidad y participación glocal."
+        }
+      ]
     }
   },
   "nuiyanzhiPage": {
@@ -641,7 +683,7 @@
     "3": {
       "eyebrow": "DERECHOS DE IMPACTO",
       "title": "Monitoreo de Impacto",
-      "description": "Sigue el progreso de la tierra que ayudas a proteger mediante datos en tiempo real y narrativas de geolocalización.\n\nObserva su transformación en un hub biocultural con actualizaciones regulares, mapas visuales e informes de impacto. Consulta KPIs sobre plantación de árboles, aumento de biodiversidad e impacto en la comunidad local—todo mostrando tu contribución a la regeneración en acción."
+      "description": "Sigue el progreso de la tierra que ayudas a proteger mediante datos en tiempo real y narrativas de geolocalización.\n\nObserva su transformación en un hub biocultural con actualizaciones regulares, mapas visuales e informes de impacto. Consulta KPIs sobre plantación de árboles, aumento de biodiversidad e impacto en la comunidad—todo mostrando tu contribución a la regeneración en acción."
     },
     "4": {
       "eyebrow": "DERECHOS DE GOBERNANZA",
@@ -689,5 +731,13 @@
       "strong": "Hub",
       "description": "Sanando suelos degradados y reforestando áreas clave, restaura la funcionalidad del ecosistema y crea un refugio para especies en peligro, permitiendo el movimiento de la vida silvestre a través de un corredor ecológico interno que reconecta paisajes fragmentados."
     }
+  },
+  "projectsPage": {
+    "title": "Nuestros<br /><strong>Proyectos</strong>",
+    "description": "Descubre las iniciativas y colaboraciones que están generando un impacto real. Nuestros proyectos abarcan restauración de ecosistemas, innovación biocultural y empoderamiento comunitario—cada uno es un paso hacia un futuro regenerativo."
+  },
+  "contactPage": {
+    "title": "Contáctanos<br /><strong>Aquí</strong>",
+    "description": "¡Nos encantaría saber de ti! Ya sea que tengas preguntas, quieras colaborar o simplemente desees conectar, escríbenos y nuestro equipo te responderá lo antes posible."
   }
 } 

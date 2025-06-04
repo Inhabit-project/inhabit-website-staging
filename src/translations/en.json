@@ -193,7 +193,7 @@
     },
     "highlight": {
       "title": "WHAT ARE NFTS?",
-      "description": "Stewardship NFTs are <strong class=\"text-orange highlight-strong\">blockchain-verified contracts</strong> that give fractional rights <strong class=\"text-orange highlight-strong\">to protect ecosystems</strong> on tokenized <strong class=\"text-orange highlight-strong\">plots</strong> of land"
+      "description": "Stewardship NFTs are <span class=\"highlighted-text\">blockchain-verified contracts</span> that give fractional rights <span class=\"highlighted-text\">to protect ecosystems</span> on tokenized <span class=\"highlighted-text\">plots</span> of land"
     },
     "photo": {
       "section1": "By purchasing an NFT you become a lifelong guardian of a specific Hub, allowing you to monitor and participate in important decisions affecting these ecosystems, and gain exclusive access to biocultural experiences, events, workshops, visit the hubs, and explore the entire Corridor.",
@@ -603,5 +603,13 @@
       "strong": "Hub",
       "description": "By healing degraded soils and reforesting key areas, it restores ecosystem functionality and creates a refuge for endangered species, enabling wildlife movement through an inner ecological corridor that reconnects fragmented landscapes. "
     }
+  },
+  "projectsPage": {
+    "title": "Our<br /><strong>Projects</strong>",
+    "description": "Discover the initiatives and collaborations that are driving real-world impact. Our projects span ecosystem restoration, biocultural innovation, and community empowerment—each one a step toward a regenerative future."
+  },
+  "contactPage": {
+    "title": "Contact<br /><strong>Us</strong>",
+    "description": "We would love to hear from you! Whether you have questions, want to collaborate, or simply wish to connect, reach out and our team will get back to you as soon as possible."
   }
 } 

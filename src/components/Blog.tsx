@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface BlogPost {
   date: string;
@@ -8,33 +9,11 @@ interface BlogPost {
 }
 
 const Blog: React.FC = () => {
-  const mainPost: BlogPost = {
-    date: "20.05.2025",
-    title: "Biodiversity Hotspots",
-    content: "Every HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times. These \"living seed hubs\" can be used by animals and humans to transport and disperse seeds, spreading biodiversity throughout the Corridor.",
-    image: "/assets/blog/blog-main.jpg"
-  };
+  const { t } = useTranslation();
 
-  const smallPosts: BlogPost[] = [
-    {
-      date: "20.05.2025",
-      title: "Biodiversity Hotspots",
-      content: "Every HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times.",
-      image: "/assets/blog/blog-1.jpg"
-    },
-    {
-      date: "20.05.2025",
-      title: "Biodiversity Hotspots",
-      content: "Every HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times.",
-      image: "/assets/blog/blog-2.jpg"
-    },
-    {
-      date: "20.05.2025",
-      title: "Biodiversity Hotspots",
-      content: "Every HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times.",
-      image: "/assets/blog/blog-3.jpg"
-    }
-  ];
+  // Get main post and small posts from translations
+  const mainPost = t('mainPage.blogPosts.main', { returnObjects: true }) as BlogPost;
+  const smallPosts = t('mainPage.blogPosts.small', { returnObjects: true }) as BlogPost[];
 
   return (
     <section className="background-gradient-light w-full">
@@ -43,10 +22,10 @@ const Blog: React.FC = () => {
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between gap-[13.3125rem] w-full mb-[2.5rem]">
             <h2 className="heading-2 text-secondary max-w-[40.9375rem]" style={{ color: 'var(--color-secondary)' }}>
-              Keep up<br /><strong style={{ color: 'var(--color-secondary)' }}>informed</strong>
+              <span dangerouslySetInnerHTML={{ __html: t('mainPage.blog.title') }} />
             </h2>
             <p className="body-M text-secondary max-w-[35rem]" style={{ color: 'var(--color-secondary)' }}>
-              Stay updated with our latest news and insights about biodiversity and ecological preservation.
+              {t('mainPage.blog.description')}
             </p>
           </div>
 
