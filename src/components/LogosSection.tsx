@@ -36,7 +36,7 @@ const builders: Logo[] = [
 const partners: Logo[] = [
   { logo: '/assets/logos/partner-logo-1.png', name: 'Partner 1' },
   { logo: '/assets/logos/partner-logo-2.png', name: 'Partner 2' },
-  { logo: '/assets/logos/partner-logo-3.png', name: 'Partner 3' },
+  { logo: '/assets/logos/partner-logo-3.svg', name: 'Partner 3' },
   { logo: '/assets/logos/partner-logo-4.png', name: 'Partner 4' },
   { logo: '/assets/logos/partner-logo-5.png', name: 'Partner 5' },
   { logo: '/assets/logos/partner-logo-6.svg', name: 'Partner 6' },

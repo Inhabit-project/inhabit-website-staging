@@ -27,7 +27,7 @@ const Blog: React.FC = () => {
 
   return (
     <section className="background-gradient-light w-full">
-      <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
+      <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24 background-gradient-light">
         <div className="flex flex-col items-start gap-12">
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between gap-[13.3125rem] w-full mb-[2.5rem]">
