@@ -32,23 +32,44 @@ const impactCards = [
   },
 ];
 
-const ImpactLegalInnovationCardsSection: React.FC = () => {
+const CriteriaCardsSection: React.FC = () => {
   return (
-    <section className="w-full flex flex-col items-center background-gradient-light py-24 px-[clamp(1.5rem,5vw,6.25rem)]">
-      <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full max-w-[120rem] mx-auto mb-[2.5rem]">
-        <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
-        Four Criteria <br /><strong>To Be a HUB</strong>
+    <section 
+      className="w-full py-24 background-gradient-light"
+      aria-labelledby="criteria-cards-title"
+    >
+      <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)]">
+        <h2 
+          id="criteria-cards-title"
+          className="heading-2 text-secondary mb-16"
+        >
+          Hub Criteria
         </h2>
-        <p className="body-M text-secondary max-w-[35rem]">
-        The INHABIT framework foresees that each HUB develops four key fields to become a biocultural HUB, developing each one according to its own vision and uniqueness        </p>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[107.5rem] mx-auto">
-        {impactCards.map((card, idx) => (
-          <ImpactCard key={idx} {...card} />
-        ))}
+        <div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          role="list"
+          aria-label="Hub criteria cards"
+        >
+          {impactCards.map((card, index) => (
+            <div 
+              key={card.number}
+              role="listitem"
+              aria-labelledby={`card-${card.number}-title`}
+            >
+              <ImpactCard
+                number={card.number}
+                icon={card.icon}
+                title={card.title}
+                subtitle={card.subtitle}
+                description={card.description}
+                id={`card-${card.number}-title`}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
 };
 
-export default ImpactLegalInnovationCardsSection; 
+export default CriteriaCardsSection; 

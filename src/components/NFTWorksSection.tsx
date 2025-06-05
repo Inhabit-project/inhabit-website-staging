@@ -7,11 +7,12 @@ const NFTWorksSection: React.FC = () => {
     <section
       className="w-full h-full py-24 px-[clamp(1.5rem,5vw,6.25rem)]"
       style={{ background: 'var(--background-gradient-light)' }}
+      aria-labelledby="nft-works-title"
     >
       <div className="max-w-[160rem] mx-auto flex flex-col gap-24">
         {/* Section Title */}
         <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
-          <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
+          <h2 id="nft-works-title" className="heading-2 text-secondary max-w-[40.9375rem]">
             <span dangerouslySetInnerHTML={{ __html: t('mainPage.nftWorksSection.title') }} />
           </h2>
           <p className="body-M text-secondary max-w-[35rem]">
@@ -19,13 +20,14 @@ const NFTWorksSection: React.FC = () => {
           </p>
         </div>
         {/* Step 1 */}
-        <div className="flex flex-col lg:flex-row items-end gap-12 ">
+        <article className="flex flex-col lg:flex-row items-end gap-12">
           {/* Image */}
           <div className="flex-1 flex justify-center items-center">
             <img
               src="/assets/nft.png"
               alt="NFT Stewardship Illustration"
               className="w-full max-w-[100%] h-auto"
+              loading="lazy"
             />
           </div>
           {/* Text Content */}
@@ -34,6 +36,7 @@ const NFTWorksSection: React.FC = () => {
               <span
                 className="font-abel text-[8rem] leading-none text-[var(--color-secondary)] opacity-90 mb-48"
                 style={{ fontWeight: 400 }}
+                aria-hidden="true"
               >
                 01
               </span>
@@ -47,7 +50,7 @@ const NFTWorksSection: React.FC = () => {
               </p>
             </div>
           </div>
-        </div>
+        </article>
         {/* Step 2 */}
         <div className="flex flex-col lg:flex-row items-end gap-12 ">
           {/* Image */}

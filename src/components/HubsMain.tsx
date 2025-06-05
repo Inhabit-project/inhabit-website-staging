@@ -65,67 +65,73 @@ const Hubs: React.FC = () => {
   const lang = i18n.language.startsWith('es') ? 'es' : 'en';
 
   return (
-    <>
+    <main id="main-content" role="main" tabIndex={-1}>
       <ImageSection
         eyebrow={content[lang].eyebrow}
         heading={<span dangerouslySetInnerHTML={{ __html: content[lang].heading }} />}
         imageSrc="/assets/sierra.jpg"
-        imageAlt="Sierra Nevada"
+        imageAlt="Sierra Nevada de Santa Marta mountain range"
       />
-      <HubSubsections
-        backgroundImage="/assets/1Hub/1hub.webp"
-        mapImage="/assets/1Hub/mapa.webp"
-        label={content[lang].nuiyanzhi.label}
-        title={content[lang].nuiyanzhi.title}
-        description={content[lang].nuiyanzhi.description}
-        visionHeading={content[lang].nuiyanzhi.visionHeading}
-        visionText={content[lang].nuiyanzhi.visionText}
-        onDownload={() => {}}
-        sliderImages={[
-          '/assets/1Hub/hub-view-1.webp',
-          '/assets/1Hub/hub-view-2.webp',
-          '/assets/1Hub/hub-view-3.webp',
-        ]}
-        navigateTo="/hubs/nuiyanzhi"
-      />
-      <HubSubsections
-        backgroundImage="/assets/forest.jpg"
-        mapImage="/assets/2Hub/mapa.png"
-        label={content[lang].aguaDeLuna.label}
-        title={content[lang].aguaDeLuna.title}
-        description={content[lang].aguaDeLuna.description}
-        visionHeading={content[lang].aguaDeLuna.visionHeading}
-        visionText={content[lang].aguaDeLuna.visionText}
-        onDownload={() => {}}
-        sliderImages={[
-          '/assets/2Hub/hub-view-1.webp',
-          '/assets/2Hub/hub-view-2.webp',
-          '/assets/2Hub/hub-view-3.webp',
-        ]}
-        navigateTo="/hubs/aguaDeLuna"
-        inactive={true}
-        buttonText="Hub coming soon"
-      />
-      <HubSubsections
-        backgroundImage="/assets/photo-2.webp"
-        mapImage="/assets/3Hub/mapa.png"
-        label={content[lang].TierraKilwa.label}
-        title={content[lang].TierraKilwa.title}
-        description={content[lang].TierraKilwa.description}
-        visionHeading={content[lang].TierraKilwa.visionHeading}
-        visionText={content[lang].TierraKilwa.visionText}
-        onDownload={() => {}}
-        sliderImages={[
-          '/assets/3Hub/hub-view-1.webp',
-          '/assets/3Hub/hub-view-2.webp',
-          '/assets/3Hub/hub-view-3.webp',
-        ]}
-        navigateTo="/hubs/TierraKilwa"
-        inactive={true}
-        buttonText="Hub coming soon"
-      />
-      <CriteriaCardsSection />
-    </>
+      <section aria-labelledby="hubs-section-title" className="hubs-section">
+        <h2 id="hubs-section-title" className="sr-only">Hubs Overview</h2>
+        <HubSubsections
+          backgroundImage="/assets/1Hub/1hub.webp"
+          mapImage="/assets/1Hub/mapa.webp"
+          label={content[lang].nuiyanzhi.label}
+          title={content[lang].nuiyanzhi.title}
+          description={content[lang].nuiyanzhi.description}
+          visionHeading={content[lang].nuiyanzhi.visionHeading}
+          visionText={content[lang].nuiyanzhi.visionText}
+          onDownload={() => {}}
+          sliderImages={[
+            '/assets/1Hub/hub-view-1.webp',
+            '/assets/1Hub/hub-view-2.webp',
+            '/assets/1Hub/hub-view-3.webp',
+          ]}
+          navigateTo="/hubs/nuiyanzhi"
+        />
+        <HubSubsections
+          backgroundImage="/assets/forest.jpg"
+          mapImage="/assets/2Hub/mapa.png"
+          label={content[lang].aguaDeLuna.label}
+          title={content[lang].aguaDeLuna.title}
+          description={content[lang].aguaDeLuna.description}
+          visionHeading={content[lang].aguaDeLuna.visionHeading}
+          visionText={content[lang].aguaDeLuna.visionText}
+          onDownload={() => {}}
+          sliderImages={[
+            '/assets/2Hub/hub-view-1.webp',
+            '/assets/2Hub/hub-view-2.webp',
+            '/assets/2Hub/hub-view-3.webp',
+          ]}
+          navigateTo="/hubs/aguaDeLuna"
+          inactive={true}
+          buttonText="Hub coming soon"
+        />
+        <HubSubsections
+          backgroundImage="/assets/photo-2.webp"
+          mapImage="/assets/3Hub/mapa.png"
+          label={content[lang].TierraKilwa.label}
+          title={content[lang].TierraKilwa.title}
+          description={content[lang].TierraKilwa.description}
+          visionHeading={content[lang].TierraKilwa.visionHeading}
+          visionText={content[lang].TierraKilwa.visionText}
+          onDownload={() => {}}
+          sliderImages={[
+            '/assets/3Hub/hub-view-1.webp',
+            '/assets/3Hub/hub-view-2.webp',
+            '/assets/3Hub/hub-view-3.webp',
+          ]}
+          navigateTo="/hubs/TierraKilwa"
+          inactive={true}
+          buttonText="Hub coming soon"
+        />
+      </section>
+      <section aria-labelledby="criteria-section-title" className="criteria-section">
+        <h2 id="criteria-section-title" className="sr-only">Hub Criteria</h2>
+        <CriteriaCardsSection />
+      </section>
+    </main>
   );
 };
 

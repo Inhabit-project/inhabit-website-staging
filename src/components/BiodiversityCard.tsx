@@ -8,6 +8,7 @@ interface BiodiversityCardProps {
   description?: string;
   index?: number;
   isInView?: boolean;
+  id?: string;
 }
 
 const cardVariants = {
@@ -28,7 +29,8 @@ const BiodiversityCard: React.FC<BiodiversityCardProps> = ({
   title = "Biodiversity\nHotspots",
   description = "Every HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times.\n\nThese \"living seed hubs\" can be used by animals and humans to transport and disperse seeds, spreading biodiversity throughout the Corridor.",
   index = 0,
-  isInView = true
+  isInView = true,
+  id
 }) => {
   return (
     <motion.div
@@ -37,6 +39,7 @@ const BiodiversityCard: React.FC<BiodiversityCardProps> = ({
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       className="w-full background-gradient-light border border-[#B6B6B6] radius-2xl p-6 md:p-[50px]"
+      aria-labelledby={id}
     >
       <div className="flex flex-col md:flex-row items-start justify-between">
         <span className="font-nunito-sans font-light text-base tracking-[-0.04em] text-black mb-6 md:mb-0">
@@ -44,7 +47,10 @@ const BiodiversityCard: React.FC<BiodiversityCardProps> = ({
         </span>
         <div className="flex flex-col md:flex-row justify-center items-start md:items-center gap-8 md:gap-[227px]">
           <div className="w-full md:w-[620px] flex flex-col gap-6 md:gap-[31px]">
-            <h3 className=" font-light text-[32px] md:text-[40px] leading-[1.2] text-[#1C3625] whitespace-pre-line">
+            <h3 
+              id={id}
+              className="font-light text-[32px] md:text-[40px] leading-[1.2] text-[#1C3625] whitespace-pre-line"
+            >
               {title}
             </h3>
             <p className="font-nunito-sans font-light text-base leading-[1.24] text-black whitespace-pre-line">

@@ -47,11 +47,17 @@ const Testimonials: React.FC = () => {
 
   return (
     <>
-      <section className="background-gradient-dark py-8 md:py-16 lg:py-[6.5rem] px-4 md:px-8 lg:px-[6.25rem] overflow-x-hidden flex flex-col gap-8 md:gap-16 lg:gap-[3.75rem]  scroll-container">
+      <section 
+        className="background-gradient-dark py-8 md:py-16 lg:py-[6.5rem] px-4 md:px-8 lg:px-[6.25rem] overflow-x-hidden flex flex-col gap-8 md:gap-16 lg:gap-[3.75rem] scroll-container"
+        aria-labelledby="testimonials-title"
+      >
         <div className="w-full">
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between w-full gap-6 md:gap-8">
-            <h2 className=" font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]">
+            <h2 
+              id="testimonials-title"
+              className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]"
+            >
               <span dangerouslySetInnerHTML={{ __html: t('mainPage.testimonials.title') }} />
             </h2>
             <p className="font-nunito font-light text-xl md:text-2xl lg:text-[1.75rem] leading-[1.24em] text-[#F6FFEA] max-w-full md:max-w-[35rem]">
@@ -61,25 +67,29 @@ const Testimonials: React.FC = () => {
         </div>
 
         {/* Testimonial */}
-        <div className="bg-[#162F08] border border-white/20 rounded-[1.7rem] shadow-[inset_0px_0px_2.7px_rgba(61,27,114,1)] backdrop-blur-6xl p-6 md:p-8 lg:p-[3.4rem] w-full">
+        <div 
+          className="bg-[#162F08] border border-white/20 rounded-[1.7rem] shadow-[inset_0px_0px_2.7px_rgba(61,27,114,1)] backdrop-blur-6xl p-6 md:p-8 lg:p-[3.4rem] w-full"
+          role="article"
+        >
           <div className="flex flex-col md:flex-row gap-6 md:gap-[3.4rem] w-full">
             <div className="w-full md:w-[33%] h-60 md:h-auto rounded-[1.3rem] overflow-hidden">
               <img 
                 src="/assets/louise.webp" 
-                alt="Testimonial" 
+                alt={t('mainPage.testimonials.testimonial.imageAlt', 'Portrait of Louise Borreani')}
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
             <div className="flex flex-col gap-4 md:gap-[2rem] flex-1">
               <h3 className="font-abel text-white text-base tracking-[0.07em] uppercase">
-              Louise Borreani
+                Louise Borreani
               </h3>
-              <p className="font-nunito text-white text-xl md:text-3xl lg:text-[2.5rem] leading-[1.1em]">
+              <blockquote className="font-nunito text-white text-xl md:text-3xl lg:text-[2.5rem] leading-[1.1em]">
                 {t('mainPage.testimonials.testimonial.quote')}
-              </p>
-              <span className="font-nunito text-white text-base body-M leading-[1.36em] tracking-[-0.015em]">
-              Co-founder, Ecofrontiers
-              </span>
+              </blockquote>
+              <cite className="font-nunito text-white text-base body-M leading-[1.36em] tracking-[-0.015em] not-italic">
+                Co-founder, Ecofrontiers
+              </cite>
             </div>
           </div>
         </div>

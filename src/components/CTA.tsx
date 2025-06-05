@@ -4,7 +4,10 @@ import { useTranslation } from 'react-i18next';
 const CTA: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <section className="relative min-h-screen w-full overflow-hidden scroll-container">
+    <section 
+      className="relative min-h-screen w-full overflow-hidden scroll-container"
+      aria-label={t('mainPage.cta.title')}
+    >
       {/* Background Image */}
       <div 
         className="absolute inset-0 w-full h-full"
@@ -14,6 +17,8 @@ const CTA: React.FC = () => {
           backgroundPosition: 'center',
           opacity: 100
         }}
+        role="presentation"
+        aria-hidden="true"
       />
 
       {/* Content Container */}
@@ -30,52 +35,71 @@ const CTA: React.FC = () => {
               <div className="mt-8 md:mt-12 flex flex-col md:flex-row gap-4 justify-center md:justify-start">
                 
                 {/* Primary Button (Orange) */}
-                
-                <a
-                  href="mailto:hello@inhabit.earth"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => window.location.href = 'mailto:hello@inhabit.earth'}
                   className="mt-0 flex items-center h-[4.2rem] bg-[var(--color-accent)] hover:bg-[var(--color-green-soft)] text-light hover:text-secondary rounded-button backdrop-blur-sm transition-all duration-200 group no-underline"
+                  aria-label={t('mainPage.cta.becomeGuardian')}
                 > 
                   <div className="flex items-center gap-2 px-6">
-                    <img src="assets/icons/Chield_check_light.svg" alt="shield" className="w-5 h-5" />
+                    <img 
+                      src="assets/icons/Chield_check_light.svg" 
+                      alt="" 
+                      className="w-5 h-5 transition-colors duration-200 group-hover:invert" 
+                      aria-hidden="true"
+                    />
                     <span className="button-text text-sm tracking-[0.02em] uppercase">{t('mainPage.cta.becomeGuardian')}</span>
                   </div>
                   <div className="flex items-center px-4">
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <svg 
+                      className="w-6 h-6 transition-transform duration-200 group-hover:translate-x-1" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor"
+                      aria-hidden="true"
+                    >
                       <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
-                </a>
+                </button>
 
                 {/* Secondary Button (Green) */}
-                <a
-                  href="mailto:hello@inhabit.earth"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => window.location.href = 'mailto:hello@inhabit.earth'}
                   className="btn-secondary flex items-center h-[4.2rem] bg-[var(--color-green-soft)] hover:bg-[var(--color-accent)] text-secondary hover:text-light rounded-button backdrop-blur-sm transition-all duration-200 group no-underline"
+                  aria-label={t('mainPage.cta.discover')}
                 >
                   <div className="flex items-center gap-2 px-4 md:px-6">
-                  <img src="assets/icons/User_add_alt_fill.svg" alt="shield" className="w-5 h-5" />
+                    <img 
+                      src="assets/icons/User_add_alt_fill.svg" 
+                      alt="" 
+                      className="w-5 h-5 transition-colors duration-200 group-hover:invert" 
+                      aria-hidden="true"
+                    />
                     <span className="button-text text-sm tracking-[0.02em] uppercase">
                       {t('mainPage.cta.discover')}
                     </span>
                   </div>
-                  <div className="flex items-center px-3 md:px-4 ">
-                    <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <div className="flex items-center px-3 md:px-4">
+                    <svg 
+                      className="w-5 h-5 md:w-6 md:h-6 transition-transform duration-200 group-hover:translate-x-1" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor"
+                      aria-hidden="true"
+                    >
                       <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
-                </a>
+                </button>
               </div>
             </div>
 
             {/* Image Container */}
             <div className="relative w-full md:w-[30%]">
-              <div className="absolute inset-0 bg-secondary/30"></div>
+              <div className="absolute inset-0 bg-secondary/30" aria-hidden="true"></div>
               <img 
                 src="/assets/cta-img.webp" 
-                alt="People planting trees" 
+                alt={t('mainPage.cta.imageAlt')} 
                 className="w-full h-full object-cover aspect-[4/3]"
               />
             </div>

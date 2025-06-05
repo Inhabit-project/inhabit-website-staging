@@ -30,29 +30,44 @@ interface Card {
   description: string;
 }
 
-interface BiodiversityCardsSectionProps {
-  cards?: Card[];
-}
+const BiodiversityCardsSection: React.FC = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-const BiodiversityCardsSection: React.FC<BiodiversityCardsSectionProps> = ({ cards = defaultCards }) => {
-  const ref = useRef(null);
-  // Optionally, you can add inView logic here if needed
   return (
-    <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24 transition-opacity duration-500">
-      <h2 style={{color: 'red'}}>Biodiversity Cards Section</h2>
-      <div ref={ref} className="w-full flex flex-col gap-8">
-        {cards.map((card, index) => (
-          <BiodiversityCard
-            key={index}
-            number={card.number}
-            title={card.title}
-            description={card.description}
-            index={index}
-            isInView={true} // Always true for now, can be improved
-          />
-        ))}
+    <section 
+      ref={sectionRef}
+      className="w-full py-24 background-gradient-light"
+      aria-labelledby="biodiversity-cards-title"
+    >
+      <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)]">
+        <h2 
+          id="biodiversity-cards-title"
+          className="heading-2 text-secondary mb-16"
+        >
+          Hub Criteria
+        </h2>
+        <div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          role="list"
+          aria-label="Hub criteria cards"
+        >
+          {defaultCards.map((card, index) => (
+            <div 
+              key={card.number}
+              role="listitem"
+              aria-labelledby={`card-${card.number}-title`}
+            >
+              <BiodiversityCard
+                number={card.number}
+                title={card.title}
+                description={card.description}
+                id={`card-${card.number}-title`}
+              />
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

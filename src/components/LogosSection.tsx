@@ -63,7 +63,12 @@ const Marquee: React.FC<{ logos: Logo[] }> = ({ logos }) => {
   const displayLogos = Array(repeatCount).fill(marqueeLogos).flat();
 
   return (
-    <div ref={containerRef} className="relative w-full overflow-x-hidden py-8">
+    <div 
+      ref={containerRef} 
+      className="relative w-full overflow-x-hidden py-8"
+      role="list"
+      aria-label="Logo marquee"
+    >
       <div
         className="flex gap-8 w-max items-center marquee-track"
         style={{
@@ -76,12 +81,14 @@ const Marquee: React.FC<{ logos: Logo[] }> = ({ logos }) => {
             ref={index === 0 ? cardRef : undefined}
             className="bg-white/10 shadow-[0px_0px_47.8px_rgba(0,0,0,0.10)] backdrop-blur-md flex items-center justify-center"
             style={{ width: '20rem', height: '8.75rem', minWidth: '20rem', maxWidth: '20rem', borderRadius: 'var(--radius-md)' }}
+            role="listitem"
           >
             <img
               src={logo.logo}
               alt={logo.name}
               className="object-contain max-h-[7.5rem] max-w-[13.75rem]"
               style={{ margin: 'auto' }}
+              loading="lazy"
             />
           </div>
         ))}
@@ -107,13 +114,19 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
   const buildersToShow = buildersProp || builders;
   const partnersToShow = partnersProp || partners;
   return (
-    <section className="background-gradient-dark py-8 md:py-16 lg:py-[6.5rem] px-4 md:px-8 lg:px-[6.25rem] overflow-x-hidden flex flex-col gap-8 md:gap-16 lg:gap-[3.75rem] scroll-container">
+    <section 
+      className="background-gradient-dark py-8 md:py-16 lg:py-[6.5rem] px-4 md:px-8 lg:px-[6.25rem] overflow-x-hidden flex flex-col gap-8 md:gap-16 lg:gap-[3.75rem] scroll-container"
+      aria-label="Partners and collaborators"
+    >
       <div className="w-full">
         <div className="flex flex-col gap-8 w-full">
           {showAllies && (
-            <section>
+            <section aria-labelledby="allies-title">
               <div className="flex flex-row items-start justify-between w-full mb-6 md:mb-10">
-                <h2 className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]">
+                <h2 
+                  id="allies-title"
+                  className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]"
+                >
                   <span dangerouslySetInnerHTML={{ __html: t('mainPage.testimonials.partnersTitle') }} />
                 </h2>
               </div>
@@ -121,9 +134,12 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
             </section>
           )}
           {showBuilders && (
-            <section>
+            <section aria-labelledby="builders-title">
               <div className="flex flex-row items-start justify-between w-full mb-6 md:mb-10">
-                <h2 className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]">
+                <h2 
+                  id="builders-title"
+                  className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]"
+                >
                   <span dangerouslySetInnerHTML={{ __html: t('mainPage.logosSection.buildersTitle') }} />
                 </h2>
               </div>
@@ -131,9 +147,12 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
             </section>
           )}
           {showPartners && (
-            <section>
+            <section aria-labelledby="partners-title">
               <div className="flex flex-row items-start justify-between w-full mb-6 md:mb-10">
-                <h2 className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]">
+                <h2 
+                  id="partners-title"
+                  className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]"
+                >
                   <span dangerouslySetInnerHTML={{ __html: t('mainPage.logosSection.partnersTitle') }} />
                 </h2>
               </div>

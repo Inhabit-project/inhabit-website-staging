@@ -115,11 +115,17 @@ const MeetOurTeam: React.FC = () => {
   }, [expanded]);
 
   return (
-    <section className="w-full py-20 px-4 background-gradient-light scroll-container">
+    <section 
+      className="w-full py-20 px-4 background-gradient-light scroll-container"
+      aria-labelledby="team-title"
+    >
       <div className="container">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12 gap-6">
           <div>
-            <h2 className="heading-2 text-secondary mb-2">
+            <h2 
+              id="team-title"
+              className="heading-2 text-secondary mb-2"
+            >
               <span dangerouslySetInnerHTML={{ __html: t('aboutUsPage.teamTitle') }} />
             </h2>
           </div>
@@ -127,28 +133,61 @@ const MeetOurTeam: React.FC = () => {
             {t('aboutUsPage.teamSubtitle')}
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          role="list"
+          aria-label="Team members"
+        >
           {teamMembers.map((member, idx) => {
             const name = teamArray?.[idx]?.name || fallbackName[idx];
             const role = teamArray?.[idx]?.role || fallbackRole[idx];
             const excerpt = role.length > 60 ? role.slice(0, 60).trim() + '…' : role;
             const isExpanded = expanded === idx;
             return (
-              <div key={idx} className="relative rounded-xl overflow-hidden shadow-lg group flex flex-col h-full bg-[#1B3A2B]">
+              <article 
+                key={idx} 
+                className="relative rounded-xl overflow-hidden shadow-lg group flex flex-col h-full bg-[#1B3A2B]"
+                role="listitem"
+                aria-labelledby={`team-member-${idx}-name`}
+              >
                 <div className="w-full" style={{height: '30rem', overflow: 'hidden'}}>
-                  <img src={member.image} alt={name} className="w-full h-full object-cover" style={{objectFit: 'cover', width: '100%', height: '100%'}} />
+                  <img 
+                    src={member.image} 
+                    alt={`Portrait of ${name}`} 
+                    className="w-full h-full object-cover" 
+                    style={{objectFit: 'cover', width: '100%', height: '100%'}}
+                    loading="lazy"
+                  />
                 </div>
                 {/* Gradient overlay */}
-                <div className="absolute inset-0 blur-sm pointer-events-none" />
+                <div className="absolute inset-0 blur-sm pointer-events-none" aria-hidden="true" />
                 {/* LinkedIn icon */}
-                <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="absolute top-2 right-2 z-10 bg-menu-backdrop backdrop-blur-lg rounded-full p-2 hover:bg-green-800/90 transition">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24" className="text-white">
+                <a 
+                  href={member.linkedin} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="absolute top-2 right-2 z-10 bg-menu-backdrop backdrop-blur-lg rounded-full p-2 hover:bg-green-800/90 transition"
+                  aria-label={`Visit ${name}'s LinkedIn profile`}
+                >
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 512 512" 
+                    width="24" 
+                    height="24" 
+                    className="text-white"
+                    aria-hidden="true"
+                  >
                     <path className="st0" fill="#fff" d="M80.111 25.6c-29.028 0-48.023 20.547-48.023 47.545 0 26.424 18.459 47.584 46.893 47.584h.573c29.601 0 47.999-21.16 47.999-47.584-.543-26.998-18.398-47.545-47.442-47.545zm-48.111 128h96v320.99h-96v-320.99zm323.631-7.822c-58.274 0-84.318 32.947-98.883 55.996v1.094h-.726c.211-.357.485-.713.726-1.094v-48.031h-96.748c1.477 31.819 0 320.847 0 320.847h96.748v-171.241c0-10.129.742-20.207 3.633-27.468 7.928-20.224 25.965-41.185 56.305-41.185 39.705 0 67.576 31.057 67.576 76.611v163.283h97.717v-176.313c0-104.053-54.123-152.499-126.347-152.499z"/>
                   </svg>
                 </a>
                 {/* Name and role */}
                 <div className="flex-1 flex flex-col justify-end absolute bottom-0 left-0 p-4 z-10 rounded-lg backdrop-blur-lg m-4 w-[calc(100%-2rem)]">
-                  <h3 className="font-montserrat text-lg font-semibold text-white mb-1">{name}</h3>
+                  <h3 
+                    id={`team-member-${idx}-name`}
+                    className="font-montserrat text-lg font-semibold text-white mb-1"
+                  >
+                    {name}
+                  </h3>
                   <div
                     ref={el => descRefs.current[idx] = el}
                     className="font-nunito text-sm text-white/90 leading-snug overflow-hidden relative"
@@ -193,12 +232,14 @@ const MeetOurTeam: React.FC = () => {
                       className="mt-2 underline hover:opacity-80 focus:outline-none block self-start"
                       style={{ color: 'var(--color-green-soft)' }}
                       onClick={() => setExpanded(isExpanded ? null : idx)}
+                      aria-expanded={isExpanded}
+                      aria-controls={`team-member-${idx}-description`}
                     >
                       {isExpanded ? t('aboutUsPage.teamShowLess') : t('aboutUsPage.teamReadMore')}
                     </button>
                   )}
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>

@@ -15,12 +15,20 @@ interface InfoCardProps {
 const InfoCard: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logoAlt = '', text, imageSrc, imageAlt = '', className, showPopupButton = false }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   return (
-    <section className={`relative w-full flex items-center justify-center py-24 background-gradient-dark ${className || ''}`}>
+    <section 
+      className={`relative w-full flex items-center justify-center py-24 background-gradient-dark ${className || ''}`}
+      aria-labelledby="info-card-title"
+    >
       {/* Optional overlay or pattern can be added here if needed */}
       <div className="container z-10 flex flex-col lg:flex-row w-full items-center justify-between px-0 rounded-[1.25rem] overflow-hidden shadow-lg border border-white/20 backdrop-blur-[200px] bg-white/5">
         {/* Image */}
         <div className="flex-shrink-0 w-full lg:w-1/2 aspect-square flex items-center justify-center bg-secondary">
-          <img src={imageSrc} alt={imageAlt} className="w-full h-full object-cover rounded-t-[1.25rem] lg:rounded-t-none lg:rounded-l-[1.25rem]" />
+          <img 
+            src={imageSrc} 
+            alt={imageAlt} 
+            className="w-full h-full object-cover rounded-t-[1.25rem] lg:rounded-t-none lg:rounded-l-[1.25rem]"
+            loading="lazy"
+          />
         </div>
         {/* Text + Logo + Title */}
         <div className="flex-1 flex flex-col items-start justify-center p-8 lg:p-16 bg-transparent lg:w-1/2">
@@ -30,20 +38,23 @@ const InfoCard: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logo
                 const words = title.trim().split(' ');
                 if (words.length === 1) {
                   return (
-                    <span style={{ display: 'block', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '3.5rem', color: '#E6F2D6', lineHeight: 1 }}>
+                    <h2 
+                      id="info-card-title"
+                      style={{ display: 'block', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '3.5rem', color: '#E6F2D6', lineHeight: 1 }}
+                    >
                       {words[0]}
-                    </span>
+                    </h2>
                   );
                 } else {
                   return (
-                    <span>
+                    <h2 id="info-card-title">
                       <span style={{ display: 'block', fontFamily: 'Montserrat, sans-serif', fontWeight: 300, fontSize: '3.5rem', color: '#E6F2D6', lineHeight: 1 }}>
                         {words[0]}
                       </span>
                       <span style={{ display: 'block', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '3.5rem', color: '#E6F2D6', lineHeight: 1 }}>
                         {words.slice(1).join(' ')}
                       </span>
-                    </span>
+                    </h2>
                   );
                 }
               })()}
@@ -51,7 +62,12 @@ const InfoCard: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logo
                 <span className="heading-2 text-light leading-tight mt-1">{subtitle}</span>
               )}
             </span>
-            <img src={logoSrc} alt={logoAlt} className="h-[9rem] w-auto ml-4" />
+            <img 
+              src={logoSrc} 
+              alt={logoAlt} 
+              className="h-[9rem] w-auto ml-4"
+              loading="lazy"
+            />
           </div>
           <div className="body-S opacity-90 max-w-prose">
             {text.split('\n').map((line, idx) => (
@@ -62,6 +78,8 @@ const InfoCard: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logo
             <button
               className="mt-6 btn-primary"
               onClick={() => setIsPopupOpen(true)}
+              aria-expanded={isPopupOpen}
+              aria-controls="news-popup"
             >
               Read Latest News
             </button>
@@ -69,17 +87,23 @@ const InfoCard: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logo
         </div>
       </div>
       {isPopupOpen && (
-        <div className="popup-overlay">
+        <div 
+          className="popup-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="news-popup-title"
+        >
           <div className="popup-content">
             <button
               className="btn-primary"
               style={{ position: 'absolute', top: 24, right: 24, zIndex: 2 }}
               onClick={() => setIsPopupOpen(false)}
-              aria-label="Close"
+              aria-label="Close news popup"
             >
               &times;
             </button>
             <iframe
+              id="news-popup"
               src="https://explorer.land/p/project/bioculturalcorridor/site/Z6UXzL/news"
               title="Ñuiyanzhi News"
               style={{ width: '100%', height: '80vh', border: 'none', borderRadius: '1rem', background: 'white' }}
@@ -95,12 +119,19 @@ export default InfoCard;
 
 // InfoCard with image on the right side
 export const InfoCardRightImage: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logoAlt = '', text, imageSrc, imageAlt = '', className }) => (
-  <section className={`relative w-full flex items-center justify-center py-24 background-gradient-dark ${className || ''}`}>
-    {/* Optional overlay or pattern can be added here if needed */}
+  <section 
+    className={`relative w-full flex items-center justify-center py-24 background-gradient-dark ${className || ''}`}
+    aria-labelledby="info-card-right-title"
+  >
     <div className="container z-10 flex flex-col lg:flex-row-reverse w-full items-center justify-between px-0 rounded-[1.25rem] overflow-hidden shadow-lg border border-white/20 backdrop-blur-[200px] bg-white/5">
       {/* Image on the right for large screens */}
       <div className="flex-shrink-0 w-full lg:w-1/2 aspect-square flex items-center justify-center bg-secondary">
-        <img src={imageSrc} alt={imageAlt} className="w-full h-full object-cover rounded-t-[1.25rem] lg:rounded-t-none lg:rounded-r-[1.25rem]" />
+        <img 
+          src={imageSrc} 
+          alt={imageAlt} 
+          className="w-full h-full object-cover rounded-t-[1.25rem] lg:rounded-t-none lg:rounded-r-[1.25rem]"
+          loading="lazy"
+        />
       </div>
       {/* Text + Logo + Title */}
       <div className="flex-1 flex flex-col items-start justify-center p-8 lg:p-16 bg-transparent lg:w-1/2">
@@ -110,20 +141,23 @@ export const InfoCardRightImage: React.FC<InfoCardProps> = ({ title, subtitle = 
               const words = title.trim().split(' ');
               if (words.length === 1) {
                 return (
-                  <span style={{ display: 'block', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '3.5rem', color: '#E6F2D6', lineHeight: 1 }}>
+                  <h2 
+                    id="info-card-right-title"
+                    style={{ display: 'block', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '3.5rem', color: '#E6F2D6', lineHeight: 1 }}
+                  >
                     {words[0]}
-                  </span>
+                  </h2>
                 );
               } else {
                 return (
-                  <span>
+                  <h2 id="info-card-right-title">
                     <span style={{ display: 'block', fontFamily: 'Montserrat, sans-serif', fontWeight: 300, fontSize: '3.5rem', color: '#E6F2D6', lineHeight: 1 }}>
                       {words[0]}
                     </span>
                     <span style={{ display: 'block', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '3.5rem', color: '#E6F2D6', lineHeight: 1 }}>
                       {words.slice(1).join(' ')}
                     </span>
-                  </span>
+                  </h2>
                 );
               }
             })()}
@@ -131,7 +165,12 @@ export const InfoCardRightImage: React.FC<InfoCardProps> = ({ title, subtitle = 
               <span className="heading-2 text-light leading-tight mt-1">{subtitle}</span>
             )}
           </span>
-          <img src={logoSrc} alt={logoAlt} className="h-[9rem] w-auto ml-4" />
+          <img 
+            src={logoSrc} 
+            alt={logoAlt} 
+            className="h-[9rem] w-auto ml-4"
+            loading="lazy"
+          />
         </div>
         <div className="body-S opacity-90 max-w-prose">
           {text.split('\n').map((line, idx) => (

@@ -43,12 +43,13 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
   ];
   return (
     <section
-      className="w-full py-24 px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col items-center  scroll-container background-gradient-light"
+      className="w-full py-24 px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col items-center scroll-container background-gradient-light"
       style={{ background: 'var(--background-gradient-light)' }}
+      aria-labelledby="benefits-title"
     >
       <div className="max-w-[120rem] w-full mx-auto flex flex-col md:flex-row justify-between gap-8 mb-16">
         <div>
-          <h2 className="heading-2 text-secondary max-w-[40.9375rem] mb-4">
+          <h2 id="benefits-title" className="heading-2 text-secondary max-w-[40.9375rem] mb-4">
             <span dangerouslySetInnerHTML={{ __html: t('mainPage.stewardshipNFTBenefits.title') }} />
           </h2>
         </div>
@@ -56,9 +57,13 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
           {t('mainPage.stewardshipNFTBenefits.description')}
         </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-14 w-full max-w-[120rem] mx-auto">
+      <div 
+        className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-14 w-full max-w-[120rem] mx-auto"
+        role="list"
+        aria-label="Stewardship NFT benefits"
+      >
         {benefits.map((b, i) => (
-          <div
+          <article
             key={i}
             className="relative flex flex-col gap-6 min-h-[380px] shadow-lg text-white justify-between"
             style={{
@@ -66,16 +71,18 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
               borderRadius: 'var(--radius-2xl, 1.5rem)',
               padding: '2.5rem',
             }}
+            role="listitem"
+            aria-labelledby={`benefit-${i}-title`}
           >
             <div className="absolute top-10 right-10 w-12 h-12 opacity-80">
-              <img src={b.icon} alt="" className="w-full h-full object-contain" />
+              <img src={b.icon} alt="" className="w-full h-full object-contain" aria-hidden="true" />
             </div>
-            <span className="eyebrow" >{b.eyebrow}</span>
-            <h5 className="heading-5 mb-2">
+            <span className="eyebrow">{b.eyebrow}</span>
+            <h3 id={`benefit-${i}-title`} className="heading-5 mb-2">
               <span dangerouslySetInnerHTML={{ __html: b.title }} />
-            </h5>
+            </h3>
             <p className="font-nunito text-base font-light whitespace-pre-line opacity-90 mt-auto">{b.description}</p>
-          </div>
+          </article>
         ))}
       </div>
     </section>

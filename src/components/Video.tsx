@@ -87,9 +87,9 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
   }, []);
 
   return ( 
-    <section className="relative w-full background-gradient-dark flex flex-col items-center">
+    <section className="relative w-full background-gradient-dark flex flex-col items-center" aria-labelledby="video-title">
       {/* Background with decorative elements */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
+      <div className="absolute inset-0 w-full h-full overflow-hidden" aria-hidden="true">
         <img 
           src="/assets/intro-bg.svg" 
           alt="" 
@@ -103,12 +103,12 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
         {/* Text content */}
         <div className="flex flex-col gap-3">
           {/* Eyebrow text */}
-          <p className="eyebrow text-light">
+          <p className="eyebrow text-light" id="video-eyebrow">
             {t('mainPage.video.eyebrow')}
           </p>
           
           {/* Main heading */}
-          <h2 className="heading-2 text-light max-w-[1100px]" dangerouslySetInnerHTML={{ __html: t('mainPage.video.heading') }} />
+          <h2 id="video-title" className="heading-2 text-light max-w-[1100px]" dangerouslySetInnerHTML={{ __html: t('mainPage.video.heading') }} />
         </div>
 
         {/* Video container */}
