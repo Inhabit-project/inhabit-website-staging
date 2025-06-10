@@ -1,28 +1,54 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Menu from '../components/Menu';
+import InternalPagesHero from '../components/InternalPagesHero';
+import CTA from '../components/CTA';
+import Blog from '../components/Blog';
+import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
+import ImageSection from '../components/ImageSection';
+import ProjectSection from '../components/ProjectSection';
 
 const ProjectsPage: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <div className="min-h-screen background-gradient-light">
-      <Menu />
-      <section className="w-full flex flex-col items-center justify-center py-32">
-        <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col items-start gap-8">
-          <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
-            <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
-              <span dangerouslySetInnerHTML={{ __html: t('projectsPage.title') }} />
-            </h2>
-            <p className="body-M text-secondary max-w-[36rem]">
-              {t('projectsPage.description')}
-            </p>
-          </div>
-        </div>
-      </section>
-      {/* You can add a projects list or more info here */}
-      <Footer />
-    </div>
+    <>
+      {/* Skip to main content link for accessibility */}
+      <a href="#main-content" className="sr-only focus:not-sr-only absolute top-2 left-2 bg-white text-black p-2 z-50 rounded">
+        Skip to main content
+      </a>
+      <div className="min-h-screen background-gradient-light">
+        <Menu />
+        <main id="main-content" tabIndex={-1} role="main">
+          <section aria-label="Projects hero section">
+            <InternalPagesHero
+              variant="projects"
+            />
+          </section>
+          <section aria-label="Projects image section">
+            <ImageSection
+              eyebrow="Featured Initiative"
+              heading={<span>Empowering communities through restoration and innovation</span>}
+              imageSrc="/assets/images/img1.webp"
+              imageAlt="Restoration project landscape"
+            />
+          </section>
+          <section aria-label="Projects main content">
+            <ProjectSection />
+          </section>
+          <section aria-label="Call to action">
+            <CTA />
+          </section>
+          <section aria-label="Blog section">
+            <Blog />
+          </section>
+          <section aria-label="Frequently asked questions">
+            <FAQ />
+          </section>
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 };
 

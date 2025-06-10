@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface InternalPagesHeroProps {
-  variant: 'hubs' | 'stewardship' | 'about' | 'nuiyanzhi';
+  variant: 'hubs' | 'stewardship' | 'about' | 'nuiyanzhi' | 'projects';
   title?: string;
   strong?: string;
   description?: string;
@@ -26,6 +26,10 @@ const heroContent = {
   nuiyanzhi: {
     image: '/assets/Nuiyanzhi.webp',
     alt: 'Hubs Hero',
+  },
+  projects: {
+    image: '/assets/nft-hero.jpg',
+    alt: 'Projects Hero',
   },
 };
 

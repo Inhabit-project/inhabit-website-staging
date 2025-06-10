@@ -2,6 +2,7 @@ import React from 'react';
 import Menu from '../components/Menu';
 import InternalPagesHero from '../components/InternalPagesHero';
 import HubsMain from '../components/HubsMain';
+import FourCriteriaCardsSection from '../components/FourCriteriaCardsSection';
 import CTA from '../components/CTA';
 import Blog from '../components/Blog';
 import FAQ from '../components/FAQ';
@@ -21,6 +22,9 @@ const HubsPage: React.FC = () => (
         </section>
         <section aria-label="Hubs main content">
           <HubsMain />
+        </section>
+        <section aria-label="Four Criteria To Be a HUB">
+          <FourCriteriaCardsSection />
         </section>
         <section aria-label="Call to action">
           <CTA />

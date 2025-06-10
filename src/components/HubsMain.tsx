@@ -2,7 +2,7 @@ import React from 'react';
 import ImageSection from './ImageSection';
 import HubSubsections from './HubSubsections';
 import BiodiversityCardsSection from './BiodiversityCardsSection';
-import CriteriaCardsSection from './CriteriaCardsSection';
+import CriteriaCardsSection2 from './CriteriaCardsSection2';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -43,18 +43,18 @@ const content = {
       visionText: 'El Hub Ñuiyanzhi es un laboratorio viviente donde la restauración ecológica se encuentra con el conocimiento ancestral. Regenera suelos degradados por el sobrepastoreo, monocultivos y agroquímicos, creando un punto caliente de biodiversidad para especies en peligro de extinción. Como centro de formación, combina el aprendizaje práctico con la sabiduría indígena y académica. Los guardianes NFT obtienen acceso exclusivo a herramientas de restauración, experiencias inmersivas y vínculos directos con el conocimiento ecológico y espiritual Kogi.'
     },
     aguaDeLuna: {
-      label: 'Punto Caliente de Biodiversidad',
-      title: 'AguaDeLuna',
-      description: 'El hub AguaDeLuna es un santuario para especies raras y un centro de investigación y educación, combinando la ciencia moderna con la sabiduría indígena.',
+      label: 'Paz y Reconexión',
+      title: 'AGUA DE LUNA HUB',
+      description: 'Desde 2022, Celia y su hija Myhla viven y cuidan Agua de Luna, entrelazando la sabiduría ancestral y la transformación rural en armonía con la Sierra Nevada de Santa Marta.',
       visionHeading: 'VISIÓN DEL HUB',
-      visionText: 'El Hub AguaDeLuna está dedicado a preservar la selva tropical más grande del mundo, apoyando a las comunidades locales y fomentando la colaboración global para la conservación.'
+      visionText: 'Agua de Luna es un espacio sagrado al pie de la Sierra Nevada de Santa Marta—una invitación a vivir plenamente, reconectarse con la naturaleza y redescubrir nuestro ser esencial. Diseñado para la transformación interior, ofrece prácticas conscientes, rituales y movimiento creativo. Aquí, la espiritualidad, la naturaleza y la comunidad se unen para inspirar sanación, servicio y alegría. Un viaje de autodescubrimiento, armonía y regeneración colectiva comienza con cada paso. La tierra está impregnada de cacao altamente biodiverso, enriqueciendo el espacio con su vitalidad y sabiduría.'
     },
     TierraKilwa: {
-      label: 'Innovación en el Desierto',
-      title: 'TierraKilwa',
-      description: 'El hub TierraKilwa es pionero en vida sostenible en ambientes áridos, enfocándose en la conservación del agua y la energía renovable.',
+      label: 'Producción de alimentos, Arte y emprendimiento regenerativo',
+      title: 'TIERRA KILWA',
+      description: 'Luca, Chiara y su hija Gea son emprendedores sociales que cuidan Kilwa, donde establecerán La Fábrica del Arte combinando arte y ecología para impulsar la regeneración en toda la región.',
       visionHeading: 'VISIÓN DEL HUB',
-      visionText: 'El Hub TierraKilwa demuestra cómo la vida puede prosperar en condiciones extremas, inspirando nuevas soluciones para un clima cambiante.'
+      visionText: 'Tierra Kilwa, La Fábrica del Arte es un centro de aprendizaje donde el arte, la naturaleza y la comunidad se unen para reimaginar la relación entre los humanos y el territorio. Enfocado en el emprendimiento social, empodera a las comunidades locales a través del arte y la gestión ecológica. Al fomentar modelos de negocio regenerativos, nutre la innovación rural, ofreciendo educación en habilidades para la vida para difundir el arte y empoderar a emprendedores agentes de cambio en todo el corredor. Kilwa aspira a convertirse en un punto de referencia para sistemas alimentarios resilientes, a través de la agroforestería, la agroecología y diversas prácticas de soberanía alimentaria.'
     }
   }
 };
@@ -127,10 +127,7 @@ const Hubs: React.FC = () => {
           buttonText="Hub coming soon"
         />
       </section>
-      <section aria-labelledby="criteria-section-title" className="criteria-section">
-        <h2 id="criteria-section-title" className="sr-only">Hub Criteria</h2>
-        <CriteriaCardsSection />
-      </section>
+      
     </main>
   );
 };

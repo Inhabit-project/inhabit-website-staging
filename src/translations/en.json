@@ -461,7 +461,7 @@
       ]
     }
   },
-  "amazonPage": {
+  "aguaDeLunaPage": {
     "title": "AguaDeLuna Hub Details Page"
   },
   "TierraKilwaPage": {
@@ -630,11 +630,16 @@
       "title": "Ñuiyanzhi",
       "strong": "Hub",
       "description": "By healing degraded soils and reforesting key areas, it restores ecosystem functionality and creates a refuge for endangered species, enabling wildlife movement through an inner ecological corridor that reconnects fragmented landscapes. "
+    },
+    "projects": {
+      "title": "Our",
+      "strong": "Projects",
+      "description": "Discover the initiatives and collaborations that are driving real-world impact. Our projects span ecosystem restoration, biocultural innovation, and community empowerment—each one a step toward a regenerative future."
     }
   },
   "projectsPage": {
-    "title": "Our<br /><strong>Projects</strong>",
-    "description": "Discover the initiatives and collaborations that are driving real-world impact. Our projects span ecosystem restoration, biocultural innovation, and community empowerment—each one a step toward a regenerative future."
+    "title": "Our Projects",
+    "description": "Our projects span ecosystem restoration, biocultural innovation, and community empowerment."
   },
   "contactPage": {
     "title": "Contact<br /><strong>Us</strong>",
