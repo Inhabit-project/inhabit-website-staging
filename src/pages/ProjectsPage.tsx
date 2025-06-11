@@ -6,7 +6,7 @@ import CTA from '../components/CTA';
 import Blog from '../components/Blog';
 import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
-import ImageSection from '../components/ImageSection';
+import ProjectsVideoSection from '../components/ProjectsVideoSection';
 import ProjectSection from '../components/ProjectSection';
 
 const ProjectsPage: React.FC = () => {
@@ -26,12 +26,7 @@ const ProjectsPage: React.FC = () => {
             />
           </section>
           <section aria-label="Projects image section">
-            <ImageSection
-              eyebrow="Featured Initiative"
-              heading={<span>Empowering communities through restoration and innovation</span>}
-              imageSrc="/assets/images/img1.webp"
-              imageAlt="Restoration project landscape"
-            />
+            <ProjectsVideoSection />
           </section>
           <section aria-label="Projects main content">
             <ProjectSection />
