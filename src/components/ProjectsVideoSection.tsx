@@ -26,7 +26,7 @@ const ProjectsVideoSection: React.FC = () => {
           </p>
           {/* Main heading */}
           <h2 id="projects-video-title" className="heading-2 text-light max-w-[1100px]">
-            Discover Our Impact in Action
+          Explore our <span class="highlighted-text">flagship projects</span> driving <span class="highlighted-text">regeneration</span> and <span class="highlighted-text">community empowerment</span>.
           </h2>
         </div>
 
@@ -82,7 +82,7 @@ const ProjectsVideoSection: React.FC = () => {
             <iframe
               width="100%"
               height="100%"
-              src="https://www.youtube.com/embed/vMyOS_ATgmA?autoplay=1"
+              src="https://www.youtube.com/embed/Gces1qpNDSE?autoplay=1"
               title="Project Video"
               frameBorder="0"
               allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"

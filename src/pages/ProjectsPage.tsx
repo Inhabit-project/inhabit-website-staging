@@ -10,6 +10,7 @@ import ProjectsVideoSection from '../components/ProjectsVideoSection';
 import ProjectSection from '../components/ProjectSection';
 import ImageSection from '../components/ImageSection';
 import Gallery from '../components/Gallery';
+import ProjectsMain from '../components/ProjectsMain';
 
 const ProjectsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -31,25 +32,7 @@ const ProjectsPage: React.FC = () => {
             <ProjectsVideoSection />
           </section>
           <section aria-label="Projects main content">
-            <ImageSection
-              eyebrow="Regenerative Landscapes"
-              heading={<span>Our projects restore ecosystems and empower communities through innovative, hands-on action.</span>}
-              imageSrc="/assets/images/img4.webp"
-              imageAlt="Regenerative landscape project"
-            />
-          </section>
-          <section aria-label="Projects gallery section">
-            <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
-              <h2 className="heading-2 text-secondary mb-8">Project Highlights Gallery</h2>
-              <Gallery images={[
-                { src: '/assets/images/img1.webp', alt: 'Project photo 1' },
-                { src: '/assets/images/img2.webp', alt: 'Project photo 2' },
-                { src: '/assets/images/img3.webp', alt: 'Project photo 3' },
-                { src: '/assets/images/img4.webp', alt: 'Project photo 4' },
-                { src: '/assets/images/img5.webp', alt: 'Project photo 5' },
-                { src: '/assets/images/img6.webp', alt: 'Project photo 6' },
-              ]} />
-            </div>
+            <ProjectsMain />
           </section>
           <section aria-label="Call to action">
             <CTA />

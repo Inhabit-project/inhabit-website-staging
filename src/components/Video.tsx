@@ -17,27 +17,22 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   
   // Construct the video URL with parameters
   const getVideoUrl = useCallback(() => {
-    // Parse the base URL
-    const url = new URL(videoUrl);
-    
-    // Add or update parameters
-    const params = new URLSearchParams(url.search);
-    params.set('autoplay', autoplay ? '1' : '0');
-    
-    // Add other necessary parameters
-    params.set('h', 'f023472b60');
-    params.set('badge', '0');
-    params.set('autopause', '0');
-    params.set('player_id', '0');
-    params.set('app_id', '58479');
-    
-    // Reconstruct the URL
-    let finalUrl = `${url.origin}${url.pathname}?${params.toString()}`;
-    // Add start time as a fragment (Vimeo uses #t=2s)
-    if (startTime > 0) {
-      finalUrl += `#t=${startTime}s`;
+    // Check if it's a YouTube link
+    if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+      // Extract the video ID
+      let videoId = '';
+      if (videoUrl.includes('youtu.be')) {
+        videoId = videoUrl.split('youtu.be/')[1].split(/[?&#]/)[0];
+      } else {
+        const urlObj = new URL(videoUrl);
+        videoId = urlObj.searchParams.get('v') || '';
+      }
+      // Build embed URL
+      let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=${autoplay ? '1' : '0'}&start=${startTime}`;
+      return embedUrl;
     }
-    return finalUrl;
+    // Fallback: return the original URL
+    return videoUrl;
   }, [videoUrl, startTime, autoplay]);
 
   return (
@@ -49,6 +44,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       title={t('mainPage.hero.title')}
       frameBorder="0"
       allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+      allowFullScreen
       referrerPolicy="strict-origin-when-cross-origin"
       className="w-full h-full"
       loading="lazy"
@@ -162,7 +158,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
           </button>
           <div className="relative w-full h-full max-w-[100vw] max-h-[98vh] aspect-video">
             <VideoPlayer 
-              videoUrl="https://player.vimeo.com/video/1079195883" 
+              videoUrl="https://youtu.be/Gces1qpNDSE" 
               startTime={2}
               autoplay={true}
             />
