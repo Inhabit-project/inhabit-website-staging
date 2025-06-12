@@ -234,7 +234,9 @@
     },
     "blog": {
       "title": "Mantente<br /><strong>informado</strong>",
-      "description": "Mantente actualizado con nuestras últimas noticias y perspectivas sobre biodiversidad y preservación ecológica."
+      "description": "Mantente actualizado con nuestras últimas noticias y perspectivas sobre biodiversidad y preservación ecológica.",
+      "loading": "Cargando listado de entradas",
+      "noPosts": "No hay entradas disponibles"
     },
     "blogPosts": {
       "main": {
@@ -294,9 +296,31 @@
       "connect": "CONECTA",
       "location": "UBICACIÓN",
       "locationText": "Tierra Kilwa, Palomino, La Guajira, Colombia",
-      "newsletter": "BOLETÍN",
-      "newsletterText": "¡Suscríbete para recibir las mejores actualizaciones de nosotros!",
-      "emailPlaceholder": "Tu correo electrónico",
+      "newsletter": {
+        "title": "BOLETÍN",
+        "text": "¡Suscríbete para recibir las mejores actualizaciones de nosotros!",
+        "status": {
+          "success": "Suscripción realizada",
+          "errors": {
+            "generic": "Error inesperado. Por favor, inténtelo de nuevo.",
+            "400": "El correo no es válido"
+          }
+        },
+        "email": {
+          "placeholder": "Tu correo electrónico",
+          "validations": {
+            "required": "Campo requerido",
+            "invalid": "Correo electrónico no válido"
+          }
+        },
+        "privacy": {
+          "validations": {
+            "required": "Debe aceptar la política de privacidad"
+          }
+        },
+        "subscribing": "Suscribiéndose...",
+        "subscribe": "Subcríbase"
+      },
       "acceptPolicy": "Acepto la política de privacidad",
       "menu": "MENÚ",
       "copyright": "COPYRIGHT 2025 TODOS LOS DERECHOS RESERVADOS DISEÑADO POR FERNANDA HERRERA"
@@ -532,10 +556,22 @@
       "title": "Preguntas Frecuentes",
       "description": "Preguntas sobre el Hub Nuiyanzhi",
       "items": [
-        {"question": "¿Qué hace único al Hub Nuiyanzhi?", "answer": "El Hub Nuiyanzhi es un laboratorio viviente donde la restauración ecológica se encuentra con el conocimiento ancestral, combinando la sabiduría indígena con la ciencia moderna."},
-        {"question": "¿Cómo puedo ser guardián de Nuiyanzhi?", "answer": "Puedes convertirte en guardián adquiriendo un NFT de Custodia para Nuiyanzhi y participando en nuestros programas de restauración y custodia."},
-        {"question": "¿Cuáles son los principales objetivos del Hub?", "answer": "Los principales objetivos son la restauración ecológica, el intercambio de conocimientos, la participación comunitaria y la gestión sostenible de la tierra."},
-        {"question": "¿Puedo visitar el Hub Nuiyanzhi?", "answer": "Sí, los guardianes y custodios NFT tienen oportunidades exclusivas para visitar, aprender y participar en experiencias prácticas en el Hub."}
+        {
+          "question": "¿Qué hace único al Hub Nuiyanzhi?",
+          "answer": "El Hub Nuiyanzhi es un laboratorio viviente donde la restauración ecológica se encuentra con el conocimiento ancestral, combinando la sabiduría indígena con la ciencia moderna."
+        },
+        {
+          "question": "¿Cómo puedo ser guardián de Nuiyanzhi?",
+          "answer": "Puedes convertirte en guardián adquiriendo un NFT de Custodia para Nuiyanzhi y participando en nuestros programas de restauración y custodia."
+        },
+        {
+          "question": "¿Cuáles son los principales objetivos del Hub?",
+          "answer": "Los principales objetivos son la restauración ecológica, el intercambio de conocimientos, la participación comunitaria y la gestión sostenible de la tierra."
+        },
+        {
+          "question": "¿Puedo visitar el Hub Nuiyanzhi?",
+          "answer": "Sí, los guardianes y custodios NFT tienen oportunidades exclusivas para visitar, aprender y participar en experiencias prácticas en el Hub."
+        }
       ]
     }
   },
@@ -740,4 +776,4 @@
     "title": "Contáctanos<br /><strong>Aquí</strong>",
     "description": "¡Nos encantaría saber de ti! Ya sea que tengas preguntas, quieras colaborar o simplemente desees conectar, escríbenos y nuestro equipo te responderá lo antes posible."
   }
-} 
+}

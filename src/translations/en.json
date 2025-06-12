@@ -232,7 +232,9 @@
     },
     "blog": {
       "title": "Stay<br /><strong>informed</strong>",
-      "description": "Stay up to date with our latest news and insights on biodiversity and ecological preservation."
+      "description": "Stay up to date with our latest news and insights on biodiversity and ecological preservation.",
+      "loading": "Loading list of posts",
+      "noPosts": "No posts available"
     },
     "faq": {
       "title": "Frequently Asked<br /><strong>Questions</strong>",
@@ -264,9 +266,31 @@
       "connect": "CONNECT",
       "location": "LOCATION",
       "locationText": "Tierra Kilwa, Palomino, La Guajira, Colombia",
-      "newsletter": "NEWSLETTER",
-      "newsletterText": "Subscribe to get the best updates from us!",
-      "emailPlaceholder": "Your email",
+      "newsletter": {
+        "title": "NEWSLETTER",
+        "text": "Subscribe to get the best updates from us!",
+        "status": {
+          "success": "Suscripción realizada",
+          "errors": {
+            "generic": "Unexpected error. Please try again.",
+            "400": "The email is invalid"
+          }
+        },
+        "email": {
+          "placeholder": "Your email",
+          "validations": {
+            "required": "Required",
+            "invalid": "Invalid email address"
+          }
+        },
+        "privacy": {
+          "validations": {
+            "required": "You must accept the privacy policy"
+          }
+        },
+        "subscribing": "Subscribing...",
+        "subscribe": "Subscribe"
+      },
       "acceptPolicy": "I accept the privacy policy",
       "menu": "MENU",
       "copyright": "COPYRIGHT 2025 ALL RIGHTS RESERVED DESIGNED BY FERNANDA HERRERA"
@@ -454,10 +478,22 @@
       "title": "Frequently Asked",
       "description": "Questions about Nuiyanzhi Hub",
       "items": [
-        {"question": "What makes the Nuiyanzhi Hub unique?", "answer": "Nuiyanzhi Hub is a living laboratory where ecological restoration meets ancestral knowledge, blending indigenous wisdom with modern science."},
-        {"question": "How can I become a guardian of Nuiyanzhi?", "answer": "You can become a guardian by acquiring a Stewardship NFT for Nuiyanzhi and participating in our restoration and stewardship programs."},
-        {"question": "What are the main goals of the Hub?", "answer": "The main goals are ecological restoration, knowledge sharing, community engagement, and sustainable land management."},
-        {"question": "Can I visit the Nuiyanzhi Hub?", "answer": "Yes, NFT stewards and guardians have exclusive opportunities to visit, learn, and participate in hands-on experiences at the Hub."}
+        {
+          "question": "What makes the Nuiyanzhi Hub unique?",
+          "answer": "Nuiyanzhi Hub is a living laboratory where ecological restoration meets ancestral knowledge, blending indigenous wisdom with modern science."
+        },
+        {
+          "question": "How can I become a guardian of Nuiyanzhi?",
+          "answer": "You can become a guardian by acquiring a Stewardship NFT for Nuiyanzhi and participating in our restoration and stewardship programs."
+        },
+        {
+          "question": "What are the main goals of the Hub?",
+          "answer": "The main goals are ecological restoration, knowledge sharing, community engagement, and sustainable land management."
+        },
+        {
+          "question": "Can I visit the Nuiyanzhi Hub?",
+          "answer": "Yes, NFT stewards and guardians have exclusive opportunities to visit, learn, and participate in hands-on experiences at the Hub."
+        }
       ]
     }
   },
@@ -645,4 +681,4 @@
     "title": "Contact<br /><strong>Us</strong>",
     "description": "We would love to hear from you! Whether you have questions, want to collaborate, or simply wish to connect, reach out and our team will get back to you as soon as possible."
   }
-} 
+}
