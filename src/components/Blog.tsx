@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { fetchPosts } from "@/services/blogService";
-
-interface BlogPost {
-  id: string;
-  date: string;
-  title: string;
-  content: string;
-  image: string;
-}
+import { BlogPost } from "@/types/wordpress";
 
 const Blog: React.FC = () => {
   const { t } = useTranslation();
