@@ -319,7 +319,8 @@
           }
         },
         "subscribing": "Suscribiéndose...",
-        "subscribe": "Subcríbase"
+        "subscribe": "Subcríbase",
+        "join_newsletter": "Suscribirse al boletín"
       },
       "acceptPolicy": "Acepto la política de privacidad",
       "menu": "MENÚ",
