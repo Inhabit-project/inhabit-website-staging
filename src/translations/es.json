@@ -236,7 +236,9 @@
       "title": "Mantente<br /><strong>informado</strong>",
       "description": "Mantente actualizado con nuestras últimas noticias y perspectivas sobre biodiversidad y preservación ecológica.",
       "loading": "Cargando listado de entradas",
-      "noPosts": "No hay entradas disponibles"
+      "noPosts": "No hay entradas disponibles",
+      "readTime_one": "{{count}} minuto de lectura",
+      "readTime_other": "{{count}} minutos de lectura"
     },
     "blogPosts": {
       "main": {

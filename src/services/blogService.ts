@@ -9,6 +9,8 @@ import type {
 } from "@/types/wordpress";
 import { cleanWordPressContent, decodeHtmlEntities } from "@/utils/html";
 import { isValidDate } from "@/utils/date";
+import { calculateReadTime } from "@/utils/calculateReadTime";
+import { formatDate } from "@/utils/dateFormatter";
 
 const WORDPRESS_API_URL = import.meta.env.VITE_WORDPRESS_API_URL;
 
@@ -60,41 +62,60 @@ export const fetchPosts = async (
   params?: PaginationParams
 ): Promise<{ posts: BlogPost[]; totalPages: number }> => {
   const currentLanguage = i18n.language;
-  const { per_page = 3, page = 1 } = params ?? {};
+  const { per_page = 3, page = 1, skipFeatured = false } = params ?? {};
+  const featuredPostsToSkip = 3;
 
   try {
-    const response = await fetch(
-      `${WORDPRESS_API_URL}/wp-json/wp/v2/posts?_embed&per_page=${per_page}&page=${page}&lang=${currentLanguage}`,
-      {
-        headers: {
-          Accept: "application/json",
-        },
-      }
-    );
+    const url = new URL(`${WORDPRESS_API_URL}/wp-json/wp/v2/posts`);
+    url.searchParams.append("_embed", "");
+    url.searchParams.append("per_page", per_page.toString());
+    url.searchParams.append("lang", currentLanguage);
+
+    if (skipFeatured) {
+      const offset = featuredPostsToSkip + (page - 1) * per_page;
+      url.searchParams.append("offset", offset.toString());
+    } else {
+      url.searchParams.append("page", page.toString());
+    }
+
+    const response = await fetch(url.toString(), {
+      headers: { Accept: "application/json" },
+    });
 
     if (!response.ok) {
       throw new Error("Failed to fetch WordPress posts");
     }
 
-    const totalPages = parseInt(
-      response.headers.get("X-WP-TotalPages") ?? "1",
-      10
-    );
+    const totalPosts = parseInt(response.headers.get("X-WP-Total") ?? "0", 10);
+    let totalPages;
+
+    if (skipFeatured) {
+      const remainingPosts = Math.max(0, totalPosts - featuredPostsToSkip);
+      totalPages = Math.ceil(remainingPosts / per_page);
+    } else {
+      totalPages = parseInt(response.headers.get("X-WP-TotalPages") ?? "1", 10);
+    }
 
     const posts: WordPressPosts[] = await response.json();
 
     return {
-      posts: posts.map((post) => ({
-        id: post.id.toString(),
-        date: new Intl.DateTimeFormat(currentLanguage, {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }).format(new Date(post.date)),
-        title: decodeHtmlEntities(post.title.rendered),
-        content: cleanWordPressContent(post.excerpt.rendered),
-        image: post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ?? "",
-      })),
+      posts: posts.map((post) => {
+        const categories =
+          post._embedded?.["wp:term"]?.[0]?.map((cat: any) => cat.name) ?? [];
+
+        const contentToUse =
+          post.content?.rendered || post.excerpt?.rendered || "";
+        const readTime = calculateReadTime(cleanWordPressContent(contentToUse));
+        return {
+          id: post.id.toString(),
+          date: formatDate(post.date, currentLanguage, true),
+          title: decodeHtmlEntities(post.title.rendered),
+          content: cleanWordPressContent(post.excerpt.rendered),
+          image: post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ?? "",
+          categories,
+          readTime,
+        };
+      }),
       totalPages,
     };
   } catch (error) {
@@ -112,6 +133,7 @@ export const fetchPosts = async (
  * @property {string} id - Stringified post ID
  * @property {string} date - Formatted localized date string
  * @property {string} dateWithoutFormat - Original date string from WordPress
+ * @property {string} modified - Formatted localized last modification date
  * @property {string} title - Decoded HTML title text
  * @property {string} excerpt - Decoded HTML excerpt text
  * @property {string} content - Raw HTML content
@@ -123,6 +145,7 @@ export const fetchPosts = async (
  * @property {string} [featuredImage.large] - Large size URL
  * @property {string[]} categories - Array of category names
  * @property {string[]} tags - Array of tag names
+ * @property {string} readTime - Estimated reading time (e.g. "5 min read")
  *
  * @throws {Error} When the WordPress API request fails
  *
@@ -155,6 +178,7 @@ export const fetchPost = async (
     const post = posts[0];
     const featuredMedia = post._embedded?.["wp:featuredmedia"]?.[0];
     const terms = post._embedded?.["wp:term"] ?? [];
+    const authorData = post._embedded?.author?.[0];
 
     const categories: string[] = [];
     const tags: string[] = [];
@@ -169,13 +193,12 @@ export const fetchPost = async (
       });
     });
 
+    const contentToUse = post.content?.rendered || post.excerpt?.rendered || "";
+    const readTime = calculateReadTime(cleanWordPressContent(contentToUse));
+
     return {
       id: post.id.toString(),
-      date: new Intl.DateTimeFormat(currentLanguage, {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }).format(new Date(post.date)),
+      date: formatDate(post.date, currentLanguage, true),
       dateWithoutFormat: post.date,
       title: decodeHtmlEntities(post.title.rendered),
       excerpt: decodeHtmlEntities(post.excerpt.rendered),
@@ -189,6 +212,15 @@ export const fetchPost = async (
       },
       categories,
       tags,
+      readTime,
+      modified: formatDate(post.modified, currentLanguage, false),
+      author: {
+        id: authorData?.id || 0,
+        name: authorData?.name || '',
+        avatar: authorData?.avatar_urls?.['96'], // Puedes cambiar el tamaño según necesites
+        description: authorData?.description,
+        url: authorData?.link
+      }
     };
   } catch (error) {
     console.error("Error fetching single WordPress post:", error);
@@ -239,11 +271,11 @@ export const fetchPostWithNavigation = async (
  * @throws {Error} When the WordPress API request fails
  *
  * @example
- * // Get the next post after a specific date
+ * Get the next post after a specific date
  * const nextPost = await fetchAdjacentPost('2023-01-15T00:00:00', 'after', 'asc');
  *
  * @example
- * // Get the previous post before a specific date
+ * Get the previous post before a specific date
  * const prevPost = await fetchAdjacentPost('2023-01-15T00:00:00', 'before', 'desc');
  */
 const fetchAdjacentPost = async (

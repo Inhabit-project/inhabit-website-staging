@@ -8,23 +8,18 @@ const Blog: React.FC = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
 
-  const loadPosts = async (newPage: number) => {
-    if (newPage < 1 || (totalPages && newPage > totalPages)) return;
-
+  const loadPosts = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const { posts, totalPages } = await fetchPosts({
+      const { posts } = await fetchPosts({
         per_page: 3,
         page: 1,
       });
+      console.log(posts);
       setPosts(posts);
-      setTotalPages(totalPages);
-      setCurrentPage(newPage);
     } catch (err) {
       setError(t("mainPage.blog.error"));
       console.error("Error loading blog posts:", err);
@@ -33,11 +28,8 @@ const Blog: React.FC = () => {
     }
   };
 
-  const loadNextPage = () => loadPosts(currentPage + 1);
-  const loadPreviousPage = () => loadPosts(currentPage - 1);
-
   useEffect(() => {
-    loadPosts(1);
+    loadPosts();
   }, [t]);
 
   const [mainPost, ...smallPosts] = posts;
@@ -118,8 +110,8 @@ const Blog: React.FC = () => {
               {/* Small Blog Posts */}
               <div className="lg:w-1/2">
                 <div className="flex flex-col gap-[1.125rem]">
-                  {(smallPosts as BlogPost[]).map((post, index) => (
-                    <div key={index} className="flex gap-5">
+                  {(smallPosts).map((post) => (
+                    <div key={post.id} className="flex gap-5">
                       <div className="relative aspect-[4/3] w-1/3">
                         <img
                           src={post.image}

@@ -4,6 +4,8 @@ export interface BlogPost {
   title: string;
   content: string;
   image: string;
+  categories?: string[];
+  readTime?: string;
 }
 
 export interface WordPressPosts {
@@ -23,12 +25,14 @@ export interface WordPressPosts {
       source_url: string;
       alt_text: string;
     }>;
+    "wp:term"?: WordPressTerm[][];
   };
 }
 
 export interface WordPressPost {
   id: number;
   date: string;
+  modified: string;
   title: {
     rendered: string;
   };
@@ -62,6 +66,7 @@ export interface WordPressPost {
       };
     }>;
     "wp:term"?: WordPressTerm[][];
+    author?: WordPressAuthor[];
   };
 }
 
@@ -69,6 +74,19 @@ export interface WordPressTerm {
   id: number;
   name: string;
   taxonomy: string;
+}
+
+export interface WordPressAuthor {
+  id: number;
+  name: string;
+  description: string;
+  link: string;
+  avatar_urls?: {
+    "24"?: string;
+    "48"?: string;
+    "96"?: string;
+    [key: string]: string | undefined;
+  };
 }
 
 export interface PostNavigation {
@@ -80,6 +98,8 @@ export interface PostNavigation {
 export interface ProcessedPost {
   id: string;
   date: string;
+  dateWithoutFormat: string;
+  modified: string;
   title: string;
   excerpt: string;
   content: string;
@@ -92,11 +112,19 @@ export interface ProcessedPost {
   };
   categories: string[];
   tags: string[];
-  dateWithoutFormat: string;
+  readTime: string;
+  author: {
+    id: number;
+    name: string;
+    avatar?: string;
+    description?: string;
+    url?: string;
+  };
 }
 
 export interface PaginationParams {
   per_page?: number;
   page?: number;
   offset?: number;
+  skipFeatured?: boolean;
 }

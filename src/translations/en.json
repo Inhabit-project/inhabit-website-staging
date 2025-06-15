@@ -234,7 +234,9 @@
       "title": "Stay<br /><strong>informed</strong>",
       "description": "Stay up to date with our latest news and insights on biodiversity and ecological preservation.",
       "loading": "Loading list of posts",
-      "noPosts": "No posts available"
+      "noPosts": "No posts available",
+      "readTime_one": "{{count}} min read",
+      "readTime_other": "{{count}} mins read"
     },
     "faq": {
       "title": "Frequently Asked<br /><strong>Questions</strong>",
