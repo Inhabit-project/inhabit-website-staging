@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DownloadButton from './DownloadButton';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface HubSubsectionsProps {
   backgroundImage: string;
@@ -32,11 +33,33 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
   buttonText,
 }) => {
   const [current, setCurrent] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const bgImage = sliderImages[current];
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [isModalOpen]);
 
   const handlePrev = () => setCurrent((prev) => (prev === 0 ? sliderImages.length - 1 : prev - 1));
   const handleNext = () => setCurrent((prev) => (prev === sliderImages.length - 1 ? 0 : prev + 1));
+
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <section 
@@ -61,15 +84,15 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
       {/* Main content wrapper for left alignment and vertical centering */}
       <div className="container relative z-20 flex w-full max-w-5xl items-center justify-start">
         {/* Download button */}
-        <div className="absolute top-0 right-16 z-30">
+        <div className="absolute top-0 right-16 z-10">
           <button
             className={`btn-primary flex items-center gap-2 px-6${inactive ? ' inactive' : ''}`}
             type="button"
-            onClick={inactive ? undefined : () => navigate(navigateTo)}
+            onClick={handleButtonClick}
             disabled={inactive}
-            aria-label={inactive ? (buttonText || 'Hub coming soon') : (buttonText || `Become a Steward for ${title} Hub`)}
+            aria-label={t('mainPage.visitThisProject')}
           >
-            {inactive ? (buttonText || 'Hub coming soon') : (buttonText || 'Become a Steward for this Hub')}
+            {t('mainPage.visitThisProject')}
             <svg
               width="20"
               height="20"
@@ -87,9 +110,36 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
               />
             </svg>
           </button>
+          {isModalOpen && (
+            <div
+              className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/80"
+              role="dialog"
+              aria-modal="true"
+              tabIndex={-1}
+            >
+              <button
+                onClick={handleCloseModal}
+                className="fixed top-4 right-4 w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center z-[100000] shadow-lg"
+                aria-label={t('mainPage.projectsVideo.closeVideo')}
+                autoFocus
+              >
+                <span className="text-xl">&times;</span>
+              </button>
+              <div className="relative w-[90vw] h-[90vh] flex items-center justify-center">
+                <iframe
+                  src="https://explorer.land/embed/project/bioculturalcorridor/site/n85ReZ/news"
+                  title="Project News"
+                  className="w-full h-full rounded-xl"
+                  style={{ border: 'none' }}
+                  frameBorder="0"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          )}
         </div>
         {/* Card */}
-        <article className="max-w-xl w-full bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl flex flex-col p-8 gap-2">
+        <article className="min-h-[50rem] max-w-xl w-full bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl flex flex-col p-8 gap-2">
           {/* Map image */}
           <img 
             src={mapImage} 
@@ -109,7 +159,7 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
         </article>
         {/* Navigation arrows styled as per Figma pill design, both at bottom right */}
         <div 
-          className="absolute bottom-12 right-16 z-30 flex gap-4"
+          className="absolute bottom-12 right-16 z-5 flex gap-4"
           role="group"
           aria-label="Image navigation"
         >
