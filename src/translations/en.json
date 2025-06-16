@@ -444,7 +444,18 @@
           "image": "/assets/blog/blog-3.jpg"
         }
       ]
-    }
+    },
+    "projectsVideo": {
+      "eyebrow": "Featured Project Video",
+      "heading": "Explore our <span class=\"highlighted-text\">flagship projects</span> driving <span class=\"highlighted-text\">regeneration</span> and <span class=\"highlighted-text\">community empowerment</span>.",
+      "playFeaturedVideo": "Play featured project video",
+      "playVideo": "Play video",
+      "videoPlayer": "Video player",
+      "closeVideo": "Close video",
+      "iframeTitle": "Project Video",
+      "iframeAriaLabel": "Project video player"
+    },
+    "visitThisProject": "Visit this project"
   },
   "nuiyanzhiPage": {
     "theVision": "The Vision",
@@ -639,10 +650,67 @@
   },
   "projectsPage": {
     "title": "Our Projects",
-    "description": "Our projects span ecosystem restoration, biocultural innovation, and community empowerment."
+    "description": "Our projects span ecosystem restoration, biocultural innovation, and community empowerment.",
+    "skipToMainContent": "Skip to main content",
+    "mainContent": "Main content of the Projects page"
   },
   "contactPage": {
     "title": "Contact<br /><strong>Us</strong>",
-    "description": "We would love to hear from you! Whether you have questions, want to collaborate, or simply wish to connect, reach out and our team will get back to you as soon as possible."
+    "description": "We would love to hear from you! Whether you have questions, want to collaborate, or simply wish to connect, reach out and our team will get back to you as soon as possible.",
+    "reachOutIf": "Reach out if you:",
+    "bullet1": "Want to support or co-build a Bio-Cultural Hub",
+    "bullet2": "Represent a regenerative project or community",
+    "bullet3": "Have questions about Stewardship NFTs",
+    "bullet4": "Are exploring partnership, funding, or collaboration",
+    "bullet5": "Just want to connect and share your vision",
+    "seed": "Every conversation is a seed.",
+    "email": "hello@inhabit.one",
+    "phone": "+1 (555) 000-0000",
+    "location": "Tierra Kilwa,<br />Palomino, La Guajira, Colombia",
+    "successMessage": "Thank you for reaching out! We will get back to you soon.",
+    "form": {
+      "name": "Name*",
+      "namePlaceholder": "Enter your full name",
+      "email": "E-Mail*",
+      "emailPlaceholder": "your@email.com",
+      "message": "Message",
+      "messagePlaceholder": "Type your message...",
+      "kyc": "I understand that I'll need to complete a KYC Verification to eventually fully access the rights and benefits associated with my membership*",
+      "terms": "I accept the terms and conditions of the Membership Agreement granting me rights and benefits related this Land and Project*",
+      "send": "SEND MESSAGE"
+    }
+  },
+  "projectsMain": {
+    "overview": "Projects Overview",
+    "eyebrow": "Our Project Initiatives",
+    "heading": "Explore our <span class=\"highlighted-text\">flagship projects</span> driving <span class=\"highlighted-text\">regeneration</span> and <span class=\"highlighted-text\">community empowerment</span>.",
+    "project1": {
+      "label": "Forest Restoration",
+      "title": "Green Corridors",
+      "description": "Connecting fragmented habitats through native tree planting and ecological restoration, this project revives biodiversity and supports local wildlife.",
+      "visionHeading": "PROJECT VISION",
+      "visionText": "To create continuous green corridors that allow species migration and restore ecosystem health, while engaging local communities in stewardship.",
+      "backgroundImage": "/assets/images/img1.webp",
+      "mapImage": "/assets/images/img2.webp",
+      "sliderImages": [
+        "/assets/images/img1.webp",
+        "/assets/images/img2.webp",
+        "/assets/images/img3.webp"
+      ]
+    },
+    "project2": {
+      "label": "Agroecology",
+      "title": "Food Forests",
+      "description": "Transforming degraded lands into productive food forests, this project combines traditional knowledge with modern agroecology for food security and resilience.",
+      "visionHeading": "PROJECT VISION",
+      "visionText": "To empower communities to grow diverse, sustainable food systems that restore soil health and foster economic independence.",
+      "backgroundImage": "/assets/images/img4.webp",
+      "mapImage": "/assets/images/img5.webp",
+      "sliderImages": [
+        "/assets/images/img4.webp",
+        "/assets/images/img5.webp",
+        "/assets/images/img6.webp"
+      ]
+    }
   }
 } 

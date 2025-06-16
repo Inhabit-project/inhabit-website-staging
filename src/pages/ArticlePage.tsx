@@ -9,37 +9,43 @@ const ArticlePage: React.FC = () => (
     <Menu />
     <main className="container mx-auto py-24" style={{ maxWidth: 900 }}>
       {/* Breadcrumb and Category */}
-      <div className="mb-4" style={{ color: 'var(--color-secondary)', fontFamily: 'Abel, sans-serif', fontSize: 16, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-        Blog / Category
-      </div>
+      <nav aria-label="Breadcrumb" className="mb-4">
+        <ol className="flex items-center" style={{ color: 'var(--color-secondary)', fontFamily: 'Abel, sans-serif', fontSize: 16, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+          <li><a href="/blog" className="hover:underline">Blog</a></li>
+          <li aria-hidden="true" className="mx-2">/</li>
+          <li>Category</li>
+        </ol>
+      </nav>
       {/* Title */}
       <h1 className="heading-2 mb-2" style={{ color: 'var(--color-secondary)', fontWeight: 500, fontSize: 48, lineHeight: 1.1 }}>
         Nuiyanzhi Biocultural Hub: Meet the Guardian Family Restoring Biodiversity
       </h1>
       {/* Meta */}
-      <div className="flex items-center mb-6" style={{ color: 'var(--color-secondary)', fontFamily: 'Abel, sans-serif', fontSize: 16, letterSpacing: '0.08em', opacity: 0.8 }}>
-        <span>Feb. 2024</span>
-        <span style={{ margin: '0 12px' }}>•</span>
-        <span>11 JAN 2022</span>
-        <span style={{ margin: '0 12px' }}>•</span>
+      <div className="flex items-center mb-6" style={{ color: 'var(--color-secondary)', fontFamily: 'Abel, sans-serif', fontSize: 16, letterSpacing: '0.08em', opacity: 0.8 }} role="doc-info">
+        <time dateTime="2024-02">Feb. 2024</time>
+        <span style={{ margin: '0 12px' }} aria-hidden="true">•</span>
+        <time dateTime="2022-01-11">11 JAN 2022</time>
+        <span style={{ margin: '0 12px' }} aria-hidden="true">•</span>
         <span>5 MIN READ</span>
       </div>
       {/* Cover Image */}
       <div className="mb-10">
         <img
           src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80"
-          alt="cover"
+          alt="Mountain landscape at Nuiyanzhi Biocultural Hub"
           style={{ width: '100%', borderRadius: 24, objectFit: 'cover', maxHeight: 340 }}
         />
       </div>
       {/* Introduction */}
-      <h2 className="heading-4 mb-2" style={{ color: 'var(--color-secondary)' }}>Introduction</h2>
-      <p className="body-S mb-6" style={{ color: 'var(--color-secondary)', fontSize: 18 }}>
-        At Ñuiyanzhi Hub, the Maya Kogui are stewards, and visitors from worldwide are invited to model traditional methods together with experts. Etiam quis enim, eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim.
-      </p>
+      <section aria-labelledby="introduction-heading">
+        <h2 id="introduction-heading" className="heading-4 mb-2" style={{ color: 'var(--color-secondary)' }}>Introduction</h2>
+        <p className="body-S mb-6" style={{ color: 'var(--color-secondary)', fontSize: 18 }}>
+          At Ñuiyanzhi Hub, the Maya Kogui are stewards, and visitors from worldwide are invited to model traditional methods together with experts. Etiam quis enim, eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim.
+        </p>
+      </section>
       {/* Image Placeholder */}
-      <div className="mb-6 flex items-center justify-center" style={{ background: 'rgba(0,0,0,0.05)', borderRadius: 16, height: 220 }}>
-        <svg width="64" height="64" fill="none" viewBox="0 0 64 64">
+      <div className="mb-6 flex items-center justify-center" style={{ background: 'rgba(0,0,0,0.05)', borderRadius: 16, height: 220 }} role="img" aria-label="Decorative mountain illustration">
+        <svg width="64" height="64" fill="none" viewBox="0 0 64 64" aria-hidden="true">
           <rect width="64" height="64" rx="16" fill="#E5E5E5" />
           <path d="M16 48L32 32L48 48" stroke="#BDBDBD" strokeWidth="2" />
           <circle cx="24" cy="24" r="4" fill="#BDBDBD" />
@@ -50,36 +56,48 @@ const ArticlePage: React.FC = () => (
       </div>
       {/* Highlighted blockquote */}
       <blockquote style={{ borderLeft: '4px solid var(--color-accent)', background: 'rgba(213, 115, 0, 0.05)', padding: '16px 24px', borderRadius: 12, marginBottom: 24, color: 'var(--color-secondary)', fontStyle: 'italic', fontSize: 18 }}>
-        "Ipsum sit mattis nulla quam nulla. Gravida id gravida ac enim mauris id. Non pellentesque congue eget consectetur turpis. Sapien, dictum molestie sem tempor. Diam amet, nec netus amet enim."
+        <p>"Ipsum sit mattis nulla quam nulla. Gravida id gravida ac enim mauris id. Non pellentesque congue eget consectetur turpis. Sapien, dictum molestie sem tempor. Diam amet, nec netus amet enim."</p>
       </blockquote>
       {/* Main content */}
       <div className="body-S mb-6" style={{ color: 'var(--color-secondary)', fontSize: 18 }}>
         Etiam quis enim, eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim.
       </div>
       {/* Conclusion */}
-      <h2 className="heading-4 mb-2" style={{ color: 'var(--color-secondary)' }}>Conclusion</h2>
-      <div className="body-S mb-6" style={{ color: 'var(--color-secondary)', fontSize: 18 }}>
-        Mauris euismod, sapien eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim.
-      </div>
-      {/* Share section */}
-      <div className="mb-8" style={{ borderTop: '1px solid #D9E6C3', paddingTop: 24 }}>
-        <span style={{ color: 'var(--color-secondary)', fontFamily: 'Abel, sans-serif', fontSize: 16, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Share this post.</span>
-        <div className="flex gap-4 mt-2">
-          <button style={{ background: 'none', border: 'none', color: 'var(--color-secondary)', fontSize: 20 }}>🌐</button>
-          <button style={{ background: 'none', border: 'none', color: 'var(--color-secondary)', fontSize: 20 }}>🐦</button>
-          <button style={{ background: 'none', border: 'none', color: 'var(--color-secondary)', fontSize: 20 }}>📘</button>
+      <section aria-labelledby="conclusion-heading">
+        <h2 id="conclusion-heading" className="heading-4 mb-2" style={{ color: 'var(--color-secondary)' }}>Conclusion</h2>
+        <div className="body-S mb-6" style={{ color: 'var(--color-secondary)', fontSize: 18 }}>
+          Mauris euismod, sapien eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim. Etiam quis enim, eu mattis, eu enim.
         </div>
-      </div>
+      </section>
+      {/* Share section */}
+      <section aria-labelledby="share-heading" className="mb-8" style={{ borderTop: '1px solid #D9E6C3', paddingTop: 24 }}>
+        <h2 id="share-heading" style={{ color: 'var(--color-secondary)', fontFamily: 'Abel, sans-serif', fontSize: 16, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Share this post</h2>
+        <div className="flex gap-4 mt-2" role="group" aria-label="Social media sharing options">
+          <button 
+            style={{ background: 'none', border: 'none', color: 'var(--color-secondary)', fontSize: 20 }}
+            aria-label="Share on Website"
+          >🌐</button>
+          <button 
+            style={{ background: 'none', border: 'none', color: 'var(--color-secondary)', fontSize: 20 }}
+            aria-label="Share on Twitter"
+          >🐦</button>
+          <button 
+            style={{ background: 'none', border: 'none', color: 'var(--color-secondary)', fontSize: 20 }}
+            aria-label="Share on Facebook"
+          >📘</button>
+        </div>
+      </section>
       {/* Author */}
-      <div className="flex items-center gap-4 mt-8" style={{ borderTop: '1px solid #D9E6C3', paddingTop: 24 }}>
-        <div style={{ width: 48, height: 48, borderRadius: '50%', background: '#D9E6C3', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, color: 'var(--color-secondary)' }}>A</div>
+      <section aria-labelledby="author-heading" className="flex items-center gap-4 mt-8" style={{ borderTop: '1px solid #D9E6C3', paddingTop: 24 }}>
+        <h2 id="author-heading" className="sr-only">About the Author</h2>
+        <div style={{ width: 48, height: 48, borderRadius: '50%', background: '#D9E6C3', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, color: 'var(--color-secondary)' }} aria-hidden="true">A</div>
         <div>
           <div style={{ color: 'var(--color-secondary)', fontWeight: 600 }}>Full Name</div>
           <div style={{ color: 'var(--color-secondary)', opacity: 0.7, fontSize: 14 }}>Job title, Company name</div>
         </div>
-      </div>
+      </section>
       {/* Previous/Next Article Navigation */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '64px 0 48px 0', gap: 24 }}>
+      <nav aria-label="Article navigation" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '64px 0 48px 0', gap: 24 }}>
         <a href="#" style={{ textDecoration: 'none', flex: 1 }}>
           <button
             style={{
@@ -100,8 +118,9 @@ const ArticlePage: React.FC = () => (
               width: '100%',
               justifyContent: 'flex-start',
             }}
+            aria-label="Previous article: How to Restore Biodiversity"
           >
-            <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             <span style={{ fontWeight: 700 }}>Previous Article</span>
             <span style={{ opacity: 0.7, marginLeft: 8 }}>How to Restore Biodiversity</span>
           </button>
@@ -126,13 +145,14 @@ const ArticlePage: React.FC = () => (
               width: '100%',
               justifyContent: 'flex-end',
             }}
+            aria-label="Next article: Meet the Stewards of Tierra Kilwa"
           >
             <span style={{ fontWeight: 700, marginRight: 8 }}>Next Article</span>
             <span style={{ opacity: 0.7 }}>Meet the Stewards of Tierra Kilwa</span>
-            <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
         </a>
-      </div> 
+      </nav>
     </main>
     {/* Newsletter CTA */}
     <NewsletterCTA />

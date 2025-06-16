@@ -37,16 +37,19 @@ const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({ variant, title, s
   const { t } = useTranslation();
   const content = heroContent[variant];
   const tKey = `internalPagesHero.${variant}`;
+  const heroTitleId = `${variant}-hero-title`;
+  const heroDescriptionId = `${variant}-hero-description`;
+
   return (
     <section 
       className="w-full flex flex-col items-center justify-center py-32 background-gradient-light"
-      aria-labelledby={`${variant}-hero-title`}
+      aria-labelledby={heroTitleId}
     >
       <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col items-start gap-8">
         {/* Header section */}
         <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
-          <h2 
-            id={`${variant}-hero-title`}
+          <h1 
+            id={heroTitleId}
             className="heading-2 text-secondary max-w-[40.9375rem]"
           >
             <span dangerouslySetInnerHTML={{ __html: title || t(`${tKey}.title`) }} />
@@ -54,8 +57,12 @@ const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({ variant, title, s
             <strong>
               <span dangerouslySetInnerHTML={{ __html: strong || t(`${tKey}.strong`) }} />
             </strong>
-          </h2>
-          <p className="body-M text-secondary max-w-[36rem]">
+          </h1>
+          <p 
+            id={heroDescriptionId}
+            className="body-M text-secondary max-w-[36rem]"
+            aria-labelledby={heroTitleId}
+          >
             {description || t(`${tKey}.description`)}
           </p>
         </div>
@@ -65,6 +72,7 @@ const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({ variant, title, s
             alt={alt || content.alt} 
             className="w-full rounded-xl object-cover"
             loading="lazy"
+            aria-describedby={heroDescriptionId}
           />
         </div>
       </div>

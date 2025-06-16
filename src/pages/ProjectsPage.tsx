@@ -7,7 +7,6 @@ import Blog from '../components/Blog';
 import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 import ProjectsVideoSection from '../components/ProjectsVideoSection';
-import ProjectSection from '../components/ProjectSection';
 import ImageSection from '../components/ImageSection';
 import Gallery from '../components/Gallery';
 import ProjectsMain from '../components/ProjectsMain';
@@ -17,30 +16,56 @@ const ProjectsPage: React.FC = () => {
   return (
     <>
       {/* Skip to main content link for accessibility */}
-      <a href="#main-content" className="sr-only focus:not-sr-only absolute top-2 left-2 bg-white text-black p-2 z-50 rounded">
-        Skip to main content
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only absolute top-2 left-2 bg-white text-black p-2 z-50 rounded focus:ring-2 focus:ring-primary"
+      >
+        {t('projectsPage.skipToMainContent')}
       </a>
       <div className="min-h-screen background-gradient-light">
         <Menu />
-        <main id="main-content" tabIndex={-1} role="main">
-          <section aria-label="Projects hero section">
+        <main 
+          id="main-content" 
+          tabIndex={-1} 
+          role="main"
+          aria-label={t('projectsPage.mainContent')}
+        >
+          <section 
+            aria-labelledby="projects-hero-title"
+            className="projects-hero"
+          >
             <InternalPagesHero
               variant="projects"
             />
           </section>
-          <section aria-label="Projects image section">
+          <section 
+            aria-labelledby="projects-video-title"
+            className="projects-video"
+          >
             <ProjectsVideoSection />
           </section>
-          <section aria-label="Projects main content">
+          <section 
+            aria-labelledby="projects-main-title"
+            className="projects-main"
+          >
             <ProjectsMain />
           </section>
-          <section aria-label="Call to action">
+          <section 
+            aria-labelledby="projects-cta-title"
+            className="projects-cta"
+          >
             <CTA />
           </section>
-          <section aria-label="Blog section">
+          <section 
+            aria-labelledby="projects-blog-title"
+            className="projects-blog"
+          >
             <Blog />
           </section>
-          <section aria-label="Frequently asked questions">
+          <section 
+            aria-labelledby="projects-faq-title"
+            className="projects-faq"
+          >
             <FAQ />
           </section>
         </main>

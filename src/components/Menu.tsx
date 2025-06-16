@@ -98,7 +98,9 @@ const Menu: React.FC = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className="nav-text hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                className={`nav-text hover:opacity-80 focus:outline-none ${
+                  window.location.pathname === item.path ? 'text-accent' : ''
+                }`}
                 aria-current={window.location.pathname === item.path ? 'page' : undefined}
               >
                 {item.label}
@@ -123,7 +125,7 @@ const Menu: React.FC = () => {
               </LanguageButton>
             </div>
             <a href="https://docsend.com/view/z34fcq8w3f8hgz7h" target="_blank" rel="noopener noreferrer">
-              <button className="flex items-center h-[3.375rem] bg-[var(--color-green-soft)] hover:bg-[var(--color-accent)] px-2 rounded-button backdrop-blur-[6px] transition-all duration-200 group">
+              <button className="btn-secondary transition-all duration-200 group">
                 <div className="flex items-center gap-2 px-4">
                   <svg className="w-6 h-6 transition-colors duration-200 group-hover:[&>path]:stroke-[var(--color-light)]" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" style={{stroke: 'var(--color-secondary)'}}>
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
@@ -181,7 +183,7 @@ const Menu: React.FC = () => {
               </LanguageButton>
             </div>
             <a href="https://docsend.com/view/z34fcq8w3f8hgz7h" target="_blank" rel="noopener noreferrer">
-              <button className="flex items-center h-[3.375rem] bg-[var(--color-green-soft)] hover:bg-[var(--color-accent)] px-4 rounded-button backdrop-blur-[6px] transition-all duration-200 group mt-4">
+              <button className="btn-secondary transition-all duration-200 group mt-4">
                 <div className="flex items-center gap-2">
                   <svg className="w-6 h-6 transition-colors duration-200 group-hover:[&>path]:stroke-[var(--color-light)]" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" style={{stroke: 'var(--color-secondary)'}}>
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>

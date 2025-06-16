@@ -522,7 +522,18 @@
           "description": "Los fondos se usan para cuatro acciones clave: adquirir y proteger tierras degradadas, restaurar sus ecosistemas, transformarlas en HUBS bioculturales prósperos y mejorar nuestro modelo regenerativo para asegurar impacto a largo plazo, escalabilidad y participación glocal."
         }
       ]
-    }
+    },
+    "projectsVideo": {
+      "eyebrow": "Video Destacado del Proyecto",
+      "heading": "Explora nuestros <span class=\"highlighted-text\">proyectos emblemáticos</span> que impulsan la <span class=\"highlighted-text\">regeneración</span> y el <span class=\"highlighted-text\">empoderamiento comunitario</span>.",
+      "playFeaturedVideo": "Reproducir video destacado del proyecto",
+      "playVideo": "Reproducir video",
+      "videoPlayer": "Reproductor de video",
+      "closeVideo": "Cerrar video",
+      "iframeTitle": "Video del Proyecto",
+      "iframeAriaLabel": "Reproductor de video del proyecto"
+    },
+    "visitThisProject": "Visitar este proyecto"
   },
   "nuiyanzhiPage": {
     "theVision": "La Visión",
@@ -730,14 +741,76 @@
       "title": "Ñuiyanzhi",
       "strong": "Hub",
       "description": "Sanando suelos degradados y reforestando áreas clave, restaura la funcionalidad del ecosistema y crea un refugio para especies en peligro, permitiendo el movimiento de la vida silvestre a través de un corredor ecológico interno que reconecta paisajes fragmentados."
+    },
+    "projects": {
+      "title": "Nuestros",
+      "strong": "Proyectos",
+      "description": "Descubre las iniciativas y colaboraciones que están generando un impacto real. Nuestros proyectos abarcan restauración de ecosistemas, innovación biocultural y empoderamiento comunitario—cada uno es un paso hacia un futuro regenerativo."
     }
   },
   "projectsPage": {
     "title": "Nuestros<br /><strong>Proyectos</strong>",
-    "description": "Descubre las iniciativas y colaboraciones que están generando un impacto real. Nuestros proyectos abarcan restauración de ecosistemas, innovación biocultural y empoderamiento comunitario—cada uno es un paso hacia un futuro regenerativo."
+    "description": "Descubre las iniciativas y colaboraciones que están generando un impacto real. Nuestros proyectos abarcan restauración de ecosistemas, innovación biocultural y empoderamiento comunitario—cada uno es un paso hacia un futuro regenerativo.",
+    "skipToMainContent": "Saltar al contenido principal",
+    "mainContent": "Contenido principal de la página de Proyectos"
   },
   "contactPage": {
     "title": "Contáctanos<br /><strong>Aquí</strong>",
-    "description": "¡Nos encantaría saber de ti! Ya sea que tengas preguntas, quieras colaborar o simplemente desees conectar, escríbenos y nuestro equipo te responderá lo antes posible."
+    "description": "¡Nos encantaría saber de ti! Ya sea que tengas preguntas, quieras colaborar o simplemente desees conectar, escríbenos y nuestro equipo te responderá lo antes posible.",
+    "reachOutIf": "Contáctanos si:",
+    "bullet1": "Quieres apoyar o co-crear un Hub Biocultural",
+    "bullet2": "Representas un proyecto o comunidad regenerativa",
+    "bullet3": "Tienes preguntas sobre los NFTs de Custodia",
+    "bullet4": "Estás explorando alianzas, financiamiento o colaboración",
+    "bullet5": "Solo quieres conectar y compartir tu visión",
+    "seed": "Cada conversación es una semilla.",
+    "email": "hello@inhabit.one",
+    "phone": "+1 (555) 000-0000",
+    "location": "Tierra Kilwa,<br />Palomino, La Guajira, Colombia",
+    "successMessage": "¡Gracias por contactarnos! Nos pondremos en contacto contigo pronto.",
+    "form": {
+      "name": "Nombre*",
+      "namePlaceholder": "Escribe tu nombre completo",
+      "email": "Correo electrónico*",
+      "emailPlaceholder": "tu@email.com",
+      "message": "Mensaje",
+      "messagePlaceholder": "Escribe tu mensaje...",
+      "kyc": "Entiendo que necesitaré completar una verificación KYC para eventualmente acceder plenamente a los derechos y beneficios asociados con mi membresía*",
+      "terms": "Acepto los términos y condiciones del Acuerdo de Membresía que me otorgan derechos y beneficios relacionados con esta Tierra y Proyecto*",
+      "send": "ENVIAR MENSAJE"
+    }
+  },
+  "projectsMain": {
+    "overview": "Resumen de Proyectos",
+    "eyebrow": "Nuestras Iniciativas de Proyectos",
+    "heading": "Explora nuestros <span class=\"highlighted-text\">proyectos emblemáticos</span> que impulsan la <span class=\"highlighted-text\">regeneración</span> y el <span class=\"highlighted-text\">empoderamiento comunitario</span>.",
+    "project1": {
+      "label": "Restauración Forestal",
+      "title": "Corredores Verdes",
+      "description": "Conectando hábitats fragmentados mediante la plantación de árboles nativos y la restauración ecológica, este proyecto revive la biodiversidad y apoya la fauna local.",
+      "visionHeading": "VISIÓN DEL PROYECTO",
+      "visionText": "Crear corredores verdes continuos que permitan la migración de especies y restauren la salud del ecosistema, involucrando a las comunidades locales en la custodia.",
+      "backgroundImage": "/assets/images/img1.webp",
+      "mapImage": "/assets/images/img2.webp",
+      "sliderImages": [
+        "/assets/images/img1.webp",
+        "/assets/images/img2.webp",
+        "/assets/images/img3.webp"
+      ]
+    },
+    "project2": {
+      "label": "Agroecología",
+      "title": "Bosques Comestibles",
+      "description": "Transformando tierras degradadas en bosques comestibles productivos, este proyecto combina el conocimiento tradicional con la agroecología moderna para la seguridad alimentaria y la resiliencia.",
+      "visionHeading": "VISIÓN DEL PROYECTO",
+      "visionText": "Empoderar a las comunidades para cultivar sistemas alimentarios diversos y sostenibles que restauren la salud del suelo y fomenten la independencia económica.",
+      "backgroundImage": "/assets/images/img4.webp",
+      "mapImage": "/assets/images/img5.webp",
+      "sliderImages": [
+        "/assets/images/img4.webp",
+        "/assets/images/img5.webp",
+        "/assets/images/img6.webp"
+      ]
+    }
   }
 } 
