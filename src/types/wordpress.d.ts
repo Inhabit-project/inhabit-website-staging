@@ -4,7 +4,7 @@ export interface BlogPost {
   title: string;
   content: string;
   image: string;
-  categories?: string[];
+  categories: string[];
   readTime?: string;
 }
 
@@ -91,8 +91,8 @@ export interface WordPressAuthor {
 
 export interface PostNavigation {
   current: ProcessedPost | null;
-  next: BlogPost | null;
-  previous: BlogPost | null;
+  next: Pick<BlogPost, "id" | "title" | "content" | "date" | "image"> | null;
+  previous: Pick<BlogPost, "id" | "title" | "content" | "date" | "image"> | null;
 }
 
 export interface ProcessedPost {

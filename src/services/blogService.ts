@@ -33,7 +33,7 @@ const WORDPRESS_API_URL = import.meta.env.VITE_WORDPRESS_API_URL;
  * @returns {string} BlogPost.content - Raw HTML content
  * @returns {string} BlogPost.image - Featured image URL or empty string
  */
-const formatPost = (post: WordPressPost): BlogPost => {
+const formatPost = (post: WordPressPost): Pick<BlogPost, 'id' | 'date' | 'title' | 'content' | 'image'> => {
   return {
     id: post.id.toString(),
     date: new Date(post.date).toLocaleDateString(),
@@ -282,7 +282,7 @@ const fetchAdjacentPost = async (
   date: string,
   direction: "after" | "before",
   order: "asc" | "desc"
-): Promise<BlogPost | null> => {
+): Promise<Pick<BlogPost, "id" | "title" | "content" | "date" | "image"> | null> => {
   const currentLanguage = i18n.language;
 
   if (!date || !isValidDate(date)) {

@@ -178,7 +178,7 @@ const RelatedPost: React.FC = () => {
                         textTransform: "uppercase",
                       }}
                     >
-                      {post.categories}
+                      {post.categories[0]}
                     </span>
                     <span style={{ margin: "0 8px" }}>•</span>
                     <span
