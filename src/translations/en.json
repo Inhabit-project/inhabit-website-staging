@@ -685,31 +685,34 @@
     "eyebrow": "Our Project Initiatives",
     "heading": "Explore our <span class=\"highlighted-text\">flagship projects</span> driving <span class=\"highlighted-text\">regeneration</span> and <span class=\"highlighted-text\">community empowerment</span>.",
     "project1": {
-      "label": "Forest Restoration",
-      "title": "Green Corridors",
-      "description": "Connecting fragmented habitats through native tree planting and ecological restoration, this project revives biodiversity and supports local wildlife.",
+      "label": "Food Forest",
+      "title": "SEWINDUA CORRIDOR",
+      "description": "Was established in 2024 by the INHABIT Foundation. Located in the heart of Palomino, the corridor serves as a sanctuary for biodiversity, designed to support pollinators and wildlife.",
       "visionHeading": "PROJECT VISION",
-      "visionText": "To create continuous green corridors that allow species migration and restore ecosystem health, while engaging local communities in stewardship.",
+      "visionText": "Home to over 140 native tree species, it restores different strata of a dry tropical forest, transitioning into a humid ecosystem. The corridor also features a Food Forest with more than 60 native fruit and nut species from the Caribbean, alongside an agroecological intensive mandala food garden, fostering regenerative agriculture and local food sovereignty.",
       "backgroundImage": "/assets/images/img1.webp",
       "mapImage": "/assets/images/img2.webp",
       "sliderImages": [
-        "/assets/images/img1.webp",
-        "/assets/images/img2.webp",
-        "/assets/images/img3.webp"
+        "/assets/sendiwa-1.webp",
+        "/assets/sendiwa-2.webp",
+        "/assets/sendiwa-3.webp",
+        "/assets/sendiwa-4.webp",
+        "/assets/sendiwa-5.webp"
       ]
     },
     "project2": {
       "label": "Agroecology",
-      "title": "Food Forests",
+      "title": "ARTE SELVA",
       "description": "Transforming degraded lands into productive food forests, this project combines traditional knowledge with modern agroecology for food security and resilience.",
       "visionHeading": "PROJECT VISION",
-      "visionText": "To empower communities to grow diverse, sustainable food systems that restore soil health and foster economic independence.",
-      "backgroundImage": "/assets/images/img4.webp",
+      "visionText": "ArteSelva is a program that embodies a unique approach to creating biological corridors and botanical gardens—biodiversity hotspots enriched by experimental ArtScape pathways designed to awaken environmental consciousness and invite immersive, multi-sensory experiences that deepen our connection to nature.",
+      "backgroundImage": "/assets/arte-selva1.webp",
       "mapImage": "/assets/images/img5.webp",
       "sliderImages": [
-        "/assets/images/img4.webp",
-        "/assets/images/img5.webp",
-        "/assets/images/img6.webp"
+        "/assets/arte-selva1.webp",
+        "/assets/arte-selva2.webp",
+        "/assets/arte-selva3.webp",
+        "/assets/arte-selva4.webp"
       ]
     }
   }
