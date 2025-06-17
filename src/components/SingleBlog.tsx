@@ -10,15 +10,14 @@ const SingleBlog: React.FC = () => {
   const [post, setPost] = useState<ProcessedPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [prevPost, setPrevPost] = useState<BlogPost | null>(null);
-  const [nextPost, setNextPost] = useState<BlogPost | null>(null);
+  const [prevPost, setPrevPost] = useState<Pick<BlogPost, "id" | "title" | "content" | "date" | "image"> | null>(null);
+  const [nextPost, setNextPost] = useState<Pick<BlogPost, "id" | "title" | "content" | "date" | "image"> | null>(null);
 
   const loadPost = async (postID: string) => {
     setLoading(true);
 
     try {
       const { current, next, previous } = await fetchPostWithNavigation(postID);
-      console.log(next);
       setPost(current);
       setPrevPost(previous);
       setNextPost(next);
@@ -47,6 +46,20 @@ const SingleBlog: React.FC = () => {
           }}
         >
           Aquí va un loader
+        </h1>
+      )}
+
+      {!loading && error && (
+        <h1
+          className="py-24"
+          style={{
+            color: "var(--color-secondary)",
+            fontWeight: 500,
+            fontSize: 48,
+            lineHeight: 1.1,
+          }}
+        >
+          Ocurrió un error
         </h1>
       )}
 

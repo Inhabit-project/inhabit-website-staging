@@ -18,7 +18,6 @@ const Blog: React.FC = () => {
         per_page: 3,
         page: 1,
       });
-      console.log(posts);
       setPosts(posts);
     } catch (err) {
       setError(t("mainPage.blog.error"));

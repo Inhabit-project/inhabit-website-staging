@@ -234,8 +234,8 @@ export const fetchPost = async (
  * @param {string} postId - The ID of the target post to fetch
  * @returns {Promise<PostNavigation>} Object containing current post and navigation posts
  * @returns {ProcessedPost | null} current - The requested post or null if not found
- * @returns {ProcessedPost | null} next - The next post in chronological order
- * @returns {ProcessedPost | null} previous - The previous post in chronological order
+ * @returns {Pick<BlogPost, "id" | "title" | "content" | "date" | "image"> | null} next - The next post in chronological order
+ * @returns {Pick<BlogPost, "id" | "title" | "content" | "date" | "image"> | null} previous - The previous post in chronological order
  *
  * @throws {Error} Propagates any errors from fetchPost or fetchAdjacentPost
  *
@@ -266,7 +266,7 @@ export const fetchPostWithNavigation = async (
  * @param {string} date - The reference date in ISO format (YYYY-MM-DDTHH:MM:SS)
  * @param {'after' | 'before'} direction - Whether to fetch posts after or before the reference date
  * @param {'asc' | 'desc'} order - Sorting order for the results
- * @returns {Promise<BlogPost | null>} The adjacent post or null if none exists
+ * @returns {Promise<Pick<BlogPost, "id" | "title" | "content" | "date" | "image"> | null>} The adjacent post or null if none exists
  *
  * @throws {Error} When the WordPress API request fails
  *
