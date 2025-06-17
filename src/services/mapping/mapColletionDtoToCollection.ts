@@ -12,12 +12,12 @@ export async function mapCollectionDtoToCollection(
 
   return {
     campaignId: Number(dto.campaignId),
-    collectionId: Number(dto.collectionId),
-    collectionAddress: dto.collectionAddress,
+    id: Number(dto.collectionId),
+    address: dto.collectionAddress,
     name: dto.name,
     symbol: dto.symbol,
-    baseURI: sanitizeIpfsUri(dto.baseURI),
-    tokenCount: Number(dto.tokenCount),
+    uri: sanitizeIpfsUri(dto.baseURI),
+    sold: Number(dto.tokenCount),
     supply: Number(dto.supply),
     availableSupply: Number(dto.supply) - Number(dto.tokenCount),
     price: formatUsdcToUsd(dto.price),

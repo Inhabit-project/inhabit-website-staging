@@ -2,12 +2,12 @@ import { Address } from "viem";
 
 export interface Collection {
   campaignId: number;
-  collectionId: number;
-  collectionAddress: Address;
+  id: number;
+  address: Address;
   name: string;
   symbol: string;
-  baseURI?: string;
-  tokenCount: number;
+  uri: string;
+  sold: number;
   supply: number;
   availableSupply: number;
   price: number;

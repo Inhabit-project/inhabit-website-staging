@@ -34,7 +34,12 @@ const App: React.FC = () => {
         <Route path="/hubs" element={<HubsPage />} />
         <Route path="/about" element={<AboutUsPage />} />
         <Route path="/stewardship-nft" element={<StewardshipNFTPage />} />
-        <Route path="/checkout" element={<Checkout />} />
+        {/* TODO: remove this when the checkout is ready */}
+        {/* <Route path="/checkout" element={<Checkout />} /> */}
+        <Route
+          path="/checkout/:campaignId/:collectionId/:referral?"
+          element={<Checkout />}
+        />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/hubs/nuiyanzhi" element={<NuiyanzhiPage />} />
         <Route path="/hubs/agua-de-luna" element={<AguaDeLunaPage />} />

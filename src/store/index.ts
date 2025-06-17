@@ -10,6 +10,7 @@ type Store = {
   getCampaignCollections: (campaignId: number) => Promise<Collection[]>;
 
   campaign: Campaign | null;
+  campaignLoading: boolean;
   collections: Collection[];
 
   setCampaign: (campaign: Campaign) => void;
@@ -23,11 +24,13 @@ export const useStore = create<Store>((set, get) => {
   return {
     inhabit,
     campaign: null,
+    campaignLoading: true,
     collections: [],
 
     getCampaign: async (campaignId: number) => {
+      set({ campaignLoading: true });
       const campaign = await get().inhabit.getCampaign(campaignId);
-      set({ campaign });
+      set({ campaign, campaignLoading: false });
       return campaign;
     },
 
