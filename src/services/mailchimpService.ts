@@ -50,10 +50,10 @@ export async function subscribeToMailchimp(
 
     const data = await response.json();
 
-    if (!response.ok) {
+    if (!data.success) {
       return {
         success: false,
-        message: data.message ?? "Subscription failed",
+        message: data.error.statusCode,
       };
     }
 
