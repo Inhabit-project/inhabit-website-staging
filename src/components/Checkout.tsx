@@ -7,6 +7,12 @@ import { Campaign } from "../models/campaign.model";
 import { Collection } from "../models/collection.model";
 import { useStore } from "../store";
 import { ConnectButton } from "../ui/ConnectWalletButton";
+import { use } from "i18next";
+import { useAccount } from "wagmi";
+import { INHABIT_JSON } from "../config/const";
+import { Address } from "viem";
+import usdcImage from "../assets/images/tokens/USDC.svg";
+import usdtImage from "../assets/images/tokens/USDT.svg";
 
 // NFT Membership data model
 export type NFTMembership = {
@@ -106,15 +112,43 @@ interface CheckoutProps {
 const Checkout: React.FC<CheckoutProps> = ({ membershipId }) => {
   // hooks
   const [collection, setCollection] = useState<Collection | null>(null);
+  const [usdcBalance, setUsdcBalance] = useState<number>(0);
+  const [usdcAllowance, setUsdcAllowance] = useState<number>(0);
+  const [usdtBalance, setUsdtBalance] = useState<number>(0);
+  const [usdtAllowance, setUsdtAllowance] = useState<number>(0);
+  const [hasSufficientBalance, setHasSufficientBalance] =
+    useState<boolean>(false);
   // external hooks
+  const { address } = useAccount();
   const { campaignId, collectionId } = useParams();
   const location = useLocation();
   // store
-  const { getCampaign, campaign, campaignLoading } = useStore();
+  const { getCampaign, campaign, campaignLoading, usdc, usdt } = useStore();
 
   const membership = getMembershipById(
     membershipId || collection?.id.toString()
   );
+
+  const loadTokensBalance = async () => {
+    if (!collection || !address) return;
+
+    const [usdcBalance, usdcAllowance, usdtBalance, usdtAllowance] =
+      await Promise.all([
+        usdc.getBalance(address),
+        usdc.allowance(address, INHABIT_JSON.proxy as Address),
+        usdt.getBalance(address),
+        usdt.allowance(address, INHABIT_JSON.proxy as Address),
+      ]);
+
+    setUsdcBalance(usdcBalance);
+    setUsdcAllowance(usdcAllowance);
+    setUsdtBalance(usdtBalance);
+    setUsdtAllowance(usdtAllowance);
+
+    setHasSufficientBalance(
+      usdcBalance >= collection?.price || usdtBalance >= collection?.price
+    );
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -138,6 +172,18 @@ const Checkout: React.FC<CheckoutProps> = ({ membershipId }) => {
 
     load();
   }, [location.state, campaign, getCampaign, campaignId, collectionId]);
+
+  useEffect(() => {
+    if (address) {
+      loadTokensBalance();
+    } else {
+      setUsdcBalance(0);
+      setUsdcAllowance(0);
+      setUsdtBalance(0);
+      setUsdtAllowance(0);
+      setHasSufficientBalance(false);
+    }
+  }, [address, usdc, usdt]);
 
   return (
     <>
@@ -752,27 +798,51 @@ const Checkout: React.FC<CheckoutProps> = ({ membershipId }) => {
               </div>
             </form>
             {/* Summary */}
-            <div className="bg-green-soft/30 rounded-xl p-4 flex flex-col gap-2 mt-2">
-              <div className="flex justify-between font-semibold">
-                <span className="body-S text-secondary">subtotal</span>
-                <span className="body-S text-secondary">
-                  $ {(membership.valueUSD * 0.95).toFixed(2)} USD
-                </span>
+            <div className="bg-green-soft/30 rounded-xl p-4 pt-0 flex flex-col gap-2 mt-2">
+              <div className="flex justify-between">
+                <span className="body-S text-secondary font-bold">Balance</span>
               </div>
-              <div className="flex justify-between text-secondary font-bold text-lg">
+              <div className="flex justify-between font-semibold">
+                <span className="body-S text-secondary">USDC</span>
+                <div className="flex items-center space-x-3">
+                  <span className="body-S text-secondary">
+                    ${usdcBalance.toFixed(2)}
+                  </span>
+                  <img
+                    src={usdcImage}
+                    alt="USDC"
+                    className="inline-block w-9 h-9 ml-1"
+                  />
+                </div>
+              </div>
+              <div className="flex justify-between font-semibold">
+                <span className="body-S text-secondary">USDT</span>
+                <div className="flex items-center space-x-3">
+                  <span className="body-S text-secondary">
+                    ${usdtBalance.toFixed(2)}{" "}
+                  </span>
+                  <img
+                    src={usdtImage}
+                    alt="USDC"
+                    className="inline-block w-9 h-9 ml-1"
+                  />
+                </div>
+              </div>
+              {/* TODO: add to i18n */}
+              {/* TODO: add styles */}
+              <label className="flex justify-center p-1  text-xs text-secondary">
+                {address &&
+                  !hasSufficientBalance &&
+                  "You don't have enough balance to buy this membership"}
+              </label>
+              {/* <div className="flex justify-between text-secondary font-bold text-lg">
                 <span className="body-M text-secondary">
                   Total taxes included
                 </span>
                 <span className="body-M text-secondary">
                   $ {membership.valueUSD} USD
                 </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="body-S text-secondary">Value in crypto</span>
-                <span className="body-S text-secondary">
-                  {membership.valueCrypto}
-                </span>
-              </div>
+              </div> */}
             </div>
             <button className="btn-secondary w-full mt-2">
               Get here your NFT

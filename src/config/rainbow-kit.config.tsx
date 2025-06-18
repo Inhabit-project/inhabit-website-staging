@@ -6,16 +6,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "@rainbow-me/rainbowkit/styles.css";
 import { ensureEnvVar } from "../utils/ensure-env-var.util";
+import { IS_PRODUCTION } from "./const";
 
 export function RainbowKitProviderConfig({
   children,
 }: {
   children: React.ReactNode;
 }): JSX.Element {
-  const isProduction = ensureEnvVar(
-    import.meta.env.VITE_IS_PRODUCTION,
-    "VITE_IS_PRODUCTION"
-  );
   const projectId = ensureEnvVar(
     import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
     "VITE_WALLET_CONNECT_PROJECT_ID"
@@ -26,7 +23,7 @@ export function RainbowKitProviderConfig({
   const config = getDefaultConfig({
     appName,
     projectId,
-    chains: [isProduction === "true" ? celo : celoAlfajores],
+    chains: [IS_PRODUCTION === "true" ? celo : celoAlfajores],
     ssr: true,
   });
 

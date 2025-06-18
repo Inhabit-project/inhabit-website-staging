@@ -6,21 +6,17 @@ import {
   http,
 } from "viem";
 import { celoAlfajores } from "viem/chains";
-import { CampaignDto } from "../../../dtos/campaing.dto";
-import { mapCampaignDtoToCampaign } from "../../../mapping/mapCampaignDtoToCampaign";
-import { CollectionDto } from "../../../dtos/collection.dto";
-import { mapCollectionDtoToCollection } from "../../../mapping/mapColletionDtoToCollection";
-import { Campaign } from "../../../../models/campaign.model";
-import { Collection } from "../../../../models/collection.model";
-import { HTTP_TRANSPORT, INHABIT_JSON } from "../../../../config/const";
 
-export class InhabitContract {
+import { HTTP_TRANSPORT, USDT_JSON } from "../../../../config/const";
+import { formatUsdcToUsd } from "../../../../utils/usdc-format.utils";
+
+export class UsdtContract {
   private address: Address;
   private publicClient: ReturnType<typeof createPublicClient>;
   private walletClient: WalletClient | null;
 
   constructor(walletClient?: WalletClient) {
-    this.address = INHABIT_JSON.proxy as Address;
+    this.address = USDT_JSON.proxy as Address;
 
     this.publicClient = createPublicClient({
       chain: celoAlfajores,
@@ -37,7 +33,7 @@ export class InhabitContract {
   private getReadContract() {
     return getContract({
       address: this.address,
-      abi: INHABIT_JSON.abi,
+      abi: USDT_JSON.abi,
       client: {
         public: this.publicClient,
       },
@@ -51,7 +47,7 @@ export class InhabitContract {
 
     return getContract({
       address: this.address,
-      abi: INHABIT_JSON.abi,
+      abi: USDT_JSON.abi,
       client: {
         public: this.publicClient,
         wallet: this.walletClient,
@@ -63,31 +59,28 @@ export class InhabitContract {
   //        READ METHODS
   // =========================
 
-  async getCampaign(campaignId: number): Promise<Campaign> {
+  async getBalance(address: Address): Promise<number> {
     try {
       const contract = this.getReadContract();
-      const dto = (await contract.read.getCampaignAndCollectionsInfo([
-        BigInt(campaignId),
-      ])) as CampaignDto;
-
-      return mapCampaignDtoToCampaign(dto);
+      const balance = (await contract.read.balanceOf([address])) as bigint;
+      return formatUsdcToUsd(balance);
     } catch (error) {
       console.error("❌", error);
-      return {} as Campaign;
+      return 0;
     }
   }
 
-  async getCampaignCollections(campaignId: number): Promise<Collection[]> {
+  async allowance(owner: Address, spender: Address): Promise<number> {
     try {
       const contract = this.getReadContract();
-      const dtos = (await contract.read.getCollectionsInfo([
-        BigInt(campaignId),
-      ])) as CollectionDto[];
-
-      return Promise.all(dtos.map(mapCollectionDtoToCollection));
+      const allowance = (await contract.read.allowance([
+        owner,
+        spender,
+      ])) as bigint;
+      return formatUsdcToUsd(allowance);
     } catch (error) {
       console.error("❌", error);
-      return [];
+      return 0;
     }
   }
 
@@ -95,15 +88,19 @@ export class InhabitContract {
   //        WRITE METHODS
   // =========================
 
-  async createCampaign(
-    goal: bigint,
-    collections: CollectionDto[],
-    account: Address
-  ) {
-    const contract = this.getWriteContract();
+  async approve(spender: Address, amount: bigint): Promise<string | undefined> {
+    try {
+      const contract = this.getWriteContract();
+      const approveTx = await contract.write.approve([spender, amount]);
 
-    return contract.write.createCampaign([goal, collections], {
-      account,
-    });
+      await this.publicClient.waitForTransactionReceipt({
+        hash: approveTx,
+      });
+
+      return approveTx;
+    } catch (error) {
+      console.error("❌", error);
+      return undefined;
+    }
   }
 }

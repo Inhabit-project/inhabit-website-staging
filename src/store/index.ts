@@ -1,18 +1,20 @@
 import { create } from "zustand";
 import { WalletClient } from "viem";
 import { InhabitContract } from "../services/blockchain/contracts/inhabit";
+import { UsdcContract } from "../services/blockchain/contracts/usdc";
+import { UsdtContract } from "../services/blockchain/contracts/usdt";
 import { Collection } from "src/models/collection.model";
 import { Campaign } from "src/models/campaign.model";
 
 type Store = {
-  inhabit: InhabitContract;
-  getCampaign: (campaignId: number) => Promise<Campaign>;
-  getCampaignCollections: (campaignId: number) => Promise<Collection[]>;
-
   campaign: Campaign | null;
   campaignLoading: boolean;
   collections: Collection[];
-
+  inhabit: InhabitContract;
+  usdc: UsdcContract;
+  usdt: UsdtContract;
+  getCampaign: (campaignId: number) => Promise<Campaign>;
+  getCampaignCollections: (campaignId: number) => Promise<Collection[]>;
   setCampaign: (campaign: Campaign) => void;
   setCollections: (collections: Collection[]) => void;
   setWalletClient: (walletClient: WalletClient) => void;
@@ -20,12 +22,16 @@ type Store = {
 
 export const useStore = create<Store>((set, get) => {
   const inhabit = new InhabitContract();
+  const usdc = new UsdcContract();
+  const usdt = new UsdtContract();
 
   return {
-    inhabit,
     campaign: null,
     campaignLoading: true,
     collections: [],
+    inhabit,
+    usdc,
+    usdt,
 
     getCampaign: async (campaignId: number) => {
       set({ campaignLoading: true });
