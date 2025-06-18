@@ -5,7 +5,7 @@ import HubsMain from '../components/HubsMain';
 import FourCriteriaCardsSection from '../components/FourCriteriaCardsSection';
 import CTA from '../components/CTA';
 import Blog from '../components/Blog';
-import FAQ from '../components/FAQ';
+import FAQ, { FAQHubs } from '../components/FAQ';
 import Footer from '../components/Footer';
 
 const HubsPage: React.FC = () => (
@@ -33,7 +33,7 @@ const HubsPage: React.FC = () => (
           <Blog />
         </section>
         <section aria-label="Frequently asked questions">
-          <FAQ />
+          <FAQHubs />
         </section>
       </main>
       <Footer />

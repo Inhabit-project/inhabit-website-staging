@@ -60,7 +60,7 @@ const content = {
 };
 
 const Hubs: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const lang = i18n.language.startsWith('es') ? 'es' : 'en';
 
@@ -89,6 +89,8 @@ const Hubs: React.FC = () => {
             '/assets/1Hub/hub-view-3.webp',
           ]}
           navigateTo="/hubs/nuiyanzhi"
+          buttonText={t('mainPage.visitThisHub')}
+          isHub={true}
         />
         <HubSubsections
           backgroundImage="/assets/forest.jpg"

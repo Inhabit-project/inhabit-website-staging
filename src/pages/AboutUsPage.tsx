@@ -4,7 +4,6 @@ import Menu from '../components/Menu';
 import InternalPagesHero from '../components/InternalPagesHero';
 import CTA from '../components/CTA';
 import Blog from '../components/Blog';
-import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 import ImageSection from '../components/ImageSection';
 import InfoCard from '../components/InfoCard';
@@ -73,7 +72,6 @@ const AboutUsPage: React.FC = () => {
             <Blog />
           </section>
           <section aria-label="Frequently asked questions">
-            <FAQ />
           </section>
         </main>
         <Footer />

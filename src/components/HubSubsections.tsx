@@ -16,6 +16,7 @@ interface HubSubsectionsProps {
   navigateTo: string;
   inactive?: boolean;
   buttonText?: string;
+  isHub?: boolean;
 }
 
 const HubSubsections: React.FC<HubSubsectionsProps> = ({
@@ -31,6 +32,7 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
   navigateTo,
   inactive = false,
   buttonText,
+  isHub = false,
 }) => {
   const [current, setCurrent] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,7 +56,11 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
 
   const handleButtonClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    setIsModalOpen(true);
+    if (isHub) {
+      navigate(navigateTo);
+    } else {
+      setIsModalOpen(true);
+    }
   };
 
   const handleCloseModal = () => {
@@ -90,9 +96,9 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
             type="button"
             onClick={handleButtonClick}
             disabled={inactive}
-            aria-label={t('mainPage.visitThisProject')}
+            aria-label={buttonText || t('mainPage.visitThisProject')}
           >
-            {t('mainPage.visitThisProject')}
+            {buttonText || t('mainPage.visitThisProject')}
             <svg
               width="20"
               height="20"
