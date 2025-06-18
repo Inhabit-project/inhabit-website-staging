@@ -6,6 +6,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { Campaign } from "../models/campaign.model";
 import { Collection } from "../models/collection.model";
 import { useStore } from "../store";
+import { ConnectButton } from "../ui/ConnectWalletButton";
 
 // NFT Membership data model
 export type NFTMembership = {
@@ -695,7 +696,7 @@ const Checkout: React.FC<CheckoutProps> = ({ membershipId }) => {
           </div>
           {/* Right: Checkout Form */}
           <div className="w-full max-w-lg bg-menu-backdrop backdrop-blur-lg rounded-3xl shadow-xl border border-green-soft p-8 flex flex-col gap-6 self-start sticky top-8">
-            <button className="btn-primary w-full mb-2">Connect Wallet</button>
+            <ConnectButton />
             <form className="flex flex-col gap-4">
               <div>
                 <label className="body-S block text-secondary font-semibold mb-1">
