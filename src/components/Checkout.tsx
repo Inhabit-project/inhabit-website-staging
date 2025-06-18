@@ -112,6 +112,7 @@ interface CheckoutProps {
 const Checkout: React.FC<CheckoutProps> = ({ membershipId }) => {
   // hooks
   const [collection, setCollection] = useState<Collection | null>(null);
+  const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [usdcBalance, setUsdcBalance] = useState<number>(0);
   const [usdcAllowance, setUsdcAllowance] = useState<number>(0);
   const [usdtBalance, setUsdtBalance] = useState<number>(0);
@@ -123,7 +124,7 @@ const Checkout: React.FC<CheckoutProps> = ({ membershipId }) => {
   const { campaignId, collectionId } = useParams();
   const location = useLocation();
   // store
-  const { getCampaign, campaign, campaignLoading, usdc, usdt } = useStore();
+  const { getCampaign, campaignLoading, usdc, usdt } = useStore();
 
   const membership = getMembershipById(
     membershipId || collection?.id.toString()
@@ -152,26 +153,23 @@ const Checkout: React.FC<CheckoutProps> = ({ membershipId }) => {
 
   useEffect(() => {
     const load = async () => {
-      if (location.state?.collection) {
+      if (location.state?.collection && location.state?.campaign) {
         setCollection(location.state.collection);
-
-        if (!campaign) {
-          await getCampaign(location.state.collection.campaignId);
-        }
+        setCampaign(location.state.collection.campaign);
         return;
-      }
-
-      if (campaignId && collectionId) {
+      } else if (campaignId && collectionId) {
         const loadedCampaign = await getCampaign(Number(campaignId));
         const found = loadedCampaign.collections.find(
           (c) => c.id === Number(collectionId)
         );
+
         setCollection(found || null);
+        setCampaign(loadedCampaign);
       }
     };
 
     load();
-  }, [location.state, campaign, getCampaign, campaignId, collectionId]);
+  }, []);
 
   useEffect(() => {
     if (address) {
@@ -183,7 +181,7 @@ const Checkout: React.FC<CheckoutProps> = ({ membershipId }) => {
       setUsdtAllowance(0);
       setHasSufficientBalance(false);
     }
-  }, [address, usdc, usdt]);
+  }, [address]);
 
   return (
     <>
