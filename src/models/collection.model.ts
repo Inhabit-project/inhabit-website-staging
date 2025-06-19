@@ -4,6 +4,7 @@ export interface Collection {
   campaignId: number;
   id: number;
   address: Address;
+  hub: string;
   name: string;
   symbol: string;
   uri: string;

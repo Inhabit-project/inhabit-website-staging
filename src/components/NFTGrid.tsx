@@ -54,7 +54,7 @@ const NFTGrid: React.FC = () => {
                   >
                     <div className="absolute top-4 right-4 hover-scale-up">
                       <Link
-                        to={`/checkout/${campaign.id}/${collection.id}`}
+                        to={`/membership/${campaign.id}/${collection.id}`}
                         state={{ campaign, collection }}
                         className="block"
                         aria-label={t(
@@ -189,7 +189,7 @@ const NFTGrid: React.FC = () => {
                           </p>
                         </div>
                         <Link
-                          to={`/checkout/${campaign.id}/${collection.id}`}
+                          to={`/membership/${campaign.id}/${collection.id}`}
                           state={{ campaign, collection }}
                           className="btn-primary w-full flex items-center justify-center group"
                           aria-label={t(

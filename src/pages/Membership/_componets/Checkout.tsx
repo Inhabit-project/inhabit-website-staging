@@ -1,5 +1,4 @@
 import { JSX, useEffect, useRef, useState } from "react";
-import { Collection } from "../../../models/collection.model";
 import { ConnectButton } from "../../../ui/ConnectButton";
 import usdcImage from "../../../assets/images/tokens/USDC.svg";
 import usdtImage from "../../../assets/images/tokens/USDT.svg";
@@ -7,7 +6,7 @@ import { useTokenBalance } from "../../../hooks/useTokensBalance";
 import { useAccount } from "wagmi";
 import { Indicator, indicators } from "../../../assets/json/form/indicators";
 import { z } from "zod";
-import { KYC_SOFT_AMOUNT_USD } from "../../../config/const";
+import { KYC_HARD_AMOUNT_USD } from "../../../config/const";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -73,13 +72,13 @@ const schema = z
     }
   });
 
-type Props = { collection: Collection };
+type Props = { price: number };
 
 type Form = z.infer<typeof schema>;
 
 export function Checkout(props: Props): JSX.Element {
   // props
-  const { collection } = props;
+  const { price } = props;
   // hooks
   const [selectedIndicator, setSelectedIndicator] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -98,7 +97,7 @@ export function Checkout(props: Props): JSX.Element {
     hasSufficientBalance,
     isLoading: balanceLoading,
     refetch: refetchBalance,
-  } = useTokenBalance(collection);
+  } = useTokenBalance(price);
 
   const { address } = useAccount();
 
@@ -133,8 +132,7 @@ export function Checkout(props: Props): JSX.Element {
     setIsDropdownOpen(false);
   };
 
-  const formDisabled =
-    !address || (!hasSufficientBalance && collection.price > 0);
+  const formDisabled = !address || (!hasSufficientBalance && price > 0);
 
   const onSubmit = (data: Form) => {
     console.log("✅ Form data submitted:", data);
@@ -272,11 +270,6 @@ export function Checkout(props: Props): JSX.Element {
                 {...register("countryCode")}
                 value={selectedIndicator}
               />
-              {/* {errors.countryCode && (
-              <p className="text-red-500 text-xs">
-                {errors.countryCode.message}
-              </p>
-            )} */}
             </div>
 
             <div>
@@ -317,7 +310,7 @@ export function Checkout(props: Props): JSX.Element {
               I consent to the processing of my personal data in accordance with
               the Privacy Policy*
             </label>
-            {collection.price < KYC_SOFT_AMOUNT_USD ? (
+            {price < KYC_HARD_AMOUNT_USD ? (
               <label className="flex items-start gap-2 text-xs text-secondary">
                 <input
                   type="checkbox"

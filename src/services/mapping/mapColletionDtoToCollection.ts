@@ -14,6 +14,7 @@ export async function mapCollectionDtoToCollection(
     campaignId: Number(dto.campaignId),
     id: Number(dto.collectionId),
     address: dto.collectionAddress,
+    hub: dto.name.split(" ")[1],
     name: dto.name,
     symbol: dto.symbol,
     uri: sanitizeIpfsUri(dto.baseURI),
@@ -22,7 +23,7 @@ export async function mapCollectionDtoToCollection(
     availableSupply: Number(dto.supply) - Number(dto.tokenCount),
     price: formatUsdcToUsd(dto.price),
     state: dto.state,
-    description: metadata.description || "",
-    image: sanitizeIpfsUri(metadata.image || ""),
+    description: metadata.description,
+    image: sanitizeIpfsUri(metadata.image),
   };
 }

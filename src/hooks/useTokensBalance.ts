@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { INHABIT_JSON } from "../config/const";
-import { Collection } from "../models/collection.model";
 import { Address } from "viem";
 import { useAccount } from "wagmi";
 import { useStore } from "../store";
 
-export function useTokenBalance(collection: Collection | null) {
+export function useTokenBalance(price: number) {
   const [usdcBalance, setUsdcBalance] = useState<number>(0);
   const [usdcAllowance, setUsdcAllowance] = useState<number>(0);
   const [usdtBalance, setUsdtBalance] = useState<number>(0);
@@ -18,7 +17,7 @@ export function useTokenBalance(collection: Collection | null) {
   const { usdc, usdt } = useStore();
 
   const loadTokensBalance = async () => {
-    if (!collection || !address) {
+    if (!price || !address) {
       setUsdcBalance(0);
       setUsdcAllowance(0);
       setUsdtBalance(0);
@@ -42,8 +41,7 @@ export function useTokenBalance(collection: Collection | null) {
     setUsdtBalance(usdtBalance);
     setUsdtAllowance(usdtAllowance);
 
-    const sufficient =
-      usdcBalance >= collection.price || usdtBalance >= collection.price;
+    const sufficient = usdcBalance >= price || usdtBalance >= price;
 
     setHasSufficientBalance(sufficient);
     setIsLoading(false);
@@ -51,7 +49,7 @@ export function useTokenBalance(collection: Collection | null) {
 
   useEffect(() => {
     loadTokensBalance();
-  }, [address, collection?.id, collection?.price]);
+  }, [address, price]);
 
   return {
     usdcBalance,

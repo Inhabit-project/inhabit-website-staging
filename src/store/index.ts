@@ -49,7 +49,7 @@ export const useStore = create<Store>((set, get) => {
     },
 
     setCampaign: (campaign: Campaign) => {
-      set({ campaign });
+      set({ campaign, campaignLoading: false });
     },
 
     setCollections: (collections: Collection[]) => {

@@ -21,7 +21,7 @@ const campaignId = 1;
 
 const MainPage: React.FC = () => {
   const { getCampaign } = useStore();
-  const videoSectionRef = useRef<HTMLDivElement>(null);
+  const videoSectionRef = useRef<HTMLElement>(null as unknown as HTMLElement);
 
   useEffect(() => {
     getCampaign(campaignId);
