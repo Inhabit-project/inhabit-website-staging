@@ -6,7 +6,7 @@ import MainPage from "./pages/MainPage";
 import HubsPage from "./pages/HubsPage";
 import AboutUsPage from "./pages/AboutUsPage";
 import StewardshipNFTPage from "./pages/StewardshipNFTPage";
-import Checkout from "./components/Checkout";
+import View from "./pages/View";
 import BlogPage from "./pages/BlogPage";
 import NuiyanzhiPage from "./pages/NuiyanzhiPage";
 import AguaDeLunaPage from "./pages/AguaDeLunaPage";
@@ -37,8 +37,8 @@ const App: React.FC = () => {
         {/* TODO: remove this when the checkout is ready */}
         {/* <Route path="/checkout" element={<Checkout />} /> */}
         <Route
-          path="/checkout/:campaignId/:collectionId/:referral?"
-          element={<Checkout />}
+          path="/view/:campaignId/:collectionId/:referral?"
+          element={<View />}
         />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/hubs/nuiyanzhi" element={<NuiyanzhiPage />} />
