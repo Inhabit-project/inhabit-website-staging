@@ -27,3 +27,7 @@ export const USDC_JSON =
 
 export const USDT_JSON =
   IS_PRODUCTION === "true" ? usdtCeloJson : usdtAlfajoresJson;
+
+// KYC
+
+export const KYC_SOFT_AMOUNT_USD: number = 1000;
