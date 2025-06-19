@@ -4,6 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Todo: translate de comments to english */
 @layer base {
   :root {
     background-color: linear-gradient(
