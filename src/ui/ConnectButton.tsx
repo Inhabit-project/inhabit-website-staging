@@ -1,4 +1,5 @@
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
+import { JSX } from "react";
 
 export function ConnectButton(): JSX.Element {
   return (
