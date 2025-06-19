@@ -215,9 +215,9 @@ export const fetchPost = async (
       readTime,
       modified: formatDate(post.modified, currentLanguage, false),
       author: {
-        id: authorData?.id || 0,
-        name: authorData?.name || '',
-        avatar: authorData?.avatar_urls?.['96'], // Puedes cambiar el tamaño según necesites
+        id: authorData?.id ?? 0,
+        name: authorData?.name ?? '',
+        avatar: authorData?.avatar_urls?.['96'],
         description: authorData?.description,
         url: authorData?.link
       }
