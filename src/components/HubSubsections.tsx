@@ -125,11 +125,11 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
             >
               <button
                 onClick={handleCloseModal}
-                className="fixed top-4 right-4 w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center z-[100000] shadow-lg"
+                className="absolute top-4 right-4 w-10 h-10 z-50 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-[4.125px] flex items-center justify-center transition-all duration-300 group z-[100000] shadow-lg"
                 aria-label={t('mainPage.projectsVideo.closeVideo')}
                 autoFocus
               >
-                <span className="text-xl">&times;</span>
+                <span className="text-lg text-white">&times;</span>
               </button>
               <div className="relative w-[90vw] h-[90vh] flex items-center justify-center">
                 <iframe

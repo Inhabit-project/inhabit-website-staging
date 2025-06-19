@@ -115,20 +115,28 @@ const Hubs: React.FC = () => {
                 aria-label={`Show info for ${hub.title}`}
                 style={{ ...hub.position, zIndex: 2 }}
               >
-                {/* Marker with vertical line and base */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', height: '8rem', position: 'relative',  }}>
-                  <img
-                    src="/assets/map-marker.svg"
-                    alt="Map marker"
-                    className="w-6 md:w-8 lg:w-10"
-                    style={{ height: 'auto', display: 'block', zIndex: 2 }}
-                  />
+                {/* Mobile marker */}
+                <div className="md:hidden relative">
+                  <div className="w-4 h-4 rounded-full border border-green-soft"></div>
+                  <div className="w-2 h-2 rounded-full bg-green-soft absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
                 </div>
-                {/* Text to the right of the marker */}
-                <div className="flex flex-col items-start">
-                  <span className="text-white marker-underline text-left text-xs md:text-base" style={{ fontFamily: 'Abel, sans-serif', fontWeight: 400 }}>{hub.title}</span>
-                  <span className="text-white marker-underline text-left text-xs md:text-base" style={{ fontFamily: 'Abel, sans-serif', fontWeight: 400 }}>{hub.coordinates.split(';')[0]}</span>
-                  <span className="text-white marker-underline text-left text-xs md:text-base" style={{ fontFamily: 'Abel, sans-serif', fontWeight: 400 }}>{hub.coordinates.split(';')[1]}</span>
+
+                {/* Desktop marker with vertical line and text */}
+                <div className="hidden md:flex flex-row items-start">
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', height: '8rem', position: 'relative' }}>
+                    <img
+                      src="/assets/map-marker.svg"
+                      alt="Map marker"
+                      className="w-8 lg:w-10"
+                      style={{ height: 'auto', display: 'block', zIndex: 2 }}
+                    />
+                  </div>
+                  {/* Text to the right of the marker */}
+                  <div className="flex flex-col items-start">
+                    <span className="text-white marker-underline text-left text-base" style={{ fontFamily: 'Abel, sans-serif', fontWeight: 400 }}>{hub.title}</span>
+                    <span className="text-white marker-underline text-left text-base" style={{ fontFamily: 'Abel, sans-serif', fontWeight: 400 }}>{hub.coordinates.split(';')[0]}</span>
+                    <span className="text-white marker-underline text-left text-base" style={{ fontFamily: 'Abel, sans-serif', fontWeight: 400 }}>{hub.coordinates.split(';')[1]}</span>
+                  </div>
                 </div>
               </button>
             ))}

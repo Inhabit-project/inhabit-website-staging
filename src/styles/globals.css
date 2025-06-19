@@ -205,19 +205,19 @@ textarea {
   h1 {
     font-size: var(--font-size-4xl);
     line-height: 1;
-    letter-spacing: -0.04em; /* -4% tracking */
+    letter-spacing: -0.03em; /* -4% tracking */
   }
 
   h2 {
     font-size: var(--font-size-3xl);
     line-height: 1.1;
-    letter-spacing: -0.04em; /* -4% tracking */
+    letter-spacing: -0.03em; /* -4% tracking */
   }
 
   h3 {
     font-size: var(--font-size-2xl);
     line-height: 1.2;
-    letter-spacing: -0.04em; /* -4% tracking */
+    letter-spacing: -0.03em; /* -4% tracking */
   }
 
   h4 {
@@ -242,14 +242,14 @@ textarea {
   h1 strong, h2 strong, h3 strong, h4 strong, h5 strong, h6 strong {
     font-weight: 700;
     color: inherit;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.03em;
   }
 
   /* Hero text specific */
   .hero-text strong {
     font-weight: 500;
     color: inherit;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.03em;
   }
 
   /* Dark theme */
@@ -270,7 +270,7 @@ textarea {
     font-size: var(--font-size-4xl);
     font-weight: 400;
     line-height: 1.1;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.03em;
     color: var(--heading-color-light);
   }
 
@@ -279,7 +279,7 @@ textarea {
     font-size: var(--font-size-3xl);
     font-weight: 400;
     line-height: 1.1;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.03em;
     color: var(--heading-color-light);
   }
 
@@ -288,7 +288,7 @@ textarea {
     font-size: var(--font-size-2xl);
     font-weight: 400;
     line-height: 1.;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.03em;
     color: var(--heading-color-light);
   }
 
