@@ -19,7 +19,7 @@ export function ConnectButton(): JSX.Element {
             (action: () => void) =>
             (event: React.MouseEvent<HTMLButtonElement>) => {
               action();
-              event.currentTarget.blur(); // Esto remueve el estado `:focus` visual
+              event.currentTarget.blur();
             };
 
           return (

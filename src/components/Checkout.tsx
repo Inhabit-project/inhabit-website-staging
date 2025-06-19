@@ -6,13 +6,14 @@ import { useLocation, useParams } from "react-router-dom";
 import { Campaign } from "../models/campaign.model";
 import { Collection } from "../models/collection.model";
 import { useStore } from "../store";
-import { ConnectButton } from "../ui/ConnectWalletButton";
+import { ConnectButton } from "../ui/ConnectButton";
 import { use } from "i18next";
 import { useAccount } from "wagmi";
 import { INHABIT_JSON } from "../config/const";
 import { Address } from "viem";
 import usdcImage from "../assets/images/tokens/USDC.svg";
 import usdtImage from "../assets/images/tokens/USDT.svg";
+import { useTokenBalance } from "../hooks/useTokensBalance";
 
 // NFT Membership data model
 export type NFTMembership = {
@@ -113,43 +114,29 @@ const Checkout: React.FC<CheckoutProps> = ({ membershipId }) => {
   // hooks
   const [collection, setCollection] = useState<Collection | null>(null);
   const [campaign, setCampaign] = useState<Campaign | null>(null);
-  const [usdcBalance, setUsdcBalance] = useState<number>(0);
-  const [usdcAllowance, setUsdcAllowance] = useState<number>(0);
-  const [usdtBalance, setUsdtBalance] = useState<number>(0);
-  const [usdtAllowance, setUsdtAllowance] = useState<number>(0);
-  const [hasSufficientBalance, setHasSufficientBalance] =
-    useState<boolean>(false);
+  // external hooks
+  // store
+
+  const {
+    usdcBalance,
+    usdcAllowance,
+    usdtBalance,
+    usdtAllowance,
+    hasSufficientBalance,
+    isLoading: balanceLoading,
+    refetch: refetchBalance,
+  } = useTokenBalance(collection);
+
   // external hooks
   const { address } = useAccount();
   const { campaignId, collectionId } = useParams();
   const location = useLocation();
   // store
-  const { getCampaign, campaignLoading, usdc, usdt } = useStore();
+  const { getCampaign, campaignLoading } = useStore();
 
   const membership = getMembershipById(
     membershipId || collection?.id.toString()
   );
-
-  const loadTokensBalance = async () => {
-    if (!collection || !address) return;
-
-    const [usdcBalance, usdcAllowance, usdtBalance, usdtAllowance] =
-      await Promise.all([
-        usdc.getBalance(address),
-        usdc.allowance(address, INHABIT_JSON.proxy as Address),
-        usdt.getBalance(address),
-        usdt.allowance(address, INHABIT_JSON.proxy as Address),
-      ]);
-
-    setUsdcBalance(usdcBalance);
-    setUsdcAllowance(usdcAllowance);
-    setUsdtBalance(usdtBalance);
-    setUsdtAllowance(usdtAllowance);
-
-    setHasSufficientBalance(
-      usdcBalance >= collection?.price || usdtBalance >= collection?.price
-    );
-  };
 
   useEffect(() => {
     const load = async () => {
@@ -170,18 +157,6 @@ const Checkout: React.FC<CheckoutProps> = ({ membershipId }) => {
 
     load();
   }, []);
-
-  useEffect(() => {
-    if (address) {
-      loadTokensBalance();
-    } else {
-      setUsdcBalance(0);
-      setUsdcAllowance(0);
-      setUsdtBalance(0);
-      setUsdtAllowance(0);
-      setHasSufficientBalance(false);
-    }
-  }, [address]);
 
   return (
     <>
