@@ -8,6 +8,7 @@ import { Checkout } from "./_componets/Checkout";
 import RightsTable from "./_componets/RightsTable";
 import { Info } from "./_componets/Info";
 import OtherCollections from "./_componets/OtherCollections";
+import Spinner from "../../ui/Loader";
 
 export default function Membership(): JSX.Element {
   // hooks
@@ -79,27 +80,28 @@ export default function Membership(): JSX.Element {
 
   return (
     <>
-      {/* TODO: Add spinner */}
-      {campaignLoading
-        ? "Is loading..."
-        : collection &&
-          collectionId && (
-            <>
-              <Menu />
-              <div className="mt-8 w-full background-gradient-light flex flex-col lg:flex-row gap-8 px-4 py-12 lg:py-20 max-w-[1600px] mx-auto pb-24">
-                <div className="flex-1 flex flex-col gap-8">
-                  {/* Membership Info */}
-                  <Info collection={collection} />
-                  {/* Other Collections */}
-                  {<OtherCollections collectionId={collectionId} />}
-                  {/* Membership Rights */}
-                  <RightsTable collection={collection} />
-                </div>
-                {/* Checkout Component */}
-                <Checkout price={collection.price} />
+      {campaignLoading ? (
+        <Spinner />
+      ) : (
+        collection &&
+        collectionId && (
+          <>
+            <Menu />
+            <div className="mt-8 w-full background-gradient-light flex flex-col lg:flex-row gap-8 px-4 py-12 lg:py-20 max-w-[1600px] mx-auto pb-24">
+              <div className="flex-1 flex flex-col gap-8">
+                {/* Membership Info */}
+                <Info collection={collection} />
+                {/* Other Collections */}
+                {<OtherCollections collectionId={collectionId} />}
+                {/* Membership Rights */}
+                <RightsTable collection={collection} />
               </div>
-            </>
-          )}
+              {/* Checkout Component */}
+              <Checkout price={collection.price} />
+            </div>
+          </>
+        )
+      )}
     </>
   );
 }
