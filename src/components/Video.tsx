@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { initVideoSectionCursor } from '../utils/videoCursor';
 
 interface VideoPlayerProps {
   videoUrl: string;
@@ -60,7 +61,15 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isVideoPreloaded, setIsVideoPreloaded] = useState(false);
   const videoContainerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const { t } = useTranslation();
+
+  // Initialize video cursor for the entire section
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const cleanup = initVideoSectionCursor(sectionRef.current);
+    return cleanup;
+  }, []);
 
   // Function to preload the video when user hovers over the thumbnail
   // Removed ineffective preload logic for Vimeo player
@@ -83,7 +92,11 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
   }, []);
 
   return ( 
-    <section className="relative w-full background-gradient-dark flex flex-col items-center" aria-labelledby="video-title">
+    <section 
+      ref={sectionRef}
+      className="relative w-full background-gradient-dark flex flex-col items-center" 
+      aria-labelledby="video-title"
+    >
       {/* Background with decorative elements */}
       <div className="absolute inset-0 w-full h-full overflow-hidden" aria-hidden="true">
         <img 

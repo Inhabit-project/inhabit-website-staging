@@ -6,7 +6,7 @@ const Highlight = () => {
   const { t } = useTranslation();
   return (
     <div className="relative w-full min-h-screen background-gradient-dark flex items-center justify-center overflow-hidden">
-      <div className="absolute mt-[12rem] opacity-30">
+      <div className="absolute opacity-20 invert">
         <ReactSVG src="/assets/topographic-map.svg" />
       </div>
       <div className="relative z-10 max-w-6xl mx-auto px-4 text-center">

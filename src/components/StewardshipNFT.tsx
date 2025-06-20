@@ -4,7 +4,11 @@ import { useTranslation } from 'react-i18next';
 const StewardshipNFT: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <section className="relative w-full background-gradient-dark flex flex-col items-center scroll-container">
+    <section
+      className="relative w-full flex flex-col items-center scroll-container bg-contain bg-center no-repeat min-h-[100vh]"
+      style={{ backgroundImage: "url('/assets/madre chagra.jpg')" }}
+    >
+      <div className="absolute inset-0 bg-black opacity-50" />
       <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
         <div className="flex flex-col items-start gap-6">
           {/* Header section */}
@@ -20,9 +24,9 @@ const StewardshipNFT: React.FC = () => {
           </div>
 
           {/* Image */}
-          <div className="self-center relative overflow-hidden">
+          <div className="self-center absolute overflow-hidden w-full h-[100vh] top-0 left-0 z-[-1]">
             <img 
-              src="/assets/figma-images/stewardship-nft.webp" 
+              src="/assets/madre-chagra-bg.jpg" 
               alt="Stewardship NFT illustration" 
               className="w-full h-full object-cover"
             />

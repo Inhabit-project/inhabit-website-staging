@@ -218,7 +218,7 @@ export const FAQStewardshipNFT: React.FC = () => {
   const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const faqItems: FAQItem[] = (t('faqExtra.items', { returnObjects: true }) as FAQItem[]);
+  const faqItems: FAQItem[] = (t('mainPage.stewardshipNFTPage.faq.items', { returnObjects: true }) as FAQItem[]);
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -231,10 +231,10 @@ export const FAQStewardshipNFT: React.FC = () => {
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
             <h2 className="heading-2 text-light max-w-[40.9375rem]">
-              <span dangerouslySetInnerHTML={{ __html: t('faqExtra.title') }} />
+              <span dangerouslySetInnerHTML={{ __html: t('mainPage.stewardshipNFTPage.faq.title') }} />
             </h2>
             <p className="body-M text-light max-w-[35rem]">
-              {t('faqExtra.description')}
+              {t('mainPage.stewardshipNFTPage.faq.description')}
             </p>
           </div>
 

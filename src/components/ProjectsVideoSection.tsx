@@ -1,10 +1,19 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { initVideoSectionCursor } from '../utils/videoCursor';
 
 const ProjectsVideoSection: React.FC = () => {
   const { t } = useTranslation();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const videoContainerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Initialize video cursor for the entire section
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const cleanup = initVideoSectionCursor(sectionRef.current);
+    return cleanup;
+  }, []);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -21,6 +30,7 @@ const ProjectsVideoSection: React.FC = () => {
 
   return (
     <section 
+      ref={sectionRef}
       className="relative w-full background-gradient-dark flex flex-col items-center" 
       aria-labelledby="projects-video-title"
     >
