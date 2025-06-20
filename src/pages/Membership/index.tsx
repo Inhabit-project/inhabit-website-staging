@@ -1,6 +1,6 @@
 import { useEffect, useState, JSX } from "react";
 import Menu from "../../components/Menu";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Campaign } from "../../models/campaign.model";
 import { Collection } from "../../models/collection.model";
 import { useStore } from "../../store";
@@ -12,19 +12,43 @@ import OtherCollections from "./_componets/OtherCollections";
 export default function Membership(): JSX.Element {
   // hooks
   const [collection, setCollection] = useState<Collection | null>(null);
+  const [isReferralValid, setIsReferralValid] = useState<boolean>(false);
+
   // external hooks
-  const { campaignId, collectionId } = useParams();
+  const { campaignId, collectionId, referral } = useParams();
+  const navigate = useNavigate();
 
   const state = useLocation().state as {
     collection?: Collection;
     campaign?: Campaign;
   };
 
-  const { campaignLoading, getCampaign, setCampaign } = useStore();
+  const { campaignLoading, inhabit, getCampaign, setCampaign } = useStore();
 
   // effects
   useEffect(() => {
+    const validateReferral = async () => {
+      if (referral === undefined) {
+        setIsReferralValid(true);
+        return;
+      }
+
+      const group = await inhabit.getGroup(referral);
+
+      if (group.referral !== referral || !group.state) {
+        navigate("/404");
+      } else {
+        setIsReferralValid(true);
+      }
+    };
+
+    validateReferral();
+  }, [referral]);
+
+  useEffect(() => {
     const load = async () => {
+      if (!isReferralValid) return;
+
       if (state?.collection && state?.campaign) {
         setCollection(state.collection);
         setCampaign(state.campaign);
@@ -39,7 +63,7 @@ export default function Membership(): JSX.Element {
     };
 
     load();
-  }, [state]);
+  }, [isReferralValid, state]);
 
   return (
     <>

@@ -13,6 +13,9 @@ import { mapCollectionDtoToCollection } from "../../../mapping/mapColletionDtoTo
 import { Campaign } from "../../../../models/campaign.model";
 import { Collection } from "../../../../models/collection.model";
 import { HTTP_TRANSPORT, INHABIT_JSON } from "../../../../config/const";
+import { GroupDto } from "../../../dtos/group.dto";
+import { mapGroupDtoToGroup } from "../../../mapping/mapGroupDtoToGroup";
+import { Group } from "../../../../models/group.model";
 
 export class InhabitContract {
   private address: Address;
@@ -88,6 +91,18 @@ export class InhabitContract {
     } catch (error) {
       console.error("❌", error);
       return [];
+    }
+  }
+
+  async getGroup(referral: string): Promise<Group> {
+    try {
+      const contract = this.getReadContract();
+      const dto = (await contract.read.getGroup([referral])) as GroupDto;
+
+      return mapGroupDtoToGroup(dto);
+    } catch (error) {
+      console.error("❌", error);
+      return {} as Group;
     }
   }
 

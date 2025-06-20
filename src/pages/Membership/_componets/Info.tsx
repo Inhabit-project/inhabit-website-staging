@@ -8,6 +8,7 @@ export function Info(props: Props): JSX.Element {
   const { collection } = props;
 
   return (
+    // TODO: save in markdown the metadata of the collection
     <div className="flex-1 flex flex-col gap-8">
       <div className="flex flex-col md:flex-row gap-8 items-start">
         <img

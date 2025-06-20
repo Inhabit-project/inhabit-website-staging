@@ -9,6 +9,7 @@ import { z } from "zod";
 import { KYC_HARD_AMOUNT_USD } from "../../../config/const";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useParams } from "react-router-dom";
 
 type Props = { price: number };
 
@@ -104,6 +105,8 @@ export function Checkout(props: Props): JSX.Element {
   const [selectedIndicator, setSelectedIndicator] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  // external hooks
+  const { referral } = useParams();
 
   const { register, handleSubmit, setValue, watch } = useForm<Form>({
     resolver: zodResolver(schema),
@@ -157,6 +160,7 @@ export function Checkout(props: Props): JSX.Element {
 
   const onSubmit = (data: Form) => {
     console.log("✅ Form data submitted:", data);
+    console.log("referral:", referral);
   };
 
   const onError = (formErrors: Record<string, { message?: string }>) => {
