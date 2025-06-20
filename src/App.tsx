@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, createContext, useContext } from 'react';
 import '@fontsource/nunito-sans/400.css';
 import './i18n';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -19,6 +19,10 @@ import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import ContactPage from './pages/ContactPage';
 import ProjectsPage from './pages/ProjectsPage';
 import ArticlePage from './pages/ArticlePage';
+import Loader from './components/Loader';
+
+// Create a context for the loading state
+export const LoadingContext = createContext<boolean>(false);
 
 function ScrollToTopOnNavigation() {
   useScrollToTopOnNavigation();
@@ -26,8 +30,16 @@ function ScrollToTopOnNavigation() {
 }
 
 const App: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+  };
+
   return (
+    <LoadingContext.Provider value={isLoading}>
     <Router>
+        {isLoading && <Loader onLoadingComplete={handleLoadingComplete} />}
       <ScrollToTopOnNavigation />
       <Routes>
         <Route path="/" element={<MainPage />} />
@@ -47,6 +59,7 @@ const App: React.FC = () => {
         <Route path="*" element={<FourOhFourPage />} />
       </Routes>
     </Router>
+    </LoadingContext.Provider>
   );
 };
 
