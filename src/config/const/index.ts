@@ -30,4 +30,4 @@ export const USDT_JSON =
 
 // KYC
 
-export const KYC_HARD_AMOUNT_USD: number = 2000;
+export const KYC_HARD_AMOUNT_USD: number = 1000;

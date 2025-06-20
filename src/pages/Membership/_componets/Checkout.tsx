@@ -10,73 +10,94 @@ import { KYC_HARD_AMOUNT_USD } from "../../../config/const";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const schema = z
-  .object({
-    firstName: z
-      .string()
-      .min(2, "First name must be at least 2 characters")
-      .max(50, "First name must be less than 50 characters")
-      .regex(/^[a-zA-Z\s]+$/, "First name can only contain letters and spaces"),
-
-    lastName: z
-      .string()
-      .min(2, "Last name must be at least 2 characters")
-      .max(50, "Last name must be less than 50 characters")
-      .regex(/^[a-zA-Z\s]+$/, "Last name can only contain letters and spaces"),
-
-    email: z
-      .string()
-      .email("Please enter a valid email address")
-      .min(5, "Email must be at least 5 characters")
-      .max(100, "Email must be less than 100 characters"),
-
-    countryCode: z.string().optional(),
-    cellphone: z.string().optional(),
-
-    telegramHandle: z
-      .string()
-      .min(3, "Telegram handle must be at least 3 characters")
-      .max(32, "Telegram handle must be less than 32 characters")
-      .regex(/^@?[a-zA-Z0-9_]+$/, "Invalid telegram handle format")
-      .optional()
-      .or(z.literal("")),
-
-    termsAcceptance: z
-      .boolean()
-      .refine(
-        (val) => val === true,
-        "You must accept the terms and conditions"
-      ),
-
-    kycAcceptance: z
-      .boolean()
-      .refine((val) => val === true, "You must accept the KYC terms"),
-  })
-  .superRefine((data, ctx) => {
-    const { countryCode, cellphone } = data;
-
-    if (countryCode && !cellphone) {
-      ctx.addIssue({
-        path: ["cellphone"],
-        code: z.ZodIssueCode.custom,
-        message: "Phone number is required when country is selected",
-      });
-    }
-
-    if (countryCode && cellphone && !/^\d{10}$/.test(cellphone)) {
-      ctx.addIssue({
-        path: ["cellphone"],
-        code: z.ZodIssueCode.custom,
-        message: "Phone number must be 10 digits and only numbers",
-      });
-    }
-  });
-
 type Props = { price: number };
 
-type Form = z.infer<typeof schema>;
-
 export function Checkout(props: Props): JSX.Element {
+  const schema = z
+    .object({
+      firstName: z
+        .string()
+        .min(2, "First name must be at least 2 characters")
+        .max(50, "First name must be less than 50 characters")
+        .regex(
+          /^[a-zA-Z\s]+$/,
+          "First name can only contain letters and spaces"
+        ),
+
+      lastName: z
+        .string()
+        .min(2, "Last name must be at least 2 characters")
+        .max(50, "Last name must be less than 50 characters")
+        .regex(
+          /^[a-zA-Z\s]+$/,
+          "Last name can only contain letters and spaces"
+        ),
+
+      email: z
+        .string()
+        .email("Please enter a valid email address")
+        .min(5, "Email must be at least 5 characters")
+        .max(100, "Email must be less than 100 characters"),
+
+      countryCode: z.string().optional(),
+      cellphone: z.string().optional(),
+
+      telegramHandle: z
+        .string()
+        .min(3, "Telegram handle must be at least 3 characters")
+        .max(32, "Telegram handle must be less than 32 characters")
+        .regex(/^@?[a-zA-Z0-9_]+$/, "Invalid telegram handle format")
+        .optional()
+        .or(z.literal("")),
+
+      termsAcceptance: z
+        .boolean()
+        .refine(
+          (val) => val === true,
+          "You must accept the terms and conditions"
+        ),
+
+      MembershipAgreetment: z
+        .boolean()
+        .refine(
+          (val) => val === true,
+          "You must accept the Membership Agreement"
+        ),
+
+      kycAcceptance: z
+        .boolean()
+        .refine((val) => val === true, "You must accept the KYC terms"),
+    })
+    .superRefine((data, ctx) => {
+      const { countryCode, cellphone, kycAcceptance } = data;
+
+      if (countryCode && !cellphone) {
+        ctx.addIssue({
+          path: ["cellphone"],
+          code: z.ZodIssueCode.custom,
+          message: "Phone number is required when country is selected",
+        });
+      }
+
+      if (countryCode && cellphone && !/^\d{10}$/.test(cellphone)) {
+        ctx.addIssue({
+          path: ["cellphone"],
+          code: z.ZodIssueCode.custom,
+          message: "Phone number must be 10 digits and only numbers",
+        });
+      }
+
+      if (price < KYC_HARD_AMOUNT_USD && kycAcceptance !== true) {
+        ctx.addIssue({
+          path: ["kycAcceptance"],
+          code: z.ZodIssueCode.custom,
+          message: "You must accept the KYC terms",
+        });
+      }
+    });
+
+  type Form = z.infer<typeof schema>;
+
   // props
   const { price } = props;
   // hooks
@@ -145,17 +166,23 @@ export function Checkout(props: Props): JSX.Element {
         if (key === "cellphone") {
           return !!values.countryCode;
         }
+
+        if (key === "kycAcceptance" && price < KYC_HARD_AMOUNT_USD) {
+          return true;
+        }
+
         return [
           "firstName",
           "lastName",
           "email",
           "termsAcceptance",
-          "kycAcceptance",
+          "MembershipAgreetment",
         ].includes(key);
       })
       .map(([, error]) => error?.message)
       .filter(Boolean)
       .join("\n");
+
     if (messages) alert(messages);
   };
 
@@ -308,20 +335,20 @@ export function Checkout(props: Props): JSX.Element {
                 {...register("termsAcceptance")}
               />
               I consent to the processing of my personal data in accordance with
-              the Privacy Policy*
+              the Privacy Policy*.
             </label>
-            {price < KYC_HARD_AMOUNT_USD ? (
-              <label className="flex items-start gap-2 text-xs text-secondary">
-                <input
-                  type="checkbox"
-                  className="mt-1"
-                  {...register("kycAcceptance")}
-                />
-                I accept the terms and conditions of the Membership Agreement
-                granting me rights and benefits related to this Land and
-                Project.
-              </label>
-            ) : (
+            <label className="flex items-start gap-2 text-xs text-secondary">
+              <input
+                type="checkbox"
+                className="mt-1"
+                {...register("MembershipAgreetment")}
+              />
+              I consent to adhere to the Membership Agreement and accept its
+              terms and conditions, granting me rights and benefits related to
+              this Land and Project, and acknowledge this action as a valid
+              electronic signature.
+            </label>
+            {price < KYC_HARD_AMOUNT_USD && (
               <label className="flex items-start gap-2 text-xs text-secondary">
                 <input
                   type="checkbox"

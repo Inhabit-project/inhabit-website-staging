@@ -50,6 +50,7 @@ export default function Membership(): JSX.Element {
       ) : collection ? (
         <div className="mt-8 w-full background-gradient-light flex flex-col lg:flex-row gap-8 px-4 py-12 lg:py-20 max-w-[1600px] mx-auto pb-24">
           <div className="flex-1 flex flex-col gap-8">
+            {/* TODO: add switch campaing collections */}
             {/* Membership Info */}
             <Info collection={collection} />
             {/* Membership Rights */}
