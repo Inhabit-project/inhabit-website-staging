@@ -641,3 +641,10 @@ section {
   overflow: hidden;
 }
 
+.terms-section-number > li::marker {
+  font-family: 'Montserrat', sans-serif;
+  font-size: var(--font-size-h5);
+  font-weight: 600;
+  color: var(--color-secondary);
+}
+

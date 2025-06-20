@@ -42,12 +42,12 @@ const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({ variant, title, s
 
   return (
     <section 
-      className="w-full flex flex-col items-center justify-center py-32 background-gradient-light"
+      className="w-full flex flex-col items-center justify-center min-h-screen py-8 md:py-32 background-gradient-light pt-32"
       aria-labelledby={heroTitleId}
     >
-      <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col items-start gap-8">
+      <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col justify-between h-full flex-1 md:items-start md:gap-8">
         {/* Header section */}
-        <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
+        <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full md:mb-[2.5rem]">
           <h1 
             id={heroTitleId}
             className="heading-2 text-secondary max-w-[40.9375rem]"

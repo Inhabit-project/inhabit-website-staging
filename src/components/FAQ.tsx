@@ -6,11 +6,20 @@ interface FAQItem {
   answer: string;
 }
 
-const FAQ: React.FC = () => {
+interface FAQProps {
+  faqItems?: FAQItem[];
+  title?: string;
+  description?: string;
+}
+
+const FAQ: React.FC<FAQProps> = ({ faqItems, title, description }) => {
   const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const faqItems: FAQItem[] = (t('mainPage.faq.items', { returnObjects: true }) as FAQItem[]);
+  const defaultFaqItems: FAQItem[] = (t('mainPage.faq.items', { returnObjects: true }) as FAQItem[]);
+  const items = faqItems || defaultFaqItems;
+  const headerTitle = title || t('mainPage.faq.title');
+  const headerDescription = description || t('mainPage.faq.description');
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -23,32 +32,33 @@ const FAQ: React.FC = () => {
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
             <h2 className="heading-2 text-light max-w-[40.9375rem]">
-              <span dangerouslySetInnerHTML={{ __html: t('mainPage.faq.title') }} />
+              <span dangerouslySetInnerHTML={{ __html: headerTitle }} />
             </h2>
             <p className="body-M text-light max-w-[35rem]">
-              {t('mainPage.faq.description')}
+              {headerDescription}
             </p>
           </div>
 
           {/* FAQ Items */}
           <div className="w-full max-w-[50rem] ml-auto">
-            {faqItems.map((item, index) => (
+            {items.map((item, index) => (
               <div key={index} className="border-b border-[#F6FFEA]/20 last:border-b-0">
                 <div 
-                  className="flex items-center justify-between py-6 group"
+                  className="flex items-center justify-between py-6 group gap-4"
                 >
                   <h3 className="text-white body-M">
                     {item.question}
                   </h3>
-                  <button 
-                    className={`w-8 h-8 rounded-full bg-white/30 backdrop-blur-[7.5px] border border-[#EFEFEF]/50 flex items-center justify-center transition-all duration-300 group-hover:border-white group-hover:bg-white/40 ${openIndex === index ? 'rotate-45' : ''}`}
+                  <button
+                    className={`min-w-8 min-h-8 w-8 h-8 aspect-square rounded-full bg-white/30 backdrop-blur-[7.5px] border border-[#EFEFEF]/50 flex items-center justify-center transition-all duration-300 group-hover:border-white group-hover:bg-white/40 ${openIndex === index ? 'rotate-45' : ''}`}
                     aria-expanded={openIndex === index}
                     aria-controls={`faq-answer-${index}`}
                     onClick={() => toggleAccordion(index)}
+                    style={{ marginLeft: '1rem' }}
                   >
-                    <img 
-                      src="/assets/faq-plus-icon.svg" 
-                      alt={openIndex === index ? "Close" : "Open"} 
+                    <img
+                      src="/assets/faq-plus-icon.svg"
+                      alt={openIndex === index ? "Close" : "Open"}
                       className="w-4 h-4"
                     />
                   </button>
@@ -59,9 +69,7 @@ const FAQ: React.FC = () => {
                     openIndex === index ? 'max-h-[500px] opacity-100 pb-6' : 'max-h-0 opacity-0'
                   }`}
                 >
-                  <p className="text-white/80 font-nunito text-base leading-[1.5]">
-                    {item.answer}
-                  </p>
+                  <div className="text-white/80 font-nunito text-base leading-[1.5]" dangerouslySetInnerHTML={{ __html: item.answer }} />
                 </div>
               </div>
             ))}
@@ -130,9 +138,137 @@ export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string 
                     openIndex === index ? 'max-h-[500px] opacity-100 pb-6' : 'max-h-0 opacity-0'
                   }`}
                 >
-                  <p className="text-secondary/80 font-nunito text-base leading-[1.5]">
-                    {item.answer}
-                  </p>
+                  <div className="text-secondary/80 font-nunito text-base leading-[1.5]" dangerouslySetInnerHTML={{ __html: item.answer }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export const FAQHubs: React.FC = () => {
+  const { t } = useTranslation();
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const faqItems: FAQItem[] = (t('hubsPage.faq.items', { returnObjects: true }) as FAQItem[]);
+
+  const toggleAccordion = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  return (
+    <section className="relative w-full min-h-screen  background-gradient-dark">
+      <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24 flex flex-col">
+        <div className="flex flex-col items-end gap-24">
+          {/* Header section */}
+          <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
+            <h2 className="heading-2 text-light max-w-[40.9375rem]">
+              <span dangerouslySetInnerHTML={{ __html: t('hubsPage.faq.title') }} />
+            </h2>
+            <p className="body-M text-light max-w-[35rem]">
+              {t('hubsPage.faq.description')}
+            </p>
+          </div>
+
+          {/* FAQ Items */}
+          <div className="w-full max-w-[50rem] ml-auto">
+            {faqItems.map((item, index) => (
+              <div key={index} className="border-b border-[#F6FFEA]/20 last:border-b-0">
+                <div 
+                  className="flex items-center justify-between py-6 group gap-4"
+                >
+                  <h3 className="text-white body-M">
+                    {item.question}
+                  </h3>
+                  <button
+                    className={`min-w-8 min-h-8 w-8 h-8 aspect-square rounded-full bg-white/30 backdrop-blur-[7.5px] border border-[#EFEFEF]/50 flex items-center justify-center transition-all duration-300 group-hover:border-white group-hover:bg-white/40 ${openIndex === index ? 'rotate-45' : ''}`}
+                    aria-expanded={openIndex === index}
+                    aria-controls={`faq-answer-${index}`}
+                    onClick={() => toggleAccordion(index)}
+                    style={{ marginLeft: '1rem' }}
+                  >
+                    <img
+                      src="/assets/faq-plus-icon.svg"
+                      alt={openIndex === index ? "Close" : "Open"}
+                      className="w-4 h-4"
+                    />
+                  </button>
+                </div>
+                <div 
+                  id={`faq-answer-${index}`}
+                  className={`overflow-hidden transition-all duration-300 ${
+                    openIndex === index ? 'max-h-[500px] opacity-100 pb-6' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className="text-white/80 font-nunito text-base leading-[1.5]" dangerouslySetInnerHTML={{ __html: item.answer }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export const FAQStewardshipNFT: React.FC = () => {
+  const { t } = useTranslation();
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const faqItems: FAQItem[] = (t('faqExtra.items', { returnObjects: true }) as FAQItem[]);
+
+  const toggleAccordion = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  return (
+    <section className="relative w-full min-h-screen  background-gradient-dark">
+      <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24 flex flex-col">
+        <div className="flex flex-col items-end gap-24">
+          {/* Header section */}
+          <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
+            <h2 className="heading-2 text-light max-w-[40.9375rem]">
+              <span dangerouslySetInnerHTML={{ __html: t('faqExtra.title') }} />
+            </h2>
+            <p className="body-M text-light max-w-[35rem]">
+              {t('faqExtra.description')}
+            </p>
+          </div>
+
+          {/* FAQ Items */}
+          <div className="w-full max-w-[50rem] ml-auto">
+            {faqItems.map((item, index) => (
+              <div key={index} className="border-b border-[#F6FFEA]/20 last:border-b-0">
+                <div 
+                  className="flex items-center justify-between py-6 group gap-4"
+                >
+                  <h3 className="text-white body-M">
+                    {item.question}
+                  </h3>
+                  <button
+                    className={`min-w-8 min-h-8 w-8 h-8 aspect-square rounded-full bg-white/30 backdrop-blur-[7.5px] border border-[#EFEFEF]/50 flex items-center justify-center transition-all duration-300 group-hover:border-white group-hover:bg-white/40 ${openIndex === index ? 'rotate-45' : ''}`}
+                    aria-expanded={openIndex === index}
+                    aria-controls={`faq-answer-${index}`}
+                    onClick={() => toggleAccordion(index)}
+                    style={{ marginLeft: '1rem' }}
+                  >
+                    <img
+                      src="/assets/faq-plus-icon.svg"
+                      alt={openIndex === index ? "Close" : "Open"}
+                      className="w-4 h-4"
+                    />
+                  </button>
+                </div>
+                <div 
+                  id={`faq-answer-${index}`}
+                  className={`overflow-hidden transition-all duration-300 ${
+                    openIndex === index ? 'max-h-[500px] opacity-100 pb-6' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className="text-white/80 font-nunito text-base leading-[1.5]" dangerouslySetInnerHTML={{ __html: item.answer }} />
                 </div>
               </div>
             ))}

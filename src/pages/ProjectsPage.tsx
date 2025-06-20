@@ -8,7 +8,6 @@ import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 import ProjectsVideoSection from '../components/ProjectsVideoSection';
 import ImageSection from '../components/ImageSection';
-import Gallery from '../components/Gallery';
 import ProjectsMain from '../components/ProjectsMain';
 
 const ProjectsPage: React.FC = () => {

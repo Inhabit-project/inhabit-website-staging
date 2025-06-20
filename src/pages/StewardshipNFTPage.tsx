@@ -4,7 +4,7 @@ import Menu from '../components/Menu';
 import InternalPagesHero from '../components/InternalPagesHero';
 import CTA from '../components/CTA';
 import Blog from '../components/Blog';
-import FAQ from '../components/FAQ';
+import FAQ, { FAQStewardshipNFT } from '../components/FAQ';
 import Footer from '../components/Footer';
 import ImageSection from '../components/ImageSection';
 import StewardshipNFTBenefitsSection from '../components/StewardshipNFTBenefitsSection';
@@ -59,7 +59,7 @@ const StewardshipNFTPage: React.FC = () => {
             <CTA />
           </section>
           <section aria-label="Frequently asked questions">
-            <FAQ />
+            <FAQStewardshipNFT />
           </section>
         </main>
         <Footer />
