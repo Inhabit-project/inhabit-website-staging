@@ -9,10 +9,12 @@ import RightsTable from "./_componets/RightsTable";
 import { Info } from "./_componets/Info";
 import OtherCollections from "./_componets/OtherCollections";
 import Spinner from "../../ui/Loader";
+import { Modal } from "./_componets/Modal";
 
 export default function Membership(): JSX.Element {
   // hooks
   const [collection, setCollection] = useState<Collection | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isReferralValid, setIsReferralValid] = useState<boolean>(false);
 
   // external hooks
@@ -97,7 +99,14 @@ export default function Membership(): JSX.Element {
                 <RightsTable collection={collection} />
               </div>
               {/* Checkout Component */}
-              <Checkout price={collection.price} />
+              <Checkout
+                isOpen={isModalOpen}
+                setIsOpen={setIsModalOpen}
+                price={collection.price}
+              />
+              {isModalOpen && (
+                <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+              )}
             </div>
           </>
         )

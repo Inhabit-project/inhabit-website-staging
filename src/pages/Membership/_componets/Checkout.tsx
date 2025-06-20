@@ -11,7 +11,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "react-router-dom";
 
-type Props = { price: number };
+type Props = {
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+  price: number;
+};
 
 export function Checkout(props: Props): JSX.Element {
   const schema = z
@@ -100,7 +104,7 @@ export function Checkout(props: Props): JSX.Element {
   type Form = z.infer<typeof schema>;
 
   // props
-  const { price } = props;
+  const { setIsOpen, price } = props;
   // hooks
   const [selectedIndicator, setSelectedIndicator] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -192,6 +196,9 @@ export function Checkout(props: Props): JSX.Element {
 
   return (
     <div className="w-full max-w-lg bg-menu-backdrop backdrop-blur-lg rounded-3xl shadow-xl border border-green-soft p-8 flex flex-col gap-6 self-start sticky top-8">
+      <button onClick={() => setIsOpen(true)} className="btn-close">
+        Jajaja
+      </button>
       <ConnectButton />
       {/* Form */}
       {/* TODO: add i18n for labels and placeholders */}

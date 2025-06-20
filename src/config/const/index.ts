@@ -6,6 +6,8 @@ import usdcAlfajoresJson from "../../assets/json/contracts/celo-alfajores/USDC.j
 import usdtCeloJson from "../../assets/json/contracts/celo/USDT.json";
 import usdtAlfajoresJson from "../../assets/json/contracts/celo-alfajores/USDT.json";
 import { celo, celoAlfajores } from "viem/chains";
+import { SiweMessage } from "siwe";
+import { zeroAddress } from "viem";
 
 export const IS_PRODUCTION: string = ensureEnvVar(
   import.meta.env.VITE_IS_PRODUCTION,
@@ -27,6 +29,28 @@ export const USDC_JSON =
 
 export const USDT_JSON =
   IS_PRODUCTION === "true" ? usdtCeloJson : usdtAlfajoresJson;
+
+// Siwe
+
+// SiweMessage
+
+export const DOMAIN =
+  IS_PRODUCTION === "true" ? "https://inhabit.one" : "http://localhost:5173";
+
+export const URI =
+  IS_PRODUCTION === "true" ? "https://inhabit.one" : "http://localhost:5173";
+
+// TODO: implement i18n support for the statement
+export const SIWE_MESSAGE = new SiweMessage({
+  domain: "INHABIT",
+  address: zeroAddress,
+  statement: "Authenticate with INHABIT to protect ecosystems",
+  uri: URI,
+  version: "1",
+  chainId: 0,
+  nonce: "",
+  issuedAt: "",
+});
 
 // KYC
 
