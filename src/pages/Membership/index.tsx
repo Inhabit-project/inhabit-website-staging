@@ -37,9 +37,9 @@ export default function Membership(): JSX.Element {
 
       if (group.referral !== referral || !group.state) {
         navigate("/404");
-      } else {
-        setIsReferralValid(true);
       }
+
+      setIsReferralValid(true);
     };
 
     validateReferral();
@@ -54,11 +54,23 @@ export default function Membership(): JSX.Element {
         setCampaign(state.campaign);
       } else if (campaignId && collectionId) {
         const loadedCampaign = await getCampaign(Number(campaignId));
+
+        if (Object.keys(loadedCampaign).length === 0) {
+          navigate("/404");
+          return;
+        }
+
         const found = loadedCampaign.collections.find(
           (c) => c.id === Number(collectionId)
         );
 
-        setCollection(found || null);
+        if (!found) {
+          navigate("/404");
+          return;
+        }
+
+        setCollection(found);
+        setCampaign(loadedCampaign);
       }
     };
 
@@ -67,28 +79,27 @@ export default function Membership(): JSX.Element {
 
   return (
     <>
-      {/* TODO: Add layout */}
       {/* TODO: Add spinner */}
-      <Menu />
-      {campaignLoading ? (
-        "Is loading..."
-      ) : collection && collectionId ? (
-        <div className="mt-8 w-full background-gradient-light flex flex-col lg:flex-row gap-8 px-4 py-12 lg:py-20 max-w-[1600px] mx-auto pb-24">
-          <div className="flex-1 flex flex-col gap-8">
-            {/* TODO: add switch campaing collections */}
-            {/* Membership Info */}
-            <Info collection={collection} />
-            {<OtherCollections collectionId={collectionId} />}
-            {/* Membership Rights */}
-            <RightsTable collection={collection} />
-          </div>
-          {/* Checkout Component */}
-          <Checkout price={collection.price} />
-        </div>
-      ) : (
-        // TODO: navigate to 404 page
-        "Collection not found"
-      )}
+      {campaignLoading
+        ? "Is loading..."
+        : collection &&
+          collectionId && (
+            <>
+              <Menu />
+              <div className="mt-8 w-full background-gradient-light flex flex-col lg:flex-row gap-8 px-4 py-12 lg:py-20 max-w-[1600px] mx-auto pb-24">
+                <div className="flex-1 flex flex-col gap-8">
+                  {/* Membership Info */}
+                  <Info collection={collection} />
+                  {/* Other Collections */}
+                  {<OtherCollections collectionId={collectionId} />}
+                  {/* Membership Rights */}
+                  <RightsTable collection={collection} />
+                </div>
+                {/* Checkout Component */}
+                <Checkout price={collection.price} />
+              </div>
+            </>
+          )}
     </>
   );
 }
