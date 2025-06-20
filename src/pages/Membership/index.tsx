@@ -7,6 +7,7 @@ import { useStore } from "../../store";
 import { Checkout } from "./_componets/Checkout";
 import RightsTable from "./_componets/RightsTable";
 import { Info } from "./_componets/Info";
+import OtherCollections from "./_componets/OtherCollections";
 
 export default function Membership(): JSX.Element {
   // hooks
@@ -38,7 +39,7 @@ export default function Membership(): JSX.Element {
     };
 
     load();
-  }, []);
+  }, [state]);
 
   return (
     <>
@@ -47,12 +48,13 @@ export default function Membership(): JSX.Element {
       <Menu />
       {campaignLoading ? (
         "Is loading..."
-      ) : collection ? (
+      ) : collection && collectionId ? (
         <div className="mt-8 w-full background-gradient-light flex flex-col lg:flex-row gap-8 px-4 py-12 lg:py-20 max-w-[1600px] mx-auto pb-24">
           <div className="flex-1 flex flex-col gap-8">
             {/* TODO: add switch campaing collections */}
             {/* Membership Info */}
             <Info collection={collection} />
+            {<OtherCollections collectionId={collectionId} />}
             {/* Membership Rights */}
             <RightsTable collection={collection} />
           </div>
