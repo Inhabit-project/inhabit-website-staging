@@ -7,7 +7,11 @@ import type {
   WordPressPost,
   WordPressPosts,
 } from "@/types/wordpress";
-import { cleanWordPressContent, decodeHtmlEntities } from "@/utils/html";
+import {
+  cleanWordPressContent,
+  decodeHtmlEntities,
+  truncateHtml,
+} from "@/utils/html";
 import { isValidDate } from "@/utils/date";
 import { calculateReadTime } from "@/utils/calculateReadTime";
 import { formatDate } from "@/utils/dateFormatter";
@@ -33,7 +37,9 @@ const WORDPRESS_API_URL = import.meta.env.VITE_WORDPRESS_API_URL;
  * @returns {string} BlogPost.content - Raw HTML content
  * @returns {string} BlogPost.image - Featured image URL or empty string
  */
-const formatPost = (post: WordPressPost): Pick<BlogPost, 'id' | 'date' | 'title' | 'content' | 'image'> => {
+const formatPost = (
+  post: WordPressPost
+): Pick<BlogPost, "id" | "date" | "title" | "content" | "image"> => {
   return {
     id: post.id.toString(),
     date: new Date(post.date).toLocaleDateString(),
@@ -110,7 +116,12 @@ export const fetchPosts = async (
           id: post.id.toString(),
           date: formatDate(post.date, currentLanguage, true),
           title: decodeHtmlEntities(post.title.rendered),
-          content: cleanWordPressContent(post.excerpt.rendered),
+          content: truncateHtml(
+            cleanWordPressContent(
+              post.excerpt.rendered || post.content.rendered
+            ),
+            250
+          ),
           image: post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ?? "",
           categories,
           readTime,
@@ -216,11 +227,11 @@ export const fetchPost = async (
       modified: formatDate(post.modified, currentLanguage, false),
       author: {
         id: authorData?.id ?? 0,
-        name: authorData?.name ?? '',
-        avatar: authorData?.avatar_urls?.['96'],
+        name: authorData?.name ?? "",
+        avatar: authorData?.avatar_urls?.["96"],
         description: authorData?.description,
-        url: authorData?.link
-      }
+        url: authorData?.link,
+      },
     };
   } catch (error) {
     console.error("Error fetching single WordPress post:", error);
@@ -282,7 +293,10 @@ const fetchAdjacentPost = async (
   date: string,
   direction: "after" | "before",
   order: "asc" | "desc"
-): Promise<Pick<BlogPost, "id" | "title" | "content" | "date" | "image"> | null> => {
+): Promise<Pick<
+  BlogPost,
+  "id" | "title" | "content" | "date" | "image"
+> | null> => {
   const currentLanguage = i18n.language;
 
   if (!date || !isValidDate(date)) {

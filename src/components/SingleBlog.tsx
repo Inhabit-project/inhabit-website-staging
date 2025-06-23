@@ -158,7 +158,7 @@ const SingleBlog: React.FC = () => {
             >
               Share this post
             </h2>
-            <div
+            <fieldset
               className="flex gap-4 mt-2"
               role="group"
               aria-label="Social media sharing options"
@@ -196,7 +196,7 @@ const SingleBlog: React.FC = () => {
               >
                 📘
               </button>
-            </div>
+            </fieldset>
           </section>
           {/* Author */}
           <section
