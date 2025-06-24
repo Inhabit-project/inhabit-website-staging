@@ -66,11 +66,11 @@ const ContactPage: React.FC = () => {
             <div className="mt-8 mb-6">
               <h2 className="text-xl font-medium mb-2 text-secondary">{t('contactPage.reachOutIf')}</h2>
               <ul className="list-none space-y-1 text-base text-secondary" role="list">
-                <li>– {t('contactPage.bullet1')}</li>
-                <li>– {t('contactPage.bullet2')}</li>
-                <li>– {t('contactPage.bullet3')}</li>
-                <li>– {t('contactPage.bullet4')}</li>
-                <li>– {t('contactPage.bullet5')}</li>
+                <li>● {t('contactPage.bullet1')}</li>
+                <li>● {t('contactPage.bullet2')}</li>
+                <li>● {t('contactPage.bullet3')}</li>
+                <li>● {t('contactPage.bullet4')}</li>
+                <li>● {t('contactPage.bullet5')}</li>
               </ul>
               <p className="mt-4 font-bold body-M text-secondary">{t('contactPage.seed')}</p>
             </div>

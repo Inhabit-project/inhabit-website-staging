@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, useEffect } from 'react';
 import '@fontsource/nunito-sans/400.css';
 import './i18n';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -31,6 +31,22 @@ function ScrollToTopOnNavigation() {
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    if (isLoading) {
+      html.classList.add('loading');
+      document.body.classList.add('loading');
+    } else {
+      // Add a small delay before removing loading classes to ensure smooth transition
+      setTimeout(() => {
+        html.classList.remove('loading');
+        document.body.classList.remove('loading');
+        setIsTransitioning(false);
+      }, 500);
+    }
+  }, [isLoading]);
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
@@ -38,27 +54,29 @@ const App: React.FC = () => {
 
   return (
     <LoadingContext.Provider value={isLoading}>
-    <Router>
-        {isLoading && <Loader onLoadingComplete={handleLoadingComplete} />}
-      <ScrollToTopOnNavigation />
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/hubs" element={<HubsPage />} />
-        <Route path="/about" element={<AboutUsPage />} />
-        <Route path="/stewardship-nft" element={<StewardshipNFTPage />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/hubs/nuiyanzhi" element={<NuiyanzhiPage />} />
-        <Route path="/hubs/agua-de-luna" element={<AguaDeLunaPage />} />
-        <Route path="/hubs/TierraKilwa" element={<TierraKilwaPage />} />
-        <Route path="/terms" element={<TermsAndConditionsPage />} />
-        <Route path="/privacy" element={<PrivacyPolicyPage />} />
-        <Route path="/projects" element={<ProjectsPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/article/example" element={<ArticlePage />} />
-        <Route path="*" element={<FourOhFourPage />} />
-      </Routes>
-    </Router>
+      <Router>
+        <div className={`app-container ${isTransitioning ? 'transitioning' : ''}`}>
+          {isLoading && <Loader onLoadingComplete={handleLoadingComplete} />}
+          <ScrollToTopOnNavigation />
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/hubs" element={<HubsPage />} />
+            <Route path="/about" element={<AboutUsPage />} />
+            <Route path="/stewardship-nft" element={<StewardshipNFTPage />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/hubs/nuiyanzhi" element={<NuiyanzhiPage />} />
+            <Route path="/hubs/agua-de-luna" element={<AguaDeLunaPage />} />
+            <Route path="/hubs/TierraKilwa" element={<TierraKilwaPage />} />
+            <Route path="/terms" element={<TermsAndConditionsPage />} />
+            <Route path="/privacy" element={<PrivacyPolicyPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/article/example" element={<ArticlePage />} />
+            <Route path="*" element={<FourOhFourPage />} />
+          </Routes>
+        </div>
+      </Router>
     </LoadingContext.Provider>
   );
 };

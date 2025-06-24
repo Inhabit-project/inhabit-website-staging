@@ -152,6 +152,16 @@
     
   }
 
+  html.loading,
+  body.loading {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100% !important;
+    height: 100% !important;
+    scroll-snap-type: none !important;
+    touch-action: none !important;
+    -webkit-overflow-scrolling: none !important;
+  }
 
 input,
 textarea {
@@ -646,5 +656,42 @@ section {
   font-size: var(--font-size-h5);
   font-weight: 600;
   color: var(--color-secondary);
+}
+
+/* Topographic Map Animation */
+
+
+.topographic-map svg path {
+  fill: #00300e;
+  stroke-width: 1;
+  stroke-miterlimit: 0;
+  stroke: #006c12;
+  stroke-dasharray: 500;
+  stroke-dashoffset: 1000;
+  animation: dash 10s linear alternate infinite;
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes menuSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-animation {
+  animation: menuSlideDown 0.7s ease-out forwards;
 }
 

@@ -46,16 +46,7 @@ const Loader: React.FC<LoaderProps> = ({ onLoadingComplete }) => {
       if (currentProgress >= 100) {
         clearInterval(timer);
         setProgress(100);
-        
-        // Fade out animation when loading is complete
-        if (loaderRef.current) {
-          gsap.to(loaderRef.current, {
-            opacity: 0,
-            duration: 0.8,
-            ease: "power3.inOut",
-            onComplete: () => onLoadingComplete?.()
-          });
-        }
+        onLoadingComplete?.();
       } else {
         setProgress(Math.min(currentProgress, 100));
       }
