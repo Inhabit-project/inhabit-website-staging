@@ -39,30 +39,40 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef }) => {
     // Reset title words ref
     titleWordsRef.current = [];
 
-    // Reset initial states
-    gsap.set([buttonRef.current], { 
-      opacity: 0,
-      y: 50 
-    });
+    // Reset initial states only if elements exist
+    if (buttonRef.current) {
+      gsap.set([buttonRef.current], { 
+        opacity: 0,
+        y: 50 
+      });
+    }
     
-    gsap.set(backgroundRef.current, { 
-      opacity: 1 // Keep background container visible
-    });
+    if (backgroundRef.current) {
+      gsap.set(backgroundRef.current, { 
+        opacity: 1 // Keep background container visible
+      });
+    }
 
-    gsap.set(backgroundImageRef.current, {
-      opacity: 0,
-      scale: 1.1
-    });
+    if (backgroundImageRef.current) {
+      gsap.set(backgroundImageRef.current, {
+        opacity: 0,
+        scale: 1.1
+      });
+    }
 
-    gsap.set(descriptionCardRef.current, {
-      opacity: 0,
-      y: 50,
-      scale: 0.95
-    });
+    if (descriptionCardRef.current) {
+      gsap.set(descriptionCardRef.current, {
+        opacity: 0,
+        y: 50,
+        scale: 0.95
+      });
+    }
 
-    gsap.set(descriptionRef.current, {
-      opacity: 0
-    });
+    if (descriptionRef.current) {
+      gsap.set(descriptionRef.current, {
+        opacity: 0
+      });
+    }
   };
 
   // Setup title words

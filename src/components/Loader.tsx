@@ -62,7 +62,7 @@ const Loader: React.FC<LoaderProps> = ({ onLoadingComplete }) => {
     >
       <div 
         ref={textRef}
-        className="absolute top-16 left-24 font-abel text-sm text-secondary uppercase"
+        className="absolute top-12 left-12 font-abel text-sm text-secondary uppercase"
       >
         LOADING
       </div>
@@ -78,7 +78,7 @@ const Loader: React.FC<LoaderProps> = ({ onLoadingComplete }) => {
       </div>
       <div 
         ref={progressRef}
-        className="absolute bottom-16 right-24 font-abel text-[53.48px] text-secondary"
+        className="absolute bottom-12 right-12 font-abel text-[9rem] text-secondary"
       >
         {String(Math.floor(progress)).padStart(3, '0')}%
       </div>
