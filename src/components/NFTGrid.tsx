@@ -1,13 +1,15 @@
-import React from "react";
+import { JSX } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useStore } from "../store";
-import { Collection } from "src/models/collection.model";
+import { Campaign } from "src/models/campaign.model";
 
-const NFTGrid: React.FC = () => {
+type Props = {
+  campaign: Campaign;
+};
+
+export default function NFTGrid(props: Props): JSX.Element {
+  const { campaign } = props;
   const { t } = useTranslation();
-
-  const { campaign, campaignLoading } = useStore();
 
   return (
     <section
@@ -37,87 +39,83 @@ const NFTGrid: React.FC = () => {
           aria-label={t("mainPage.nftGrid.title")}
         >
           {/* NFT Card */}
-          {/* TODO: Add spinner */}
-          {campaignLoading
-            ? "Is loading..."
-            : campaign?.collections.map(
-                (collection: Collection, index: number) => (
-                  <div
-                    key={index}
-                    className="relative"
-                    style={{
-                      background: "var(--color-bright-green)",
-                      borderRadius: "var(--radius-2xl)",
-                      padding: "2rem",
-                    }}
-                    role="listitem"
-                  >
-                    <div className="absolute top-4 right-4 hover-scale-up">
-                      <Link
-                        to={`/membership/${collection.campaignId}/${collection.id}`}
-                        state={{ campaign, collection }}
-                        className="block"
-                        aria-label={t(
-                          "mainPage.nftGrid.checkoutNFT",
-                          "Checkout TITI NFT"
-                        )}
-                      >
-                        <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
-                          <svg
-                            width="35"
-                            height="35"
-                            viewBox="0 0 35 35"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true"
-                          >
-                            <path
-                              d="M10.5039 24.543L24.4709 10.576"
-                              stroke="#F6FFEA"
-                              strokeWidth="2.01125"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M10.5039 10.576L24.4709 10.576L24.4709 24.543"
-                              stroke="#F6FFEA"
-                              strokeWidth="2.01125"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </div>
-                      </Link>
-                    </div>
-                    <div
-                      className="absolute inset-0 rounded-[var(--radius-2xl)] opacity-80"
+          {campaign.collections.map((collection) => (
+            <div
+              key={collection.id}
+              className="relative"
+              style={{
+                background: "var(--color-bright-green)",
+                borderRadius: "var(--radius-2xl)",
+                padding: "2rem",
+              }}
+              role="listitem"
+            >
+              <div className="absolute top-4 right-4 hover-scale-up">
+                <Link
+                  to={`/membership/${collection.campaignId}/${collection.id}`}
+                  state={{ campaign, collection }}
+                  className="block"
+                  aria-label={t(
+                    "mainPage.nftGrid.checkoutNFT",
+                    "Checkout TITI NFT"
+                  )}
+                >
+                  <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
+                    <svg
+                      width="35"
+                      height="35"
+                      viewBox="0 0 35 35"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                       aria-hidden="true"
-                    />
-                    <div className="relative flex flex-col items-end gap-4">
-                      <div className="w-full flex flex-col gap-4">
-                        <h3 className="text-[2rem] font-montserrat text-center text-white">
-                          {collection.symbol}
-                        </h3>
-                        <div className="relative w-full flex justify-center">
-                          <div
-                            className="aspect-[3/3] rounded-[var(--radius-md)] overflow-hidden border border-white/15 flex items-center justify-center"
-                            style={{ width: "90%", height: "90%" }}
-                          >
-                            <img
-                              src={collection.image}
-                              alt={collection.symbol}
-                              className="w-full h-full object-cover"
-                              loading="lazy"
-                            />
-                          </div>
-                        </div>
-                        <div className="flex flex-col gap-4">
-                          <div className="flex flex-col gap-4">
-                            <p className="text-[3rem] leading-none font-abel text-center text-white tracking-[-2px]">
-                              {`$ ${collection.price} USD`}
-                            </p>
-                            {/* TODO: Ask about score */}
-                            {/* <div
+                    >
+                      <path
+                        d="M10.5039 24.543L24.4709 10.576"
+                        stroke="#F6FFEA"
+                        strokeWidth="2.01125"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M10.5039 10.576L24.4709 10.576L24.4709 24.543"
+                        stroke="#F6FFEA"
+                        strokeWidth="2.01125"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                </Link>
+              </div>
+              <div
+                className="absolute inset-0 rounded-[var(--radius-2xl)] opacity-80"
+                aria-hidden="true"
+              />
+              <div className="relative flex flex-col items-end gap-4">
+                <div className="w-full flex flex-col gap-4">
+                  <h3 className="text-[2rem] font-montserrat text-center text-white">
+                    {collection.symbol}
+                  </h3>
+                  <div className="relative w-full flex justify-center">
+                    <div
+                      className="aspect-[3/3] rounded-[var(--radius-md)] overflow-hidden border border-white/15 flex items-center justify-center"
+                      style={{ width: "90%", height: "90%" }}
+                    >
+                      <img
+                        src={collection.image}
+                        alt={collection.symbol}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-4">
+                      <p className="text-[3rem] leading-none font-abel text-center text-white tracking-[-2px]">
+                        {`$ ${collection.price} USD`}
+                      </p>
+                      {/* TODO: Ask about score */}
+                      {/* <div
                               className="flex justify-center items-center gap-3"
                               role="img"
                               aria-label={t(
@@ -182,32 +180,31 @@ const NFTGrid: React.FC = () => {
                                 />
                               </svg>
                             </div> */}
-                          </div>
-                          <p className="text-[1rem] text-center text-green-soft tracking-[-2.5%]">
-                            {collection.availableSupply}{" "}
-                            {t("mainPage.nftGrid.availableMembership")}
-                          </p>
-                        </div>
-                        <Link
-                          to={`/membership/${collection.campaignId}/${collection.id}`}
-                          state={{ campaign, collection }}
-                          className="btn-primary w-full flex items-center justify-center group"
-                          aria-label={t(
-                            "mainPage.nftGrid.checkoutNFT",
-                            "Checkout TITI NFT"
-                          )}
-                        >
-                          <span className="button-text group-hover:text-secondary transition-colors duration-300">
-                            {t("mainPage.nftGrid.checkThisNFT")}
-                          </span>
-                        </Link>
-                      </div>
                     </div>
+                    <p className="text-[1rem] text-center text-green-soft tracking-[-2.5%]">
+                      {collection.availableSupply}{" "}
+                      {t("mainPage.nftGrid.availableMembership")}
+                    </p>
                   </div>
-                )
-              )}
-          {/* Repeat for other NFTs */}
+                  <Link
+                    to={`/membership/${collection.campaignId}/${collection.id}`}
+                    state={{ campaign, collection }}
+                    className="btn-primary w-full flex items-center justify-center group"
+                    aria-label={t(
+                      "mainPage.nftGrid.checkoutNFT",
+                      "Checkout TITI NFT"
+                    )}
+                  >
+                    <span className="button-text group-hover:text-secondary transition-colors duration-300">
+                      {t("mainPage.nftGrid.checkThisNFT")}
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
+        {/* TODO: What do we do with this? */}
         {/* NFT Table (from Figma) */}
         <div className="overflow-x-auto mt-16">
           <table
@@ -656,7 +653,7 @@ const NFTGrid: React.FC = () => {
       </div>
     </section>
   );
-};
+}
 
 function CheckIcon() {
   return (
@@ -701,5 +698,3 @@ function EmptyCheckIcon() {
     </svg>
   );
 }
-
-export default NFTGrid;

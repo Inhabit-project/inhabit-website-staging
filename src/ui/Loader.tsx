@@ -1,4 +1,4 @@
-function NatureSpinner({
+export function NatureSpinner({
   size = "lg",
   showText = true,
   text = "Loading...",

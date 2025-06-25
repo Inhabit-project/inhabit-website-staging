@@ -9,7 +9,7 @@ import RightsTable from "./_componets/RightsTable";
 import { Info } from "./_componets/Info";
 import OtherCollections from "./_componets/OtherCollections";
 import Spinner from "../../ui/Loader";
-import { Modal } from "./_componets/Modal";
+// import { Modal } from "./_componets/Modal";
 
 export default function Membership(): JSX.Element {
   // hooks
@@ -38,8 +38,9 @@ export default function Membership(): JSX.Element {
 
       const group = await inhabit.getGroup(referral);
 
-      if (group.referral !== referral || !group.state) {
+      if (!group) {
         navigate("/404");
+        return;
       }
 
       setIsReferralValid(true);
@@ -80,37 +81,29 @@ export default function Membership(): JSX.Element {
     load();
   }, [isReferralValid, state]);
 
+  // TODO: See this logic, it seems to be a bit convoluted
+  if (campaignLoading) return <Spinner />;
+  if (!campaignLoading && !collection) return <Spinner />;
+
   return (
     <>
-      {campaignLoading ? (
-        <Spinner />
-      ) : (
-        collection &&
-        collectionId && (
-          <>
-            <Menu />
-            <div className="mt-8 w-full background-gradient-light flex flex-col lg:flex-row gap-8 px-4 py-12 lg:py-20 max-w-[1600px] mx-auto pb-24">
-              <div className="flex-1 flex flex-col gap-8">
-                {/* Membership Info */}
-                <Info collection={collection} />
-                {/* Other Collections */}
-                {<OtherCollections collectionId={collectionId} />}
-                {/* Membership Rights */}
-                <RightsTable collection={collection} />
-              </div>
-              {/* Checkout Component */}
-              <Checkout
-                isOpen={isModalOpen}
-                setIsOpen={setIsModalOpen}
-                price={collection.price}
-              />
-              {isModalOpen && (
-                <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
-              )}
-            </div>
-          </>
-        )
-      )}
+      <Menu />
+      <div className="mt-8 w-full background-gradient-light flex flex-col lg:flex-row gap-8 px-4 py-12 lg:py-20 max-w-[1600px] mx-auto pb-24">
+        <div className="flex-1 flex flex-col gap-8">
+          <Info collection={collection!} />
+          <OtherCollections collectionId={collectionId!} />
+          <RightsTable rights={collection!.rights} />
+        </div>
+        <Checkout
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          membershipContract={collection!.membershipContract}
+          price={collection!.price}
+        />
+        {/* {isModalOpen && (
+          <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+        )} */}
+      </div>
     </>
   );
 }

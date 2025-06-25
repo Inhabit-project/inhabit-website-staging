@@ -16,15 +16,14 @@ import FAQ from "../components/FAQ";
 import Footer from "../components/Footer";
 import { scrollManager } from "../utils/scrollManager";
 import { useStore } from "../store";
-
-const campaignId = 1;
+import Spinner, { NatureSpinner } from "../ui/Loader";
 
 const MainPage: React.FC = () => {
-  const { getCampaign } = useStore();
+  const { campaigns, campaignsLoading, getCampaigns } = useStore();
   const videoSectionRef = useRef<HTMLElement>(null as unknown as HTMLElement);
 
   useEffect(() => {
-    getCampaign(campaignId);
+    getCampaigns();
 
     if (scrollManager && typeof scrollManager.update === "function") {
       setTimeout(() => {
@@ -63,8 +62,19 @@ const MainPage: React.FC = () => {
           <Photo />
         </section>
         <section aria-label="NFT Grid section">
-          <NFTGrid />
+          {campaignsLoading && <NatureSpinner />}
+
+          {!campaignsLoading &&
+            (campaigns.length === 0 ? (
+              // TODO: improve this message
+              <p className="text-lg text-gray-500">No campaigns available.</p>
+            ) : (
+              campaigns.map((campaign) => (
+                <NFTGrid key={campaign.id} campaign={campaign} />
+              ))
+            ))}
         </section>
+
         <section aria-label="Infographic section">
           <Infographic />
         </section>

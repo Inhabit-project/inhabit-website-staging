@@ -9,12 +9,15 @@ import { Campaign } from "src/models/campaign.model";
 type Store = {
   campaign: Campaign | null;
   campaignLoading: boolean;
+  campaigns: Campaign[];
+  campaignsLoading: boolean;
   collections: Collection[];
   inhabit: InhabitContract;
   usdc: UsdcContract;
   usdt: UsdtContract;
   getCampaign: (campaignId: number) => Promise<Campaign>;
   getCampaignCollections: (campaignId: number) => Promise<Collection[]>;
+  getCampaigns: () => Promise<Campaign[]>;
   setCampaign: (campaign: Campaign) => void;
   setCollections: (collections: Collection[]) => void;
   setWalletClient: (walletClient: WalletClient) => void;
@@ -28,6 +31,8 @@ export const useStore = create<Store>((set, get) => {
   return {
     campaign: null,
     campaignLoading: true,
+    campaigns: [],
+    campaignsLoading: true,
     collections: [],
     inhabit,
     usdc,
@@ -46,6 +51,13 @@ export const useStore = create<Store>((set, get) => {
       );
       set({ collections });
       return collections;
+    },
+
+    getCampaigns: async () => {
+      set({ campaignsLoading: true });
+      const campaigns = await get().inhabit.getCampaigns();
+      set({ campaigns, campaignsLoading: false });
+      return campaigns;
     },
 
     setCampaign: (campaign: Campaign) => {

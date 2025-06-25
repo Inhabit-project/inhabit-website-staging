@@ -8,7 +8,6 @@ export function Info(props: Props): JSX.Element {
   const { collection } = props;
 
   return (
-    // TODO: save in markdown the metadata of the collection
     <div className="flex-1 flex flex-col gap-8">
       <div className="flex flex-col md:flex-row gap-8 items-start">
         <img
@@ -23,7 +22,23 @@ export function Info(props: Props): JSX.Element {
             <span className="heading-2 text-secondary ">Membership</span>
           </h1>
           <p className="body-S text-secondary max-w-xl whitespace-pre-line">
-            {collection.description}
+            {(() => {
+              const parts = collection.description.split("\n");
+              const firstLine = parts[0];
+              const restLines = parts.slice(1).join("\n");
+
+              return (
+                <>
+                  <span className="font-bold">{firstLine}</span>
+                  {restLines && (
+                    <>
+                      {"\n"}
+                      {restLines}
+                    </>
+                  )}
+                </>
+              );
+            })()}
           </p>
           <div className="mt-4">
             <span className="body-M text-secondary font-bold">VALUE</span>

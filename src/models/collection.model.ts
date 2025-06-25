@@ -1,4 +1,5 @@
 import { Address } from "viem";
+import { Right } from "./right.model";
 
 export interface Collection {
   campaignId: number;
@@ -13,6 +14,8 @@ export interface Collection {
   availableSupply: number;
   price: number;
   state: boolean;
-  description?: string;
-  image?: string;
+  description: string;
+  image: string;
+  rights: Right[];
+  membershipContract: string;
 }

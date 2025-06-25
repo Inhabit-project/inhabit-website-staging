@@ -10,10 +10,12 @@ import { KYC_HARD_AMOUNT_USD } from "../../../config/const";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "react-router-dom";
+import privacyPolicyPDF from "../../../assets/pdf/privacy-policy.pdf";
 
 type Props = {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
+  membershipContract: string;
   price: number;
 };
 
@@ -104,7 +106,8 @@ export function Checkout(props: Props): JSX.Element {
   type Form = z.infer<typeof schema>;
 
   // props
-  const { setIsOpen, price } = props;
+  const { membershipContract, price, setIsOpen } = props;
+
   // hooks
   const [selectedIndicator, setSelectedIndicator] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -196,9 +199,6 @@ export function Checkout(props: Props): JSX.Element {
 
   return (
     <div className="w-full max-w-lg bg-menu-backdrop backdrop-blur-lg rounded-3xl shadow-xl border border-green-soft p-8 flex flex-col gap-6 self-start sticky top-8">
-      <button onClick={() => setIsOpen(true)} className="btn-close">
-        Jajaja
-      </button>
       <ConnectButton />
       {/* Form */}
       {/* TODO: add i18n for labels and placeholders */}
@@ -345,8 +345,19 @@ export function Checkout(props: Props): JSX.Element {
                 className="mt-1"
                 {...register("termsAcceptance")}
               />
-              I consent to the processing of my personal data in accordance with
-              the Privacy Policy*.
+              <span>
+                I consent to the processing of my personal data in accordance
+                with the{" "}
+                <a
+                  href={privacyPolicyPDF}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold text-[#D57300] hover:underline inline"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Privacy Policy
+                </a>
+              </span>
             </label>
             <label className="flex items-start gap-2 text-xs text-secondary">
               <input
@@ -354,11 +365,29 @@ export function Checkout(props: Props): JSX.Element {
                 className="mt-1"
                 {...register("MembershipAgreetment")}
               />
-              I consent to adhere to the Membership Agreement and accept its
-              terms and conditions, granting me rights and benefits related to
-              this Land and Project, and acknowledge this action as a valid
-              electronic signature.
+              <span>
+                I consent to adhere to the{" "}
+                <button
+                  type="button"
+                  className="font-bold text-[#D57300] hover:underline inline normal-case"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.open(
+                      membershipContract,
+                      "_blank",
+                      "noopener,noreferrer"
+                    );
+                  }}
+                >
+                  Membership Agreement
+                </button>{" "}
+                and accept its terms and conditions, granting me rights and
+                benefits related to this Land and Project, and acknowledge this
+                action as a valid electronic signature.
+              </span>
             </label>
+
             {price < KYC_HARD_AMOUNT_USD && (
               <label className="flex items-start gap-2 text-xs text-secondary">
                 <input

@@ -8,7 +8,12 @@ export async function mapCollectionDtoToCollection(
 ): Promise<Collection> {
   const metadata = await fetch(sanitizeIpfsUri(dto.baseURI))
     .then((res) => res.json())
-    .catch(() => ({ description: "", image: "" }));
+    .catch(() => ({
+      description: "",
+      image: "",
+      rights: [],
+      membershipContract: "",
+    }));
 
   return {
     campaignId: Number(dto.campaignId),
@@ -25,5 +30,7 @@ export async function mapCollectionDtoToCollection(
     state: dto.state,
     description: metadata.description,
     image: sanitizeIpfsUri(metadata.image),
+    rights: metadata.rights,
+    membershipContract: sanitizeIpfsUri(metadata.membership_contract),
   };
 }

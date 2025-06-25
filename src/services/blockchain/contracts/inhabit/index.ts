@@ -66,17 +66,29 @@ export class InhabitContract {
   //        READ METHODS
   // =========================
 
-  async getCampaign(campaignId: number): Promise<Campaign> {
+  async getCampaign(campaignId: number): Promise<Campaign | null> {
     try {
       const contract = this.getReadContract();
-      const dto = (await contract.read.getCampaignAndCollectionsInfo([
+      const dto = (await contract.read.getCampaignInfo([
         BigInt(campaignId),
       ])) as CampaignDto;
 
       return mapCampaignDtoToCampaign(dto);
     } catch (error) {
       console.error("❌", error);
-      return {} as Campaign;
+      return null;
+    }
+  }
+
+  async getCampaigns(): Promise<Campaign[]> {
+    try {
+      const contract = this.getReadContract();
+      const dtos = (await contract.read.getCampaigsInfo()) as CampaignDto[];
+
+      return Promise.all(dtos.map(mapCampaignDtoToCampaign));
+    } catch (error) {
+      console.error("❌", error);
+      return [];
     }
   }
 
@@ -94,7 +106,7 @@ export class InhabitContract {
     }
   }
 
-  async getGroup(referral: string): Promise<Group> {
+  async getGroup(referral: string): Promise<Group | null> {
     try {
       const contract = this.getReadContract();
       const dto = (await contract.read.getGroup([referral])) as GroupDto;
@@ -102,7 +114,7 @@ export class InhabitContract {
       return mapGroupDtoToGroup(dto);
     } catch (error) {
       console.error("❌", error);
-      return {} as Group;
+      return null;
     }
   }
 
