@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { fetchPosts } from "@/services/blogService";
 import { BlogPost } from "@/types/wordpress";
+import { truncateHtml } from "@/utils/html";
+import { Link } from "react-router-dom";
 
 const Blog: React.FC = () => {
   const { t } = useTranslation();
@@ -15,7 +17,7 @@ const Blog: React.FC = () => {
 
     try {
       const { posts } = await fetchPosts({
-        per_page: 3,
+        per_page: 4,
         page: 1,
       });
       setPosts(posts);
@@ -100,8 +102,21 @@ const Blog: React.FC = () => {
                       className="body-S"
                       style={{ color: "var(--color-secondary)" }}
                     >
-                      {mainPost.content}
+                      {truncateHtml(mainPost.content, 200)}
                     </p>
+                    <Link
+                      to={{
+                        pathname: `/blog/article/${mainPost.id}`,
+                      }}
+                    >
+                      <button
+                        className="mt-2 underline hover:opacity-80 focus:outline-none block self-start"
+                        style={{ color: "var(--color-primary)" }}
+                        onClick={() => {}}
+                      >
+                        Read more
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -109,7 +124,7 @@ const Blog: React.FC = () => {
               {/* Small Blog Posts */}
               <div className="lg:w-1/2">
                 <div className="flex flex-col gap-[1.125rem]">
-                  {(smallPosts).map((post) => (
+                  {smallPosts.map((post) => (
                     <div key={post.id} className="flex gap-5">
                       <div className="relative aspect-[4/3] w-1/3">
                         <img
@@ -126,7 +141,7 @@ const Blog: React.FC = () => {
                           {post.date}
                         </span>
                         <h3
-                          className="heading-4"
+                          className="heading-6"
                           style={{ color: "var(--color-secondary)" }}
                         >
                           {post.title}
@@ -135,8 +150,21 @@ const Blog: React.FC = () => {
                           className="body-S"
                           style={{ color: "var(--color-secondary)" }}
                         >
-                          {post.content}
+                          {truncateHtml(post.content, 120)}
                         </p>
+                        <Link
+                          to={{
+                            pathname: `/blog/article/${post.id}`,
+                          }}
+                        >
+                          <button
+                            className="mt-2 underline hover:opacity-80 focus:outline-none block self-start"
+                            style={{ color: "var(--color-primary)" }}
+                            onClick={() => {}}
+                          >
+                            Read more
+                          </button>
+                        </Link>
                       </div>
                     </div>
                   ))}

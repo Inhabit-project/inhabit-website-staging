@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Pagination from "./Pagination";
 import { Link } from "react-router-dom";
+import { truncateHtml } from "@/utils/html";
 
-const POSTS_PER_PAGE = 2;
+const POSTS_PER_PAGE = 3;
 
 const RelatedPost: React.FC = () => {
   const { t } = useTranslation();
@@ -223,7 +224,7 @@ const RelatedPost: React.FC = () => {
                       lineHeight: 1.5,
                     }}
                   >
-                    {post.content}
+                    {truncateHtml(post.content, 120)}
                   </p>
                   <Link
                     to={{

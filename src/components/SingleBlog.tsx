@@ -136,7 +136,7 @@ const SingleBlog: React.FC = () => {
           </div>
           {/** Post content */}
           <div
-            className="body-S"
+            className="body-S blog-content"
             style={{ color: "var(--color-secondary)" }}
             dangerouslySetInnerHTML={{ __html: post.content }}
           ></div>

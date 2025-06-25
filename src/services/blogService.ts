@@ -69,7 +69,7 @@ export const fetchPosts = async (
 ): Promise<{ posts: BlogPost[]; totalPages: number }> => {
   const currentLanguage = i18n.language;
   const { per_page = 3, page = 1, skipFeatured = false } = params ?? {};
-  const featuredPostsToSkip = 3;
+  const featuredPostsToSkip = 4;
 
   try {
     const url = new URL(`${WORDPRESS_API_URL}/wp-json/wp/v2/posts`);
@@ -116,11 +116,8 @@ export const fetchPosts = async (
           id: post.id.toString(),
           date: formatDate(post.date, currentLanguage, true),
           title: decodeHtmlEntities(post.title.rendered),
-          content: truncateHtml(
-            cleanWordPressContent(
-              post.excerpt.rendered || post.content.rendered
-            ),
-            250
+          content: cleanWordPressContent(
+            post.excerpt.rendered || post.content.rendered
           ),
           image: post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ?? "",
           categories,
