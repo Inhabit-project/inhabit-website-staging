@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { fetchPostWithNavigation } from "@/services/blogService";
 import { BlogPost, ProcessedPost } from "@/types/wordpress";
+import SubLoader from "@/components/SubLoader";
 
 const SingleBlog: React.FC = () => {
   const { id } = useParams();
@@ -10,8 +11,14 @@ const SingleBlog: React.FC = () => {
   const [post, setPost] = useState<ProcessedPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [prevPost, setPrevPost] = useState<Pick<BlogPost, "id" | "title" | "content" | "date" | "image"> | null>(null);
-  const [nextPost, setNextPost] = useState<Pick<BlogPost, "id" | "title" | "content" | "date" | "image"> | null>(null);
+  const [prevPost, setPrevPost] = useState<Pick<
+    BlogPost,
+    "id" | "title" | "content" | "date" | "image"
+  > | null>(null);
+  const [nextPost, setNextPost] = useState<Pick<
+    BlogPost,
+    "id" | "title" | "content" | "date" | "image"
+  > | null>(null);
 
   const loadPost = async (postID: string) => {
     setLoading(true);
@@ -33,21 +40,18 @@ const SingleBlog: React.FC = () => {
     if (id) loadPost(id);
   }, [id, t]);
 
+  useEffect(() => {
+    if (!loading && post) {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  }, [loading, post]);
+
   return (
     <>
-      {loading && (
-        <h1
-          className="py-24"
-          style={{
-            color: "var(--color-secondary)",
-            fontWeight: 500,
-            fontSize: 48,
-            lineHeight: 1.1,
-          }}
-        >
-          Aquí va un loader
-        </h1>
-      )}
+      <SubLoader isLoading={loading} />
 
       {!loading && error && (
         <h1
@@ -59,7 +63,8 @@ const SingleBlog: React.FC = () => {
             lineHeight: 1.1,
           }}
         >
-          No pudimos mostrar el post en este momento. Intenta de nuevo más tarde.
+          No pudimos mostrar el post en este momento. Intenta de nuevo más
+          tarde.
         </h1>
       )}
 

@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import Pagination from "./Pagination";
 import { Link } from "react-router-dom";
 import { truncateHtml } from "@/utils/html";
+import SubLoader from "@/components/SubLoader";
 
 const POSTS_PER_PAGE = 3;
 
@@ -13,13 +14,13 @@ const RelatedPost: React.FC = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const loadPosts = async (newPage: number) => {
     if (newPage < 1 || (totalPages && newPage > totalPages)) return;
 
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
 
     try {
@@ -33,9 +34,9 @@ const RelatedPost: React.FC = () => {
       setCurrentPage(newPage);
     } catch (err) {
       setError(t("mainPage.blog.error"));
-      console.error("Error loading blog posts:", err);
+      console.error("Error isLoading blog posts:", err);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -73,13 +74,13 @@ const RelatedPost: React.FC = () => {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
           style={{ gap: "30px", marginTop: 44 }}
         >
-          {loading && (
-            <div className="text-center py-12">
-              {t("mainPage.blog.loading")}
-            </div>
+          <SubLoader isLoading={isLoading} />
+
+          {!isLoading && error && (
+            <div className="text-center py-12 text-red-500">{error}</div>
           )}
 
-          {!loading &&
+          {!isLoading &&
             posts.map((post) => (
               <div
                 key={post.id}
@@ -281,7 +282,7 @@ const RelatedPost: React.FC = () => {
             ))}
         </div>
         {/* Pagination */}
-        {!loading && (
+        {!isLoading && (
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}

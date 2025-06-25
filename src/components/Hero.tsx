@@ -23,7 +23,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef }) => {
   const animationRef = useRef<gsap.core.Timeline | null>(null);
 
   const handleScrollClick = () => {
-    if (scrollToRef && scrollToRef.current) {
+    if (scrollToRef?.current) {
       scrollManager.scrollTo(scrollToRef.current, { duration: 1.2 });
     }
   };

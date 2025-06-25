@@ -4,22 +4,22 @@ import { fetchPosts } from "@/services/blogService";
 import { BlogPost, BlogProps } from "@/types/wordpress";
 import { truncateHtml } from "@/utils/html";
 import { Link, useLocation } from "react-router-dom";
-
-import SubLoader from "./SubLoader";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+import SubLoader from "@/components/SubLoader";
+// import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LoadingContext } from "@/App";
 
 const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
+  const location = useLocation();
   const { t } = useTranslation();
+  const isBlogPage = location.pathname === "/blog";
+
   const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const globalLoading = useContext(LoadingContext);
   const [canAnimate, setCanAnimate] = useState(false);
-  const location = useLocation();
-  const isBlogPage = location.pathname === "/blog";
 
   // Refs for animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -29,7 +29,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
   const smallPostsRef = useRef<HTMLDivElement>(null);
 
   const loadPosts = async () => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
 
     try {
@@ -42,7 +42,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
       setError(t("mainPage.blog.error"));
       console.error("Error loading blog posts:", err);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -54,6 +54,15 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
 
   // Set initial states
   useEffect(() => {
+    if (
+      !titleRef.current ||
+      !descriptionRef.current ||
+      !mainPostRef.current ||
+      !smallPostsRef.current
+    ) {
+      return;
+    }
+
     gsap.set([titleRef.current, descriptionRef.current], {
       opacity: 0,
       y: 50,
@@ -70,7 +79,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
     });
   }, []);
 
-  // Handle loading state change
+  // Handle isLoading state change
   useEffect(() => {
     if (!isBlogPage || (!isLoading && !globalLoading)) {
       const timer = setTimeout(() => {
@@ -83,7 +92,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
     }
   }, [isLoading, globalLoading, isBlogPage]);
 
-  // Simulate loading for testing purposes (only on blog page)
+  // Simulate isLoading for testing purposes (only on blog page)
   useEffect(() => {
     if (isBlogPage) {
       const loadData = async () => {
@@ -100,6 +109,15 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
 
   // Handle animations
   useEffect(() => {
+    if (
+      !titleRef.current ||
+      !descriptionRef.current ||
+      !mainPostRef.current ||
+      !smallPostsRef.current
+    ) {
+      return;
+    }
+
     let ctx = gsap.context(() => {});
 
     if (canAnimate) {
@@ -183,23 +201,23 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
             </p>
           </div>
 
-          {loading && (
+          {isLoading && (
             <div className="text-center py-12">
-              {t("mainPage.blog.loading")}
+              {t("mainPage.blog.isLoading")}
             </div>
           )}
 
-          {!loading && error && (
+          {!isLoading && error && (
             <div className="text-center py-12 text-red-500">{error}</div>
           )}
 
-          {!loading && posts.length === 0 && (
+          {!isLoading && posts.length === 0 && (
             <div className="text-center py-12">
               {t("mainPage.blog.noPosts")}
             </div>
           )}
 
-          {!loading && posts.length > 0 && (
+          {!isLoading && posts.length > 0 && (
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Main Blog Post */}
               <div ref={mainPostRef} className="lg:w-1/2">

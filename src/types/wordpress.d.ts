@@ -8,6 +8,10 @@ export interface BlogPost {
   readTime?: string;
 }
 
+export interface BlogProps {
+  isMainPage?: boolean;
+}
+
 export interface WordPressPosts {
   id: number;
   date: string;
@@ -92,7 +96,10 @@ export interface WordPressAuthor {
 export interface PostNavigation {
   current: ProcessedPost | null;
   next: Pick<BlogPost, "id" | "title" | "content" | "date" | "image"> | null;
-  previous: Pick<BlogPost, "id" | "title" | "content" | "date" | "image"> | null;
+  previous: Pick<
+    BlogPost,
+    "id" | "title" | "content" | "date" | "image"
+  > | null;
 }
 
 export interface ProcessedPost {
