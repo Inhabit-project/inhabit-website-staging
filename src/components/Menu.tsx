@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { LoadingContext } from '../App';
 
 const LanguageButton = styled.button`
   background: none;
@@ -43,11 +44,16 @@ const DropdownContent = styled.div<{ isOpen: boolean }>`
   backdrop-filter: blur(18.9px);
 `;
 
-const Menu: React.FC = () => {
+interface MenuProps {
+  hideMenu?: boolean;
+}
+
+const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { t, i18n } = useTranslation();
+  const isLoading = useContext(LoadingContext);
 
   useEffect(() => {
     function handleScroll() {
@@ -79,8 +85,12 @@ const Menu: React.FC = () => {
     i18n.changeLanguage(lng);
   };
 
+  if (hideMenu || isLoading) {
+    return null;
+  }
+
   return (
-    <header className={`fixed top-0 left-0 right-0 h-[5rem] bg-menu-backdrop backdrop-blur-lg z-50 transition-transform duration-300 no-snap ${
+    <header className={`fixed top-0 left-0 right-0 h-[5rem] bg-menu-backdrop backdrop-blur-lg z-50 transition-transform duration-300 no-snap menu-animation ${
       isVisible ? 'translate-y-0' : '-translate-y-full'
     }`}>
       <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] h-full">

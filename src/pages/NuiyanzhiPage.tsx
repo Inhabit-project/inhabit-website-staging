@@ -34,8 +34,6 @@ const NuiyanzhiPage: React.FC = () => {
         text={t('nuiyanzhiPage.vision.text')}
         imageSrc="/assets/1Hub/vision.webp"
         imageAlt={t('nuiyanzhiPage.vision.imageAlt')}
-        logoSrc="/assets/inhabit-logo.svg"
-        logoAlt="INHABIT Logo"
       />
 
       {/* Section: The Guardians (InfoCardRightImage) */}
@@ -44,8 +42,6 @@ const NuiyanzhiPage: React.FC = () => {
         text={t('nuiyanzhiPage.guardians.text')}
         imageSrc="/assets/1Hub/guardians.webp"
         imageAlt={t('nuiyanzhiPage.guardians.imageAlt')}
-        logoSrc="/assets/inhabit-logo.svg"
-        logoAlt="INHABIT Logo"
       />
 
       {/* Section: The Land (InfoCard) */}
@@ -55,8 +51,6 @@ const NuiyanzhiPage: React.FC = () => {
         imageSrc="/assets/1Hub/land.webp"
         imageAlt={t('nuiyanzhiPage.land.imageAlt')}
         showPopupButton={true}
-        logoSrc="/assets/inhabit-logo.svg"
-        logoAlt="INHABIT Logo"
       />
 
       <NFTGrid />

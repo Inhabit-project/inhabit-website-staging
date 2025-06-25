@@ -69,7 +69,7 @@ const Infographic: React.FC = () => {
       {/* Slide 2: NFT Stewards */}
       <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] mb-[5rem]">
         <div className="w-full lg:w-2/5 max-w-6xl flex flex-col ">
-          <h2 className="heading-2 text-secondary mb-6" dangerouslySetInnerHTML={{ __html: t('mainPage.infographic.nftStewardsTitle') }} />
+          <h2 className="heading-2 text-secondary mb-6 font-bold" dangerouslySetInnerHTML={{ __html: t('mainPage.infographic.nftStewardsTitle') }} />
           <p className="body-M text-secondary">
             {t('mainPage.infographic.nftStewardsDescription')}
           </p>
@@ -87,7 +87,7 @@ const Infographic: React.FC = () => {
       {/* Slide 3: Nature */}
       <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] mb-[5rem]">
         <div className="w-full lg:w-2/5 max-w-6xl flex flex-col justify-start">
-          <h2 className="heading-2 text-secondary mb-6">{t('mainPage.infographic.natureTitle')}</h2>
+          <h2 className="heading-2 text-secondary mb-6 font-bold">{t('mainPage.infographic.natureTitle')}</h2>
           <p className="body-M text-secondary">
             {t('mainPage.infographic.natureDescription')}
           </p>
@@ -105,7 +105,7 @@ const Infographic: React.FC = () => {
       {/* Slide 4: Guardians */}
       <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] mb-[5rem]">
         <div className="w-full lg:w-2/5 max-w-6xl flex flex-col">
-          <h2 className="heading-2 text-secondary mb-6">{t('mainPage.infographic.guardiansTitle')}</h2>
+          <h2 className="heading-2 text-secondary mb-6 font-bold">{t('mainPage.infographic.guardiansTitle')}</h2>
           <p className="body-M text-secondary">
             {t('mainPage.infographic.guardiansDescription')}
           </p>

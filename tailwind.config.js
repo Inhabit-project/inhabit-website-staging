@@ -32,11 +32,42 @@ export default {
         scroll: {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(calc(-25%))' }
+        },
+        loaderPulse: {
+          '0%, 100%': {
+            opacity: 1,
+            transform: 'scale(1)',
+          },
+          '50%': {
+            opacity: 0.8,
+            transform: 'scale(0.98)',
+          },
+        },
+        loaderRotate: {
+          '0%': {
+            transform: 'rotate(0deg)',
+          },
+          '100%': {
+            transform: 'rotate(360deg)',
+          },
+        },
+        loaderFadeIn: {
+          '0%': {
+            opacity: 0,
+            transform: 'translateY(20px)',
+          },
+          '100%': {
+            opacity: 1,
+            transform: 'translateY(0)',
+          },
         }
       },
       animation: {
         videoPulse: 'videoPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        scroll: 'scroll 50s linear infinite'
+        scroll: 'scroll 50s linear infinite',
+        loaderPulse: 'loaderPulse 2s ease-in-out infinite',
+        loaderRotate: 'loaderRotate 20s linear infinite',
+        loaderFadeIn: 'loaderFadeIn 0.8s ease-out forwards'
       },
       container: {
         center: true,
