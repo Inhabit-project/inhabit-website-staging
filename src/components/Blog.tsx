@@ -1,15 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { fetchPosts } from "@/services/blogService";
-import { BlogPost } from "@/types/wordpress";
+import { BlogPost, BlogProps } from "@/types/wordpress";
 import { truncateHtml } from "@/utils/html";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-const Blog: React.FC = () => {
+import SubLoader from "./SubLoader";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { LoadingContext } from "@/App";
+
+const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
   const { t } = useTranslation();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const globalLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
+  const location = useLocation();
+  const isBlogPage = location.pathname === "/blog";
+
+  // Refs for animations
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const mainPostRef = useRef<HTMLDivElement>(null);
+  const smallPostsRef = useRef<HTMLDivElement>(null);
 
   const loadPosts = async () => {
     setLoading(true);
@@ -35,8 +52,117 @@ const Blog: React.FC = () => {
 
   const [mainPost, ...smallPosts] = posts;
 
+  // Set initial states
+  useEffect(() => {
+    gsap.set([titleRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 50,
+    });
+
+    gsap.set(mainPostRef.current, {
+      opacity: 0,
+      x: -50,
+    });
+
+    gsap.set(smallPostsRef.current, {
+      opacity: 0,
+      x: 50,
+    });
+  }, []);
+
+  // Handle loading state change
+  useEffect(() => {
+    if (!isBlogPage || (!isLoading && !globalLoading)) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading, globalLoading, isBlogPage]);
+
+  // Simulate loading for testing purposes (only on blog page)
+  useEffect(() => {
+    if (isBlogPage) {
+      const loadData = async () => {
+        setIsLoading(true);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setIsLoading(false);
+      };
+
+      loadData();
+    } else {
+      setIsLoading(false);
+    }
+  }, [isBlogPage]);
+
+  // Handle animations
+  useEffect(() => {
+    let ctx = gsap.context(() => {});
+
+    if (canAnimate) {
+      ctx = gsap.context(() => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top center",
+            end: "center center",
+            toggleActions: "play none none reverse",
+          },
+        });
+
+        // Title and description animations
+        tl.to(titleRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        })
+          .to(
+            descriptionRef.current,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power3.out",
+            },
+            "-=0.6"
+          )
+          // Main post animation
+          .to(
+            mainPostRef.current,
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.8,
+              ease: "power3.out",
+            },
+            "-=0.4"
+          )
+          // Small posts animation
+          .to(
+            smallPostsRef.current,
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.8,
+              ease: "power3.out",
+            },
+            "-=0.6"
+          );
+      });
+    }
+
+    return () => {
+      ctx.revert();
+    };
+  }, [canAnimate]);
+
   return (
-    <section className="background-gradient-light w-full">
+    <section ref={sectionRef} className="background-gradient-light w-full">
+      {isBlogPage && <SubLoader isLoading={isLoading} />}
       <div className="relative z-10 w-full container py-24 background-gradient-light">
         <div className="flex flex-col items-start gap-12">
           {/* Header section */}
@@ -76,7 +202,7 @@ const Blog: React.FC = () => {
           {!loading && posts.length > 0 && (
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Main Blog Post */}
-              <div className="lg:w-1/2">
+              <div ref={mainPostRef} className="lg:w-1/2">
                 <div className="flex flex-col gap-5">
                   <div className="relative aspect-[16/9] w-full overflow-hidden">
                     <img
@@ -122,7 +248,7 @@ const Blog: React.FC = () => {
               </div>
 
               {/* Small Blog Posts */}
-              <div className="lg:w-1/2">
+              <div ref={smallPostsRef} className="lg:w-1/2">
                 <div className="flex flex-col gap-[1.125rem]">
                   {smallPosts.map((post) => (
                     <div key={post.id} className="flex gap-5">
