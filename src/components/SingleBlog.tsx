@@ -59,7 +59,7 @@ const SingleBlog: React.FC = () => {
             lineHeight: 1.1,
           }}
         >
-          Ocurrió un error
+          No pudimos mostrar el post en este momento. Intenta de nuevo más tarde.
         </h1>
       )}
 

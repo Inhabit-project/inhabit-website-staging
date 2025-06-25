@@ -256,16 +256,23 @@ export const fetchPost = async (
 export const fetchPostWithNavigation = async (
   postId: string
 ): Promise<PostNavigation> => {
-  const current = await fetchPost(postId);
+  try {
+    const current = await fetchPost(postId);
 
-  if (current == null) return { current: null, next: null, previous: null };
+    if (current == null) {
+      throw new Error("Post not found");
+    }
 
-  const [next, previous] = await Promise.all([
-    fetchAdjacentPost(current.dateWithoutFormat, "after", "asc"),
-    fetchAdjacentPost(current.dateWithoutFormat, "before", "desc"),
-  ]);
+    const [next, previous] = await Promise.all([
+      fetchAdjacentPost(current.dateWithoutFormat, "after", "asc"),
+      fetchAdjacentPost(current.dateWithoutFormat, "before", "desc"),
+    ]);
 
-  return { current, next, previous };
+    return { current, next, previous };
+  } catch (error) {
+    console.error("Error in fetchPostWithNavigation:", error);
+    throw error;
+  }
 };
 
 /**
