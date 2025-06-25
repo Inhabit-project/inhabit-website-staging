@@ -3,7 +3,7 @@ import { ConnectButton } from "../../../ui/ConnectButton";
 import usdcImage from "../../../assets/images/tokens/USDC.svg";
 import usdtImage from "../../../assets/images/tokens/USDT.svg";
 import { useTokenBalance } from "../../../hooks/useTokensBalance";
-import { useAccount } from "wagmi";
+import { useAccount, useSignMessage } from "wagmi";
 import { Indicator, indicators } from "../../../assets/json/form/indicators";
 import { z } from "zod";
 import { KYC_HARD_AMOUNT_USD } from "../../../config/const";
@@ -11,6 +11,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "react-router-dom";
 import privacyPolicyPDF from "../../../assets/pdf/privacy-policy.pdf";
+import { useNonce } from "../../../hooks/useNonce";
+import { generateSiweMessage } from "../../../utils/generate-siwe-message.util";
 
 type Props = {
   isOpen: boolean;
@@ -113,6 +115,8 @@ export function Checkout(props: Props): JSX.Element {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   // external hooks
+  const { address, chainId } = useAccount();
+  const { signMessageAsync } = useSignMessage();
   const { referral } = useParams();
 
   const { register, handleSubmit, setValue, watch } = useForm<Form>({
@@ -130,7 +134,7 @@ export function Checkout(props: Props): JSX.Element {
     refetch: refetchBalance,
   } = useTokenBalance(price);
 
-  const { address } = useAccount();
+  const { mutate: fetchNonce, isPending } = useNonce();
 
   // effects
   useEffect(() => {
@@ -166,8 +170,20 @@ export function Checkout(props: Props): JSX.Element {
   const formDisabled = !address || (!hasSufficientBalance && price > 0);
 
   const onSubmit = (data: Form) => {
-    console.log("✅ Form data submitted:", data);
-    console.log("referral:", referral);
+    if (!address || !chainId) return;
+
+    fetchNonce(address, {
+      onSuccess: async (nonce) => {
+        if (!nonce) return;
+
+        const message = generateSiweMessage(chainId, address, nonce);
+        const signature = await signMessageAsync({ message });
+      },
+      onError: (error) => {
+        console.error("❌", error);
+        alert("Error signing message. Please try again.");
+      },
+    });
   };
 
   const onError = (formErrors: Record<string, { message?: string }>) => {

@@ -15,7 +15,7 @@ type Store = {
   inhabit: InhabitContract;
   usdc: UsdcContract;
   usdt: UsdtContract;
-  getCampaign: (campaignId: number) => Promise<Campaign>;
+  getCampaign: (campaignId: number) => Promise<Campaign | null>;
   getCampaignCollections: (campaignId: number) => Promise<Collection[]>;
   getCampaigns: () => Promise<Campaign[]>;
   setCampaign: (campaign: Campaign) => void;
