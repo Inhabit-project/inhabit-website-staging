@@ -33,7 +33,7 @@ const NewsletterCTA: React.FC = () => (
           Get updates that actually matter, shaping a sustainable future. Become a steward today and make a lasting impact.
         </p>
         <form
-          className="flex flex-row w-full max-w-xl items-center bg-white/10 rounded-3xl shadow-md"
+          className="flex flex-row w-full max-w-2xl items-center bg-white/10 rounded-3xl shadow-md"
           onSubmit={e => e.preventDefault()}
           aria-label="Newsletter signup"
         >

@@ -1,39 +1,152 @@
-import React from 'react';
+import React, { useRef, useEffect, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { LoadingContext } from '../App';
 
 const CTA: React.FC = () => {
   const { t } = useTranslation();
+  const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
+
+  // Refs for animations
+  const sectionRef = useRef<HTMLElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const buttonsRef = useRef<HTMLDivElement>(null);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+
+  // Set initial states
+  useEffect(() => {
+    gsap.set(bgRef.current, {
+      opacity: 0,
+      scale: 1.1
+    });
+
+    gsap.set(contentRef.current, {
+      opacity: 0,
+      y: 100
+    });
+
+    gsap.set(titleRef.current, {
+      opacity: 0,
+      y: 50
+    });
+
+    gsap.set(buttonsRef.current, {
+      opacity: 0,
+      y: 30
+    });
+
+    gsap.set(imageContainerRef.current, {
+      opacity: 0,
+      x: 50
+    });
+  }, []);
+
+  // Handle loading state change
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading]);
+
+  // Handle animations
+  useEffect(() => {
+    let ctx = gsap.context(() => {});
+
+    if (canAnimate) {
+      ctx = gsap.context(() => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top center",
+            end: "center center",
+            toggleActions: "play none none reverse"
+          }
+        });
+
+        // Background fade in and scale
+        tl.to(bgRef.current, {
+          opacity: 1,
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out"
+        })
+        // Content container slide up
+        .to(contentRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        }, "-=0.8")
+        // Title animation
+        .to(titleRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        }, "-=0.4")
+        // Buttons animation
+        .to(buttonsRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        }, "-=0.6")
+        // Image container slide in
+        .to(imageContainerRef.current, {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        }, "-=0.6");
+      });
+    }
+
+    return () => {
+      ctx.revert();
+    };
+  }, [canAnimate]);
+
   return (
     <section 
+      ref={sectionRef}
       className="relative min-h-screen w-full overflow-hidden scroll-container"
       aria-label={t('mainPage.cta.title')}
     >
       {/* Background Image */}
       <div 
+        ref={bgRef}
         className="absolute inset-0 w-full h-full"
         style={{
           backgroundImage: 'url("/assets/CTA.webp")',
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 100
+          backgroundPosition: 'center'
         }}
         role="presentation"
         aria-hidden="true"
       />
 
       {/* Content Container */}
-      <div className="relative z-10 flex min-h-screen items-center justify-center px-[clamp(1rem,5vw,6.25rem)]">
+      <div ref={contentRef} className="relative z-10 flex min-h-screen items-center justify-center px-[clamp(1rem,5vw,6.25rem)]">
         <div className="w-full max-w-[120rem] rounded-[20px] overflow-hidden">
           <div className="flex flex-col md:flex-row">
             {/* Text and Buttons Container with semi-transparent background */}
             <div className="w-full md:w-[70%] p-6 md:p-12 bg-secondary/80 backdrop-blur-lg">
-              <h3 className="heading-3 text-light text-center md:text-left">
+              <h3 ref={titleRef} className="heading-3 text-light text-center md:text-left">
                 <span dangerouslySetInnerHTML={{ __html: t('mainPage.cta.title') }} />
               </h3>
 
               {/* Buttons */}
-              <div className="mt-8 md:mt-12 flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-                
+              <div ref={buttonsRef} className="mt-8 md:mt-12 flex flex-col md:flex-row gap-4 justify-center md:justify-start">
                 {/* Primary Button (Orange) */}
                 <button
                   onClick={() => window.location.href = 'mailto:hello@inhabit.earth'}
@@ -95,7 +208,7 @@ const CTA: React.FC = () => {
             </div>
 
             {/* Image Container */}
-            <div className="relative w-full md:w-[30%]">
+            <div ref={imageContainerRef} className="relative w-full md:w-[30%]">
               <div className="absolute inset-0 bg-secondary/30" aria-hidden="true"></div>
               <img 
                 src="/assets/cta-img.webp" 

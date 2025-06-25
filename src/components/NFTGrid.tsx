@@ -1,33 +1,141 @@
-import React from 'react';
+import React, { useRef, useEffect, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { LoadingContext } from '../App';
 
 const NFTGrid: React.FC = () => {
   const { t } = useTranslation();
+  const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
+
+  // Refs for animations
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const cardsContainerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const tableRef = useRef<HTMLDivElement>(null);
+
+  // Set initial states
+  useEffect(() => {
+    gsap.set([titleRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 50
+    });
+
+    gsap.set(cardRefs.current, {
+      opacity: 0,
+      y: 50,
+      scale: 0.95
+    });
+
+    gsap.set(tableRef.current, {
+      opacity: 0,
+      y: 30
+    });
+  }, []);
+
+  // Handle loading state change
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading]);
+
+  // Handle animations
+  useEffect(() => {
+    let ctx = gsap.context(() => {});
+
+    if (canAnimate) {
+      ctx = gsap.context(() => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top center",
+            end: "center center",
+            toggleActions: "play none none reverse"
+          }
+        });
+
+        // Title and description animations
+        tl.to(titleRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        })
+        .to(descriptionRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        }, "-=0.6")
+        // NFT cards stagger animation
+        .to(cardRefs.current, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "power3.out"
+        }, "-=0.4")
+        // Table animation
+        .to(tableRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        }, "-=0.4");
+      });
+    }
+
+    return () => {
+      ctx.revert();
+    };
+  }, [canAnimate]);
+
   return (
     <section 
+      ref={sectionRef}
       className="relative w-full background-gradient-dark mt-0 scroll-container"
       aria-labelledby="nft-grid-title"
     >
       <div className="max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
         {/* Header section */}
         <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
-          <h2 id="nft-grid-title" className="heading-2 text-light max-w-[40.9375rem]">
+          <h2 
+            ref={titleRef}
+            id="nft-grid-title" 
+            className="heading-2 text-light max-w-[40.9375rem]"
+          >
             <span dangerouslySetInnerHTML={{ __html: t('mainPage.nftGrid.title') }} />
           </h2>
-          <p className="body-M text-light max-w-[35rem]">
+          <p 
+            ref={descriptionRef}
+            className="body-M text-light max-w-[35rem]"
+          >
             {t('mainPage.nftGrid.description')}
           </p>
         </div>
 
         {/* NFT Grid */}
         <div 
+          ref={cardsContainerRef}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
           role="list"
           aria-label={t('mainPage.nftGrid.title')}
         >
           {/* NFT Card 1 */}
           <div 
+            ref={el => cardRefs.current[0] = el}
             className="relative" 
             style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}
             role="listitem"
@@ -116,7 +224,10 @@ const NFTGrid: React.FC = () => {
             </div>
           </div>
           {/* NFT Card 2 */}
-          <div className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}>
+          <div 
+            ref={el => cardRefs.current[1] = el}
+            className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}
+          >
             <div className="absolute top-4 right-4 hover-scale-up">
               <a href="#" className="block ">
                 <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
@@ -187,7 +298,10 @@ const NFTGrid: React.FC = () => {
             </div>
           </div>
           {/* NFT Card 3 */}
-          <div className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}>
+          <div 
+            ref={el => cardRefs.current[2] = el}
+            className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}
+          >
             <div className="absolute top-4 right-4 hover-scale-up">
               <a href="#" className="block ">
                 <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
@@ -259,7 +373,10 @@ const NFTGrid: React.FC = () => {
           </div>
          
           {/* NFT Card 4 */}
-          <div className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}>
+          <div 
+            ref={el => cardRefs.current[3] = el}
+            className="relative" style={{ background: 'var(--color-bright-green)' , borderRadius: 'var(--radius-2xl)', padding: '2rem' }}
+          >
             <div className="absolute top-4 right-4 hover-scale-up">
               <a href="#" className="block ">
                 <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
@@ -332,7 +449,7 @@ const NFTGrid: React.FC = () => {
 
         </div>
         {/* NFT Table (from Figma) */}
-        <div className="overflow-x-auto mt-16">
+        <div ref={tableRef} className="overflow-x-auto mt-16">
           <table 
             className="min-w-full border-separate border-spacing-0 text-left text-light bg-[#1c3625]/80 rounded-2xl"
             aria-label={t('mainPage.nftGrid.comparisonTable', 'NFT Comparison Table')}

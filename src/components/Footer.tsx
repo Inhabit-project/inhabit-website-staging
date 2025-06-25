@@ -1,13 +1,100 @@
-import React from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { LoadingContext } from '../App';
 
 const Footer: React.FC = () => {
   const { t } = useTranslation();
+  const isLoading = useContext(LoadingContext);
+  
+  // Refs for animations
+  const footerRef = useRef<HTMLElement>(null);
+  const logoRef = useRef<HTMLImageElement>(null);
+  const connectRef = useRef<HTMLDivElement>(null);
+  const locationRef = useRef<HTMLDivElement>(null);
+  const newsletterRef = useRef<HTMLDivElement>(null);
+  const socialRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const copyrightRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    // Set initial states
+    gsap.set(logoRef.current, {
+      opacity: 0,
+      y: 50
+    });
+
+    gsap.set([connectRef.current, locationRef.current, newsletterRef.current, socialRef.current, menuRef.current], {
+      opacity: 0,
+      y: 50
+    });
+
+    gsap.set(copyrightRef.current, {
+      opacity: 0,
+      y: 20
+    });
+
+    // Create scroll-triggered animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: footerRef.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "play none none reverse"
+      }
+    });
+
+    tl.to(logoRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    })
+    .to([connectRef.current, locationRef.current], {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: "power3.out"
+    }, "-=0.4")
+    .to(newsletterRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    }, "-=0.4")
+    .to(socialRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    }, "-=0.4")
+    .to(menuRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    }, "-=0.6")
+    .to(copyrightRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power3.out"
+    }, "-=0.4");
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, [isLoading]);
+
   return (
-    <footer className="relative w-full min-h-screen bg-secondary no-snap">
+    <footer ref={footerRef} className="relative w-full min-h-screen bg-secondary no-snap">
       {/* Background Image */}
       <div
         className="absolute inset-0 w-full h-full"
@@ -28,7 +115,7 @@ const Footer: React.FC = () => {
         <div className="flex-1 flex flex-col lg:flex-row px-6 lg:px-0">
           {/* Left Side - Logo */}
           <div className="w-full lg:w-[45%] pt-16 lg:pl-[clamp(1.5rem,5vw,6.25rem)]">
-            <img src="/assets/figma-images/logo-footer.svg" alt="INHABIT" className="h-[4rem]" />
+            <img ref={logoRef} src="/assets/figma-images/logo-footer.svg" alt="INHABIT" className="h-[4rem]" />
           </div>
 
           {/* Right Side Content */}
@@ -40,7 +127,7 @@ const Footer: React.FC = () => {
                 {/* Top Group */}
                 <div className="space-y-8">
                   {/* Connect Section */}
-                  <div>
+                  <div ref={connectRef}>
                     <h3 className="eyebrow text-light mb-2">
                       {t('mainPage.footer.connect')}
                     </h3>
@@ -53,7 +140,7 @@ const Footer: React.FC = () => {
                   </div>
 
                   {/* Location Section */}
-                  <div>
+                  <div ref={locationRef}>
                     <h3 className="eyebrow text-light mb-2">
                       {t('mainPage.footer.location')}
                     </h3>
@@ -64,7 +151,7 @@ const Footer: React.FC = () => {
                 </div>
 
                 {/* Middle Group */}
-                <div className="my-16 lg:my-0">
+                <div ref={newsletterRef} className="my-16 lg:my-0">
                   {/* Newsletter Section */}
                   <div>
                     <h3 className="eyebrow text-light mb-2">
@@ -82,11 +169,9 @@ const Footer: React.FC = () => {
                       onSubmit={async (values, { setSubmitting, resetForm, setStatus }) => {
                         setStatus(undefined);
                         try {
-                          // Mailchimp POST URL (replace with your own Mailchimp form action URL)
                           const mailchimpUrl = 'https://YOUR_MAILCHIMP_URL';
                           const formData = new FormData();
                           formData.append('EMAIL', values.email);
-                          // Add other fields if needed
                           const response = await fetch(mailchimpUrl, {
                             method: 'POST',
                             mode: 'no-cors',
@@ -149,7 +234,7 @@ const Footer: React.FC = () => {
                 </div>
 
                 {/* Bottom Group */}
-                <div>
+                <div ref={socialRef}>
                   {/* Social Links */}
                   <div className="flex gap-12">
                     <a href="https://x.com/Inhabit_Hubs" target="_blank" rel="noopener noreferrer" className="w-5 h-5 hover:opacity-80">
@@ -169,11 +254,11 @@ const Footer: React.FC = () => {
               </div>
 
               {/* Menu Section */}
-              <div className="w-full lg:w-[45%] lg:py-16">
+              <div ref={menuRef} className="w-full lg:w-[45%] lg:py-16">
                 <h3 className="eyebrow text-light mb-2">
                   {t('mainPage.footer.menu')}
                 </h3>
-                <nav className="flex flex-col gap-4 ">
+                <nav className="flex flex-col gap-4">
                   {[
                     { label: t('navigation.home'), path: '/' },
                     { label: t('navigation.hubs'), path: '/hubs' },
@@ -198,7 +283,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Copyright Section */}
-        <div className="h-[5.5rem] px-6 lg:pl-[clamp(1.5rem,5vw,6.25rem)] flex items-center">
+        <div ref={copyrightRef} className="h-[5.5rem] px-6 lg:pl-[clamp(1.5rem,5vw,6.25rem)] flex items-center">
           <p className="nav-text text-light text-xs">
             {t('mainPage.footer.copyright')}
           </p>
