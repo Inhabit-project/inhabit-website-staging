@@ -13,6 +13,9 @@ import { useParams } from "react-router-dom";
 import privacyPolicyPDF from "../../../assets/pdf/privacy-policy.pdf";
 import { useNonce } from "../../../hooks/useNonce";
 import { generateSiweMessage } from "../../../utils/generate-siwe-message.util";
+import { useSendKycEmail } from "../../../hooks/useKycEmail";
+import { KYC_TYPE } from "../../../config/enums";
+import { mapUserToUserDto } from "../../../services/mapping/mapUserToUserDto";
 
 type Props = {
   isOpen: boolean;
@@ -21,6 +24,7 @@ type Props = {
   price: number;
 };
 
+// TODO: clean form data on submit success
 export function Checkout(props: Props): JSX.Element {
   const schema = z
     .object({
@@ -134,7 +138,8 @@ export function Checkout(props: Props): JSX.Element {
     refetch: refetchBalance,
   } = useTokenBalance(price);
 
-  const { mutate: fetchNonce, isPending } = useNonce();
+  const { mutate: fetchNonce, isPending: isNoncePending } = useNonce();
+  const { mutate: sendKycEmail, isPending: isKycPending } = useSendKycEmail();
 
   // effects
   useEffect(() => {
@@ -178,6 +183,30 @@ export function Checkout(props: Props): JSX.Element {
 
         const message = generateSiweMessage(chainId, address, nonce);
         const signature = await signMessageAsync({ message });
+        const dto = mapUserToUserDto({
+          address,
+          message,
+          signature,
+          nonce,
+          kycType: price < KYC_HARD_AMOUNT_USD ? KYC_TYPE.SOFT : KYC_TYPE.HARD,
+          name: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          indicator: data.countryCode,
+          cellphone: data.cellphone,
+          telegramUser: data.telegramHandle,
+        });
+
+        sendKycEmail(dto, {
+          onSuccess: () => {
+            alert("✅ KYC request sent successfully!");
+          },
+
+          onError: (error) => {
+            console.error("❌", error);
+            alert("Error sending KYC request. Please try again.");
+          },
+        });
       },
       onError: (error) => {
         console.error("❌", error);

@@ -59,7 +59,7 @@ export default function Membership(): JSX.Element {
       } else if (campaignId && collectionId) {
         const loadedCampaign = await getCampaign(Number(campaignId));
 
-        if (Object.keys(loadedCampaign).length === 0) {
+        if (!loadedCampaign || Object.keys(loadedCampaign).length === 0) {
           navigate("/404");
           return;
         }

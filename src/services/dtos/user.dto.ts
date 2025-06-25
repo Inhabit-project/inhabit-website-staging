@@ -1,6 +1,6 @@
 import { Address, Hex } from "viem";
 
-export interface User {
+export interface UserDto {
   address: Address;
   message: string;
   signature: Hex;
