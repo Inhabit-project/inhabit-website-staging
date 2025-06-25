@@ -7,11 +7,7 @@ import type {
   WordPressPost,
   WordPressPosts,
 } from "@/types/wordpress";
-import {
-  cleanWordPressContent,
-  decodeHtmlEntities,
-  truncateHtml,
-} from "@/utils/html";
+import { cleanWordPressContent, decodeHtmlEntities } from "@/utils/html";
 import { isValidDate } from "@/utils/date";
 import { calculateReadTime } from "@/utils/calculateReadTime";
 import { formatDate } from "@/utils/dateFormatter";
