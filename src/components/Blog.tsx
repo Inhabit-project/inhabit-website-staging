@@ -47,20 +47,25 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
 
   // Set initial states
   useEffect(() => {
-    gsap.set([titleRef.current, descriptionRef.current], {
-      opacity: 0,
-      y: 50
+    const ctx = gsap.context(() => {
+      gsap.set([titleRef.current, descriptionRef.current], {
+        opacity: 0,
+        y: 50
+      });
+
+      gsap.set(mainPostRef.current, {
+        opacity: 0,
+        y: 50,
+        scale: 0.95
+      });
+
+      gsap.set(smallPostsRef.current, {
+        opacity: 0,
+        y: 50
+      });
     });
 
-    gsap.set(mainPostRef.current, {
-      opacity: 0,
-      x: -50
-    });
-
-    gsap.set(smallPostsRef.current, {
-      opacity: 0,
-      x: 50
-    });
+    return () => ctx.revert();
   }, []);
 
   // Handle loading state change
@@ -93,51 +98,52 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
 
   // Handle animations
   useEffect(() => {
-    let ctx = gsap.context(() => {});
+    if (!canAnimate) return;
 
-    if (canAnimate) {
-      ctx = gsap.context(() => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top center",
-            end: "center center",
-            toggleActions: "play none none reverse"
-          }
-        });
-
-        // Title and description animations
-        tl.to(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        })
-        .to(descriptionRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        }, "-=0.6")
-        // Main post animation
-        .to(mainPostRef.current, {
-          opacity: 1,
-          x: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        }, "-=0.4")
-        // Small posts animation
-        .to(smallPostsRef.current, {
-          opacity: 1,
-          x: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        }, "-=0.6");
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top center",
+          end: "center center",
+          toggleActions: "play none none reverse"
+        }
       });
-    }
+
+      // Title animation
+      tl.to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      })
+      // Description animation
+      .to(descriptionRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      }, "-=0.6")
+      // Main post animation
+      .to(mainPostRef.current, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.2,
+        ease: "power3.out"
+      }, "-=0.6")
+      // Small posts animation
+      .to(smallPostsRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      }, "-=0.6");
+    }, sectionRef);
 
     return () => {
       ctx.revert();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [canAnimate]);
 
@@ -191,17 +197,17 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
 
             {/* Small Blog Posts */}
             <div ref={smallPostsRef} className="lg:w-1/2">
-              <div className="flex flex-col gap-[1.125rem]">
+              <div className="flex flex-col gap-8">
                 {(smallPosts as BlogPost[]).map((post, index) => (
                   <div key={index} className="flex gap-5">
-                    <div className="relative aspect-[4/3] w-1/3">
+                    <div className="relative aspect-[16/9] w-full max-w-[12.5rem] overflow-hidden">
                       <img 
                         src={post.image} 
                         alt={post.title}
-                        className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                        className="absolute inset-0 w-full h-full object-cover rounded-xl"
                       />
                     </div>
-                    <div className="flex flex-col gap-2 flex-1">
+                    <div className="flex flex-col gap-2">
                       <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>
                         {post.date}
                       </span>
