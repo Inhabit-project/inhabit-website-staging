@@ -1,25 +1,29 @@
-import React, { useState, createContext, useContext, useEffect } from 'react';
-import '@fontsource/nunito-sans/400.css';
-import './i18n';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MainPage from './pages/MainPage';
-import HubsPage from './pages/HubsPage';
-import AboutUsPage from './pages/AboutUsPage';
-import StewardshipNFTPage from './pages/StewardshipNFTPage';
-import Checkout from './components/Checkout';
-import BlogPage from './pages/BlogPage';
-import NuiyanzhiPage from './pages/NuiyanzhiPage';
-import AguaDeLunaPage from './pages/AguaDeLunaPage';
-import TierraKilwaPage from './pages/tierrakilwaPage';
-import './utils/gsap';
-import { useScrollToTopOnNavigation } from './utils/scrollToTopOnNavigation';
-import FourOhFourPage from './pages/404';
-import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
-import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
-import ContactPage from './pages/ContactPage';
-import ProjectsPage from './pages/ProjectsPage';
-import ArticlePage from './pages/ArticlePage';
-import Loader from './components/Loader';
+import React, { useState, createContext, useEffect } from "react";
+
+import "@/i18n";
+import "@/utils/gsap";
+import "@fontsource/nunito-sans/400.css";
+
+import Loader from "@/components/Loader";
+import { useScrollToTopOnNavigation } from "@/utils/scrollToTopOnNavigation";
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import MainPage from "@/pages/MainPage";
+import HubsPage from "@/pages/HubsPage";
+import AboutUsPage from "@/pages/AboutUsPage";
+import StewardshipNFTPage from "@/pages/StewardshipNFTPage";
+import Checkout from "@/components/Checkout";
+import BlogPage from "@/pages/BlogPage";
+import NuiyanzhiPage from "@/pages/NuiyanzhiPage";
+import AguaDeLunaPage from "@/pages/AguaDeLunaPage";
+import TierraKilwaPage from "@/pages/TierraKilwaPage";
+import FourOhFourPage from "@/pages/404";
+import TermsAndConditionsPage from "@/pages/TermsAndConditionsPage";
+import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
+import ContactPage from "@/pages/ContactPage";
+import ProjectsPage from "@/pages/ProjectsPage";
+import ArticlePage from "@/pages/ArticlePage";
 
 // Create a context for the loading state
 export const LoadingContext = createContext<boolean>(false);
@@ -36,13 +40,13 @@ const App: React.FC = () => {
   useEffect(() => {
     const html = document.documentElement;
     if (isLoading) {
-      html.classList.add('loading');
-      document.body.classList.add('loading');
+      html.classList.add("loading");
+      document.body.classList.add("loading");
     } else {
       // Add a small delay before removing loading classes to ensure smooth transition
       setTimeout(() => {
-        html.classList.remove('loading');
-        document.body.classList.remove('loading');
+        html.classList.remove("loading");
+        document.body.classList.remove("loading");
         setIsTransitioning(false);
       }, 500);
     }
@@ -55,7 +59,9 @@ const App: React.FC = () => {
   return (
     <LoadingContext.Provider value={isLoading}>
       <Router>
-        <div className={`app-container ${isTransitioning ? 'transitioning' : ''}`}>
+        <div
+          className={`app-container ${isTransitioning ? "transitioning" : ""}`}
+        >
           {isLoading && <Loader onLoadingComplete={handleLoadingComplete} />}
           <ScrollToTopOnNavigation />
           <Routes>
@@ -72,7 +78,7 @@ const App: React.FC = () => {
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/contact" element={<ContactPage />} />
-            <Route path="/article/example" element={<ArticlePage />} />
+            <Route path="/blog/article/:id" element={<ArticlePage />} />
             <Route path="*" element={<FourOhFourPage />} />
           </Routes>
         </div>

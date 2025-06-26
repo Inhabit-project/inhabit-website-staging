@@ -1,10 +1,4 @@
-export interface BlogPost {
-  id: string;
-  date: string;
-  title: string;
-  content: string;
-  image: string;
-}
+import { BlogPost } from '@/types/wordpress';
 
 export async function fetchBlogPosts(): Promise<BlogPost[]> {
   const provider = import.meta.env.VITE_CMS_PROVIDER;

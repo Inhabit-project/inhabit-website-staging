@@ -1,4 +1,4 @@
-import { BlogPost } from './blogApi';
+import { BlogPost } from "@/types/wordpress";
 
 // TODO: Replace with your actual Sanity project ID and dataset
 const projectId = 'your_project_id';

@@ -232,7 +232,11 @@
     },
     "blog": {
       "title": "Stay<br /><strong>informed</strong>",
-      "description": "Stay up to date with our latest news and insights on biodiversity and ecological preservation."
+      "description": "Stay up to date with our latest news and insights on biodiversity and ecological preservation.",
+      "loading": "Loading list of posts",
+      "noPosts": "No posts available",
+      "readTime_one": "{{count}} min read",
+      "readTime_other": "{{count}} mins read"
     },
     "faq": {
       "title": "Frequently Asked<br /><strong>Questions</strong>",
@@ -264,9 +268,32 @@
       "connect": "CONNECT",
       "location": "LOCATION",
       "locationText": "Tierra Kilwa, Palomino, La Guajira, Colombia",
-      "newsletter": "NEWSLETTER",
-      "newsletterText": "Subscribe to get the best updates from us!",
-      "emailPlaceholder": "Your email",
+      "newsletter": {
+        "title": "NEWSLETTER",
+        "text": "Subscribe to get the best updates from us!",
+        "status": {
+          "success": "Suscripción realizada",
+          "errors": {
+            "generic": "Unexpected error. Please try again.",
+            "400": "The email is invalid"
+          }
+        },
+        "email": {
+          "placeholder": "Your email",
+          "validations": {
+            "required": "Required",
+            "invalid": "Invalid email address"
+          }
+        },
+        "privacy": {
+          "validations": {
+            "required": "You must accept the privacy policy"
+          }
+        },
+        "subscribing": "Subscribing...",
+        "subscribe": "Subscribe",
+        "join_newsletter": "Join newsletter"
+      },
       "acceptPolicy": "I accept the privacy policy",
       "menu": "MENU",
       "copyright": "COPYRIGHT 2025 ALL RIGHTS RESERVED DESIGNED BY FERNANDA HERRERA"

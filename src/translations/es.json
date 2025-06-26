@@ -260,7 +260,11 @@
     },
     "blog": {
       "title": "Mantente<br /><strong>informado</strong>",
-      "description": "Mantente actualizado con nuestras últimas noticias y perspectivas sobre biodiversidad y preservación ecológica."
+      "description": "Mantente actualizado con nuestras últimas noticias y perspectivas sobre biodiversidad y preservación ecológica.",
+      "loading": "Cargando listado de entradas",
+      "noPosts": "No hay entradas disponibles",
+      "readTime_one": "{{count}} minuto de lectura",
+      "readTime_other": "{{count}} minutos de lectura"
     },
     "blogPosts": {
       "main": {
@@ -320,9 +324,32 @@
       "connect": "CONECTA",
       "location": "UBICACIÓN",
       "locationText": "Tierra Kilwa, Palomino, La Guajira, Colombia",
-      "newsletter": "BOLETÍN",
-      "newsletterText": "¡Suscríbete para recibir las mejores actualizaciones de nosotros!",
-      "emailPlaceholder": "Tu correo electrónico",
+      "newsletter": {
+        "title": "BOLETÍN",
+        "text": "¡Suscríbete para recibir las mejores actualizaciones de nosotros!",
+        "status": {
+          "success": "Suscripción realizada",
+          "errors": {
+            "generic": "Error inesperado. Por favor, inténtelo de nuevo.",
+            "400": "El correo no es válido"
+          }
+        },
+        "email": {
+          "placeholder": "Tu correo electrónico",
+          "validations": {
+            "required": "Campo requerido",
+            "invalid": "Correo electrónico no válido"
+          }
+        },
+        "privacy": {
+          "validations": {
+            "required": "Debe aceptar la política de privacidad"
+          }
+        },
+        "subscribing": "Suscribiéndose...",
+        "subscribe": "Subcríbase",
+        "join_newsletter": "Suscribirse al boletín"
+      },
       "acceptPolicy": "Acepto la política de privacidad",
       "menu": "MENÚ",
       "copyright": "COPYRIGHT 2025 TODOS LOS DERECHOS RESERVADOS DISEÑADO POR FERNANDA HERRERA"
@@ -992,4 +1019,4 @@
       ]
     }
   }
-} 
+}

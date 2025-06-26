@@ -1,29 +1,25 @@
-import React, { useEffect, useRef, useContext, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import SubLoader from './SubLoader';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { LoadingContext } from '../App';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useRef, useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { fetchPosts } from "@/services/blogService";
+import { BlogPost, BlogProps } from "@/types/wordpress";
+import { truncateHtml } from "@/utils/html";
+import { Link, useLocation } from "react-router-dom";
+import gsap from "gsap";
 
-interface BlogProps {
-  isMainPage?: boolean;
-}
-
-interface BlogPost {
-  date: string;
-  title: string;
-  content: string;
-  image: string;
-}
+import SubLoader from "@/components/SubLoader";
+// import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { LoadingContext } from "@/App";
 
 const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
+  const location = useLocation();
   const { t } = useTranslation();
+  const isBlogPage = location.pathname === "/blog";
+
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const globalLoading = useContext(LoadingContext);
   const [canAnimate, setCanAnimate] = useState(false);
-  const location = useLocation();
-  const isBlogPage = location.pathname === '/blog';
 
   // Refs for animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -32,21 +28,41 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
   const mainPostRef = useRef<HTMLDivElement>(null);
   const smallPostsRef = useRef<HTMLDivElement>(null);
 
-  // Get main post and small posts from translations
-  const mainPost = t('mainPage.blogPosts.main', { returnObjects: true }) as BlogPost;
-  let smallPosts = t('mainPage.blogPosts.small', { returnObjects: true }) as unknown;
+  const loadPosts = async () => {
+    setIsLoading(true);
+    setError(null);
 
-  // Ensure smallPosts is always an array
-  if (!Array.isArray(smallPosts)) {
-    if (smallPosts && typeof smallPosts === 'object') {
-      smallPosts = Object.values(smallPosts);
-    } else {
-      smallPosts = [];
+    try {
+      const { posts } = await fetchPosts({
+        per_page: 4,
+        page: 1,
+      });
+      setPosts(posts);
+    } catch (err) {
+      setError(t("mainPage.blog.error"));
+      console.error("Error loading blog posts:", err);
+    } finally {
+      setIsLoading(false);
     }
-  }
+  };
+
+  useEffect(() => {
+    loadPosts();
+  }, [t]);
+
+  const [mainPost, ...smallPosts] = posts;
 
   // Set initial states
   useEffect(() => {
+    if (
+      !titleRef.current ||
+      !descriptionRef.current ||
+      !mainPostRef.current ||
+      !smallPostsRef.current
+    ) {
+      return;
+    }
+
     const ctx = gsap.context(() => {
       gsap.set([titleRef.current, descriptionRef.current], {
         opacity: 0,
@@ -68,7 +84,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
     return () => ctx.revert();
   }, []);
 
-  // Handle loading state change
+  // Handle isLoading state change
   useEffect(() => {
     if (!isBlogPage || (!isLoading && !globalLoading)) {
       const timer = setTimeout(() => {
@@ -81,12 +97,12 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
     }
   }, [isLoading, globalLoading, isBlogPage]);
 
-  // Simulate loading for testing purposes (only on blog page)
+  // Simulate isLoading for testing purposes (only on blog page)
   useEffect(() => {
     if (isBlogPage) {
       const loadData = async () => {
         setIsLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         setIsLoading(false);
       };
 
@@ -98,7 +114,15 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
 
   // Handle animations
   useEffect(() => {
-    if (!canAnimate) return;
+    if (
+      !titleRef.current ||
+      !descriptionRef.current ||
+      !mainPostRef.current ||
+      !smallPostsRef.current ||
+      !canAnimate
+    ) {
+      return;
+    }
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -154,75 +178,137 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
         <div className="flex flex-col items-start gap-12">
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between gap-[13.3125rem] w-full mb-[2.5rem]">
-            <h2 
-              ref={titleRef}
-              className="heading-2 text-secondary max-w-[40.9375rem]" 
-              style={{ color: 'var(--color-secondary)' }}
+            <h2
+              className="heading-2 text-secondary max-w-[40.9375rem]"
+              style={{ color: "var(--color-secondary)" }}
             >
-              <span dangerouslySetInnerHTML={{ __html: t('mainPage.blog.title') }} />
+              <span
+                dangerouslySetInnerHTML={{ __html: t("mainPage.blog.title") }}
+              />
             </h2>
-            <p 
-              ref={descriptionRef}
-              className="body-M text-secondary max-w-[35rem]" 
-              style={{ color: 'var(--color-secondary)' }}
+            <p
+              className="body-M text-secondary max-w-[35rem]"
+              style={{ color: "var(--color-secondary)" }}
             >
-              {t('mainPage.blog.description')}
+              {t("mainPage.blog.description")}
             </p>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Main Blog Post */}
-            <div ref={mainPostRef} className="lg:w-1/2">
-              <div className="flex flex-col gap-5">
-                <div className="relative aspect-[16/9] w-full overflow-hidden">
-                  <img 
-                    src={mainPost.image} 
-                    alt={mainPost.title}
-                    className="absolute inset-0 w-full h-full object-cover rounded-xl"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>
-                    {mainPost.date}
-                  </span>
-                  <h3 className="heading-3" style={{ color: 'var(--color-secondary)' }}>
-                    {mainPost.title}
-                  </h3>
-                  <p className="body-S" style={{ color: 'var(--color-secondary)' }}>
-                    {mainPost.content}
-                  </p>
-                </div>
-              </div>
+          {isLoading && (
+            <div className="text-center py-12">
+              {t("mainPage.blog.isLoading")}
             </div>
+          )}
 
-            {/* Small Blog Posts */}
-            <div ref={smallPostsRef} className="lg:w-1/2">
-              <div className="flex flex-col gap-8">
-                {(smallPosts as BlogPost[]).map((post, index) => (
-                  <div key={index} className="flex gap-5">
-                    <div className="relative aspect-[16/9] w-full max-w-[12.5rem] overflow-hidden">
-                      <img 
-                        src={post.image} 
-                        alt={post.title}
-                        className="absolute inset-0 w-full h-full object-cover rounded-xl"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>
-                        {post.date}
-                      </span>
-                      <h3 className="heading-4" style={{ color: 'var(--color-secondary)' }}>
-                        {post.title}
-                      </h3>
-                      <p className="body-S" style={{ color: 'var(--color-secondary)' }}>
-                        {post.content}
-                      </p>
-                    </div>
+          {!isLoading && error && (
+            <div className="text-center py-12 text-red-500">{error}</div>
+          )}
+
+          {!isLoading && posts.length === 0 && (
+            <div className="text-center py-12">
+              {t("mainPage.blog.noPosts")}
+            </div>
+          )}
+
+          {!isLoading && posts.length > 0 && (
+            <div className="flex flex-col lg:flex-row gap-8">
+              {/* Main Blog Post */}
+              <div ref={mainPostRef} className="lg:w-1/2">
+                <div className="flex flex-col gap-5">
+                  <div className="relative aspect-[16/9] w-full overflow-hidden">
+                    <img
+                      src={mainPost.image}
+                      alt={mainPost.title}
+                      className="absolute inset-0 w-full h-full object-cover rounded-xl"
+                    />
                   </div>
-                ))}
+                  <div className="flex flex-col gap-2">
+                    <span
+                      className="eyebrow"
+                      style={{ color: "var(--color-secondary)" }}
+                    >
+                      {mainPost.date}
+                    </span>
+                    <h3
+                      className="heading-3"
+                      style={{ color: "var(--color-secondary)" }}
+                    >
+                      {mainPost.title}
+                    </h3>
+                    <p
+                      className="body-S"
+                      style={{ color: "var(--color-secondary)" }}
+                    >
+                      {truncateHtml(mainPost.content, 200)}
+                    </p>
+                    <Link
+                      to={{
+                        pathname: `/blog/article/${mainPost.id}`,
+                      }}
+                    >
+                      <button
+                        className="mt-2 underline hover:opacity-80 focus:outline-none block self-start"
+                        style={{ color: "var(--color-primary)" }}
+                        onClick={() => {}}
+                      >
+                        Read more
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
+              {/* Small Blog Posts */}
+              <div ref={smallPostsRef} className="lg:w-1/2">
+                <div className="flex flex-col gap-[1.125rem]">
+                  {smallPosts.map((post) => (
+                    <div key={post.id} className="flex gap-5">
+                      <div className="relative aspect-[4/3] w-1/3">
+                        <img
+                          src={post.image}
+                          alt={post.title}
+                          className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2 flex-1">
+                        <span
+                          className="eyebrow"
+                          style={{ color: "var(--color-secondary)" }}
+                        >
+                          {post.date}
+                        </span>
+                        <h3
+                          className="heading-6"
+                          style={{ color: "var(--color-secondary)" }}
+                        >
+                          {post.title}
+                        </h3>
+                        <p
+                          className="body-S"
+                          style={{ color: "var(--color-secondary)" }}
+                        >
+                          {truncateHtml(post.content, 120)}
+                        </p>
+                        <Link
+                          to={{
+                            pathname: `/blog/article/${post.id}`,
+                          }}
+                        >
+                          <button
+                            className="mt-2 underline hover:opacity-80 focus:outline-none block self-start"
+                            style={{ color: "var(--color-primary)" }}
+                            onClick={() => {}}
+                          >
+                            Read more
+                          </button>
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>
