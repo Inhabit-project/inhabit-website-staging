@@ -103,7 +103,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav role="navigation" aria-label="Main navigation" className="font-size-xs hidden lg:flex gap-8">
+          <nav role="navigation" aria-label="Main navigation" className="font-size-xs hidden xl:flex gap-8">
             {menuLinks.map((item) => (
               <Link
                 key={item.path}
@@ -119,7 +119,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
           </nav>
 
           {/* Desktop Right side buttons */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden xl:flex items-center gap-4">
             <div className="flex gap-2">
               <LanguageButton
                 onClick={() => changeLanguage('en')}
@@ -148,7 +148,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
           </div>
 
           {/* Hamburger for mobile */}
-          <button className="lg:hidden flex items-center justify-center w-10 h-10 rounded focus:outline-none" onClick={() => setMobileOpen(true)} aria-label="Open menu">
+          <button className="xl:hidden flex items-center justify-center w-10 h-10 rounded focus:outline-none" onClick={() => setMobileOpen(true)} aria-label="Open menu">
             <svg className="w-8 h-8 text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>

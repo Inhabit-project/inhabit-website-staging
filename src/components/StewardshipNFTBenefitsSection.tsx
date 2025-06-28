@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useRef, useEffect, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { LoadingContext } from '../App';
 
 const StewardshipNFTBenefitsSection: React.FC = () => {
   const { t } = useTranslation();
+  const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
+
+  // Animation refs
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
+
   const benefits = [
     {
       icon: '/assets/icons/6.svg',
@@ -41,23 +55,123 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
       description: t('mainPage.stewardshipNFTBenefits.5.description'),
     },
   ];
+
+  // Set initial states
+  useEffect(() => {
+    if (sectionRef.current) {
+      const ctx = gsap.context(() => {
+        gsap.set(titleRef.current, { opacity: 0, y: 50 });
+        gsap.set(descriptionRef.current, { opacity: 0, y: 50 });
+        gsap.set(cardRefs.current, { opacity: 0, y: 50, scale: 0.95 });
+      }, sectionRef);
+
+      return () => ctx.revert();
+    }
+  }, []);
+
+  // Handle loading state change
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => setCanAnimate(true), 1500);
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading]);
+
+  // Handle animations
+  useEffect(() => {
+    if (!canAnimate || !sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Kill existing timeline and scroll trigger if they exist
+      if (timelineRef.current) {
+        timelineRef.current.kill();
+      }
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+      }
+
+      // Create new timeline
+      timelineRef.current = gsap.timeline({
+        paused: true,
+        defaults: { ease: 'power3.out' }
+      });
+
+      timelineRef.current
+        .to(titleRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+        })
+        .to(
+          descriptionRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+          },
+          '-=0.6'
+        )
+        .to(
+          cardRefs.current,
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.15,
+          },
+          '-=0.4'
+        );
+
+      // Create new scroll trigger
+      scrollTriggerRef.current = ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top 75%',
+        end: 'center center',
+        toggleActions: 'play none none reverse',
+        animation: timelineRef.current,
+        id: `stewardship-benefits-${Date.now()}`, // Unique ID to avoid conflicts
+      });
+    }, sectionRef);
+
+    return () => {
+      ctx.revert();
+      if (timelineRef.current) {
+        timelineRef.current.kill();
+      }
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+      }
+    };
+  }, [canAnimate, t]);
+
   return (
-    <section
+    <div
+      ref={sectionRef}
       className="w-full py-24 px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col items-center scroll-container background-gradient-light"
       style={{ background: 'var(--background-gradient-light)' }}
       aria-labelledby="benefits-title"
     >
       <div className="max-w-[120rem] w-full mx-auto flex flex-col md:flex-row justify-between gap-8 mb-16">
         <div>
-          <h2 id="benefits-title" className="heading-2 text-secondary max-w-[40.9375rem] mb-4">
+          <h2
+            id="benefits-title"
+            ref={titleRef}
+            className="heading-2 text-secondary max-w-[40.9375rem] mb-4"
+          >
             <span dangerouslySetInnerHTML={{ __html: t('mainPage.stewardshipNFTBenefits.title') }} />
           </h2>
         </div>
-        <p className="font-nunito text-[1.75rem] font-light text-[var(--color-secondary)] max-w-[38rem]">
+        <p
+          ref={descriptionRef}
+          className="font-nunito text-[1.75rem] font-light text-[var(--color-secondary)] max-w-[38rem]"
+        >
           {t('mainPage.stewardshipNFTBenefits.description')}
         </p>
       </div>
-      <div 
+      <div
         className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-14 w-full max-w-[120rem] mx-auto"
         role="list"
         aria-label="Stewardship NFT benefits"
@@ -65,6 +179,7 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
         {benefits.map((b, i) => (
           <article
             key={i}
+            ref={(el: HTMLDivElement | null) => (cardRefs.current[i] = el)}
             className="relative flex flex-col gap-6 min-h-[380px] shadow-lg text-white justify-between"
             style={{
               background: 'var(--color-primary-dark, #162F08)',
@@ -85,7 +200,7 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
           </article>
         ))}
       </div>
-    </section>
+    </div>
   );
 };
 

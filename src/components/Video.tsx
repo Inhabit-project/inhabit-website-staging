@@ -263,7 +263,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
           </button>
           <div className="relative w-full h-full max-w-[100vw] max-h-[98vh] aspect-video">
             <VideoPlayer 
-              videoUrl="https://youtu.be/Gces1qpNDSE" 
+              videoUrl="https://youtu.be/rziRiIrr_kE" 
               startTime={2}
               autoplay={true}
             />

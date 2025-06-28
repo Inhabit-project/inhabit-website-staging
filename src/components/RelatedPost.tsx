@@ -168,8 +168,8 @@ const RelatedPost: React.FC = () => {
                     className="eyebrow mb-2 flex items-center"
                     style={{
                       color: "#F6FFEA",
-                      gap: 16,
-                      fontSize: 16,
+                      gap: 12,
+                      fontSize: 12,
                       letterSpacing: "7%",
                     }}
                   >
@@ -203,18 +203,19 @@ const RelatedPost: React.FC = () => {
                       {post.readTime}
                     </span>
                   </div>
-                  <h3
-                    className="heading-4 mb-2"
+                  <h6
+                    className="heading-6 mb-2"
                     style={{
                       color: "#F6FFEA",
                       fontFamily: "Montserrat, sans-serif",
                       fontWeight: 500,
-                      fontSize: 32,
+                      fontSize: 28,
                       lineHeight: 1.22,
+                      textTransform: "lowercase",
                     }}
                   >
                     {post.title}
-                  </h3>
+                  </h6>
                   <p
                     className="body-S mb-4"
                     style={{

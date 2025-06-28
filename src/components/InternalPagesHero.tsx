@@ -98,28 +98,28 @@ const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({ variant, title, s
         tl.to(titleRef.current, {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.5,
           ease: "power3.out"
         })
         .to(strongRef.current, {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.5,
           ease: "power3.out"
-        }, "-=0.6")
+        }, "-=0.4")
         .to(descriptionRef.current, {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.5,
           ease: "power3.out"
-        }, "-=0.6")
+        }, "-=0.4")
         .to(imageRef.current, {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: 1.2,
+          duration: 1,
           ease: "power3.out"
-        }, "-=0.4");
+        }, "-=0.3");
       });
     }
 

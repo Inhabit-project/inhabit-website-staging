@@ -11,7 +11,7 @@ interface ImpactCardProps {
 
 const ImpactCard: React.FC<ImpactCardProps> = ({ number, icon, title, subtitle, description, id }) => (
   <article 
-    className="relative bg-green-soft rounded-[var(--radius-2xl)] p-10 flex flex-col gap-8 min-h-[340px] shadow-md w-full"
+    className="relative bg-green-soft rounded-[var(--radius-2xl)] p-10 flex flex-col gap-8 h-[30rem] lg:h-[24rem]  shadow-md w-full"
     aria-labelledby={id}
   >
     {/* Icon */}
