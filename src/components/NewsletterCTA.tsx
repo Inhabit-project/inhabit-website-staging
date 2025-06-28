@@ -69,9 +69,14 @@ const NewsletterCTA: React.FC = () => {
               handleBlur,
               handleSubmit,
               isSubmitting,
+              errors,
+              touched,
+              status,
             }) => (
+              <> 
+              
               <form
-                className="flex flex-row w-full max-w-xl items-center bg-white/10 rounded-3xl shadow-md"
+                className="flex flex-row w-full max-w-3xl items-center bg-white/10 rounded-3xl shadow-md"
                 onSubmit={handleSubmit}
                 aria-label="Newsletter signup"
               >
@@ -102,6 +107,9 @@ const NewsletterCTA: React.FC = () => {
                   className="flex-1 py-5 px-6 rounded-3xl border-none text-base font-nunito bg-transparent text-light focus:outline-none mr-2 min-w-0"
                   aria-label="Email address"
                 />
+                {errors.email && touched.email && (
+                  <div className="text-orange-400 text-xs">{errors.email}</div>
+                )}
                 <button
                   type="submit"
                   className="btn-primary button-text rounded-3xl py-4 px-9 ml-2 text-base font-abel font-normal uppercase"
@@ -111,7 +119,12 @@ const NewsletterCTA: React.FC = () => {
                     ? t("mainPage.footer.newsletter.subscribing")
                     : t("mainPage.footer.newsletter.join_newsletter")}
                 </button>
+                 
               </form>
+                
+              {status && (
+                <div className="text-green-400 text-xs mt-2">{status}</div>
+              )}</>
             )}
           </Formik>
         </div>

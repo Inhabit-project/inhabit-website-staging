@@ -405,6 +405,7 @@ export const FAQStewardshipNFT: React.FC = () => {
   const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
 
   // Refs for animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -412,57 +413,94 @@ export const FAQStewardshipNFT: React.FC = () => {
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const faqItemsRef = useRef<HTMLDivElement>(null);
   const faqItemsArray = useRef<HTMLDivElement[]>([]);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   const faqItems: FAQItem[] = (t('mainPage.stewardshipNFTPage.faq.items', { returnObjects: true }) as FAQItem[]);
 
+  // Set initial states
   useEffect(() => {
-    if (isLoading) return;
+    const ctx = gsap.context(() => {
+      gsap.set([titleRef.current, descriptionRef.current], {
+        opacity: 0,
+        y: 50
+      });
 
-    // Set initial states
-    gsap.set([titleRef.current, descriptionRef.current], {
-      opacity: 0,
-      y: 50
-    });
+      gsap.set(faqItemsArray.current, {
+        opacity: 0,
+        y: 30
+      });
+    }, sectionRef);
 
-    gsap.set(faqItemsArray.current, {
-      opacity: 0,
-      y: 30
-    });
+    return () => ctx.revert();
+  }, []);
 
-    // Create scroll-triggered animation
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top center",
-        end: "center center",
-        toggleActions: "play none none reverse"
+  // Handle loading state change
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading]);
+
+  // Handle animations
+  useEffect(() => {
+    if (!canAnimate || !sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Kill existing timeline and scroll trigger if they exist
+      if (timelineRef.current) {
+        timelineRef.current.kill();
       }
-    });
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+      }
 
-    tl.to(titleRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    })
-    .to(descriptionRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    }, "-=0.6")
-    .to(faqItemsArray.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: "power3.out"
-    }, "-=0.4");
+      // Create new timeline
+      timelineRef.current = gsap.timeline({
+        paused: true,
+        defaults: { ease: 'power3.out' }
+      });
+
+      timelineRef.current
+        .to(titleRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8
+        })
+        .to(descriptionRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8
+        }, '-=0.6')
+        .to(faqItemsArray.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.1
+        }, '-=0.4');
+
+      // Create new scroll trigger
+      scrollTriggerRef.current = ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top 75%',
+        end: 'center center',
+        toggleActions: 'play none none reverse',
+        animation: timelineRef.current,
+        id: `faq-stewardship-${Date.now()}` // Unique ID to avoid conflicts
+      });
+    }, sectionRef);
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ctx.revert(); // This will clean up all animations created in this context
+      if (timelineRef.current) timelineRef.current.kill();
+      if (scrollTriggerRef.current) scrollTriggerRef.current.kill();
     };
-  }, [isLoading]);
+  }, [canAnimate]);
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);

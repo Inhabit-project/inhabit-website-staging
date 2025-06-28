@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useContext } from 'react';
+import React, { useRef, useEffect, useContext, useState } from 'react';
 import { Link } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -13,6 +13,7 @@ import { LoadingContext } from '../App';
 const Footer: React.FC = () => {
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
   
   // Refs for animations
   const footerRef = useRef<HTMLElement>(null);
@@ -23,78 +24,112 @@ const Footer: React.FC = () => {
   const socialRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const copyrightRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
+  // Set initial states
   useEffect(() => {
-    if (isLoading) return;
+    const ctx = gsap.context(() => {
+      gsap.set(logoRef.current, {
+        opacity: 0,
+        y: 50
+      });
 
-    // Set initial states
-    gsap.set(logoRef.current, {
-      opacity: 0,
-      y: 50
-    });
+      gsap.set([connectRef.current, locationRef.current, newsletterRef.current, socialRef.current, menuRef.current], {
+        opacity: 0,
+        y: 50
+      });
 
-    gsap.set([connectRef.current, locationRef.current, newsletterRef.current, socialRef.current, menuRef.current], {
-      opacity: 0,
-      y: 50
-    });
+      gsap.set(copyrightRef.current, {
+        opacity: 0,
+        y: 20
+      });
+    }, footerRef);
 
-    gsap.set(copyrightRef.current, {
-      opacity: 0,
-      y: 20
-    });
+    return () => ctx.revert();
+  }, []);
 
-    // Create scroll-triggered animation
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: footerRef.current,
-        start: "top center",
-        end: "center center",
-        toggleActions: "play none none reverse"
+  // Handle loading state change
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading]);
+
+  // Handle animations
+  useEffect(() => {
+    if (!canAnimate || !footerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Kill existing timeline and scroll trigger if they exist
+      if (timelineRef.current) {
+        timelineRef.current.kill();
       }
-    });
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+      }
 
-    tl.to(logoRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    })
-    .to([connectRef.current, locationRef.current], {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: "power3.out"
-    }, "-=0.4")
-    .to(newsletterRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    }, "-=0.4")
-    .to(socialRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    }, "-=0.4")
-    .to(menuRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    }, "-=0.6")
-    .to(copyrightRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.6,
-      ease: "power3.out"
-    }, "-=0.4");
+      // Create new timeline
+      timelineRef.current = gsap.timeline({
+        paused: true,
+        defaults: { ease: 'power3.out' }
+      });
+
+      timelineRef.current
+        .to(logoRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8
+        })
+        .to([connectRef.current, locationRef.current], {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.1
+        }, "-=0.4")
+        .to(newsletterRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8
+        }, "-=0.4")
+        .to(socialRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8
+        }, "-=0.4")
+        .to(menuRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8
+        }, "-=0.6")
+        .to(copyrightRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6
+        }, "-=0.4");
+
+      // Create new scroll trigger
+      scrollTriggerRef.current = ScrollTrigger.create({
+        trigger: footerRef.current,
+        start: 'top 75%',
+        end: 'center center',
+        toggleActions: 'play none none reverse',
+        animation: timelineRef.current,
+        id: `footer-${Date.now()}` // Unique ID to avoid conflicts
+      });
+    }, footerRef);
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ctx.revert(); // This will clean up all animations created in this context
+      if (timelineRef.current) timelineRef.current.kill();
+      if (scrollTriggerRef.current) scrollTriggerRef.current.kill();
     };
-  }, [isLoading]);
+  }, [canAnimate]);
 
   return (
     <footer ref={footerRef} className="relative w-full min-h-screen bg-secondary no-snap">

@@ -1,12 +1,54 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { initVideoSectionCursor } from '../utils/videoCursor';
+import { LoadingContext } from '../App';
 
 const ProjectsVideoSection: React.FC = () => {
   const { t } = useTranslation();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [canAnimate, setCanAnimate] = useState(false);
+  const isLoading = useContext(LoadingContext);
+
+  // Refs for animations
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const playButtonRef = useRef<HTMLButtonElement>(null);
+  const playCircleRef = useRef<HTMLDivElement>(null);
+
+  // Set initial states
+  useEffect(() => {
+    gsap.set([eyebrowRef.current, headingRef.current], {
+      opacity: 0,
+      y: 50
+    });
+
+    gsap.set(videoContainerRef.current, {
+      opacity: 0,
+      y: 100,
+      scale: 0.95
+    });
+
+    gsap.set(playButtonRef.current, {
+      opacity: 0,
+      scale: 0.5
+    });
+  }, []);
+
+  // Handle loading state change
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading]);
 
   // Initialize video cursor for the entire section
   useEffect(() => {
@@ -14,6 +56,82 @@ const ProjectsVideoSection: React.FC = () => {
     const cleanup = initVideoSectionCursor(sectionRef.current);
     return cleanup;
   }, []);
+
+  // Handle animations
+  useEffect(() => {
+    if (!canAnimate || !sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top center",
+          end: "center center",
+          toggleActions: "play none none reverse"
+        }
+      });
+
+      tl.to(eyebrowRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      })
+      .to(headingRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      }, "-=0.6")
+      .to(videoContainerRef.current, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.2,
+        ease: "power3.out"
+      }, "-=0.7")
+      .to(playButtonRef.current, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+        ease: "back.out(1.7)"
+      }, "-=0.5");
+
+      // Add hover animation for the play button
+      if (playButtonRef.current) {
+        playButtonRef.current.addEventListener('mouseenter', () => {
+          gsap.to(playButtonRef.current, {
+            scale: 1.1,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+          gsap.to(playCircleRef.current, {
+            backgroundColor: "rgba(255, 166, 0, 0.2)",
+            borderColor: "rgb(255, 166, 0)",
+            duration: 0.3
+          });
+        });
+
+        playButtonRef.current.addEventListener('mouseleave', () => {
+          gsap.to(playButtonRef.current, {
+            scale: 1,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+          gsap.to(playCircleRef.current, {
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+            borderColor: "rgb(255, 255, 255)",
+            duration: 0.3
+          });
+        });
+      }
+    });
+
+    return () => {
+      ctx.revert();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, [canAnimate]);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -49,11 +167,11 @@ const ProjectsVideoSection: React.FC = () => {
         {/* Text content */}
         <div className="flex flex-col gap-3">
           {/* Eyebrow text */}
-          <p className="eyebrow text-light" id="projects-video-eyebrow">
+          <p ref={eyebrowRef} className="eyebrow text-light" id="projects-video-eyebrow">
             {t('mainPage.projectsVideo.eyebrow')}
           </p>
           {/* Main heading */}
-          <h2 id="projects-video-title" className="heading-2 text-light max-w-[1100px]">
+          <h2 ref={headingRef} id="projects-video-title" className="heading-2 text-light max-w-[1100px]">
             <span dangerouslySetInnerHTML={{ __html: t('mainPage.projectsVideo.heading') }} />
           </h2>
         </div>
@@ -79,11 +197,13 @@ const ProjectsVideoSection: React.FC = () => {
           >
             {/* Play button */}
             <button 
+              ref={playButtonRef}
               className="relative group"
               aria-label={t('mainPage.projectsVideo.playVideo')}
             >
               {/* Outer circle with animation */}
               <div 
+                ref={playCircleRef}
                 className="w-[50px] md:w-[66px] h-[50px] md:h-[66px] rounded-full backdrop-blur-[4.125px] border border-white flex items-center justify-center animate-videoPulse hover:bg-orange-500/20 transition-all duration-300"
                 aria-hidden="true"
               >

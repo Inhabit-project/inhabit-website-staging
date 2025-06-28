@@ -17,6 +17,16 @@ interface HubSubsectionsProps {
   inactive?: boolean;
   buttonText?: string;
   isHub?: boolean;
+  // Animation refs
+  labelRef?: (el: HTMLDivElement | null) => void;
+  titleRef?: (el: HTMLDivElement | null) => void;
+  descriptionRef?: (el: HTMLDivElement | null) => void;
+  visionRef?: (el: HTMLDivElement | null) => void;
+  mapRef?: (el: HTMLDivElement | null) => void;
+  buttonRef?: (el: HTMLDivElement | null) => void;
+  galleryButtonRef?: (el: HTMLButtonElement | null) => void;
+  navButtonsRef?: (el: HTMLDivElement | null) => void;
+  visionTextRef?: (el: HTMLParagraphElement | null) => void;
 }
 
 const HubSubsections: React.FC<HubSubsectionsProps> = ({
@@ -33,6 +43,15 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
   inactive = false,
   buttonText,
   isHub = false,
+  labelRef,
+  titleRef,
+  descriptionRef,
+  visionRef,
+  mapRef,
+  buttonRef,
+  galleryButtonRef,
+  navButtonsRef,
+  visionTextRef,
 }) => {
   const [current, setCurrent] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -107,24 +126,28 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
         <div className="w-full md:w-auto flex flex-col items-start gap-6 my-auto">
           <article className="min-h-[50rem] w-full md:max-w-xl bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl flex flex-col p-6 md:p-8 gap-2">
             {/* Map image */}
-            <img 
-              src={mapImage} 
-              alt={`Map of ${title} hub location`} 
-              className="w-full h-40 object-cover rounded-lg mb-4" 
-            />
-            <span className="text-light text-sm font-nunito opacity-80">{label}</span>
+            <div ref={mapRef}>
+              <img 
+                src={mapImage} 
+                alt={`Map of ${title} hub location`} 
+                className="w-full h-40 object-cover rounded-lg mb-4" 
+              />
+            </div>
+            <span ref={labelRef} className="text-light eyebrow opacity-80">{label}</span>
             <h3 
+              ref={titleRef}
               id={`hub-${title.toLowerCase().replace(/\s+/g, '-')}-title`}
               className="text-xl font-montserrat text-light font-semibold"
             >
               {title}
             </h3>
-            <p className="text-light body-M font-nunito mb-4">{description}</p>
-            <h4 className="text-lg font-montserrat text-light font-semibold">{visionHeading}</h4>
-            <p className="text-light text-base font-nunito opacity-90 mb-6">{visionText}</p>
+            <p ref={descriptionRef} className="text-light body-M font-nunito mb-4">{description}</p>
+            <h4 ref={visionRef} className="text-lg font-montserrat text-light font-semibold">{visionHeading}</h4>
+            <p ref={visionTextRef} className="text-light text-sm font-nunito opacity-90 mb-6">{visionText}</p>
             
             {/* View Gallery Button - Mobile Only */}
             <button
+              ref={galleryButtonRef}
               onClick={handleGalleryOpen}
               className="w-full mb-4 btn-secondary flex items-center justify-center gap-2 px-6 md:hidden"
               type="button"
@@ -164,7 +187,7 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
             </button>
 
             {/* Main Action Button */}
-            <div className="mt-auto">
+            <div ref={buttonRef} className="mt-auto">
               <button
                 className={`w-full md:w-auto btn-primary flex items-center justify-center gap-2 px-6${inactive ? ' inactive' : ''}`}
                 type="button"
@@ -196,6 +219,7 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
 
         {/* Gallery Navigation - Desktop Only */}
         <div 
+          ref={navButtonsRef}
           className="hidden md:flex absolute bottom-12 right-16 left-auto z-20 justify-end gap-4"
           role="group"
           aria-label="Image navigation"

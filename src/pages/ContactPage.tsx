@@ -1,13 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { gsap } from 'gsap';
 import Menu from '../components/Menu';
 import Footer from '../components/Footer';
+import { LoadingContext } from '../App';
 
 const ContactPage: React.FC = () => {
   const { t } = useTranslation();
   const [form, setForm] = useState({ name: '', email: '', message: '', kyc: false, terms: false });
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
+
+  // Animation refs
+  const mainRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+  const infoRef = useRef<HTMLDivElement>(null);
+
+  // Set initial states
+  useEffect(() => {
+    gsap.set([titleRef.current?.children || []], {
+      opacity: 0,
+      y: 50
+    });
+
+    gsap.set([formRef.current, infoRef.current], {
+      opacity: 0,
+      y: 50,
+      scale: 0.95
+    });
+  }, []);
+
+  // Handle loading state change
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading]);
+
+  // Handle animations
+  useEffect(() => {
+    if (!canAnimate) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        defaults: {
+          ease: "power3.out"
+        }
+      });
+
+      // Title and subtitle animation first
+      tl.to(titleRef.current?.children || [], {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        stagger: 0.1
+      })
+      // Add a brief pause before the next animations
+      .addLabel("contentStart", "+=0.2")
+      // Info section animation
+      .to(infoRef.current, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.5,
+        ease: "power3.out"
+      }, "contentStart")
+      // Form section animation with a slight delay
+      .to(formRef.current, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.5,
+        ease: "power3.out"
+      }, "contentStart+=0.1");
+    }, mainRef);
+
+    return () => ctx.revert();
+  }, [canAnimate]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -47,11 +124,11 @@ const ContactPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen background-gradient-light">
+    <div ref={mainRef} className="min-h-screen background-gradient-light">
       <Menu />
       <main className="w-full flex flex-col items-center justify-center py-20 md:py-32" aria-labelledby="contact-title">
         <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)]">
-          <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
+          <div ref={titleRef} className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
             <h1 id="contact-title" className="heading-2 text-secondary max-w-[40.9375rem]">
               <span dangerouslySetInnerHTML={{ __html: t('contactPage.title') }} />
             </h1>
@@ -62,7 +139,7 @@ const ContactPage: React.FC = () => {
         </div>
         <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col md:flex-row gap-12 md:gap-24 items-start justify-between">
           {/* Left Info Section */}
-          <aside className="flex-1 max-w-xl" aria-label={t('contactPage.reachOutIf')}>
+          <aside ref={infoRef} className="flex-1 max-w-xl" aria-label={t('contactPage.reachOutIf')}>
             <div className="mt-8 mb-6">
               <h2 className="text-xl font-medium mb-2 text-secondary">{t('contactPage.reachOutIf')}</h2>
               <ul className="list-none space-y-1 text-base text-secondary" role="list">
@@ -93,7 +170,7 @@ const ContactPage: React.FC = () => {
           </aside>
 
           {/* Right Form Section */}
-          <section className="flex-1 w-full max-w-xl bg-[#D7E0D0]/60 rounded-xl p-8 md:p-12 shadow-md" aria-labelledby="contact-form-title">
+          <section ref={formRef} className="flex-1 w-full max-w-xl bg-[#D7E0D0]/60 rounded-xl p-8 md:p-12 shadow-md" aria-labelledby="contact-form-title">
             <h2 id="contact-form-title" className="sr-only">{t('contactPage.title')}</h2>
             {submitted ? (
               <div className="text-green-700 font-semibold text-center py-8" role="alert" aria-live="polite">{t('contactPage.successMessage')}</div>

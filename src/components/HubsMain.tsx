@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useRef, useEffect, useContext, useState } from 'react';
 import ImageSection from './ImageSection';
 import HubSubsections from './HubSubsections';
 import BiodiversityCardsSection from './BiodiversityCardsSection';
 import CriteriaCardsSection2 from './CriteriaCardsSection2';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { LoadingContext } from '../App';
 
 const content = {
   en: {
@@ -27,7 +30,7 @@ const content = {
     TierraKilwa: {
       label: 'Food production, Art and regenerative entrepreneurship',
       title: 'TIERRA KILWA',
-      description: 'Luca, Chiara, and their daughter Gea are social entrepreneurs stewarding Kilwa, where they will establish La Fábrica del Arte blending art and ecology to spark regeneration across the region.',
+      description: 'Luca, Chiara, and their daughter Gea are social entrepreneurs stewarding Kilwa, they want to establish La Fábrica del Arte blending art and ecology to spark regeneration across the region.',
       visionHeading: 'HUB VISION',
       visionText: 'Tierra Kilwa, La Fábrica del Arte is a learning center where art, nature, and community unite to reimagine the relationship between humans and the territory. Focused on social entrepreneurship, it empowers local communities through art and ecological stewardship. By fostering regenerative business models, it nurtures rural innovation, offering education in life skills to spread art and empower changemaker entrepreneurs throughout the corridor. Kilwa aims to become a reference point for resilient food systems, through agroforestry, agroecology, and diverse food sovereignty practices.'
     }
@@ -63,73 +66,275 @@ const Hubs: React.FC = () => {
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const lang = i18n.language.startsWith('es') ? 'es' : 'en';
+  const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
+
+  // Refs for animations
+  const mainRef = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const hubsRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Refs for internal elements
+  const labelsRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const titlesRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const descriptionsRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const visionsRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const visionTextsRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+  const mapsRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const buttonsRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const galleryButtonsRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const navButtonsRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Set initial states
+  useEffect(() => {
+    if (!mainRef.current || !sectionRef.current) return;
+
+    // Set initial states for internal elements
+    [
+      labelsRefs,
+      titlesRefs,
+      descriptionsRefs,
+      visionsRefs,
+      visionTextsRefs,
+      buttonsRefs,
+      galleryButtonsRefs,
+      navButtonsRefs
+    ].forEach(refArray => {
+      refArray.current.forEach(element => {
+        if (element) {
+          gsap.set(element, {
+            opacity: 0,
+            y: 30
+          });
+        }
+      });
+    });
+
+    // Set initial states for maps with a different transform
+    mapsRefs.current.forEach(element => {
+      if (element) {
+        gsap.set(element, {
+          opacity: 0,
+          scale: 0.9,
+          x: 30
+        });
+      }
+    });
+
+    // Set initial states for navigation buttons
+    navButtonsRefs.current.forEach(element => {
+      if (element) {
+        gsap.set(element, {
+          opacity: 0,
+          scale: 0.8,
+          y: 20
+        });
+      }
+    });
+  }, []);
+
+  // Handle loading state change
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading]);
+
+  // Handle animations
+  useEffect(() => {
+    if (!canAnimate || !mainRef.current || !sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Create a ScrollTrigger for each hub section
+      hubsRefs.current.forEach((hub, index) => {
+        if (!hub) return;
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: hub,
+            start: "top center",
+            end: "center center",
+            toggleActions: "play none none reverse"
+          }
+        });
+
+        // Animate map first
+        tl.to(mapsRefs.current[index], {
+          opacity: 1,
+          scale: 1,
+          x: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        })
+        // Animate label
+        .to(labelsRefs.current[index], {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power3.out"
+        }, "-=0.4")
+        // Animate title
+        .to(titlesRefs.current[index], {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power3.out"
+        }, "-=0.4")
+        // Animate description
+        .to(descriptionsRefs.current[index], {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power3.out"
+        }, "-=0.4")
+        // Animate vision heading
+        .to(visionsRefs.current[index], {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power3.out"
+        }, "-=0.4")
+        // Animate vision text
+        .to(visionTextsRefs.current[index], {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power3.out"
+        }, "-=0.4")
+        // Animate gallery button (mobile)
+        .to(galleryButtonsRefs.current[index], {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "back.out(1.7)"
+        }, "-=0.3")
+        // Animate main button
+        .to(buttonsRefs.current[index], {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "back.out(1.7)"
+        }, "-=0.4")
+        // Animate navigation buttons (desktop)
+        .to(navButtonsRefs.current[index], {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "back.out(1.7)"
+        }, "-=0.4");
+      });
+    });
+
+    return () => {
+      ctx.revert();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, [canAnimate]);
 
   return (
-    <main id="main-content" role="main" tabIndex={-1}>
+    <main id="main-content" role="main" tabIndex={-1} ref={mainRef}>
       <ImageSection
         eyebrow={content[lang].eyebrow}
         heading={<span dangerouslySetInnerHTML={{ __html: content[lang].heading }} />}
         imageSrc="/assets/sierra.jpg"
         imageAlt="Sierra Nevada de Santa Marta mountain range"
       />
-      <section aria-labelledby="hubs-section-title" className="hubs-section">
+      <section aria-labelledby="hubs-section-title" className="hubs-section" ref={sectionRef}>
         <h2 id="hubs-section-title" className="sr-only">Hubs Overview</h2>
-        <HubSubsections
-          backgroundImage="/assets/1Hub/1hub.webp"
-          mapImage="/assets/1Hub/mapa.webp"
-          label={content[lang].nuiyanzhi.label}
-          title={content[lang].nuiyanzhi.title}
-          description={content[lang].nuiyanzhi.description}
-          visionHeading={content[lang].nuiyanzhi.visionHeading}
-          visionText={content[lang].nuiyanzhi.visionText}
-          onDownload={() => {}}
-          sliderImages={[
-            '/assets/1Hub/hub-view-1.webp',
-            '/assets/1Hub/hub-view-2.webp',
-            '/assets/1Hub/hub-view-3.webp',
-          ]}
-          navigateTo="/hubs/nuiyanzhi"
-          buttonText={t('mainPage.visitThisHub')}
-          isHub={true}
-        />
-        <HubSubsections
-          backgroundImage="/assets/forest.jpg"
-          mapImage="/assets/2Hub/mapa.png"
-          label={content[lang].aguaDeLuna.label}
-          title={content[lang].aguaDeLuna.title}
-          description={content[lang].aguaDeLuna.description}
-          visionHeading={content[lang].aguaDeLuna.visionHeading}
-          visionText={content[lang].aguaDeLuna.visionText}
-          onDownload={() => {}}
-          sliderImages={[
-            '/assets/2Hub/hub-view-1.webp',
-            '/assets/2Hub/hub-view-2.webp',
-            '/assets/2Hub/hub-view-3.webp',
-          ]}
-          navigateTo="/hubs/aguaDeLuna"
-          inactive={true}
-          buttonText="Hub coming soon"
-        />
-        <HubSubsections
-          backgroundImage="/assets/photo-2.webp"
-          mapImage="/assets/3Hub/mapa.png"
-          label={content[lang].TierraKilwa.label}
-          title={content[lang].TierraKilwa.title}
-          description={content[lang].TierraKilwa.description}
-          visionHeading={content[lang].TierraKilwa.visionHeading}
-          visionText={content[lang].TierraKilwa.visionText}
-          onDownload={() => {}}
-          sliderImages={[
-            '/assets/3Hub/hub-view-1.webp',
-            '/assets/3Hub/hub-view-2.webp',
-            '/assets/3Hub/hub-view-3.webp',
-          ]}
-          navigateTo="/hubs/TierraKilwa"
-          inactive={true}
-          buttonText="Hub coming soon"
-        />
+        <div ref={el => hubsRefs.current[0] = el}>
+          <HubSubsections
+            backgroundImage="/assets/1Hub/1hub.webp"
+            mapImage="/assets/1Hub/mapa.webp"
+            label={content[lang].nuiyanzhi.label}
+            title={content[lang].nuiyanzhi.title}
+            description={content[lang].nuiyanzhi.description}
+            visionHeading={content[lang].nuiyanzhi.visionHeading}
+            visionText={content[lang].nuiyanzhi.visionText}
+            onDownload={() => {}}
+            sliderImages={[
+              '/assets/1Hub/hub-view-1.webp',
+              '/assets/1Hub/hub-view-2.webp',
+              '/assets/1Hub/hub-view-3.webp',
+            ]}
+            navigateTo="/hubs/nuiyanzhi"
+            buttonText={t('mainPage.visitThisHub')}
+            isHub={true}
+            labelRef={el => labelsRefs.current[0] = el}
+            titleRef={el => titlesRefs.current[0] = el}
+            descriptionRef={el => descriptionsRefs.current[0] = el}
+            visionRef={el => visionsRefs.current[0] = el}
+            visionTextRef={el => visionTextsRefs.current[0] = el}
+            mapRef={el => mapsRefs.current[0] = el}
+            buttonRef={el => buttonsRefs.current[0] = el}
+            galleryButtonRef={el => galleryButtonsRefs.current[0] = el}
+            navButtonsRef={el => navButtonsRefs.current[0] = el}
+          />
+        </div>
+        <div ref={el => hubsRefs.current[1] = el}>
+          <HubSubsections
+            backgroundImage="/assets/forest.jpg"
+            mapImage="/assets/2Hub/mapa.png"
+            label={content[lang].aguaDeLuna.label}
+            title={content[lang].aguaDeLuna.title}
+            description={content[lang].aguaDeLuna.description}
+            visionHeading={content[lang].aguaDeLuna.visionHeading}
+            visionText={content[lang].aguaDeLuna.visionText}
+            onDownload={() => {}}
+            sliderImages={[
+              '/assets/2Hub/hub-view-1.webp',
+              '/assets/2Hub/hub-view-2.webp',
+              '/assets/2Hub/hub-view-3.webp',
+            ]}
+            navigateTo="/hubs/aguaDeLuna"
+            inactive={true}
+            buttonText="Hub coming soon"
+            labelRef={el => labelsRefs.current[1] = el}
+            titleRef={el => titlesRefs.current[1] = el}
+            descriptionRef={el => descriptionsRefs.current[1] = el}
+            visionRef={el => visionsRefs.current[1] = el}
+            visionTextRef={el => visionTextsRefs.current[1] = el}
+            mapRef={el => mapsRefs.current[1] = el}
+            buttonRef={el => buttonsRefs.current[1] = el}
+            galleryButtonRef={el => galleryButtonsRefs.current[1] = el}
+            navButtonsRef={el => navButtonsRefs.current[1] = el}
+          />
+        </div>
+        <div ref={el => hubsRefs.current[2] = el}>
+          <HubSubsections
+            backgroundImage="/assets/photo-2.webp"
+            mapImage="/assets/3Hub/mapa.png"
+            label={content[lang].TierraKilwa.label}
+            title={content[lang].TierraKilwa.title}
+            description={content[lang].TierraKilwa.description}
+            visionHeading={content[lang].TierraKilwa.visionHeading}
+            visionText={content[lang].TierraKilwa.visionText}
+            onDownload={() => {}}
+            sliderImages={[
+              '/assets/3Hub/hub-view-1.webp',
+              '/assets/3Hub/hub-view-2.webp',
+              '/assets/3Hub/hub-view-3.webp',
+            ]}
+            navigateTo="/hubs/TierraKilwa"
+            inactive={true}
+            buttonText="Hub coming soon"
+            labelRef={el => labelsRefs.current[2] = el}
+            titleRef={el => titlesRefs.current[2] = el}
+            descriptionRef={el => descriptionsRefs.current[2] = el}
+            visionRef={el => visionsRefs.current[2] = el}
+            visionTextRef={el => visionTextsRefs.current[2] = el}
+            mapRef={el => mapsRefs.current[2] = el}
+            buttonRef={el => buttonsRefs.current[2] = el}
+            galleryButtonRef={el => galleryButtonsRefs.current[2] = el}
+            navButtonsRef={el => navButtonsRefs.current[2] = el}
+          />
+        </div>
       </section>
-      
     </main>
   );
 };
