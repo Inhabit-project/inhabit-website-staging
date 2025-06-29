@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Menu from '../components/Menu';
 import InternalPagesHero from '../components/InternalPagesHero';
@@ -11,8 +11,17 @@ import { InfoCardRightImage } from '../components/InfoCard';
 import MeetOurTeam from '../components/MeetOurTeam';
 import LogosSection from '../components/LogosSection';
 
-const AboutUsPage: React.FC = () => {
+interface AboutUsPageProps {
+  onPageReady?: () => void;
+}
+
+const AboutUsPage: React.FC<AboutUsPageProps> = ({ onPageReady }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (onPageReady) onPageReady();
+  }, [onPageReady]);
+
   return (
     <>
       {/* Skip to main content link for accessibility */}

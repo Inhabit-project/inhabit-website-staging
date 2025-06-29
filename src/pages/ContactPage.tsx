@@ -5,7 +5,11 @@ import Menu from '../components/Menu';
 import Footer from '../components/Footer';
 import { LoadingContext } from '../App';
 
-const ContactPage: React.FC = () => {
+interface ContactPageProps {
+  onPageReady?: () => void;
+}
+
+const ContactPage: React.FC<ContactPageProps> = ({ onPageReady }) => {
   const { t } = useTranslation();
   const [form, setForm] = useState({ name: '', email: '', message: '', kyc: false, terms: false });
   const [submitted, setSubmitted] = useState(false);
@@ -83,8 +87,9 @@ const ContactPage: React.FC = () => {
       }, "contentStart+=0.1");
     }, mainRef);
 
+    if (onPageReady) onPageReady();
     return () => ctx.revert();
-  }, [canAnimate]);
+  }, [canAnimate, onPageReady]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};

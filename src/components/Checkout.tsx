@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import BecomeStewardButton from './BecomeStewardButton';
 import DownloadButton from './DownloadButton';
 import Menu from './Menu';
@@ -96,10 +96,16 @@ function getMembershipById(id: string | undefined): NFTMembership {
 // Accept membershipId as prop (or from route param in parent)
 interface CheckoutProps {
   membershipId?: string;
+  onPageReady?: () => void;
 }
 
-const Checkout: React.FC<CheckoutProps> = ({ membershipId }) => {
+const Checkout: React.FC<CheckoutProps> = ({ membershipId, onPageReady }) => {
   const membership = getMembershipById(membershipId);
+
+  useEffect(() => {
+    if (onPageReady) onPageReady();
+  }, [onPageReady]);
+
   return (
     <>
       <Menu />

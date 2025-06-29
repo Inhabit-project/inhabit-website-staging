@@ -267,7 +267,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef }) => {
               {/* CTA Button */}
               <button
                 ref={buttonRef}
-                className="mt-4 flex items-center h-[4.2rem] bg-[var(--color-accent)] hover:bg-[var(--color-green-soft)] text-light hover:text-secondary rounded-button backdrop-blur-sm transition-colors duration-200 group opacity-0"
+                className="mt-4 flex items-center btn-primary transition-colors duration-200 group opacity-0 "
                 onClick={handleScrollClick}
               >
                 <div className="flex items-center gap-2 px-6">

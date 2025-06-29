@@ -277,6 +277,7 @@ export const FAQHubs: React.FC = () => {
   const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
 
   // Refs for animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -287,8 +288,20 @@ export const FAQHubs: React.FC = () => {
 
   const faqItems: FAQItem[] = (t('hubsPage.faq.items', { returnObjects: true }) as FAQItem[]);
 
+  // Handle loading state change
   useEffect(() => {
-    if (isLoading) return;
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (!canAnimate) return;
 
     // Set initial states
     gsap.set([titleRef.current, descriptionRef.current], {
@@ -334,7 +347,7 @@ export const FAQHubs: React.FC = () => {
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-  }, [isLoading]);
+  }, [canAnimate]);
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);

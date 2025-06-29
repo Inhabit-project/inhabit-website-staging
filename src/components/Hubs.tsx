@@ -175,17 +175,17 @@ const Hubs: React.FC = () => {
           /* Desktop marker positions (using original clamp values) */
           @media (min-width: 768px) {
             .hub-marker-1 { 
-              top: clamp(6rem,11vw,14rem); 
+              top: clamp(9rem,16vw,19rem); 
               right: clamp(6rem,12vw,18rem); 
               left: auto; 
             }
             .hub-marker-2 { 
-              top: clamp(5rem,10vw,12rem); 
+              top: clamp(7rem,15vw,16rem); 
               left: clamp(10rem,30vw,32rem); 
               right: auto;
             }
             .hub-marker-3 { 
-              top: clamp(5rem,10vw,12rem); 
+              top: clamp(6rem,14vw,16rem); 
               left: clamp(16rem,48vw,52rem); 
               right: auto;
             }
@@ -237,8 +237,8 @@ const Hubs: React.FC = () => {
                     onClick={() => setSelectedHub(idx)}
                     aria-label={`Show info for ${hub.title}`}
                   >
-                    {/* Mobile marker */}
-                    <div className="md:hidden relative mobile-marker-pulse">
+                    {/* Animated marker (pulse) - now always visible */}
+                    <div className="relative mobile-marker-pulse mr-2">
                       <div className="w-8 h-8 rounded-full border border-green-soft"></div>
                       <div className="w-4 h-4 rounded-full bg-green-soft absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
                     </div>
@@ -246,12 +246,6 @@ const Hubs: React.FC = () => {
                     {/* Desktop marker with vertical line and text */}
                     <div className="hidden md:flex flex-row items-start">
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', height: '8rem', position: 'relative' }}>
-                        <img
-                          src="/assets/map-marker.svg"
-                          alt="Map marker"
-                          className="w-8 lg:w-10"
-                          style={{ height: 'auto', display: 'block', zIndex: 2 }}
-                        />
                       </div>
                       {/* Text to the right of the marker */}
                       <div className="flex flex-col items-start">

@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@barba/core": "^2.10.3",
     "@fontsource/ibm-plex-sans-condensed": "^5.2.5",
     "@fontsource/montserrat": "^5.2.5",
     "@fontsource/nunito-sans": "^5.2.5",
@@ -29,6 +30,7 @@
     "react-i18next": "^15.5.1",
     "react-router-dom": "^7.6.0",
     "react-svg": "^16.3.0",
+    "split-type": "^0.3.4",
     "styled-components": "^6.1.17",
     "three": "^0.151.3",
     "yup": "^1.6.1"

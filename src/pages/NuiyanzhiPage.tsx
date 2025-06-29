@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Menu from '../components/Menu';
 import InternalPagesHero from '../components/InternalPagesHero';
 import InfoCard, { InfoCardRightImage } from '../components/InfoCard';
@@ -9,8 +9,16 @@ import NFTComparisonTable from '../components/NFTComparisonTable';
 import Footer from '../components/Footer';
 import { useTranslation } from 'react-i18next';
 
-const NuiyanzhiPage: React.FC = () => {
+interface NuiyanzhiPageProps {
+  onPageReady?: () => void;
+}
+
+const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({ onPageReady }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (onPageReady) onPageReady();
+  }, [onPageReady]);
 
   return (
     <>
@@ -49,7 +57,6 @@ const NuiyanzhiPage: React.FC = () => {
         title={t('nuiyanzhiPage.land.title')}
         text={t('nuiyanzhiPage.land.text')}
         imageSrc="/assets/1Hub/land.webp"
-        imageAlt={t('nuiyanzhiPage.land.imageAlt')}
         showPopupButton={true}
       />
 

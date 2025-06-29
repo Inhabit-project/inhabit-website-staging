@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Menu from '../components/Menu';
 import InternalPagesHero from '../components/InternalPagesHero';
@@ -13,8 +13,17 @@ import NFTWorksSection from '../components/NFTWorksSection';
 import CriteriaCardsSection2 from '../components/CriteriaCardsSection2';
 import NFTGrid from '../components/NFTGrid';
 
-const StewardshipNFTPage: React.FC = () => {
+interface StewardshipNFTPageProps {
+  onPageReady?: () => void;
+}
+
+const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({ onPageReady }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (onPageReady) onPageReady();
+  }, [onPageReady]);
+
   return (
     <>
       {/* Skip to main content link for accessibility */}

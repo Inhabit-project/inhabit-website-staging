@@ -18,59 +18,106 @@ const Photo: React.FC = () => {
   useEffect(() => {
     if (isLoading) return;
 
+    gsap.registerPlugin(ScrollTrigger);
+
     // Set initial states
     gsap.set([image1Ref.current, image2Ref.current], {
       scale: 1.1
     });
-
     gsap.set([text1Ref.current, text2Ref.current], {
       opacity: 0,
       y: 50
     });
 
-    // Create scroll-triggered animations for first section
-    const tl1 = gsap.timeline({
-      scrollTrigger: {
-        trigger: section1Ref.current,
-        start: "top center",
-        end: "center center",
-        toggleActions: "play none none reverse"
+    // Responsive scroll triggers
+    ScrollTrigger.matchMedia({
+      // Desktop
+      "(min-width: 768px)": function() {
+        const tl1 = gsap.timeline({
+          scrollTrigger: {
+            trigger: section1Ref.current,
+            start: "top center",
+            end: "center center",
+            toggleActions: "play none none reverse"
+          }
+        });
+        tl1.to(image1Ref.current, {
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out"
+        })
+        .to(text1Ref.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        }, "-=0.8");
+
+        const tl2 = gsap.timeline({
+          scrollTrigger: {
+            trigger: section2Ref.current,
+            start: "top center",
+            end: "center center",
+            toggleActions: "play none none reverse"
+          }
+        });
+        tl2.to(image2Ref.current, {
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out"
+        })
+        .to(text2Ref.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        }, "-=0.8");
+      },
+      // Mobile
+      "(max-width: 767px)": function() {
+        const tl1 = gsap.timeline({
+          scrollTrigger: {
+            trigger: section1Ref.current,
+            start: "top 80%",
+            end: "bottom 60%",
+            scrub: true,
+            // markers: true,
+          }
+        });
+        tl1.to(image1Ref.current, {
+          scale: 1.03,
+          duration: 1,
+          ease: "power2.out"
+        })
+        .to(text1Ref.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out"
+        }, "-=0.6");
+
+        const tl2 = gsap.timeline({
+          scrollTrigger: {
+            trigger: section2Ref.current,
+            start: "top 80%",
+            end: "bottom 60%",
+            scrub: true,
+            // markers: true,
+          }
+        });
+        tl2.to(image2Ref.current, {
+          scale: 1.03,
+          duration: 1,
+          ease: "power2.out"
+        })
+        .to(text2Ref.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out"
+        }, "-=0.6");
       }
     });
-
-    tl1.to(image1Ref.current, {
-      scale: 1,
-      duration: 1.2,
-      ease: "power3.out"
-    })
-    .to(text1Ref.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    }, "-=0.8");
-
-    // Create scroll-triggered animations for second section
-    const tl2 = gsap.timeline({
-      scrollTrigger: {
-        trigger: section2Ref.current,
-        start: "top center",
-        end: "center center",
-        toggleActions: "play none none reverse"
-      }
-    });
-
-    tl2.to(image2Ref.current, {
-      scale: 1,
-      duration: 1.2,
-      ease: "power3.out"
-    })
-    .to(text2Ref.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    }, "-=0.8");
 
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
@@ -82,7 +129,7 @@ const Photo: React.FC = () => {
       {/* Photo 1 */}
       <section 
         ref={section1Ref}
-        className="relative w-full h-screen"
+        className="relative w-full h-[80vh] md:h-screen"
       >
         <div className="relative w-full h-full">
           <img 
@@ -106,7 +153,7 @@ const Photo: React.FC = () => {
       {/* Photo 2 */}
       <section 
         ref={section2Ref}
-        className="relative w-full h-screen"
+        className="relative w-full h-[80vh] md:h-screen"
       >
         <div className="relative w-full h-full">
           <img 

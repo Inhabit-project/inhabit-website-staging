@@ -1,11 +1,14 @@
 import { fetchPosts } from "@/services/blogService";
 import { BlogPost } from "@/types/wordpress";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import Pagination from "./Pagination";
 import { Link } from "react-router-dom";
 import { truncateHtml } from "@/utils/html";
 import SubLoader from "@/components/SubLoader";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import "@/utils/gsap";
 
 const POSTS_PER_PAGE = 3;
 
@@ -16,6 +19,12 @@ const RelatedPost: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Animation refs
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [canAnimate, setCanAnimate] = useState(false);
 
   const loadPosts = async (newPage: number) => {
     if (newPage < 1 || (totalPages && newPage > totalPages)) return;
@@ -55,23 +64,81 @@ const RelatedPost: React.FC = () => {
     setCurrentPage(page);
   };
 
+  // Set initial states for animation
+  useEffect(() => {
+    gsap.set(titleRef.current, { opacity: 0, y: 50 });
+    gsap.set(cardRefs.current, { opacity: 0, y: 50, scale: 0.97 });
+  }, []);
+
+  // Wait for posts to load, then allow animation
+  useEffect(() => {
+    if (!isLoading && posts.length > 0) {
+      const timer = setTimeout(() => setCanAnimate(true), 400);
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading, posts.length]);
+
+  // Animate title and cards when ready
+  useEffect(() => {
+    if (!canAnimate) return;
+    let ctx: gsap.Context | null = null;
+    ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          end: "center center",
+          toggleActions: "play none none reverse",
+        },
+      });
+      tl.to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      })
+        .to(
+          cardRefs.current,
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power3.out",
+          },
+          "-=0.6"
+        );
+    }, sectionRef);
+    return () => {
+      ctx && ctx.revert();
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.trigger === sectionRef.current) trigger.kill();
+      });
+    };
+  }, [canAnimate, posts.length]);
+
   useEffect(() => {
     loadPosts(1);
   }, [t]);
 
   return (
     <section
+      ref={sectionRef}
       style={{ background: "var(--color-background-light)", padding: 20 }}
     >
       <div className="relative z-10 w-full container py-24 background-gradient-light">
         <h2
+          ref={titleRef}
           className="heading-2 mb-2"
           style={{ color: "var(--color-secondary)" }}
         >
           Related <span className="font-bold block">Articles</span>
         </h2>
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          className={`relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3${isLoading ? ' min-h-80' : ''}`}
           style={{ gap: "30px", marginTop: 44 }}
         >
           <SubLoader isLoading={isLoading} />
@@ -81,9 +148,10 @@ const RelatedPost: React.FC = () => {
           )}
 
           {!isLoading &&
-            posts.map((post) => (
+            posts.map((post, idx) => (
               <div
                 key={post.id}
+                ref={el => (cardRefs.current[idx] = el)}
                 className="relative"
                 style={{
                   borderRadius: "24px",

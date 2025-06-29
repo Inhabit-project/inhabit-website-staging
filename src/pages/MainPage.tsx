@@ -16,16 +16,23 @@ import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 import { scrollManager } from '../utils/scrollManager';
 
-const MainPage: React.FC = () => {
+interface MainPageProps {
+  onPageReady?: () => void;
+}
+
+const MainPage: React.FC<MainPageProps> = ({ onPageReady }) => {
   const videoSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (scrollManager && typeof scrollManager.update === 'function') {
       setTimeout(() => {
         scrollManager.update();
+        if (onPageReady) onPageReady();
       }, 200);
+    } else {
+      if (onPageReady) onPageReady();
     }
-  }, []);
+  }, [onPageReady]);
 
   return (
     <>
