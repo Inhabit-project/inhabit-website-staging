@@ -18,28 +18,28 @@ const ImpactLegalInnovationCardsSection: React.FC = () => {
 
   const impactCards = [
     {
-      number: '01',
+      label: t('mainPage.impactLegalInnovationCardsSection.cards.0.label'),
       icon: '/assets/icons/Icon-1.svg',
       title: t('mainPage.impactLegalInnovationCardsSection.cards.0.title'),
       subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.0.subtitle'),
       description: t('mainPage.impactLegalInnovationCardsSection.cards.0.description'),
     },
     {
-      number: '02',
+      label: t('mainPage.impactLegalInnovationCardsSection.cards.1.label'),
       icon: '/assets/icons/Icon-2.svg',
       title: t('mainPage.impactLegalInnovationCardsSection.cards.1.title'),
       subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.1.subtitle'),
       description: t('mainPage.impactLegalInnovationCardsSection.cards.1.description'),
     },
     {
-      number: '03',
+      label: t('mainPage.impactLegalInnovationCardsSection.cards.2.label'),
       icon: '/assets/icons/Icon-3.svg',
       title: t('mainPage.impactLegalInnovationCardsSection.cards.2.title'),
       subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.2.subtitle'),
       description: t('mainPage.impactLegalInnovationCardsSection.cards.2.description'),
     },
     {
-      number: '04',
+      label: t('mainPage.impactLegalInnovationCardsSection.cards.3.label'),
       icon: '/assets/icons/Icon-4.svg',
       title: t('mainPage.impactLegalInnovationCardsSection.cards.3.title'),
       subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.3.subtitle'),

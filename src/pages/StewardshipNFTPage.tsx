@@ -10,7 +10,7 @@ import ImageSection from '../components/ImageSection';
 import StewardshipNFTBenefitsSection from '../components/StewardshipNFTBenefitsSection';
 import Highlight from '../components/Highlight';
 import NFTWorksSection from '../components/NFTWorksSection';
-import CriteriaCardsSection2 from '../components/CriteriaCardsSection2';
+import FourCriteriaHubGlobal from '../components/FourCriteriaHubGlobal';
 import NFTGrid from '../components/NFTGrid';
 
 interface StewardshipNFTPageProps {
@@ -56,7 +56,7 @@ const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({ onPageReady }) 
             <NFTWorksSection />
           </section>
           <section aria-label="Stewardship NFT criteria">
-            <CriteriaCardsSection2 />
+            <FourCriteriaHubGlobal />
           </section>
           <section aria-label="Available Stewardship NFTs">
             <NFTGrid />

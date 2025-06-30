@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useContext, useState } from 'react';
 import ImageSection from './ImageSection';
 import HubSubsections from './HubSubsections';
 import BiodiversityCardsSection from './BiodiversityCardsSection';
-import CriteriaCardsSection2 from './CriteriaCardsSection2';
+import FourCriteriaHubGlobal from './FourCriteriaHubGlobal';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';

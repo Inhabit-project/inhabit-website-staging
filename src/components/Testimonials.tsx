@@ -173,7 +173,7 @@ const Testimonials: React.FC = () => {
             </h2>
             <p 
               ref={descriptionRef}
-              className="font-nunito font-light text-xl md:text-2xl lg:text-[1.75rem] leading-[1.24em] text-[#F6FFEA] max-w-full md:max-w-[35rem]"
+              className="font-nunito font-light body-M text-[#F6FFEA] max-w-full md:max-w-[35rem]"
             >
               {t('mainPage.testimonials.description')}
             </p>
@@ -189,7 +189,7 @@ const Testimonials: React.FC = () => {
           <div className="flex flex-col md:flex-row gap-6 md:gap-[3.4rem] w-full">
             <div 
               ref={testimonialImageRef}
-              className="w-full md:w-[33%] h-60 md:h-auto rounded-[1.3rem] overflow-hidden"
+              className="w-full md:w-[30%] h-50 md:h-auto rounded-[1.3rem] overflow-hidden"
             >
               <img 
                 src="/assets/louise.webp" 

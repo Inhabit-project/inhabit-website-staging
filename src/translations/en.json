@@ -207,8 +207,8 @@
     },
     "infographic": {
       "landTenureTitle": "Land Tenure<br /><strong>Framework</strong>",
-      "landTenureDescription": "The INHABIT stewardship-based restoration model is designed to be the most robust and effective approach to ensure the long-term protection and regeneration of degraded lands, actively involving everyone in ecosystem stewardship.",
-      "nftStewardsTitle": "NFT Stewards<br /><strong>Benefits</strong>",
+      "landTenureDescription": "A groundbreaking model of natural reserves that recognises nature as a legal entity with rights, and provides specific rights and benefits to individuals who support the permanent protection and regeneration of these biodiversity hotspots.",
+      "nftStewardsTitle": "NFT Stewards",
       "nftStewardsDescription": "People from anywhere in the world can become lifelong protectors of nature, with the ability to monitor, safeguard, and access these thriving hubs, along with numerous benefits as they travel the Corridor.",
       "natureTitle": "Nature",
       "natureDescription": "Nature is considered an entity with rights within the land boundaries, according to the Declaration of the Rights of Nature (e.g., the right to self-regulation, restoration, protection, decision-making...)",
@@ -217,7 +217,7 @@
     },
     "testimonials": {
       "title": "Meet our <br /> <strong>Allies</strong>",
-      "description": "Stewardship NFTs are blockchain-verified contracts that grant fractional rights to protect ecosystems in tokenized land parcels.",
+      "description": "From local stewards and bioregional experts to global organizations and innovation leaders, each ally contributes unique knowledge, tools, and heart to grow a network of bio-cultural HUBS—together weaving a global corridor of bio-cultural diversity.",
       "testimonial": {
         "name": "Louise Borreani",
         "quote": "Inhabit is a powerful expression of how decentralized tools can support nature stewardship communities. It is one of the most concrete manifestations of the green crypto research we have done at Ecofrontiers and it is inspiring to see it come to life.",
@@ -328,26 +328,26 @@
       "description": "The INHABIT stewardship-based restoration model is designed to be the most robust and effective approach to ensure the long-term protection and regeneration of lands, involving everyone in ecosystem stewardship.",
       "cards": [
         {
-          "number": "01",
+          "label": "Permanent Protection",
           "title": "Nature",
           "subtitle": "Rights",
           "description": "This framework permanently protects the land by recognizing it as a legal entity with rights, and grants specific rights and benefits to those who support its protection and regeneration."
         },
         {
-          "number": "02",
+          "label": "Land Security for Long-lasting Restoration",
           "title": "Guardians",
           "subtitle": "Rights",
           "description": "This framework grants permanent use rights and restoration funding to land guardians, creating the essential conditions for long-term regeneration and corridor expansion."
         },
         {
-          "number": "03",
-          "title": "NFT Guardians",
+          "label": "System of Guarantee",
+          "title": "NFT Stewards",
           "subtitle": "Rights",
           "description": "This framework grants NFT guardians stewardship rights over the land, acting as guarantors of nature's rights. It allows them to monitor and support restoration while enjoying exclusive benefits and access to biodiversity hotspots and essential knowledge."
         },
         {
-          "number": "04",
-          "title": "Compliance",
+          "label": "Transparency, Verification and Active Participation",
+          "title": "Enforcement",
           "subtitle": "Rights",
           "description": "Smart contracts ensure that the entire framework and actors' rights are transparently enforced and verified, providing a reliable digital system for compliance tracking and enabling meaningful participation in restoration initiatives along the Corridor."
         }
@@ -357,31 +357,31 @@
       "title": "Four Criteria <br /><strong>To Be a HUB</strong>",
       "description": "The INHABIT framework envisions that each HUB develops four key fields to become a biocultural HUB, each developing according to its own vision and uniqueness."
     },
-    "criteriaCardsSection2": {
+    "FourCriteriaHubGlobal": {
       "cards": [
         {
           "number": "01",
-          "title": "Protect",
-          "subtitle": "Nature",
-          "description": "Acquire and permanently protect lands under the innovative INHABIT legal framework, recognizing ecosystems as legal entities with protected rights, and granting specific rights and benefits to those who support their regeneration."
+          "title": "Biodiversity",
+          "subtitle": "Hotspots",
+          "description": "Each HUB must generate and host a vast pool of biodiversity and ecosystem-specific knowledge. These 'living seed hubs' allow animals and humans to naturally disperse seeds, spreading biodiversity across the Corridor. Each HUB must host an 'inner corridor' that connects fragmented landscapes and shelters endangered species."
         },
         {
           "number": "02",
-          "title": "Restore",
-          "subtitle": "Ecosystems",
-          "description": "Fund long-term stewardship-based land regeneration through three-year programs, restoring the full diversity and functionality of the ecosystem, not just planting trees."
+          "title": "Incubators of",
+          "subtitle": "Land guardians",
+          "description": "Each HUB has to become a learning center for future land guardians, providing expertise in various fields of knowledge and rural-social innovation, while enabling the allocation of key resources to establish new Hubs."
         },
         {
           "number": "03",
-          "title": "Transform",
-          "subtitle": "Society",
-          "description": "Fund the development of hubs dedicated to unique fields of knowledge, fostering the production and dissemination of wisdom, and actively working to expand the corridor and broaden access to transformative knowledge for all."
+          "title": "Wisdom",
+          "subtitle": "HUBS",
+          "description": "Each HUB is a research center dedicated to a unique field of knowledge, producing and disseminating information that integrates systemic and academic research with ancestral wisdom."
         },
         {
           "number": "04",
-          "title": "Enhance",
-          "subtitle": "Benefits",
-          "description": "Develop an improved and more valuable version of the Stewardship NFT, offering greater benefits to NFT holders and further expanding the corridor."
+          "title": "Corridor",
+          "subtitle": "Pathfinder",
+          "description": "Each HUB is tasked with extending the corridor, by engaging with other hubs and through collaborative work with key restoration projects and communities within their bioregion."
         }
       ]
     },

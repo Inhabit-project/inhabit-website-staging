@@ -5,7 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
 
-const CriteriaCardsSection2: React.FC = () => {
+const FourCriteriaHubGlobal: React.FC = () => {
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
   const [canAnimate, setCanAnimate] = useState(false);
@@ -14,36 +14,13 @@ const CriteriaCardsSection2: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const criteriaCards = [
-    {
-      number: '01',
-      icon: '/assets/icons/Icon-1.svg',
-      title: t('mainPage.criteriaCardsSection2.cards.0.title'),
-      subtitle: t('mainPage.criteriaCardsSection2.cards.0.subtitle'),
-      description: t('mainPage.criteriaCardsSection2.cards.0.description'),
-    },
-    {
-      number: '02',
-      icon: '/assets/icons/Icon-2.svg',
-      title: t('mainPage.criteriaCardsSection2.cards.1.title'),
-      subtitle: t('mainPage.criteriaCardsSection2.cards.1.subtitle'),
-      description: t('mainPage.criteriaCardsSection2.cards.1.description'),
-    },
-    {
-      number: '03',
-      icon: '/assets/icons/Icon-3.svg',
-      title: t('mainPage.criteriaCardsSection2.cards.2.title'),
-      subtitle: t('mainPage.criteriaCardsSection2.cards.2.subtitle'),
-      description: t('mainPage.criteriaCardsSection2.cards.2.description'),
-    },
-    {
-      number: '04',
-      icon: '/assets/icons/Icon-4.svg',
-      title: t('mainPage.criteriaCardsSection2.cards.3.title'),
-      subtitle: t('mainPage.criteriaCardsSection2.cards.3.subtitle'),
-      description: t('mainPage.criteriaCardsSection2.cards.3.description'),
-    },
-  ];
+  // Get cards array from translations
+  const criteriaCards = t('mainPage.FourCriteriaHubGlobal.cards', { returnObjects: true }) as Array<{
+    number: string;
+    title: string;
+    subtitle: string;
+    description: string;
+  }>;
 
   // Set initial states
   useEffect(() => {
@@ -109,7 +86,14 @@ const CriteriaCardsSection2: React.FC = () => {
             key={idx}
             ref={el => cardsRef.current[idx] = el}
           >
-            <ImpactCard {...card} />
+            <ImpactCard
+              number={card.number}
+              label={card.title}
+              icon={`/assets/icons/Icon-${idx + 1}.svg`}
+              title={card.title}
+              subtitle={card.subtitle}
+              description={card.description}
+            />
           </div>
         ))}
       </div>
@@ -117,4 +101,4 @@ const CriteriaCardsSection2: React.FC = () => {
   );
 };
 
-export default CriteriaCardsSection2; 
+export default FourCriteriaHubGlobal; 

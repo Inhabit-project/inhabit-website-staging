@@ -24,7 +24,7 @@ const FourCriteriaCardsSection: React.FC = () => {
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   // Get cards array from translations
-  const criteriaCards = t('mainPage.criteriaCardsSection2.cards', { returnObjects: true }) as Array<{
+  const criteriaCards = t('mainPage.FourCriteriaHubGlobal.cards', { returnObjects: true }) as Array<{
     number: string;
     title: string;
     subtitle: string;
