@@ -607,6 +607,10 @@
           "answer": "You can participate by purchasing a Stewardship NFT, which grants you lifetime stewardship of a specific Hub and the whole corridor, and access to its biodiversity-rich lands, programs, and learning experiences. As a life steward, you become part of a community actively supporting the creation of a global regenerative corridor.\n\nAlternatively, you can also join as a visitor, taking part in selected activities, workshops, and immersive experiences offered by each Hub."
         }
       ]
+    },
+    "imageSection": {
+      "eyebrow": "Discover Ñuiyanzhi",
+      "heading": "A living <span style=\"color: var(--color-primary)\">laboratory</span> where <span style=\"color: var(--color-primary)\">ecological restoration</span>, ancestral <span style=\"color: var(--color-primary)\">knowledge</span>, and territorial stewardship <span style=\"color: var(--color-primary)\">converge</span>."
     }
   },
   "aguaDeLunaPage": {

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useContext, useState } from 'react';
+import React, { useRef, useLayoutEffect, useContext, useState, useEffect } from 'react';
 import ImpactCard from './ImpactCard';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
@@ -22,8 +22,13 @@ const FourCriteriaHubGlobal: React.FC = () => {
     fundsCards = [];
   }
 
+  // Register ScrollTrigger (safe to call multiple times)
+  useLayoutEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+  }, []);
+
   // Set initial states
-  useEffect(() => {
+  useLayoutEffect(() => {
     gsap.set(cardsRef.current, {
       opacity: 0,
       y: 50
@@ -44,7 +49,7 @@ const FourCriteriaHubGlobal: React.FC = () => {
   }, [isLoading]);
 
   // Handle animations
-  useEffect(() => {
+  useLayoutEffect(() => {
     let ctx = gsap.context(() => {});
 
     if (canAnimate) {
@@ -66,7 +71,7 @@ const FourCriteriaHubGlobal: React.FC = () => {
           stagger: 0.15,
           ease: "power3.out"
         });
-      });
+      }, sectionRef);
     }
 
     return () => {

@@ -8,6 +8,7 @@ import NFTGrid from '../components/NFTGrid';
 import NFTComparisonTable from '../components/NFTComparisonTable';
 import Footer from '../components/Footer';
 import { useTranslation } from 'react-i18next';
+import ImageSection from '../components/ImageSection';
 
 interface NuiyanzhiPageProps {
   onPageReady?: () => void;
@@ -27,6 +28,16 @@ const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({ onPageReady }) => {
       <InternalPagesHero
         variant="nuiyanzhi"
         // Optionally, you can extend InternalPagesHero to accept custom props for this hub
+      />
+
+      {/* Image Section: Nuiyanzhi Vision */}
+      <ImageSection
+        eyebrow={t('nuiyanzhiPage.imageSection.eyebrow')}
+        heading={
+          <span dangerouslySetInnerHTML={{ __html: t('nuiyanzhiPage.imageSection.heading') }} />
+        }
+        imageSrc="/assets/1Hub/vision.webp"
+        imageAlt="Nuiyanzhi Vision"
       />
 
       {/* Section: Four goals to be a HUB */}

@@ -175,14 +175,14 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageReady }) => {
           </aside>
 
           {/* Right Form Section */}
-          <section ref={formRef} className="flex-1 w-full max-w-xl bg-[#D7E0D0]/60 rounded-xl p-8 md:p-12 shadow-md" aria-labelledby="contact-form-title">
+          <section ref={formRef} className="flex-1 w-full max-w-xl background-gradient-dark rounded-xl p-8 md:p-12 shadow-md" aria-labelledby="contact-form-title">
             <h2 id="contact-form-title" className="sr-only">{t('contactPage.title')}</h2>
             {submitted ? (
-              <div className="text-green-700 font-semibold text-center py-8" role="alert" aria-live="polite">{t('contactPage.successMessage')}</div>
+              <div className=" font-semibold text-center py-8" role="alert" aria-live="polite">{t('contactPage.successMessage')}</div>
             ) : (
               <form className="space-y-6" onSubmit={handleSubmit} aria-describedby="contact-form-title" noValidate>
                 <div>
-                  <label className="block text-secondary font-medium mb-1" htmlFor="name">{t('contactPage.form.name')}</label>
+                  <label className="block text-light font-medium mb-1" htmlFor="name">{t('contactPage.form.name')}</label>
                   <input
                     className={`w-full rounded-md px-4 py-2 bg-white/30 border ${errors.name ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-primary`}
                     type="text"
@@ -201,7 +201,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageReady }) => {
                   )}
                 </div>
                 <div>
-                  <label className="block text-secondary font-medium mb-1" htmlFor="email">{t('contactPage.form.email')}</label>
+                  <label className="block text-light font-medium mb-1" htmlFor="email">{t('contactPage.form.email')}</label>
                   <input
                     className={`w-full rounded-md px-4 py-2 bg-white/30 border ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-primary`}
                     type="email"
@@ -220,7 +220,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageReady }) => {
                   )}
                 </div>
                 <div>
-                  <label className="block text-secondary font-medium mb-1" htmlFor="message">{t('contactPage.form.message')}</label>
+                  <label className="block text-light font-medium mb-1" htmlFor="message">{t('contactPage.form.message')}</label>
                   <textarea
                     className={`w-full rounded-md px-4 py-2 bg-white/30 border ${errors.message ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-primary min-h-[120px]`}
                     id="message"
@@ -238,7 +238,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageReady }) => {
                 </div>
                 <fieldset className="space-y-2" aria-labelledby="agreement-legend">
                   <legend id="agreement-legend" className="sr-only">{t('contactPage.form.terms')}</legend>
-                  <label className="flex items-start gap-2 text-xs text-secondary">
+                  <label className="flex items-start gap-2 text-xs text-light">
                     <input
                       type="checkbox"
                       name="kyc"
@@ -250,7 +250,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageReady }) => {
                     />
                     <span id="kyc-description">{t('contactPage.form.kyc')}</span>
                   </label>
-                  <label className="flex items-start gap-2 text-xs text-secondary">
+                  <label className="flex items-start gap-2 text-xs text-light">
                     <input
                       type="checkbox"
                       name="terms"

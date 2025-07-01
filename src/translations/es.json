@@ -685,6 +685,10 @@
           "answer": "Puedes participar comprando un NFT de Custodia, que te otorga la custodia vitalicia de un Centro específico y todo el corredor, y acceso a sus tierras ricas en biodiversidad, programas y experiencias de aprendizaje. Como custodio vitalicio, te conviertes en parte de una comunidad que apoya activamente la creación de un corredor regenerativo global.\n\nAlternativamente, también puedes unirte como visitante, participando en actividades seleccionadas, talleres y experiencias inmersivas ofrecidas por cada Centro."
         }
       ]
+    },
+    "imageSection": {
+      "eyebrow": "Descubre Ñuiyanzhi",
+      "heading": "Un <span style=\"color: var(--color-primary)\">laboratorio viviente</span> donde la <span style=\"color: var(--color-primary)\">restauración ecológica</span>, el <span style=\"color: var(--color-primary)\">conocimiento ancestral</span> y la custodia territorial <span style=\"color: var(--color-primary)\">convergen</span>."
     }
   },
   "amazonPage": {
