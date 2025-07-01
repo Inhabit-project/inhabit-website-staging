@@ -14,13 +14,13 @@ const FourCriteriaHubGlobal: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Get cards array from translations
-  const criteriaCards = t('mainPage.FourCriteriaHubGlobal.cards', { returnObjects: true }) as Array<{
-    number: string;
-    title: string;
-    subtitle: string;
-    description: string;
-  }>;
+  // Get cards array and section title from translations
+  let fundsCards = t('mainPage.stewardshipNFTPage.fundsCardsSection.cards', { returnObjects: true }) as Array<any>;
+  const sectionTitle = t('mainPage.stewardshipNFTPage.fundsCardsSection.title');
+  if (!Array.isArray(fundsCards)) {
+    console.warn('Translation for fundsCardsSection.cards is missing or not an array');
+    fundsCards = [];
+  }
 
   // Set initial states
   useEffect(() => {
@@ -80,16 +80,21 @@ const FourCriteriaHubGlobal: React.FC = () => {
       className="w-full flex flex-col items-center py-24 px-[clamp(1.5rem,5vw,6.25rem)]"
       style={{ background: 'var(--light-gradient, linear-gradient(90deg, #DEEDCB 2.26%, #F6FFEA 50.64%, #DEEDCB 99.01%))' }}
     >
+      <div className="w-full max-w-[120rem] mx-auto mb-12 flex flex-col items-start">
+        <h2 className="heading-2 text-secondary mb-2">
+          <span dangerouslySetInnerHTML={{ __html: sectionTitle }} />
+        </h2>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[107.5rem] mx-auto">
-        {criteriaCards.map((card, idx) => (
-          <div 
+        {fundsCards.map((card, idx) => (
+          <div
             key={idx}
             ref={el => cardsRef.current[idx] = el}
           >
             <ImpactCard
               number={card.number}
-              label={card.title}
-              icon={`/assets/icons/Icon-${idx + 1}.svg`}
+              label={card.label}
+              icon={'/assets/icons/Icon-1.svg'}
               title={card.title}
               subtitle={card.subtitle}
               description={card.description}

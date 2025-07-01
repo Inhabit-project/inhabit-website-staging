@@ -131,7 +131,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageReady }) => {
   return (
     <div ref={mainRef} className="min-h-screen background-gradient-light">
       <Menu />
-      <main className="w-full flex flex-col items-center justify-center py-20 md:py-32" aria-labelledby="contact-title">
+      <main className="w-full flex flex-col items-center justify-center py-20 md:py-32 pt-32" aria-labelledby="contact-title">
         <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)]">
           <div ref={titleRef} className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
             <h1 id="contact-title" className="heading-2 text-secondary max-w-[40.9375rem]">

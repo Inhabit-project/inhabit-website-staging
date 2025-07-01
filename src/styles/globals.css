@@ -375,7 +375,7 @@
   .heading-5 {
     font-family: "Montserrat", sans-serif;
     font-size: var(--font-size-h5);
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.05;
     color: var(--heading-color-light);
   }

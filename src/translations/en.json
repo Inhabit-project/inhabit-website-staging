@@ -48,7 +48,7 @@
     "foundationSubtitle": "Foundation",
     "foundationText": "The INHABIT Foundation is a non-profit organization designed to serve as the legal body of a new land tenure framework that effectively enforces the Rights of Nature and the Rights of Earth Stewards, as well as stewardship-based regeneration principles in specific territories.\nThe Foundation supports 'Rural Change Agents'—farmers, individuals, and organizations—by securing land tenure, providing restoration funding, granting access to education, and fostering a supportive community around them, enabling their role as catalysts for long-term regeneration, ecological and cultural resilience, climate justice, and locally-led territorial governance.",
     "teamTitle": "Meet our <strong><br />Team</strong>",
-    "teamSubtitle": "We are purpose-driven entrepreneurs, farmers, artists, facilitators — Experts in law, restoration, technology and rural development—united to reinvest ways of inhabiting Earth",
+    "teamSubtitle": "We are purpose-driven entrepreneurs, farmers, artists, facilitators, Experts in law, restoration, technology and rural development, united to reinvest ways of inhabiting Earth",
     "teamShowLess": "Show less",
     "teamReadMore": "Read more",
     "team": [
@@ -416,6 +416,39 @@
             "answer": "Yes — INHABIT uses CELO, a carbon-negative blockchain designed for climate-friendly projects.<br /><br />Minting all the NFTs needed to finance an INHABIT Hub produces less CO₂ than brewing a single cup of coffee.<br /><br />Each NFT uses just 0.00001 kWh and emits only 5 mg of CO₂ — less than a Google search.<br /><br />In comparison:<ul><li>Ethereum (pre-merge) = 15,000× more emissions</li><li>Bitcoin = 100,000× more</li></ul>Plus, CELO runs a built-in carbon offset program: a portion of every transaction fee funds verified projects that remove CO₂ from the atmosphere. This makes CELO carbon-negative, meaning it offsets more than it emits — so even our NFTs end up being carbon-negative, turning blockchain into a tool for climate regeneration."
           }
         ]
+      },
+      "fundsCardsSection": {
+        "title": "<span style=\"font-weight: 300\">Your funds</span><br /><span style=\"font-weight: 700\">Are used to</span>",
+        "cards": [
+          {
+            "number": "01",
+            "label": "LEGAL STABILITY",
+            "title": "Protect",
+            "subtitle": "Nature",
+            "description": "To purchase and permanently safeguard lands under the INHABIT's groundbreaking legal framework, recognizing ecosystems as legal entities with protected rights, while providing specific rights and benefits to individuals who support its regeneration."
+          },
+          {
+            "number": "02",
+            "label": "LONG-TERM ECOSYSTEM RESTORATION AND STEWARDSHIP",
+            "title": "Restore",
+            "subtitle": "Ecosystems",
+            "description": "To finance long-term, stewardship-based land regeneration through three-year programs, restoring the full diversity and functionality of the ecosystem—not just planting trees."
+          },
+          {
+            "number": "03",
+            "label": "THRIVING BIO-CULTURAL HUBS",
+            "title": "Transform",
+            "subtitle": "Society",
+            "description": "To fund the development of hubs dedicated to unique fields of knowledge, fostering the production and dissemination of wisdom, while actively working to expand the corridor and broaden access to transformative knowledge for all."
+          },
+          {
+            "number": "04",
+            "label": "NFT 2.0",
+            "title": "Improve",
+            "subtitle": "Benefits",
+            "description": "To develop an enhanced and more valuable version of the Stewardship NFT, offering greater benefits to NFT holders while further expanding the corridor."
+          }
+        ]
       }
     },
     "stewardshipNFTBenefits": {
@@ -749,7 +782,7 @@
     "projects": {
       "title": "Our",
       "strong": "Projects",
-      "description": "Discover the initiatives and collaborations that are driving real-world impact. Our projects span ecosystem restoration, biocultural innovation, and community empowerment—each one a step toward a regenerative future."
+      "description": "Discover the initiatives and collaborations that are driving real-world impact. Our projects span ecosystem restoration, biocultural innovation, and community empowerment each one a step toward a regenerative future."
     }
   },
   "projectsPage": {
@@ -936,5 +969,34 @@
       }
     },
     "footer": "By using this website or engaging with our digital assets, you agree to these Terms."
+  },
+  "fundsUsedSection": {
+    "title": "How are the funds used?",
+    "cards": [
+      {
+        "label": "Conservation",
+        "title": "Protecting Biodiversity",
+        "subtitle": "Safeguarding habitats",
+        "description": "Funds are allocated to preserve and restore natural habitats, ensuring the survival of diverse species."
+      },
+      {
+        "label": "Community",
+        "title": "Empowering Local Communities",
+        "subtitle": "Supporting livelihoods",
+        "description": "Investments go towards education, healthcare, and sustainable development for local communities."
+      },
+      {
+        "label": "Innovation",
+        "title": "Driving Innovation",
+        "subtitle": "Sustainable solutions",
+        "description": "Resources are used to develop and implement innovative solutions for environmental challenges."
+      },
+      {
+        "label": "Transparency",
+        "title": "Ensuring Transparency",
+        "subtitle": "Open reporting",
+        "description": "We provide clear and regular reports on how every contribution is used."
+      }
+    ]
   }
 } 

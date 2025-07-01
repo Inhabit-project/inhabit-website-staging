@@ -98,7 +98,7 @@
       }
     ],
     "teamTitle": "Conoce a nuestro <strong><br />Equipo</strong>",
-    "teamSubtitle": "Somos emprendedores, agricultores, artistas y facilitadores con propósito — Expertos en derecho, restauración, tecnología y desarrollo rural—unidos para reinventar las formas de habitar la Tierra",
+    "teamSubtitle": "Somos emprendedores, agricultores, artistas y facilitadores con propósito, Expertos en derecho, restauración, tecnología y desarrollo rural, unidos para reinventar las formas de habitar la Tierra",
     "teamShowLess": "Ver menos",
     "teamReadMore": "Leer más"
   },
@@ -215,6 +215,39 @@
           {
             "question": "¿Es el uso de blockchain ambientalmente sostenible para INHABIT?",
             "answer": "Sí — INHABIT utiliza CELO, una blockchain carbono-negativa diseñada para proyectos respetuosos con el clima.<br /><br />Acuñar todos los NFTs necesarios para financiar un HUB de INHABIT produce menos CO₂ que preparar una sola taza de café.<br /><br />Cada NFT usa solo 0.00001 kWh y emite solo 5 mg de CO₂ — menos que una búsqueda en Google.<br /><br />En comparación:<ul><li>Ethereum (pre-fusión) = 15,000× más emisiones</li><li>Bitcoin = 100,000× más</li></ul>Además, CELO ejecuta un programa integrado de compensación de carbono: una parte de cada tarifa de transacción financia proyectos verificados que eliminan CO₂ de la atmósfera. Esto hace que CELO sea carbono-negativo, lo que significa que compensa más de lo que emite — por lo que incluso nuestros NFTs terminan siendo carbono-negativos, convirtiendo la blockchain en una herramienta para la regeneración climática."
+          }
+        ]
+      },
+      "fundsCardsSection": {
+        "title": "<span style=\"font-weight: 300\">Tus fondos</span><br /><span style=\"font-weight: 700\">Se usan para</span>",
+        "cards": [
+          {
+            "number": "01",
+            "label": "ESTABILIDAD LEGAL",
+            "title": "Proteger",
+            "subtitle": "La Naturaleza",
+            "description": "Para comprar y salvaguardar permanentemente tierras bajo el innovador marco legal de INHABIT, reconociendo los ecosistemas como entidades legales con derechos protegidos, y brindando derechos y beneficios específicos a quienes apoyan su regeneración."
+          },
+          {
+            "number": "02",
+            "label": "RESTAURACIÓN Y CUSTODIA ECOSISTÉMICA A LARGO PLAZO",
+            "title": "Restaurar",
+            "subtitle": "Ecosistemas",
+            "description": "Para financiar la regeneración de tierras basada en la custodia a través de programas de tres años, restaurando la diversidad y funcionalidad completa del ecosistema—no solo plantando árboles."
+          },
+          {
+            "number": "03",
+            "label": "HUBS BIOCULTURALES PRÓSPEROS",
+            "title": "Transformar",
+            "subtitle": "La Sociedad",
+            "description": "Para financiar el desarrollo de hubs dedicados a campos únicos de conocimiento, fomentando la producción y difusión de sabiduría, y ampliando el acceso a conocimiento transformador para todos."
+          },
+          {
+            "number": "04",
+            "label": "NFT 2.0",
+            "title": "Mejorar",
+            "subtitle": "Beneficios",
+            "description": "Para desarrollar una versión mejorada y más valiosa del NFT de Custodia, ofreciendo mayores beneficios a los titulares y expandiendo aún más el corredor."
           }
         ]
       }
@@ -641,7 +674,7 @@
         },
         {
           "question": "¿Qué actividades se realizan en un Centro Biocultural?",
-          "answer": "Los Centros Bioculturales son espacios vibrantes donde convergen la regeneración ecológica, la renovación cultural y la participación comunitaria. Cada CENTRO es único—moldeado por su ubicación específica, contexto ecológico y guiado por la visión de sus guardianes de la tierra. Cada Centro está dedicado a un campo distinto de conocimiento, produciendo y compartiendo información que integra el conocimiento sistémico y contemporáneo con la sabiduría ancestral alrededor de un tema específico.\n\nEnfocado en un tema específico—como restauración ecológica, construcción de paz, emprendimiento regenerativo, diseño bioclimático, micro-agricultura, eco-alfabetización, sanación y desarrollo interior arraigado en la sabiduría biocultural—por nombrar algunos.\n\nAlbergan actividades basadas en el lugar, experiencias de aprendizaje práctico a través de diversos campos de conocimiento. Los Custodios NFT y visitantes pueden diseñar viajes de aprendizaje personalizados, moviéndose a través de diferentes Centros en el Corredor—cada uno un guardián de conocimiento ecológico y cultural único.\n\nEl marco INHABIT define 4 criterios clave para que un sitio evolucione hacia un Centro Biocultural, permitiendo que cada uno desarrolle su propio enfoque único y expresión de estos pilares."
+          "answer": "Los Centros Bioculturales son espacios vibrantes donde convergen la regeneración ecológica, la renovación cultural y la participación comunitaria. Cada CENTRO es único—moldeado por su ubicación específica, contexto ecológico y guiado por la visión de sus guardianes de la tierra. Cada Centro está dedicado a un campo distinto de conocimiento, produciendo y compartiendo información que integra el conocimiento sistémico y contemporáneo con la sabiduría ancestral alrededor de un tema específico.\n\nEnfocado en un tema específico—como restauración ecológica, construcción de paz, emprendimiento regenerativo, diseño bioclimático, micro-agricultura, eco-alfabetización, sanación y desarrollo interior arraigado en la sabiduría biocultural—por nombrar algunos.\n\nAlbergan actividades basadas en el lugar, experiencias de aprendizaje práctico a través de diversos campos de conocimiento. Los Custodios NFT y visitantes pueden diseñar viajes de aprendizaje personalizados, moviéndose a través de diferentes Centros en el Corredor cada uno un guardián de conocimiento ecológico y cultural único.\n\nEl marco INHABIT define 4 criterios clave para que un sitio evolucione hacia un Centro Biocultural, permitiendo que cada uno desarrolle su propio enfoque único y expresión de estos pilares."
         },
         {
           "question": "¿Cómo participan las comunidades locales?",
@@ -768,13 +801,75 @@
     "annexNo1NotificationTemplate": "Plantilla de notificación para obtener la autorización del titular para la recolección, uso y tratamiento de sus datos personales",
     "annexNo1Declaration": "Declaración y autorización para consultar, reportar y compartir información",
     "annexNo1Authorization": "Autorizo expresa e irrevocablemente a INHABIT CO S.A.S., a quien represento o a quien cedo mis derechos, o a quien contrate para el ejercicio de estos derechos, sus obligaciones o su posición contractual en cualquier calidad, en relación con los productos o servicios de los cuales soy titular principal o conjunto, o como su representante, a consultar, solicitar, suministrar, reportar, procesar, obtener, recopilar, compilar, conformar, intercambiar, modificar, usar, analizar, estudiar, retener, recibir y enviar mis datos personales...",
-    "annexNo1Note": "* Nota: Este formulario debe ser firmado para su validez y atención y presentado en original a INHABIT CO S.A.S., que, como responsable del tratamiento, tramitará el reclamo dentro de los plazos establecidos por la ley, a partir del día siguiente a la fecha de recepción."
+    "annexNo1Note": "* Nota: Este formulario debe ser firmado para su validez y atención y presentado en original a INHABIT CO S.A.S., que, como responsable del tratamiento, tramitará el reclamo dentro de los plazos establecidos por la ley, a partir del día siguiente a la fecha de recepción.",
+    "fundsUsedSection": {
+      "title": "¿Cómo se utilizan los fondos?",
+      "cards": [
+        {
+          "label": "Conservación",
+          "title": "Protegiendo la Biodiversidad",
+          "subtitle": "Salvaguardando hábitats",
+          "description": "Los fondos se destinan a preservar y restaurar hábitats naturales, asegurando la supervivencia de diversas especies."
+        },
+        {
+          "label": "Comunidad",
+          "title": "Empoderando Comunidades Locales",
+          "subtitle": "Apoyando medios de vida",
+          "description": "Las inversiones se destinan a educación, salud y desarrollo sostenible para las comunidades locales."
+        },
+        {
+          "label": "Innovación",
+          "title": "Impulsando la Innovación",
+          "subtitle": "Soluciones sostenibles",
+          "description": "Los recursos se utilizan para desarrollar e implementar soluciones innovadoras a los desafíos ambientales."
+        },
+        {
+          "label": "Transparencia",
+          "title": "Garantizando la Transparencia",
+          "subtitle": "Reportes abiertos",
+          "description": "Proporcionamos informes claros y regulares sobre cómo se utiliza cada contribución."
+        }
+      ]
+    }
   },
   "stewardshipNFTPage": {
     "imageSection": {
       "eyebrow": "El poder de nuestros NFTs",
       "heading": "Tener un <span class=\"highlighted-text\">NFT</span> te convierte en <span class=\"highlighted-text\">co-creador de un corredor global</span>, uno que puedes recorrer, salvaguardar y <span class=\"highlighted-text\">regenerar biodiversidad</span>.",
       "imageAlt": "Beneficios del NFT de Custodia"
+    },
+    "fundsCardsSection": {
+      "title": "<span style=\"font-weight: 300\">Tus fondos</span><br /><span style=\"font-weight: 700\">Se usan para</span>",
+      "cards": [
+        {
+          "number": "01",
+          "label": "ESTABILIDAD LEGAL",
+          "title": "Proteger",
+          "subtitle": "La Naturaleza",
+          "description": "Para comprar y salvaguardar permanentemente tierras bajo el innovador marco legal de INHABIT, reconociendo los ecosistemas como entidades legales con derechos protegidos, y brindando derechos y beneficios específicos a quienes apoyan su regeneración."
+        },
+        {
+          "number": "02",
+          "label": "RESTAURACIÓN Y CUSTODIA ECOSISTÉMICA A LARGO PLAZO",
+          "title": "Restaurar",
+          "subtitle": "Ecosistemas",
+          "description": "Para financiar la regeneración de tierras basada en la custodia a través de programas de tres años, restaurando la diversidad y funcionalidad completa del ecosistema—no solo plantando árboles."
+        },
+        {
+          "number": "03",
+          "label": "HUBS BIOCULTURALES PRÓSPEROS",
+          "title": "Transformar",
+          "subtitle": "La Sociedad",
+          "description": "Para financiar el desarrollo de hubs dedicados a campos únicos de conocimiento, fomentando la producción y difusión de sabiduría, y ampliando el acceso a conocimiento transformador para todos."
+        },
+        {
+          "number": "04",
+          "label": "NFT 2.0",
+          "title": "Mejorar",
+          "subtitle": "Beneficios",
+          "description": "Para desarrollar una versión mejorada y más valiosa del NFT de Custodia, ofreciendo mayores beneficios a los titulares y expandiendo aún más el corredor."
+        }
+      ]
     }
   },
   "stewardshipNFTBenefits": {
@@ -849,12 +944,12 @@
     "projects": {
       "title": "Nuestros",
       "strong": "Proyectos",
-      "description": "Descubre las iniciativas y colaboraciones que están generando un impacto real. Nuestros proyectos abarcan restauración de ecosistemas, innovación biocultural y empoderamiento comunitario—cada uno es un paso hacia un futuro regenerativo."
+      "description": "Descubre las iniciativas y colaboraciones que están generando un impacto real. Nuestros proyectos abarcan restauración de ecosistemas, innovación biocultural y empoderamiento comunitario cada uno es un paso hacia un futuro regenerativo."
     }
   },
   "projectsPage": {
     "title": "Nuestros<br /><strong>Proyectos</strong>",
-    "description": "Descubre las iniciativas y colaboraciones que están generando un impacto real. Nuestros proyectos abarcan restauración de ecosistemas, innovación biocultural y empoderamiento comunitario—cada uno es un paso hacia un futuro regenerativo.",
+    "description": "Descubre las iniciativas y colaboraciones que están generando un impacto real. Nuestros proyectos abarcan restauración de ecosistemas, innovación biocultural y empoderamiento comunitario cada uno es un paso hacia un futuro regenerativo.",
     "skipToMainContent": "Saltar al contenido principal",
     "mainContent": "Contenido principal de la página de Proyectos"
   },

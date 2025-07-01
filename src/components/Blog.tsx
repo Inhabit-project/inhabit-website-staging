@@ -174,19 +174,17 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
       <div className="relative z-10 w-full container py-24 background-gradient-light">
         <div className="flex flex-col items-start gap-12">
           {/* Header section */}
-          <div className="flex flex-col md:flex-row items-start justify-between gap-[13.3125rem] w-full mb-[2.5rem]">
+          <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
             <h2
               ref={titleRef}
               className="heading-2 text-secondary max-w-[40.9375rem]"
               style={{ color: "var(--color-secondary)", opacity: 0, transform: "translateY(50px)" }}
             >
-              <span
-                dangerouslySetInnerHTML={{ __html: t("mainPage.blog.title") }}
-              />
+              <span dangerouslySetInnerHTML={{ __html: t("mainPage.blog.title") }} />
             </h2>
             <p
               ref={descriptionRef}
-              className="body-M text-secondary max-w-[35rem]"
+              className="body-M text-secondary max-w-[36rem]"
               style={{ color: "var(--color-secondary)", opacity: 0, transform: "translateY(50px)" }}
             >
               {t("mainPage.blog.description")}
