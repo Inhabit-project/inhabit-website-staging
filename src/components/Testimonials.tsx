@@ -158,7 +158,7 @@ const Testimonials: React.FC = () => {
     <>
       <section 
         ref={sectionRef}
-        className="background-gradient-dark py-8 md:py-16 lg:py-[6.5rem] px-4 md:px-8 lg:px-[6.25rem] overflow-x-hidden flex flex-col gap-8 md:gap-16 lg:gap-[3.75rem] scroll-container"
+        className="background-gradient-dark py-24 md:py-16 lg:py-[6.5rem] px-4 md:px-8 lg:px-[6.25rem] overflow-x-hidden flex flex-col gap-8 md:gap-16 lg:gap-[3.75rem] scroll-container"
         aria-labelledby="testimonials-title"
       >
         <div className="w-full">
@@ -167,13 +167,13 @@ const Testimonials: React.FC = () => {
             <h2 
               ref={titleRef}
               id="testimonials-title"
-              className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]"
+              className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-white"
             >
               <span dangerouslySetInnerHTML={{ __html: t('mainPage.testimonials.title') }} />
             </h2>
             <p 
               ref={descriptionRef}
-              className="font-nunito font-light body-M text-[#F6FFEA] max-w-full md:max-w-[35rem]"
+              className="font-nunito font-light body-M text-white max-w-full md:max-w-[35rem]"
             >
               {t('mainPage.testimonials.description')}
             </p>
@@ -183,13 +183,13 @@ const Testimonials: React.FC = () => {
         {/* Testimonial */}
         <div 
           ref={testimonialCardRef}
-          className="bg-[#162F08] border border-white/20 rounded-[1.7rem] shadow-[inset_0px_0px_2.7px_rgba(61,27,114,1)] backdrop-blur-6xl p-6 md:p-8 lg:p-[3.4rem] w-full"
+          className="bg-[#162F08] border border-white/20 rounded-2xl shadow-lg backdrop-blur-6xl p-6 md:p-8 lg:p-[3.4rem] w-full"
           role="article"
         >
           <div className="flex flex-col md:flex-row gap-6 md:gap-[3.4rem] w-full">
             <div 
               ref={testimonialImageRef}
-              className="w-full md:w-[30%] h-50 md:h-auto rounded-[1.3rem] overflow-hidden"
+              className="w-full md:w-[30%] h-50 md:h-auto rounded-xl overflow-hidden"
             >
               <img 
                 src="/assets/louise.webp" 

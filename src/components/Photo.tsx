@@ -86,13 +86,13 @@ const Photo: React.FC = () => {
         });
         tl1.to(image1Ref.current, {
           scale: 1.03,
-          duration: 1,
+          duration: 0.5,
           ease: "power2.out"
         })
         .to(text1Ref.current, {
           opacity: 1,
           y: 0,
-          duration: 0.6,
+          duration: 0.3,
           ease: "power2.out"
         }, "-=0.6");
 
@@ -107,13 +107,13 @@ const Photo: React.FC = () => {
         });
         tl2.to(image2Ref.current, {
           scale: 1.03,
-          duration: 1,
+          duration: 0.5,
           ease: "power2.out"
         })
         .to(text2Ref.current, {
           opacity: 1,
           y: 0,
-          duration: 0.6,
+          duration: 0.3,
           ease: "power2.out"
         }, "-=0.6");
       }
@@ -129,7 +129,7 @@ const Photo: React.FC = () => {
       {/* Photo 1 */}
       <section 
         ref={section1Ref}
-        className="relative w-full h-[80vh] md:h-screen"
+        className="relative w-full h-[80vh] h-screen"
       >
         <div className="relative w-full h-full">
           <img 
@@ -141,7 +141,7 @@ const Photo: React.FC = () => {
           
           <div 
             ref={text1Ref}
-            className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] right-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-secondary/80 backdrop-blur-xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0"
+            className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] right-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/5 backdrop-blur-3xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0"
           >
             <p className="body-M text-light">
               {t('mainPage.photo.section1')}
@@ -153,7 +153,7 @@ const Photo: React.FC = () => {
       {/* Photo 2 */}
       <section 
         ref={section2Ref}
-        className="relative w-full h-[80vh] md:h-screen"
+        className="relative w-full h-[80vh] h-screen"
       >
         <div className="relative w-full h-full">
           <img 
@@ -165,7 +165,7 @@ const Photo: React.FC = () => {
           
           <div 
             ref={text2Ref}
-            className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] left-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-secondary/80 backdrop-blur-xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0"
+            className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] left-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/5 backdrop-blur-3xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0"
           >
             <p className="body-M text-light">
               {t('mainPage.photo.section2')}

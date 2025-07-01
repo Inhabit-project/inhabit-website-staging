@@ -124,6 +124,19 @@ const ProjectsVideoSection: React.FC = () => {
             duration: 0.3
           });
         });
+        // Mobile: auto-animate play button
+        if (window.innerWidth <= 768) {
+          gsap.to(playButtonRef.current, {
+            scale: 1.1,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+          gsap.to(playCircleRef.current, {
+            backgroundColor: "rgba(255, 166, 0, 0.2)",
+            borderColor: "rgb(255, 166, 0)",
+            duration: 0.3
+          });
+        }
       }
     });
 

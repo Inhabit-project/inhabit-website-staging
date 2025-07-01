@@ -163,6 +163,19 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
           duration: 0.3
         });
       });
+      // Mobile: auto-animate play button
+      if (window.innerWidth <= 768) {
+        gsap.to(playButtonRef.current, {
+          scale: 1.1,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        gsap.to(playCircleRef.current, {
+          backgroundColor: "rgba(255, 166, 0, 0.2)",
+          borderColor: "rgb(255, 166, 0)",
+          duration: 0.3
+        });
+      }
     }
 
     return () => {
@@ -231,7 +244,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
               {/* Outer circle with animation */}
               <div 
                 ref={playCircleRef}
-                className="w-[50px] md:w-[66px] h-[50px] md:h-[66px] rounded-full backdrop-blur-[4.125px] border border-white flex items-center justify-center transition-all duration-300"
+                className="w-[50px] md:w-[66px] h-[50px] md:h-[66px] rounded-full backdrop-blur-[4.125px] border border-white flex items-center justify-center transition-all duration-300 animate-videoPulse"
               >
                 {/* Play triangle */}
                 <div className="w-0 h-0 border-t-[10px] md:border-t-[12px] border-t-transparent border-l-[16px] md:border-l-[20px] border-l-white border-b-[10px] md:border-b-[12px] border-b-transparent ml-1 group-hover:border-l-orange-500 transition-colors duration-300" />

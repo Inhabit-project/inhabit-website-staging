@@ -134,15 +134,15 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
               />
             </div>
             <span ref={labelRef} className="text-light eyebrow opacity-80">{label}</span>
-            <h3 
+            <h2 
               ref={titleRef}
               id={`hub-${title.toLowerCase().replace(/\s+/g, '-')}-title`}
-              className="text-xl font-montserrat text-light font-semibold"
+              className="font-montserrat text-light font-semibold heading-4"
             >
               {title}
-            </h3>
-            <p ref={descriptionRef} className="text-light body-M font-nunito mb-4">{description}</p>
-            <h4 ref={visionRef} className="text-lg font-montserrat text-light font-semibold">{visionHeading}</h4>
+            </h2>
+            <p ref={descriptionRef} className="text-light text-base font-nunito mb-4">{description}</p>
+            <h4 ref={visionRef} className="text-sm font-montserrat text-light font-semibold">{visionHeading}</h4>
             <p ref={visionTextRef} className="text-light text-sm font-nunito opacity-90 mb-6">{visionText}</p>
             
             {/* View Gallery Button - Mobile Only */}

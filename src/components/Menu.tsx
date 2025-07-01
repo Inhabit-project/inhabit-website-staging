@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { LoadingContext } from '../App';
+import { useMenuScrollHide } from '../utils/scrollManager';
 
 const LanguageButton = styled.button`
   background: none;
@@ -50,37 +51,24 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const lastScrollY = useRef(0);
   const { t, i18n } = useTranslation();
   const isLoading = useContext(LoadingContext);
 
-  useEffect(() => {
-    let prevScrollPos = window.pageYOffset;
-    let ticking = false;
+  // Debug: log when setIsVisible is called
+  const debugSetIsVisible = (visible: boolean) => {
+    console.log('[Menu] setIsVisible called with:', visible);
+    setIsVisible(visible);
+  };
 
-    const handleScroll = () => {
-      const currentScrollPos = window.pageYOffset;
-      
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (prevScrollPos > currentScrollPos) {
-            // Scrolling UP
-            setIsVisible(true);
-          } else {
-            // Scrolling DOWN
-            setIsVisible(false);
-          }
-          prevScrollPos = currentScrollPos;
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
+  useMenuScrollHide(debugSetIsVisible, { getDisable: () => mobileOpen });
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  // Debug: log isVisible and className on each render
+  const menuClassName = `fixed top-0 left-0 right-0 h-[5rem] bg-menu-backdrop backdrop-blur-lg z-50 transition-transform duration-300 no-snap ${
+    isVisible ? 'translate-y-0' : '-translate-y-full'
+  }`;
+  console.log('[Menu] isVisible:', isVisible, '| className:', menuClassName);
 
   const menuLinks = [
     { label: t('navigation.home'), path: '/' },
@@ -101,9 +89,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
   }
 
   return (
-    <header className={`fixed top-0 left-0 right-0 h-[5rem] bg-menu-backdrop backdrop-blur-lg z-50 transition-all duration-500 ease-in-out animate-dropIn ${
-      isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-    }`}>
+    <header className={menuClassName}>
       <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] h-full">
         <div className="flex items-center justify-between h-full">
           {/* Logo */}
@@ -114,7 +100,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav role="navigation" aria-label="Main navigation" className="font-size-xs hidden lg:flex gap-8">
+          <nav role="navigation" aria-label="Main navigation" className="font-size-xs hidden xl:flex gap-8">
             {menuLinks.map((item) => (
               <Link
                 key={item.path}
@@ -130,7 +116,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
           </nav>
 
           {/* Desktop Right side buttons */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden xl:flex items-center gap-4">
             <div className="flex gap-2">
               <LanguageButton
                 onClick={() => changeLanguage('en')}
@@ -159,7 +145,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
           </div>
 
           {/* Hamburger for mobile */}
-          <button className="lg:hidden flex items-center justify-center w-10 h-10 rounded focus:outline-none" onClick={() => setMobileOpen(true)} aria-label="Open menu">
+          <button className="xl:hidden flex items-center justify-center w-10 h-10 rounded focus:outline-none" onClick={() => setMobileOpen(true)} aria-label="Open menu">
             <svg className="w-8 h-8 text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>

@@ -179,7 +179,7 @@ const Infographic: React.FC = () => {
         </div>
       </div>
       {/* Slide 2: NFT Stewards */}
-      <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] mb-[5rem]">
+      <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] ">
         <div className="w-full lg:w-2/5 max-w-6xl flex flex-col ">
           <h2 ref={slide2TitleRef} className="heading-2 text-secondary mb-6 font-bold" dangerouslySetInnerHTML={{ __html: t('mainPage.infographic.nftStewardsTitle') }} />
           <p ref={slide2DescRef} className="body-M text-secondary">
@@ -187,7 +187,7 @@ const Infographic: React.FC = () => {
           </p>
         </div>
         <div className="w-full lg:w-3/5 flex self-center justify-end">
-          <div className="w-[43.75rem] h-[43.75rem]">
+          <div className="w-[43.75rem] ">
             <img 
               ref={slide2ImgRef}
               src="/assets/stewards-illustration.svg" 
@@ -198,7 +198,7 @@ const Infographic: React.FC = () => {
         </div>
       </section>
       {/* Slide 3: Nature */}
-      <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] mb-[5rem]">
+      <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] ">
         <div className="w-full lg:w-2/5 max-w-6xl flex flex-col justify-start">
           <h2 ref={slide3TitleRef} className="heading-2 text-secondary mb-6 font-bold">{t('mainPage.infographic.natureTitle')}</h2>
           <p ref={slide3DescRef} className="body-M text-secondary">
@@ -206,7 +206,7 @@ const Infographic: React.FC = () => {
           </p>
         </div>
         <div className="w-full lg:w-3/5 flex self-center justify-end">
-          <div className="w-[43.75rem] h-[43.75rem]">
+          <div className="w-[43.75rem] ">
             <img 
               ref={slide3ImgRef}
               src="/assets/nature-illustration.svg" 
@@ -217,7 +217,7 @@ const Infographic: React.FC = () => {
         </div>
       </section>
       {/* Slide 4: Guardians */}
-      <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] mb-[5rem]">
+      <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] ">
         <div className="w-full lg:w-2/5 max-w-6xl flex flex-col">
           <h2 ref={slide4TitleRef} className="heading-2 text-secondary mb-6 font-bold">{t('mainPage.infographic.guardiansTitle')}</h2>
           <p ref={slide4DescRef} className="body-M text-secondary">
@@ -225,7 +225,7 @@ const Infographic: React.FC = () => {
           </p>
         </div>
         <div className="w-full lg:w-3/5 flex self-center justify-end">
-          <div className="w-[43.75rem] h-[43.75rem]">
+          <div className="w-[43.75rem] ">
             <img 
               ref={slide4ImgRef}
               src="/assets/guardians-illustration.svg" 

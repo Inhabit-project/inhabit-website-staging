@@ -4,6 +4,10 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  safelist: [
+    'translate-y-0',
+    '-translate-y-full',
+  ],
   theme: {
     extend: {
       colors: {
