@@ -6,7 +6,7 @@ import { useTokenBalance } from "../../../hooks/useTokensBalance";
 import { useAccount, useSignMessage } from "wagmi";
 import { Indicator, indicators } from "../../../assets/json/form/indicators";
 import { z } from "zod";
-import { KYC_HARD_AMOUNT_USD } from "../../../config/const";
+import { KYC_HARD_AMOUNT_USD, MUST_DO_KYC_HARD } from "../../../config/const";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "react-router-dom";
@@ -16,6 +16,7 @@ import { generateSiweMessage } from "../../../utils/generate-siwe-message.util";
 import { useSendKycEmail } from "../../../hooks/useKycEmail";
 import { KYC_TYPE } from "../../../config/enums";
 import { mapUserToUserDto } from "../../../services/mapping/mapUserToUserDto";
+import { useStore } from "../../../store";
 
 type Props = {
   isOpen: boolean;
@@ -100,7 +101,7 @@ export function Checkout(props: Props): JSX.Element {
         });
       }
 
-      if (price < KYC_HARD_AMOUNT_USD && kycAcceptance !== true) {
+      if (MUST_DO_KYC_HARD(price) && kycAcceptance !== true) {
         ctx.addIssue({
           path: ["kycAcceptance"],
           code: z.ZodIssueCode.custom,
@@ -118,10 +119,14 @@ export function Checkout(props: Props): JSX.Element {
   const [selectedIndicator, setSelectedIndicator] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
   // external hooks
   const { address, chainId } = useAccount();
   const { signMessageAsync } = useSignMessage();
   const { referral } = useParams();
+
+  const { kycHardDone, kycHardSent, startKycPolling, setKycHardSent } =
+    useStore();
 
   const { register, handleSubmit, setValue, watch } = useForm<Form>({
     resolver: zodResolver(schema),
@@ -141,7 +146,22 @@ export function Checkout(props: Props): JSX.Element {
   const { mutate: fetchNonce, isPending: isNoncePending } = useNonce();
   const { mutate: sendKycEmail, isPending: isKycPending } = useSendKycEmail();
 
+  const formDisabled =
+    !address ||
+    (price > 0 && !hasSufficientBalance) ||
+    isKycPending ||
+    (kycHardSent && !kycHardDone);
+
+  const selectedIndicatorData = indicators.find(
+    (indicator) => indicator.code === selectedIndicator
+  );
+
   // effects
+  useEffect(() => {
+    if (!address) return;
+    startKycPolling(address, price);
+  }, [address, price]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -161,26 +181,22 @@ export function Checkout(props: Props): JSX.Element {
     };
   }, [isDropdownOpen]);
 
-  // variables and functions
-  const selectedIndicatorData = indicators.find(
-    (indicator) => indicator.code === selectedIndicator
-  );
-
+  // functions
   const handleIndicatorSelect = (indicator: Indicator) => {
     setSelectedIndicator(indicator.code);
     setValue("countryCode", indicator.code);
     setIsDropdownOpen(false);
   };
 
-  const formDisabled = !address || (!hasSufficientBalance && price > 0);
-
   const onSubmit = (data: Form) => {
+    console.log("Form submitted:", data);
     if (!address || !chainId) return;
 
     fetchNonce(address, {
       onSuccess: async (nonce) => {
         if (!nonce) return;
 
+        const kycType = MUST_DO_KYC_HARD(price) ? KYC_TYPE.HARD : KYC_TYPE.SOFT;
         const message = generateSiweMessage(chainId, address, nonce);
         const signature = await signMessageAsync({ message });
         const dto = mapUserToUserDto({
@@ -188,7 +204,7 @@ export function Checkout(props: Props): JSX.Element {
           message,
           signature,
           nonce,
-          kycType: price < KYC_HARD_AMOUNT_USD ? KYC_TYPE.SOFT : KYC_TYPE.HARD,
+          kycType,
           name: data.firstName,
           lastName: data.lastName,
           email: data.email,
@@ -199,6 +215,7 @@ export function Checkout(props: Props): JSX.Element {
 
         sendKycEmail(dto, {
           onSuccess: () => {
+            kycType === KYC_TYPE.HARD && setKycHardSent(true);
             alert("✅ KYC request sent successfully!");
           },
 
@@ -223,7 +240,7 @@ export function Checkout(props: Props): JSX.Element {
           return !!values.countryCode;
         }
 
-        if (key === "kycAcceptance" && price < KYC_HARD_AMOUNT_USD) {
+        if (key === "kycAcceptance" && MUST_DO_KYC_HARD(price)) {
           return true;
         }
 
@@ -432,8 +449,7 @@ export function Checkout(props: Props): JSX.Element {
                 action as a valid electronic signature.
               </span>
             </label>
-
-            {price < KYC_HARD_AMOUNT_USD && (
+            {MUST_DO_KYC_HARD(price) && (
               <label className="flex items-start gap-2 text-xs text-secondary">
                 <input
                   type="checkbox"
@@ -444,6 +460,25 @@ export function Checkout(props: Props): JSX.Element {
                 eventually fully access the rights and benefits associated with
                 my membership.
               </label>
+            )}
+            {MUST_DO_KYC_HARD(price) && kycHardSent && !kycHardDone && (
+              <>
+                <div className="text-xs text-secondary">
+                  ⏳ Your KYC request has been submitted and is awaiting
+                  verification.
+                </div>
+                {/* TODO */}
+                <button
+                  type="button"
+                  className="text-[#D57300] text-xs hover:underline"
+                  onClick={() => {
+                    // puedes reusar el `dto` si lo guardas en un ref, o volver a generar
+                    alert("📧 Re-sending not implemented yet.");
+                  }}
+                >
+                  Resend KYC email
+                </button>
+              </>
             )}
           </div>
           {/* Summary */}
