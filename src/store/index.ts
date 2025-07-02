@@ -99,14 +99,17 @@ export const useStore = create<Store>((set, get) => {
       if (kycHardDone) return;
       if (isPollingKyc) return;
 
-      if (await getHardSentApi(address)) {
-        set({ kycHardSent: true });
+      const wasSentResponse = await getHardSentApi(address);
+      if (!wasSentResponse.data) {
+        set({ kycHardSent: false });
+        return;
       }
 
       set({ isPollingKyc: true });
 
       const interval = setInterval(async () => {
         const response = await getKycHardDoneApi(address);
+        console.log("Polling KYC hard status for address:", address, response);
         if (response.data) {
           clearInterval(interval);
           set({
