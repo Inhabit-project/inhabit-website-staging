@@ -7,7 +7,7 @@ export function mapUserToUserDto(user: User): UserDto {
     message: user.message,
     signature: user.signature,
     nonce: user.nonce,
-    kycType: user.kycType,
+    type: user.kycType,
     name: user.name,
     lastName: user.lastName,
     email: user.email,

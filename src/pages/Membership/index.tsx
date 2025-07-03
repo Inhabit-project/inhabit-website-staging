@@ -1,20 +1,18 @@
-import { useEffect, useState, JSX } from "react";
+import { useEffect, useState, JSX, use } from "react";
 import Menu from "../../components/Menu";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Campaign } from "../../models/campaign.model";
 import { Collection } from "../../models/collection.model";
 import { useStore } from "../../store";
-import { Checkout } from "./_componets/Checkout";
 import RightsTable from "./_componets/RightsTable";
 import { Info } from "./_componets/Info";
 import OtherCollections from "./_componets/OtherCollections";
 import Spinner from "../../ui/Loader";
-// import { Modal } from "./_componets/Modal";
+import MultiStepCheckout from "./_componets/MultiStep";
 
 export default function Membership(): JSX.Element {
   // hooks
   const [collection, setCollection] = useState<Collection | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isReferralValid, setIsReferralValid] = useState<boolean>(false);
 
   // external hooks
@@ -26,7 +24,13 @@ export default function Membership(): JSX.Element {
     campaign?: Campaign;
   };
 
-  const { campaignLoading, inhabit, getCampaign, setCampaign } = useStore();
+  const {
+    campaignLoading,
+    inhabit,
+    getCampaign,
+    setCampaign,
+    setCollection: setCollectionStore,
+  } = useStore();
 
   // effects
   useEffect(() => {
@@ -50,11 +54,12 @@ export default function Membership(): JSX.Element {
   }, [referral]);
 
   useEffect(() => {
-    const load = async () => {
+    const loadCampaign = async () => {
       if (!isReferralValid) return;
 
       if (state?.collection && state?.campaign) {
         setCollection(state.collection);
+        setCollectionStore(state.collection);
         setCampaign(state.campaign);
       } else if (campaignId && collectionId) {
         const loadedCampaign = await getCampaign(Number(campaignId));
@@ -74,11 +79,12 @@ export default function Membership(): JSX.Element {
         }
 
         setCollection(found);
+        setCollectionStore(found);
         setCampaign(loadedCampaign);
       }
     };
 
-    load();
+    loadCampaign();
   }, [isReferralValid, state]);
 
   // TODO: See this logic, it seems to be a bit convoluted
@@ -94,15 +100,10 @@ export default function Membership(): JSX.Element {
           <OtherCollections collectionId={collectionId!} />
           <RightsTable rights={collection!.rights} />
         </div>
-        <Checkout
-          isOpen={isModalOpen}
-          setIsOpen={setIsModalOpen}
-          membershipContract={collection!.membershipContract}
+        <MultiStepCheckout
           price={collection!.price}
+          membershipContract={collection!.membershipContract}
         />
-        {/* {isModalOpen && (
-          <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
-        )} */}
       </div>
     </>
   );

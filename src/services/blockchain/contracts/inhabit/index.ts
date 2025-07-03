@@ -16,6 +16,7 @@ import { HTTP_TRANSPORT, INHABIT_JSON } from "../../../../config/const";
 import { GroupDto } from "../../../dtos/group.dto";
 import { mapGroupDtoToGroup } from "../../../mapping/mapGroupDtoToGroup";
 import { Group } from "../../../../models/group.model";
+import { estimateFeesPerGas } from "viem/actions";
 
 export class InhabitContract {
   private address: Address;
@@ -35,6 +36,13 @@ export class InhabitContract {
 
   setWalletClient(walletClient: WalletClient) {
     this.walletClient = walletClient;
+  }
+
+  getAddress() {
+    if (!this.address) {
+      throw new Error("Contract address not set. Please set it first.");
+    }
+    return this.address;
   }
 
   private getReadContract() {
@@ -84,7 +92,6 @@ export class InhabitContract {
     try {
       const contract = this.getReadContract();
       const dtos = (await contract.read.getCampaigsInfo()) as CampaignDto[];
-
       return Promise.all(dtos.map(mapCampaignDtoToCampaign));
     } catch (error) {
       console.error("❌", error);
@@ -111,6 +118,10 @@ export class InhabitContract {
       const contract = this.getReadContract();
       const dto = (await contract.read.getGroup([referral])) as GroupDto;
 
+      if (dto.referral === "") {
+        return null;
+      }
+
       return mapGroupDtoToGroup(dto);
     } catch (error) {
       console.error("❌", error);
@@ -122,15 +133,31 @@ export class InhabitContract {
   //        WRITE METHODS
   // =========================
 
-  async createCampaign(
-    goal: bigint,
-    collections: CollectionDto[],
-    account: Address
+  async buyNFT(
+    campaignId: string,
+    collection: Address,
+    token: Address,
+    referral: string
   ) {
-    const contract = this.getWriteContract();
+    try {
+      const contract = this.getWriteContract();
+      const fees = await estimateFeesPerGas(this.publicClient);
+      const buyNFTx = await contract.write.buyNFT(
+        [BigInt(campaignId), collection, token, referral],
+        {
+          maxPriorityFeePerGas: fees.maxPriorityFeePerGas,
+          maxFeePerGas: fees.maxFeePerGas,
+        }
+      );
 
-    return contract.write.createCampaign([goal, collections], {
-      account,
-    });
+      await this.publicClient.waitForTransactionReceipt({
+        hash: buyNFTx,
+      });
+
+      return buyNFTx;
+    } catch (error) {
+      console.error("❌", error);
+      return undefined;
+    }
   }
 }

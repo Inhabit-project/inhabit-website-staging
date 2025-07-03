@@ -7,15 +7,19 @@ import { Collection } from "../models/collection.model";
 import { Campaign } from "../models/campaign.model";
 import { userServices } from "../services/rest/user";
 import { MUST_DO_KYC_HARD } from "../config/const";
+import { ERROR, KYC_TYPE } from "../config/enums";
 
 type Store = {
   campaign: Campaign | null;
   campaignLoading: boolean;
   campaigns: Campaign[];
   campaignsLoading: boolean;
+  collection: Collection | null;
   collections: Collection[];
-  kycHardDone: boolean;
-  kycHardSent: boolean;
+  isKycHardCompleted: boolean;
+  isKycSoftCompleted: boolean;
+  hasSentKycHard: boolean;
+  hasSentKycSoft: boolean;
   inhabit: InhabitContract;
   isPollingKyc: boolean;
   usdc: UsdcContract;
@@ -23,18 +27,19 @@ type Store = {
   getCampaign: (campaignId: number) => Promise<Campaign | null>;
   getCampaignCollections: (campaignId: number) => Promise<Collection[]>;
   getCampaigns: () => Promise<Campaign[]>;
+  getHasSentKyc: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
+  getIsKycCompleted: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
   setCampaign: (campaign: Campaign) => void;
   startKycPolling: (address: Address, price: number) => void;
+  setCollection: (collection: Collection) => void;
   setCollections: (collections: Collection[]) => void;
+  setKycSent: (kycType: KYC_TYPE, sent: boolean) => void;
   setWalletClient: (walletClient: WalletClient) => void;
-  setKycHardSent: (sent: boolean) => void;
 };
 
 export const useStore = create<Store>((set, get) => {
-  const {
-    getKycHardDone: getKycHardDoneApi,
-    getHasKycHardSent: getHardSentApi,
-  } = userServices();
+  const { isKycCompleted: isKycCompletedApi, hasSentKyc: hasSentKycApi } =
+    userServices();
 
   const inhabit = new InhabitContract();
   const usdc = new UsdcContract();
@@ -45,9 +50,12 @@ export const useStore = create<Store>((set, get) => {
     campaignLoading: true,
     campaigns: [],
     campaignsLoading: true,
+    collection: null,
     collections: [],
-    kycHardDone: false,
-    kycHardSent: false,
+    isKycHardCompleted: false,
+    isKycSoftCompleted: false,
+    hasSentKycHard: false,
+    hasSentKycSoft: false,
     inhabit,
     isPollingKyc: false,
     usdc,
@@ -75,16 +83,58 @@ export const useStore = create<Store>((set, get) => {
       return campaigns;
     },
 
+    getIsKycCompleted: async (address: Address, kycType: KYC_TYPE) => {
+      const serviceResponse = await isKycCompletedApi(address, kycType);
+
+      if (serviceResponse.success) {
+        if (kycType === KYC_TYPE.HARD) {
+          set({ isKycHardCompleted: serviceResponse.data });
+        } else if (kycType === KYC_TYPE.SOFT) {
+          set({ isKycSoftCompleted: serviceResponse.data });
+        } else {
+          console.warn(`${ERROR.UNKNOWN_KYC_TYPE}: ${kycType}`);
+        }
+      }
+
+      return serviceResponse.success;
+    },
+
+    getHasSentKyc: async (address: Address, kycType: KYC_TYPE) => {
+      const serviceResponse = await hasSentKycApi(address, kycType);
+
+      if (serviceResponse.success) {
+        if (kycType === KYC_TYPE.HARD) {
+          set({ hasSentKycHard: serviceResponse.data });
+        } else if (kycType === KYC_TYPE.SOFT) {
+          set({ hasSentKycSoft: true });
+          // set({ hasSentKycSoft: serviceResponse.data });
+        } else {
+          console.warn(`${ERROR.UNKNOWN_KYC_TYPE}: ${kycType}`);
+        }
+      }
+
+      return serviceResponse.success;
+    },
+
     setCampaign: (campaign: Campaign) => {
       set({ campaign, campaignLoading: false });
     },
 
+    setCollection: (collection: Collection) => {
+      set({ collection });
+    },
     setCollections: (collections: Collection[]) => {
       set({ collections });
     },
 
-    setKycHardSent: (sent: boolean) => {
-      set({ kycHardSent: sent });
+    setKycSent: (kycType: KYC_TYPE, sent: boolean) => {
+      if (kycType === KYC_TYPE.HARD) {
+        set({ hasSentKycHard: sent });
+      } else if (kycType === KYC_TYPE.SOFT) {
+        set({ hasSentKycSoft: sent });
+      } else {
+        console.warn(`${ERROR.UNKNOWN_KYC_TYPE}: ${kycType}`);
+      }
     },
 
     setWalletClient: (walletClient: WalletClient) => {
@@ -92,29 +142,45 @@ export const useStore = create<Store>((set, get) => {
     },
 
     startKycPolling: async (address, price) => {
-      const { kycHardSent, kycHardDone, isPollingKyc } = get();
+      const { hasSentKycHard, isKycHardCompleted, isPollingKyc } = get();
 
-      if (!MUST_DO_KYC_HARD(price)) return;
-      if (kycHardSent) return;
-      if (kycHardDone) return;
-      if (isPollingKyc) return;
+      const hasSentKycHardResult = await hasSentKycApi(address, KYC_TYPE.HARD);
 
-      const wasSentResponse = await getHardSentApi(address);
-      if (!wasSentResponse.data) {
-        set({ kycHardSent: false });
+      if (!hasSentKycHardResult.success) {
         return;
       }
+
+      const fetchedHasSentKycHard = hasSentKycHardResult.data;
+
+      if (fetchedHasSentKycHard) {
+        set({ hasSentKycHard: fetchedHasSentKycHard });
+        return;
+      }
+
+      if (!MUST_DO_KYC_HARD(price)) return;
+      if (!hasSentKycHard) return;
+      if (isKycHardCompleted) return;
+      if (isPollingKyc) return;
 
       set({ isPollingKyc: true });
 
       const interval = setInterval(async () => {
-        const response = await getKycHardDoneApi(address);
-        console.log("Polling KYC hard status for address:", address, response);
-        if (response.data) {
+        const isKycCompletedResult = await isKycCompletedApi(
+          address,
+          KYC_TYPE.HARD
+        );
+
+        if (!isKycCompletedResult.success) {
+          return;
+        }
+
+        const done = isKycCompletedResult.data;
+
+        if (done) {
           clearInterval(interval);
           set({
             isPollingKyc: false,
-            kycHardDone: true,
+            isKycHardCompleted: true,
           });
         }
       }, 500);

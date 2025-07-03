@@ -1,3 +1,4 @@
+import { KYC_TYPE } from "src/config/enums";
 import { Address, Hex } from "viem";
 
 export interface User {
@@ -5,7 +6,7 @@ export interface User {
   message: string;
   signature: Hex;
   nonce: string;
-  kycType: string;
+  kycType: KYC_TYPE;
   name: string;
   lastName: string;
   email: string;

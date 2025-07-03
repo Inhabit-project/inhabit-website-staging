@@ -8,7 +8,11 @@ import {
 import { celoAlfajores } from "viem/chains";
 
 import { HTTP_TRANSPORT, USDT_JSON } from "../../../../config/const";
-import { formatUsdcToUsd } from "../../../../utils/usdc-format.utils";
+import {
+  formatUsdcToUsd,
+  parseUsdToUsdc,
+} from "../../../../utils/usdc-format.utils";
+import { estimateFeesPerGas } from "viem/actions";
 
 export class UsdtContract {
   private address: Address;
@@ -28,6 +32,13 @@ export class UsdtContract {
 
   setWalletClient(walletClient: WalletClient) {
     this.walletClient = walletClient;
+  }
+
+  getAddress() {
+    if (!this.address) {
+      throw new Error("Contract address not set. Please set it first.");
+    }
+    return this.address;
   }
 
   private getReadContract() {
@@ -88,10 +99,17 @@ export class UsdtContract {
   //        WRITE METHODS
   // =========================
 
-  async approve(spender: Address, amount: bigint): Promise<string | undefined> {
+  async approve(spender: Address, amount: number): Promise<string | undefined> {
     try {
       const contract = this.getWriteContract();
-      const approveTx = await contract.write.approve([spender, amount]);
+      const fees = await estimateFeesPerGas(this.publicClient);
+      const approveTx = await contract.write.approve(
+        [spender, parseUsdToUsdc(amount)],
+        {
+          maxPriorityFeePerGas: fees.maxPriorityFeePerGas,
+          maxFeePerGas: fees.maxFeePerGas,
+        }
+      );
 
       await this.publicClient.waitForTransactionReceipt({
         hash: approveTx,

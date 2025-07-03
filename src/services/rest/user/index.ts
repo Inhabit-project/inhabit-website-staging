@@ -3,35 +3,40 @@ import { getHost } from "..";
 import axiosInstance from "../../../config/axios.config";
 import { APIError, ServiceResult } from "../../../models/api.model";
 import { UserDto } from "src/services/dtos/user.dto";
+import { KYC_TYPE } from "src/config/enums";
 
 export function userServices() {
   const { host } = getHost();
 
   // GET
-  const getKycHardDone = async (
-    address: Address
+  const isKycCompleted = async (
+    address: Address,
+    kycType: KYC_TYPE
   ): Promise<ServiceResult<boolean>> => {
     try {
       const response = await axiosInstance.get<boolean>(
-        `${host}/users/doneKycHard/${address}`
+        `${host}/users/${address}/isKycCompleted//${kycType}`
       );
       return { success: true, data: response.data };
     } catch (error) {
       const apiError = error as APIError;
+      console.error("❌", error);
       return { success: false, error: apiError };
     }
   };
 
-  const getHasKycHardSent = async (
-    address: Address
+  const hasSentKyc = async (
+    address: Address,
+    kycType: KYC_TYPE
   ): Promise<ServiceResult<boolean>> => {
     try {
       const response = await axiosInstance.get<boolean>(
-        `${host}/users/hashKycHard/${address}`
+        `${host}/users/${address}/hasSentKyc/${kycType}`
       );
       return { success: true, data: response.data };
     } catch (error) {
       const apiError = error as APIError;
+      console.error("❌", error);
       return { success: false, error: apiError };
     }
   };
@@ -39,20 +44,18 @@ export function userServices() {
   // POST
   const sendKycEmail = async (dto: UserDto): Promise<ServiceResult<string>> => {
     try {
-      const response = await axiosInstance.post<void>(
-        `${host}/users/sendKycEmail`,
-        dto
-      );
+      await axiosInstance.post<void>(`${host}/users/sendKyc`, dto);
       return { success: true };
     } catch (error) {
       const apiError = error as APIError;
+      console.error("❌", error);
       return { success: false, error: apiError };
     }
   };
 
   return {
-    getKycHardDone,
-    getHasKycHardSent,
+    isKycCompleted,
+    hasSentKyc,
     sendKycEmail,
   };
 }

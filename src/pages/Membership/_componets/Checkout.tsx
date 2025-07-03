@@ -1,15 +1,12 @@
 import { JSX, useEffect, useRef, useState } from "react";
-import { ConnectButton } from "../../../ui/ConnectButton";
 import usdcImage from "../../../assets/images/tokens/USDC.svg";
 import usdtImage from "../../../assets/images/tokens/USDT.svg";
-import { useTokenBalance } from "../../../hooks/useTokensBalance";
 import { useAccount, useSignMessage } from "wagmi";
 import { Indicator, indicators } from "../../../assets/json/form/indicators";
 import { z } from "zod";
-import { KYC_HARD_AMOUNT_USD, MUST_DO_KYC_HARD } from "../../../config/const";
+import { MUST_DO_KYC_HARD } from "../../../config/const";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useParams } from "react-router-dom";
 import privacyPolicyPDF from "../../../assets/pdf/privacy-policy.pdf";
 import { useNonce } from "../../../hooks/useNonce";
 import { generateSiweMessage } from "../../../utils/generate-siwe-message.util";
@@ -19,10 +16,11 @@ import { mapUserToUserDto } from "../../../services/mapping/mapUserToUserDto";
 import { useStore } from "../../../store";
 
 type Props = {
-  isOpen: boolean;
-  setIsOpen: (open: boolean) => void;
   membershipContract: string;
   price: number;
+  usdcBalance: number;
+  usdtBalance: number;
+  hasSufficientBalance: boolean;
 };
 
 // TODO: clean form data on submit success
@@ -80,7 +78,8 @@ export function Checkout(props: Props): JSX.Element {
 
       kycAcceptance: z
         .boolean()
-        .refine((val) => val === true, "You must accept the KYC terms"),
+        .refine((val) => val === true, "You must accept the KYC terms")
+        .optional(),
     })
     .superRefine((data, ctx) => {
       const { countryCode, cellphone, kycAcceptance } = data;
@@ -101,7 +100,7 @@ export function Checkout(props: Props): JSX.Element {
         });
       }
 
-      if (MUST_DO_KYC_HARD(price) && kycAcceptance !== true) {
+      if (MUST_DO_KYC_HARD(price) && !kycAcceptance) {
         ctx.addIssue({
           path: ["kycAcceptance"],
           code: z.ZodIssueCode.custom,
@@ -113,7 +112,13 @@ export function Checkout(props: Props): JSX.Element {
   type Form = z.infer<typeof schema>;
 
   // props
-  const { membershipContract, price, setIsOpen } = props;
+  const {
+    membershipContract,
+    price,
+    usdcBalance,
+    usdtBalance,
+    hasSufficientBalance,
+  } = props;
 
   // hooks
   const [selectedIndicator, setSelectedIndicator] = useState<string>("");
@@ -121,46 +126,36 @@ export function Checkout(props: Props): JSX.Element {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // external hooks
-  const { address, chainId } = useAccount();
-  const { signMessageAsync } = useSignMessage();
-  const { referral } = useParams();
-
-  const { kycHardDone, kycHardSent, startKycPolling, setKycHardSent } =
-    useStore();
-
   const { register, handleSubmit, setValue, watch } = useForm<Form>({
     resolver: zodResolver(schema),
     mode: "onChange",
   });
 
-  const {
-    usdcBalance,
-    usdcAllowance,
-    usdtBalance,
-    usdtAllowance,
-    hasSufficientBalance,
-    isLoading: balanceLoading,
-    refetch: refetchBalance,
-  } = useTokenBalance(price);
+  const { address, chainId } = useAccount();
+  const { signMessageAsync } = useSignMessage();
 
   const { mutate: fetchNonce, isPending: isNoncePending } = useNonce();
   const { mutate: sendKycEmail, isPending: isKycPending } = useSendKycEmail();
 
+  const { isKycHardCompleted, hasSentKycHard, setKycSent } = useStore();
+
+  // variables
   const formDisabled =
     !address ||
     (price > 0 && !hasSufficientBalance) ||
     isKycPending ||
-    (kycHardSent && !kycHardDone);
+    (MUST_DO_KYC_HARD(price) && hasSentKycHard && !isKycHardCompleted);
 
   const selectedIndicatorData = indicators.find(
     (indicator) => indicator.code === selectedIndicator
   );
 
-  // effects
-  useEffect(() => {
-    if (!address) return;
-    startKycPolling(address, price);
-  }, [address, price]);
+  // functions
+  const handleIndicatorSelect = (indicator: Indicator) => {
+    setSelectedIndicator(indicator.code);
+    setValue("countryCode", indicator.code);
+    setIsDropdownOpen(false);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -181,15 +176,7 @@ export function Checkout(props: Props): JSX.Element {
     };
   }, [isDropdownOpen]);
 
-  // functions
-  const handleIndicatorSelect = (indicator: Indicator) => {
-    setSelectedIndicator(indicator.code);
-    setValue("countryCode", indicator.code);
-    setIsDropdownOpen(false);
-  };
-
   const onSubmit = (data: Form) => {
-    console.log("Form submitted:", data);
     if (!address || !chainId) return;
 
     fetchNonce(address, {
@@ -215,7 +202,7 @@ export function Checkout(props: Props): JSX.Element {
 
         sendKycEmail(dto, {
           onSuccess: () => {
-            kycType === KYC_TYPE.HARD && setKycHardSent(true);
+            kycType === KYC_TYPE.HARD && setKycSent(KYC_TYPE.HARD, true);
             alert("✅ KYC request sent successfully!");
           },
 
@@ -260,266 +247,264 @@ export function Checkout(props: Props): JSX.Element {
   };
 
   return (
-    <div className="w-full max-w-lg bg-menu-backdrop backdrop-blur-lg rounded-3xl shadow-xl border border-green-soft p-8 flex flex-col gap-6 self-start sticky top-8">
-      <ConnectButton />
+    <form
+      className="flex flex-col gap-4"
+      onSubmit={handleSubmit(onSubmit, onError)}
+    >
       {/* Form */}
       {/* TODO: add i18n for labels and placeholders */}
-      <form
-        className="flex flex-col gap-4"
-        onSubmit={handleSubmit(onSubmit, onError)}
-      >
-        <fieldset disabled={formDisabled} className="contents">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="body-S block text-secondary font-semibold mb-1">
-                First Name*
-              </label>
-              <input
-                type="text"
-                className="input-main"
-                placeholder="Enter your name"
-                {...register("firstName")}
-              />
-            </div>
-            <div>
-              <label className="body-S block text-secondary font-semibold mb-1">
-                Last Name*
-              </label>
-              <input
-                type="text"
-                className="input-main"
-                placeholder="Enter your last name"
-                {...register("lastName")}
-              />
-            </div>
-          </div>
+      <fieldset disabled={formDisabled} className="contents">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="body-S block text-secondary font-semibold mb-1">
-              E-Mail*
-            </label>
-            <input
-              type="email"
-              className="input-main"
-              placeholder="your@email.com"
-              {...register("email")}
-            />
-          </div>
-          {/* Indicator + Cellphone */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="relative" ref={dropdownRef}>
-              <label className="body-S block text-secondary font-semibold mb-1">
-                Country Code
-              </label>
-              <div
-                className="custom-dropdown-trigger"
-                onClick={() => {
-                  if (!formDisabled) setIsDropdownOpen(!isDropdownOpen);
-                }}
-              >
-                <div className="custom-dropdown-display">
-                  {selectedIndicatorData ? (
-                    <span>
-                      {selectedIndicatorData.flag} {selectedIndicatorData.name}{" "}
-                      ({selectedIndicatorData.code})
-                    </span>
-                  ) : (
-                    <span className="placeholder-text">Select country</span>
-                  )}
-                </div>
-                <div
-                  className={`custom-dropdown-arrow ${
-                    isDropdownOpen ? "open" : ""
-                  }`}
-                >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <polyline points="6,9 12,15 18,9"></polyline>
-                  </svg>
-                </div>
-              </div>
-              {isDropdownOpen && (
-                <div className="custom-dropdown-menu">
-                  <div className="custom-dropdown-content">
-                    {/* TODO: added no indicator option */}
-                    {indicators.map((indicator: Indicator, index: number) => (
-                      <div
-                        key={index}
-                        className={`custom-dropdown-option ${
-                          formDisabled ? "pointer-events-none opacity-50" : ""
-                        }`}
-                        onClick={() => {
-                          if (!formDisabled) handleIndicatorSelect(indicator);
-                        }}
-                      >
-                        <span className="flag">{indicator.flag}</span>
-                        <span className="country-name">{indicator.name}</span>
-                        <span className="country-code">({indicator.code})</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              <input
-                type="hidden"
-                {...register("countryCode")}
-                value={selectedIndicator}
-              />
-            </div>
-
-            <div>
-              <label className="body-S block text-secondary font-semibold mb-1">
-                Cellphone
-              </label>
-              <input
-                type="tel"
-                className="input-main"
-                placeholder={
-                  selectedIndicatorData ? "1234567890" : "Select country first"
-                }
-                disabled={!selectedIndicator}
-                {...register("cellphone")}
-              />
-            </div>
-          </div>
-          {/* Telegram handle */}
-          <div>
-            <label className="body-S block text-secondary font-semibold mb-1">
-              Telegram handle
+              First Name*
             </label>
             <input
               type="text"
               className="input-main"
-              placeholder="@pepioperez"
-              {...register("telegramHandle")}
+              placeholder="Enter your name"
+              {...register("firstName")}
             />
           </div>
-          {/* Checkboxes */}
-          <div className="flex flex-col gap-2 mt-2">
-            <label className="flex items-start gap-2 text-xs text-secondary">
-              <input
-                type="checkbox"
-                className="mt-1"
-                {...register("termsAcceptance")}
-              />
-              <span>
-                I consent to the processing of my personal data in accordance
-                with the{" "}
-                <a
-                  href={privacyPolicyPDF}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-bold text-[#D57300] hover:underline inline"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Privacy Policy
-                </a>
-              </span>
+          <div>
+            <label className="body-S block text-secondary font-semibold mb-1">
+              Last Name*
             </label>
-            <label className="flex items-start gap-2 text-xs text-secondary">
-              <input
-                type="checkbox"
-                className="mt-1"
-                {...register("MembershipAgreetment")}
-              />
-              <span>
-                I consent to adhere to the{" "}
-                <button
-                  type="button"
-                  className="font-bold text-[#D57300] hover:underline inline normal-case"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    window.open(
-                      membershipContract,
-                      "_blank",
-                      "noopener,noreferrer"
-                    );
-                  }}
-                >
-                  Membership Agreement
-                </button>{" "}
-                and accept its terms and conditions, granting me rights and
-                benefits related to this Land and Project, and acknowledge this
-                action as a valid electronic signature.
-              </span>
-            </label>
-            {MUST_DO_KYC_HARD(price) && (
-              <label className="flex items-start gap-2 text-xs text-secondary">
-                <input
-                  type="checkbox"
-                  className="mt-1"
-                  {...register("kycAcceptance")}
-                />
-                I understand that I'll need to complete a KYC Verification to
-                eventually fully access the rights and benefits associated with
-                my membership.
-              </label>
-            )}
-            {MUST_DO_KYC_HARD(price) && kycHardSent && !kycHardDone && (
-              <>
-                <div className="text-xs text-secondary">
-                  ⏳ Your KYC request has been submitted and is awaiting
-                  verification.
-                </div>
-                {/* TODO */}
-                <button
-                  type="button"
-                  className="text-[#D57300] text-xs hover:underline"
-                  onClick={() => {
-                    // puedes reusar el `dto` si lo guardas en un ref, o volver a generar
-                    alert("📧 Re-sending not implemented yet.");
-                  }}
-                >
-                  Resend KYC email
-                </button>
-              </>
-            )}
+            <input
+              type="text"
+              className="input-main"
+              placeholder="Enter your last name"
+              {...register("lastName")}
+            />
           </div>
-          {/* Summary */}
-          <div className="bg-green-soft/30 rounded-xl p-4 pt-0 flex flex-col gap-2 mt-2">
-            <div className="flex justify-between">
-              <span className="body-S text-secondary font-bold">Balance</span>
-            </div>
-            <div className="flex justify-between font-semibold">
-              <span className="body-S text-secondary">USDC</span>
-              <div className="flex items-center space-x-3">
-                <span className="body-S text-secondary">
-                  ${usdcBalance.toFixed(2)}
-                </span>
-                <img
-                  src={usdcImage}
-                  alt="USDC"
-                  className="inline-block w-9 h-9 ml-1"
-                />
+        </div>
+        <div>
+          <label className="body-S block text-secondary font-semibold mb-1">
+            E-Mail*
+          </label>
+          <input
+            type="email"
+            className="input-main"
+            placeholder="your@email.com"
+            {...register("email")}
+          />
+        </div>
+        {/* Indicator + Cellphone */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="relative" ref={dropdownRef}>
+            <label className="body-S block text-secondary font-semibold mb-1">
+              Country Code
+            </label>
+            <div
+              className="custom-dropdown-trigger"
+              onClick={() => {
+                if (!formDisabled) setIsDropdownOpen(!isDropdownOpen);
+              }}
+            >
+              <div className="custom-dropdown-display">
+                {selectedIndicatorData ? (
+                  <span>
+                    {selectedIndicatorData.flag} {selectedIndicatorData.name} (
+                    {selectedIndicatorData.code})
+                  </span>
+                ) : (
+                  <span className="placeholder-text">Select country</span>
+                )}
+              </div>
+              <div
+                className={`custom-dropdown-arrow ${
+                  isDropdownOpen ? "open" : ""
+                }`}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <polyline points="6,9 12,15 18,9"></polyline>
+                </svg>
               </div>
             </div>
-            <div className="flex justify-between font-semibold">
-              <span className="body-S text-secondary">USDT</span>
-              <div className="flex items-center space-x-3">
-                <span className="body-S text-secondary">
-                  ${usdtBalance.toFixed(2)}{" "}
-                </span>
-                <img
-                  src={usdtImage}
-                  alt="USDC"
-                  className="inline-block w-9 h-9 ml-1"
-                />
+            {isDropdownOpen && (
+              <div className="custom-dropdown-menu">
+                <div className="custom-dropdown-content">
+                  {/* TODO: added no indicator option */}
+                  {indicators.map((indicator: Indicator, index: number) => (
+                    <div
+                      key={index}
+                      className={`custom-dropdown-option ${
+                        formDisabled ? "pointer-events-none opacity-50" : ""
+                      }`}
+                      onClick={() => {
+                        if (!formDisabled) handleIndicatorSelect(indicator);
+                      }}
+                    >
+                      <span className="flag">{indicator.flag}</span>
+                      <span className="country-name">{indicator.name}</span>
+                      <span className="country-code">({indicator.code})</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-            {/* TODO: add to i18n */}
-            {/* TODO: add styles */}
-            {address && !hasSufficientBalance && (
-              <label className="flex justify-center p-1  text-xs text-secondary">
-                "You don't have enough balance to buy this membership"
-              </label>
             )}
-            {/* <div className="flex justify-between text-secondary font-bold text-lg">
+            <input
+              type="hidden"
+              {...register("countryCode")}
+              value={selectedIndicator}
+            />
+          </div>
+
+          <div>
+            <label className="body-S block text-secondary font-semibold mb-1">
+              Cellphone
+            </label>
+            <input
+              type="tel"
+              className="input-main"
+              placeholder={
+                selectedIndicatorData ? "1234567890" : "Select country first"
+              }
+              disabled={!selectedIndicator}
+              {...register("cellphone")}
+            />
+          </div>
+        </div>
+        {/* Telegram handle */}
+        <div>
+          <label className="body-S block text-secondary font-semibold mb-1">
+            Telegram handle
+          </label>
+          <input
+            type="text"
+            className="input-main"
+            placeholder="@pepioperez"
+            {...register("telegramHandle")}
+          />
+        </div>
+        {/* Checkboxes */}
+        <div className="flex flex-col gap-2 mt-2">
+          <label className="flex items-start gap-2 text-xs text-secondary">
+            <input
+              type="checkbox"
+              className="mt-1"
+              {...register("termsAcceptance")}
+            />
+            <span>
+              I consent to the processing of my personal data in accordance with
+              the{" "}
+              <a
+                href={privacyPolicyPDF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-[#D57300] hover:underline inline"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Privacy Policy
+              </a>
+            </span>
+          </label>
+          <label className="flex items-start gap-2 text-xs text-secondary">
+            <input
+              type="checkbox"
+              className="mt-1"
+              {...register("MembershipAgreetment")}
+            />
+            <span>
+              I consent to adhere to the{" "}
+              <button
+                type="button"
+                className="font-bold text-[#D57300] hover:underline inline normal-case"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  window.open(
+                    membershipContract,
+                    "_blank",
+                    "noopener,noreferrer"
+                  );
+                }}
+              >
+                Membership Agreement
+              </button>{" "}
+              and accept its terms and conditions, granting me rights and
+              benefits related to this Land and Project, and acknowledge this
+              action as a valid electronic signature.
+            </span>
+          </label>
+          {MUST_DO_KYC_HARD(price) && (
+            <label className="flex items-start gap-2 text-xs text-secondary">
+              <input
+                type="checkbox"
+                className="mt-1"
+                {...register("kycAcceptance")}
+              />
+              I understand that I'll need to complete a KYC Verification to
+              eventually fully access the rights and benefits associated with my
+              membership.
+            </label>
+          )}
+          {MUST_DO_KYC_HARD(price) && hasSentKycHard && !isKycHardCompleted && (
+            <>
+              <div className="text-xs text-secondary">
+                ⏳ Your KYC request has been submitted and is awaiting
+                verification.
+              </div>
+              {/* TODO */}
+              <button
+                type="button"
+                className="text-[#D57300] text-xs hover:underline"
+                onClick={() => {
+                  // puedes reusar el `dto` si lo guardas en un ref, o volver a generar
+                  alert("📧 Re-sending not implemented yet.");
+                }}
+              >
+                Resend KYC email
+              </button>
+            </>
+          )}
+        </div>
+        {/* Summary */}
+        <div className="bg-green-soft/30 rounded-xl p-4 pt-0 flex flex-col gap-2 mt-2">
+          <div className="flex justify-between">
+            <span className="body-S text-secondary font-bold">Balance</span>
+          </div>
+          <div className="flex justify-between font-semibold">
+            <span className="body-S text-secondary">USDC</span>
+            <div className="flex items-center space-x-3">
+              <span className="body-S text-secondary">
+                ${usdcBalance.toFixed(2)}
+              </span>
+              <img
+                src={usdcImage}
+                alt="USDC"
+                className="inline-block w-9 h-9 ml-1"
+              />
+            </div>
+          </div>
+          <div className="flex justify-between font-semibold">
+            <span className="body-S text-secondary">USDT</span>
+            <div className="flex items-center space-x-3">
+              <span className="body-S text-secondary">
+                ${usdtBalance.toFixed(2)}{" "}
+              </span>
+              <img
+                src={usdtImage}
+                alt="USDC"
+                className="inline-block w-9 h-9 ml-1"
+              />
+            </div>
+          </div>
+          {/* TODO: add to i18n */}
+          {/* TODO: add styles */}
+          {address && !hasSufficientBalance && (
+            <label className="flex justify-center p-1  text-xs text-secondary">
+              "You don't have enough balance to buy this membership"
+            </label>
+          )}
+          {/* <div className="flex justify-between text-secondary font-bold text-lg">
               <span className="body-M text-secondary">
                 Total taxes included
               </span>
@@ -527,16 +512,15 @@ export function Checkout(props: Props): JSX.Element {
                 $ {membership.valueUSD} USD
               </span>
             </div> */}
-          </div>
-          <button
-            className="btn-secondary w-full mt-4"
-            type="submit"
-            disabled={formDisabled}
-          >
-            Get here your NFT
-          </button>
-        </fieldset>
-      </form>
-    </div>
+        </div>
+        <button
+          className="btn-secondary w-full mt-4"
+          type="submit"
+          disabled={formDisabled}
+        >
+          Get here your NFT
+        </button>
+      </fieldset>
+    </form>
   );
 }
