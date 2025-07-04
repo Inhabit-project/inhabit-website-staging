@@ -56,19 +56,11 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
   const { t, i18n } = useTranslation();
   const isLoading = useContext(LoadingContext);
 
-  // Debug: log when setIsVisible is called
-  const debugSetIsVisible = (visible: boolean) => {
-    console.log('[Menu] setIsVisible called with:', visible);
-    setIsVisible(visible);
-  };
+  useMenuScrollHide(setIsVisible, { getDisable: () => mobileOpen });
 
-  useMenuScrollHide(debugSetIsVisible, { getDisable: () => mobileOpen });
-
-  // Debug: log isVisible and className on each render
   const menuClassName = `fixed top-0 left-0 right-0 h-[5rem] bg-menu-backdrop backdrop-blur-lg z-50 transition-transform duration-300 no-snap ${
     isVisible ? 'translate-y-0' : '-translate-y-full'
   }`;
-  console.log('[Menu] isVisible:', isVisible, '| className:', menuClassName);
 
   const menuLinks = [
     { label: t('navigation.home'), path: '/' },

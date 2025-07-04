@@ -4,12 +4,14 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { initVideoSectionCursor } from '../utils/videoCursor';
 import { LoadingContext } from '../App';
+import SubLoader from './SubLoader';
 
 const ProjectsVideoSection: React.FC = () => {
   const { t } = useTranslation();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [canAnimate, setCanAnimate] = useState(false);
   const isLoading = useContext(LoadingContext);
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
 
   // Refs for animations
   const videoContainerRef = useRef<HTMLDivElement>(null);
@@ -202,7 +204,7 @@ const ProjectsVideoSection: React.FC = () => {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
-            onClick={() => setIsPopupOpen(true)}
+            onClick={() => { setIsPopupOpen(true); setIsVideoLoading(true); }}
             onKeyPress={handleKeyPress}
             role="button"
             tabIndex={0}
@@ -257,6 +259,7 @@ const ProjectsVideoSection: React.FC = () => {
             </div>
           </button>
           <div className="relative w-full h-full max-w-[100vw] max-h-[98vh] aspect-video">
+            <SubLoader isLoading={isVideoLoading} />
             <iframe
               width="100%"
               height="100%"
@@ -268,6 +271,7 @@ const ProjectsVideoSection: React.FC = () => {
               className="w-full h-full"
               loading="lazy"
               aria-label={t('mainPage.projectsVideo.iframeAriaLabel')}
+              onLoad={() => setIsVideoLoading(false)}
             />
           </div>
         </div>

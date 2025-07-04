@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
 
 const CTA: React.FC = () => {
@@ -78,6 +77,8 @@ const CTA: React.FC = () => {
           },
           '+=0.1' // after bg+image
         );
+      // Refresh ScrollTrigger after timeline is set up
+      ScrollTrigger.refresh();
     }, sectionRef);
     return () => {
       ctx.revert();

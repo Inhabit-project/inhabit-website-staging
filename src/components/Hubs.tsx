@@ -190,15 +190,38 @@ const Hubs: React.FC = () => {
               right: auto;
             }
           }
+
+          /* Card centering for mobile/desktop */
+          .hub-card-centered {
+            position: absolute;
+            left: 50%;
+            width: 100%;
+            max-width: calc(100vw - 2rem);
+            width: 30rem;
+            height: 38rem;
+            max-height: calc(100vh - 2rem);
+            transform: translateX(-50%);
+            top: 0;
+            z-index: 30;
+          }
+          @media (max-width: 768px) {
+            .hub-card-centered {
+              position: absolute;
+            left: 50%;
+            top: 10%;
+            transform: translate(-50%, -50%);
+            z-index: 30;
+            }
+          }
         `}
       </style>
       <section
         ref={sectionRef}
-        className="relative w-full flex flex-col items-center background-gradient-light"
-        style={{ minHeight: '100vh' }}
+        className="hubs-section relative w-full flex flex-col items-center background-gradient-light min-h-screen max-h-screen overflow-hidden"
+        style={{ minHeight: '100vh', maxHeight: '100vh', overflow: 'hidden' }}
       >
         {/* Content */}
-        <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
+        <div className="hubs-content relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
           <div className="flex flex-col items-start gap-12">
             {/* Header section */}
             <div className="flex flex-col md:flex-row items-start justify-between gap-8 w-full">
@@ -262,13 +285,7 @@ const Hubs: React.FC = () => {
               {selectedHub !== null && (
                 <div
                   ref={cardRef}
-                  className="absolute w-[28rem] h-[38rem] rounded-xl overflow-hidden"
-                  style={{
-                    left: '50%',
-                    top: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    zIndex: 3
-                  }}
+                  className="hub-card-centered rounded-xl overflow-hidden"
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
                 >

@@ -1,8 +1,7 @@
 import React, { useRef, useEffect, useContext, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
 import BiodiversityCard from './BiodiversityCard';
 import BiodiversityCardsSection from './BiodiversityCardsSection';
@@ -150,6 +149,8 @@ const Infographic: React.FC = () => {
           .to(slide4TitleRef.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
           .to(slide4DescRef.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6')
           .to(slide4ImgRef.current, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out' }, '-=0.4');
+        // Refresh ScrollTrigger after all timelines are set up
+        ScrollTrigger.refresh();
       }, rootRef);
     }
     return () => {

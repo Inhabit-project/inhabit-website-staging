@@ -1,8 +1,7 @@
 import React, { useRef, useEffect, useContext, useState } from 'react';
 import LogosSection from './LogosSection';
 import { useTranslation } from 'react-i18next';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
 
 interface Testimonial {
@@ -146,6 +145,8 @@ const Testimonials: React.FC = () => {
           duration: 0.8,
           ease: "power3.out"
         }, "-=0.6");
+        // Refresh ScrollTrigger after timeline is set up
+        ScrollTrigger.refresh();
       });
     }
 

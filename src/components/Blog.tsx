@@ -4,11 +4,8 @@ import { fetchPosts } from "@/services/blogService";
 import { BlogPost, BlogProps } from "@/types/wordpress";
 import { truncateHtml } from "@/utils/html";
 import { Link, useLocation } from "react-router-dom";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from '../utils/gsap';
 import SubLoader from "@/components/SubLoader";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
   const location = useLocation();
@@ -142,22 +139,17 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
             "-=0.6"
           )
           .add(() => setContentVisible(true)); // Show content after animation
+        // Refresh ScrollTrigger after timeline is set up
+        ScrollTrigger.refresh();
       });
     }
 
     triggerBlogAnimation();
 
     return () => {
-      if (tl) tl.kill();
       if (ctx) ctx.revert();
-      // Only kill triggers for this section, not all triggers globally
-      if (sectionRef.current) {
-        ScrollTrigger.getAll().forEach((trigger) => {
-          if (trigger.trigger === sectionRef.current) trigger.kill();
-        });
-      }
     };
-  }, [readyToAnimate, isBlogPage, t, i18n.language]);
+  }, [readyToAnimate]);
 
   useEffect(() => {
     console.log('Refs:', {

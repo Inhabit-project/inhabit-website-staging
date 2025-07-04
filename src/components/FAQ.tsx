@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
 
 interface FAQItem {
@@ -75,6 +74,9 @@ const FAQ: React.FC<FAQProps> = ({ faqItems, title, description }) => {
       stagger: 0.1,
       ease: "power3.out"
     }, "-=0.4");
+
+    // Refresh ScrollTrigger after timeline is set up
+    ScrollTrigger.refresh();
 
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
@@ -216,6 +218,9 @@ export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string 
       ease: "power3.out"
     }, "-=0.4");
 
+    // Refresh ScrollTrigger after timeline is set up
+    ScrollTrigger.refresh();
+
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
@@ -343,6 +348,9 @@ export const FAQHubs: React.FC = () => {
       stagger: 0.1,
       ease: "power3.out"
     }, "-=0.4");
+
+    // Refresh ScrollTrigger after timeline is set up
+    ScrollTrigger.refresh();
 
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());

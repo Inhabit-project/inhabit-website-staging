@@ -4,17 +4,20 @@ import { initVideoSectionCursor } from '../utils/videoCursor';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
+import SubLoader from './SubLoader';
 
 interface VideoPlayerProps {
   videoUrl: string;
   startTime?: number;
   autoplay?: boolean;
+  onLoad?: () => void;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ 
   videoUrl, 
   startTime = 2, 
-  autoplay = true 
+  autoplay = true,
+  onLoad
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const { t } = useTranslation();
@@ -52,6 +55,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       referrerPolicy="strict-origin-when-cross-origin"
       className="w-full h-full"
       loading="lazy"
+      onLoad={onLoad}
     />
   );
 };
@@ -63,6 +67,7 @@ interface VideoProps {
 const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isVideoPreloaded, setIsVideoPreloaded] = useState(false);
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
@@ -183,6 +188,12 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
     };
   }, [isLoading]);
 
+  // Open popup and start loading
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
+    setIsVideoLoading(true);
+  };
+
   return ( 
     <section 
       ref={sectionRef}
@@ -234,7 +245,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
-            onClick={() => setIsPopupOpen(true)}
+            onClick={handleOpenPopup}
           >
             {/* Play button */}
             <button 
@@ -275,10 +286,13 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
             </div>
           </button>
           <div className="relative w-full h-full max-w-[100vw] max-h-[98vh] aspect-video">
+            <SubLoader isLoading={isVideoLoading} />
             <VideoPlayer 
               videoUrl="https://youtu.be/rziRiIrr_kE" 
               startTime={2}
               autoplay={true}
+              // @ts-ignore
+              onLoad={() => setIsVideoLoading(false)}
             />
           </div>
         </div>
