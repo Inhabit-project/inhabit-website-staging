@@ -13,9 +13,10 @@ import LogosSection from '../components/LogosSection';
 
 interface AboutUsPageProps {
   onPageReady?: () => void;
+  onHeroImageLoad?: () => void;
 }
 
-const AboutUsPage: React.FC<AboutUsPageProps> = ({ onPageReady }) => {
+const AboutUsPage: React.FC<AboutUsPageProps> = ({ onPageReady, onHeroImageLoad }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -32,7 +33,7 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ onPageReady }) => {
         <Menu />
         <main id="main-content" role="main" tabIndex={-1}>
           <section aria-label="About Us hero section">
-            <InternalPagesHero variant="about" />
+            <InternalPagesHero variant="about" onHeroImageLoad={onHeroImageLoad} />
           </section>
           <section aria-label="About Us introduction">
             <ImageSection

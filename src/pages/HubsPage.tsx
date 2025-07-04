@@ -10,9 +10,10 @@ import Footer from '../components/Footer';
 
 interface HubsPageProps {
   onPageReady?: () => void;
+  onHeroImageLoad?: () => void;
 }
 
-const HubsPage: React.FC<HubsPageProps> = ({ onPageReady }) => {
+const HubsPage: React.FC<HubsPageProps> = ({ onPageReady, onHeroImageLoad }) => {
   useEffect(() => {
     if (onPageReady) onPageReady();
   }, [onPageReady]);
@@ -27,7 +28,7 @@ const HubsPage: React.FC<HubsPageProps> = ({ onPageReady }) => {
         <Menu />
         <main id="main-content" tabIndex={-1} role="main">
           <section aria-label="Hubs hero section">
-            <InternalPagesHero variant="hubs" />
+            <InternalPagesHero variant="hubs" onHeroImageLoad={onHeroImageLoad} />
           </section>
           <section aria-label="Hubs main content">
             <HubsMain />

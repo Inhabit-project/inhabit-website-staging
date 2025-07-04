@@ -187,6 +187,7 @@ const CTA: React.FC = () => {
                 src="/assets/cta-img.webp"
                 alt={t('mainPage.cta.imageAlt')}
                 className="w-full h-full object-cover aspect-[4/3]"
+                loading="lazy"
               />
             </div>
           </div>

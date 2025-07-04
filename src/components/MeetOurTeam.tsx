@@ -32,8 +32,8 @@ const teamMembers = [
   },
   {
     key: 5,
-    image: '/assets/team/junior.webp',
-    linkedin: 'https://www.linkedin.com/in/rojasjuniore/',
+    image: '/assets/team/Santiago.webp',
+    linkedin: 'https://www.linkedin.com/in/salviega/',
   },
   {
     key: 6,
@@ -43,7 +43,7 @@ const teamMembers = [
   {
     key: 7,
     image: '/assets/team/juan.webp',
-    linkedin: '#',
+    linkedin: 'https://www.linkedin.com/in/themute/',
   },
   {
     key: 8,
@@ -57,8 +57,8 @@ const teamMembers = [
   },
   {
     key: 10,
-    image: '/assets/team/JuanDiego.webp',
-    linkedin: 'https://www.linkedin.com/in/juandiegoagudelom/',
+    image: '/assets/team/junior.webp',
+    linkedin: 'https://www.linkedin.com/in/rojasjuniore/',
   },
   {
     key: 11,

@@ -177,6 +177,7 @@ const RelatedPost: React.FC = () => {
                     zIndex: 0,
                     borderRadius: "inherit",
                   }}
+                  loading="lazy"
                 />
                 <button
                   style={{

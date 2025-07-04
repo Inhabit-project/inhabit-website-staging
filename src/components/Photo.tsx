@@ -75,47 +75,49 @@ const Photo: React.FC = () => {
       },
       // Mobile
       "(max-width: 767px)": function() {
-        const tl1 = gsap.timeline({
-          scrollTrigger: {
-            trigger: section1Ref.current,
-            start: "top 80%",
-            end: "bottom 60%",
-            scrub: true,
-            // markers: true,
+        // Use simple onEnter/onLeave animations for mobile to avoid scrub/jump issues
+        ScrollTrigger.create({
+          trigger: section1Ref.current,
+          start: "top 80%",
+          onEnter: () => {
+            gsap.to(image1Ref.current, {
+              scale: 1,
+              duration: 0.7,
+              ease: "power2.out"
+            });
+            gsap.to(text1Ref.current, {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: "power2.out"
+            });
+          },
+          onLeaveBack: () => {
+            gsap.to(image1Ref.current, { scale: 1.1, duration: 0.5 });
+            gsap.to(text1Ref.current, { opacity: 0, y: 50, duration: 0.4 });
           }
         });
-        tl1.to(image1Ref.current, {
-          scale: 1.03,
-          duration: 0.5,
-          ease: "power2.out"
-        })
-        .to(text1Ref.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.3,
-          ease: "power2.out"
-        }, "-=0.6");
-
-        const tl2 = gsap.timeline({
-          scrollTrigger: {
-            trigger: section2Ref.current,
-            start: "top 80%",
-            end: "bottom 60%",
-            scrub: true,
-            // markers: true,
+        ScrollTrigger.create({
+          trigger: section2Ref.current,
+          start: "top 80%",
+          onEnter: () => {
+            gsap.to(image2Ref.current, {
+              scale: 1,
+              duration: 0.7,
+              ease: "power2.out"
+            });
+            gsap.to(text2Ref.current, {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: "power2.out"
+            });
+          },
+          onLeaveBack: () => {
+            gsap.to(image2Ref.current, { scale: 1.1, duration: 0.5 });
+            gsap.to(text2Ref.current, { opacity: 0, y: 50, duration: 0.4 });
           }
         });
-        tl2.to(image2Ref.current, {
-          scale: 1.03,
-          duration: 0.5,
-          ease: "power2.out"
-        })
-        .to(text2Ref.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.3,
-          ease: "power2.out"
-        }, "-=0.6");
       }
     });
 
@@ -129,7 +131,7 @@ const Photo: React.FC = () => {
       {/* Photo 1 */}
       <section 
         ref={section1Ref}
-        className="relative w-full h-[80vh] h-screen"
+        className="relative w-full h-screen min-h-screen"
       >
         <div className="relative w-full h-full">
           <img 
@@ -137,11 +139,12 @@ const Photo: React.FC = () => {
             src="/assets/photo1.webp" 
             alt="Person in natural environment" 
             className="w-full h-full object-cover"
+            loading="lazy"
           />
           
           <div 
             ref={text1Ref}
-            className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] right-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/5 backdrop-blur-3xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0"
+            className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] right-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/10 backdrop-blur-2xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0 shadow-lg"
           >
             <p className="body-M text-light">
               {t('mainPage.photo.section1')}
@@ -153,7 +156,7 @@ const Photo: React.FC = () => {
       {/* Photo 2 */}
       <section 
         ref={section2Ref}
-        className="relative w-full h-[80vh] h-screen"
+        className="relative w-full h-screen min-h-screen"
       >
         <div className="relative w-full h-full">
           <img 
@@ -161,11 +164,12 @@ const Photo: React.FC = () => {
             src="/assets/photo-2.webp" 
             alt="Natural environment" 
             className="w-full h-full object-cover"
+            loading="lazy"
           />
           
           <div 
             ref={text2Ref}
-            className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] left-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/5 backdrop-blur-3xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0"
+            className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] left-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/10 backdrop-blur-2xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0 shadow-lg"
           >
             <p className="body-M text-light">
               {t('mainPage.photo.section2')}

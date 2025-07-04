@@ -69,16 +69,17 @@
         "role": "Abogada con Maestría en Estudios Territoriales, experta en derecho ambiental y marcos legales de protección territorial desde una perspectiva biocultural. Fundadora de la Fundación Madre Tierra que opera en toda Colombia."
       },
       {
-        "name": "Junior Rojaas",
-        "role": "Desarrollador senior y emprendedor con más de 11 años en desarrollo de software, especializado en blockchain y criptomonedas. CTO de Futswap y CEO de Intechchain, liderando proyectos en finanzas descentralizadas y soluciones tecnológicas."
+        "name": "Santiago Viana",
+        "role": "Ecólogo y desarrollador Web3, ganador consecutivo del hackathon Funding the Commons en 2023 y 2024. Organizador y educador de programas educativos abiertos sobre blockchain en entornos EVM, así como de cursos permanentes en universidades de Bogotá."
       },
+      
       {
         "name": "Gaia Pagano",
         "role": "Licenciada en Ciencias Sociales, Máster en Innovación y Desarrollo, Derechos Humanos y Cultura de Paz. Coordinadora en la Pontificia Universidad Javeriana, más de 12 años en proyectos de paz y reconciliación, relaciones interculturales y diálogo con comunidades indígenas y afrodescendientes."
       },
       {
-        "name": "Juan Pablo Lievano",
-        "role": "Economista y Magíster en antropología con más de 13 años de experiencia en desarrollo rural sostenible, cambio climático, gestión de proyectos y evaluación financiera de modelos agroempresariales de pequeños agricultores. Fundador de dos reservas naturales en Colombia."
+        "name": "Juan Sebastián Sánchez Hernández",
+        "role": "Experto en comunicaciones digitales y marketing, nacido, criado y radicado en Bogotá, con más de 13 años de experiencia desarrollando estrategias de marca y contenido. Especialista en simplificar temas complejos como cambio climático, biodiversidad, blockchain y conservación comunitaria. Apasionado por humanizar la tecnología a través de historias y trabajar en la restauración de la relación de la humanidad con la naturaleza. Líder de Comunicaciones en INHABIT."
       },
       {
         "name": "Mohamd Ibrahim",
@@ -89,8 +90,8 @@
         "role": "10 años de experiencia como facilitadora de transformación eco-psico-social. Ingeniera industrial, Máster en Desarrollo Rural y especializada en Psicología Transpersonal-Integral. Lidera proyectos sostenibles e impulsa iniciativas inclusivas en comunidades rurales de Colombia. Con la Fundación INHABIT, co-crea metodologías bioculturales y apoya la regeneración territorial a través de estrategias de custodia comunitaria."
       },
       {
-        "name": "Juan Diego Agudelo",
-        "role": "Desarrollador con 4 años de experiencia especializado en tokenización de activos del mundo real e interoperabilidad blockchain. Su trabajo se centra en la trazabilidad de procesos, distribución de capital y tokenización de activos. Comprometido con el blockchain para el bien, diseña sistemas que apoyan la creación, gobernanza colectiva y custodia a largo plazo de bienes comunes físicos, fomentando economías regenerativas y comunitarias."
+        "name": "Junior Rojaas",
+        "role": "Desarrollador senior y emprendedor con más de 11 años en desarrollo de software, especializado en blockchain y criptomonedas. CTO de Futswap y CEO de Intechchain, liderando proyectos en finanzas descentralizadas y soluciones tecnológicas."
       },
       {
         "name": "Fernanda Herrera",
@@ -563,9 +564,10 @@
         "role": "Abogada con Maestría en Estudios Territoriales, experta en derecho ambiental y marcos legales de protección territorial desde una perspectiva biocultural. Fundadora de la Fundación Madre Tierra que opera en toda Colombia."
       },
       {
-        "name": "Junior Rojaas",
-        "role": "Desarrollador senior y emprendedor con más de 11 años en desarrollo de software, especializado en blockchain y criptomonedas. CTO de Futswap y CEO de Intechchain, liderando proyectos en finanzas descentralizadas y soluciones tecnológicas."
+        "name": "Santiago Viana",
+        "role": "Ecólogo y desarrollador Web3, ganador consecutivo del hackathon Funding the Commons en 2023 y 2024. Organizador y educador de programas educativos abiertos sobre blockchain en entornos EVM, así como de cursos permanentes en universidades de Bogotá."
       },
+      
       {
         "name": "Gaia Pagano",
         "role": "Licenciada en Ciencias Sociales, Máster en Innovación y Desarrollo, Derechos Humanos y Cultura de Paz. Coordinadora en la Pontificia Universidad Javeriana, más de 12 años en proyectos de paz y reconciliación, relaciones interculturales y diálogo con comunidades indígenas y afrodescendientes."
@@ -583,12 +585,16 @@
         "role": "10 años de experiencia como facilitadora de transformación eco-psico-social. Ingeniera industrial, Máster en Desarrollo Rural y especializada en Psicología Transpersonal-Integral. Lidera proyectos sostenibles e impulsa iniciativas inclusivas en comunidades rurales de Colombia. Con la Fundación INHABIT, co-crea metodologías bioculturales y apoya la regeneración territorial a través de estrategias de custodia comunitaria."
       },
       {
-        "name": "Juan Diego Agudelo",
-        "role": "Desarrollador con 4 años de experiencia especializado en tokenización de activos del mundo real e interoperabilidad blockchain. Su trabajo se centra en la trazabilidad de procesos, distribución de capital y tokenización de activos. Comprometido con el blockchain para el bien, diseña sistemas que apoyan la creación, gobernanza colectiva y custodia a largo plazo de bienes comunes físicos, fomentando economías regenerativas y comunitarias."
+        "name": "Junior Rojaas",
+        "role": "Desarrollador senior y emprendedor con más de 11 años en desarrollo de software, especializado en blockchain y criptomonedas. CTO de Futswap y CEO de Intechchain, liderando proyectos en finanzas descentralizadas y soluciones tecnológicas."
       },
       {
         "name": "Fernanda Herrera",
         "role": "Diseñadora visual con 12 años de experiencia en desarrollo de proyectos digitales, trabajando como diseñadora UI y UX para sitios web y aplicaciones. Muchos de estos sitios han sido desarrollados completamente desde la conceptualización hasta el desarrollo del código, generalmente usando Html5, css3 y javascript básico o CMS como wordpress, webflow, etc. Tengo conocimientos básicos en frameworks como vue, react, angular, python y ruby on rails, microinteracciones y animaciones web avanzadas."
+      },
+      {
+        "name": "Juan Sebastián Sánchez Hernández",
+        "role": "Experto en comunicaciones digitales y marketing, nacido, criado y radicado en Bogotá, con más de 13 años de experiencia desarrollando estrategias de marca y contenido. Especialista en simplificar temas complejos como cambio climático, biodiversidad, blockchain y conservación comunitaria. Apasionado por humanizar la tecnología a través de historias y trabajar en la restauración de la relación de la humanidad con la naturaleza. Líder de Comunicaciones en INHABIT."
       }
     ],
     "logosSection": {

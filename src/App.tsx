@@ -8,6 +8,7 @@ import Loader from "@/components/Loader";
 import { scrollManager } from "@/utils/scrollManager";
 import PageTransition from '@/components/PageTransition';
 import { useLocation } from 'react-router-dom';
+import { useScrollToTopOnNavigation } from '@/utils/scrollToTopOnNavigation';
 
 import { Routes, Route } from "react-router-dom";
 
@@ -31,13 +32,30 @@ import ArticlePage from "@/pages/ArticlePage";
 export const LoadingContext = createContext<boolean>(false);
 
 const App: React.FC = () => {
+  useScrollToTopOnNavigation();
   const [isLoading, setIsLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [showTransition, setShowTransition] = useState(false);
   const [transitionIn, setTransitionIn] = useState(false);
   const [pageReady, setPageReady] = useState(false);
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
+  const [minLoaderTimeElapsed, setMinLoaderTimeElapsed] = useState(false);
+  const [canFinishLoading, setCanFinishLoading] = useState(false);
   const location = useLocation();
   const [pendingLocation, setPendingLocation] = useState(location);
+
+  // Only allow loader to finish when both hero image and timer are done
+  useEffect(() => {
+    if (heroImageLoaded && minLoaderTimeElapsed) {
+      setCanFinishLoading(true);
+    }
+  }, [heroImageLoaded, minLoaderTimeElapsed]);
+
+  // Start minimum loader timer on mount
+  useEffect(() => {
+    const timer = setTimeout(() => setMinLoaderTimeElapsed(true), 1200);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -84,7 +102,13 @@ const App: React.FC = () => {
     // No-op: scroll now handled in useEffect above
   };
 
-  const handleLoadingComplete = () => {
+  // Called when the hero image is loaded
+  const handleHeroImageLoad = () => {
+    setHeroImageLoaded(true);
+  };
+
+  // Called when Loader finishes its progress animation
+  const handleLoaderComplete = () => {
     setIsLoading(false);
   };
 
@@ -96,23 +120,25 @@ const App: React.FC = () => {
       <div
         className={`app-container ${isTransitioning ? "transitioning" : ""}`}
       >
-        {isLoading && <Loader onLoadingComplete={handleLoadingComplete} />}
+        {isLoading && (
+          <Loader onLoadingComplete={canFinishLoading ? handleLoaderComplete : undefined} />
+        )}
         {showTransition && (
           <PageTransition in={transitionIn} onComplete={handleTransitionComplete} />
         )}
         <Routes location={pendingLocation}>
-          <Route path="/" element={<MainPage {...pageProps} />} />
-          <Route path="/hubs" element={<HubsPage {...pageProps} />} />
-          <Route path="/about" element={<AboutUsPage {...pageProps} />} />
-          <Route path="/stewardship-nft" element={<StewardshipNFTPage {...pageProps} />} />
+          <Route path="/" element={<MainPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+          <Route path="/hubs" element={<HubsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+          <Route path="/about" element={<AboutUsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+          <Route path="/stewardship-nft" element={<StewardshipNFTPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
           <Route path="/checkout" element={<Checkout {...pageProps} />} />
           <Route path="/blog" element={<BlogPage {...pageProps} />} />
-          <Route path="/hubs/nuiyanzhi" element={<NuiyanzhiPage {...pageProps} />} />
+          <Route path="/hubs/nuiyanzhi" element={<NuiyanzhiPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
           <Route path="/hubs/agua-de-luna" element={<AguaDeLunaPage {...pageProps} />} />
           <Route path="/hubs/tierrakilwa" element={<TierraKilwaPage {...pageProps} />} />
           <Route path="/terms" element={<TermsAndConditionsPage {...pageProps} />} />
           <Route path="/privacy" element={<PrivacyPolicyPage {...pageProps} />} />
-          <Route path="/projects" element={<ProjectsPage {...pageProps} />} />
+          <Route path="/projects" element={<ProjectsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
           <Route path="/contact" element={<ContactPage {...pageProps} />} />
           <Route path="/blog/article/:id" element={<ArticlePage {...pageProps} />} />
           <Route path="*" element={<FourOhFourPage {...pageProps} />} />

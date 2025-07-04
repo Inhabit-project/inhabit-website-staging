@@ -73,16 +73,17 @@
         "role": "Attorney with a Master's in Territorial Studies, experienced in environmental law and legal territorial protection frameworks from a biocultural perspective. Founder of the Foundation of Mother Earth operating across Colombia."
       },
       {
-        "name": "Junior Rojaas",
-        "role": "Senior developer and entrepreneur with 11+ years in software development, specializing in blockchain and cryptocurrencies. CTO of Futswap and CEO of Intechchain, leading projects in decentralized finance and technological solutions."
+        "name": "Santiago Viana",
+        "role": "Ecologist and Web3 developer, consecutive winner of the Funding the Commons hackathon in 2023 and 2024. Organizer and educator of open educational programs on blockchain in EVM environments, as well as ongoing courses at universities in Bogotá."
       },
+      
       {
         "name": "Gaia Pagano",
         "role": "Bachelor of Social Sciences, Master in Innovation and Development, Human Rights and Culture of Peace. Coordinator at Pontificia Universidad Javeriana, 12+ years in peace and reconciliation, intercultural relations, and dialogue projects with indigenous and Afro-descendant communities."
       },
       {
-        "name": "Juan Pablo Lievano",
-        "role": "Economist and MA in anthropology with 13+ years of experience in sustainable rural development, climate change, project management, and financial evaluation of small farmer agribusiness models. Founder of two natural reserves in Colombia."
+        "name": "Juan Sánchez",
+        "role": "Digital communications and marketing expert born, raised and based in Bogotá with over 13 years of experience delivering brand and content strategies. Skilled at simplifying complex topics like climate change, biodiversity, blockchain and community-based conservation. Passionate about humanising technology through stories and working on restoring humanity's relationship with nature. Communications Lead at INHABIT."
       },
       {
         "name": "Mohamd Ibrahim",
@@ -93,13 +94,14 @@
         "role": "10 years of experience as an eco-psycho-social transformation facilitator. Industrial engineer, Master in Rural Development, and specialized in Transpersonal-Integral Psychology. She leads sustainable projects and fosters inclusive initiatives within rural communities in Colombia. With the INHABIT Foundation, she actively co-creates biocultural methodologies and supports territorial regeneration through community-based stewardship strategies."
       },
       {
-        "name": "Juan Diego Agudelo",
-        "role": "A developer with 4 years of experience specializing in real-world asset tokenization and blockchain interoperability. His work focuses on process traceability, capital distribution, and asset tokenization. Committed to blockchain for good, he designs systems that support the creation, collective governance, and long-term stewardship of physical commons, fostering regenerative, community-driven economies."
+        "name": "Junior Rojaas",
+        "role": "Senior developer and entrepreneur with 11+ years in software development, specializing in blockchain and cryptocurrencies. CTO of Futswap and CEO of Intechchain, leading projects in decentralized finance and technological solutions."
       },
       {
         "name": "Fernanda Herrera",
         "role": "Visual designer with 12 years of experience in the field of digital project development, working as UI and UX designer for websites and applications, many of these websites have been fully developed from the conceptualization phase of the design to the code development itself, usually using Html5, css3 and basic javascript or CMS like wordpress, webflow, etc. I have basic knowledge in frameworks such as vue, react, angular, python and ruby on rails, microintreactions and advanced web animations."
       }
+      
     ]
   },
   "hubsMain": {

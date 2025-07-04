@@ -12,9 +12,10 @@ import ProjectsMain from '../components/ProjectsMain';
 
 interface ProjectsPageProps {
   onPageReady?: () => void;
+  onHeroImageLoad?: () => void;
 }
 
-const ProjectsPage: React.FC<ProjectsPageProps> = ({ onPageReady }) => {
+const ProjectsPage: React.FC<ProjectsPageProps> = ({ onPageReady, onHeroImageLoad }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -44,6 +45,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ onPageReady }) => {
           >
             <InternalPagesHero
               variant="projects"
+              onHeroImageLoad={onHeroImageLoad}
             />
           </section>
           <section 

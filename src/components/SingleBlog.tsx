@@ -40,15 +40,6 @@ const SingleBlog: React.FC = () => {
     if (id) loadPost(id);
   }, [id, t]);
 
-  useEffect(() => {
-    if (!loading && post) {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    }
-  }, [loading, post]);
-
   return (
     <>
       <SubLoader isLoading={loading} />

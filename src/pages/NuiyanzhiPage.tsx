@@ -12,9 +12,10 @@ import ImageSection from '../components/ImageSection';
 
 interface NuiyanzhiPageProps {
   onPageReady?: () => void;
+  onHeroImageLoad?: () => void;
 }
 
-const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({ onPageReady }) => {
+const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({ onPageReady, onHeroImageLoad }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -27,6 +28,7 @@ const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({ onPageReady }) => {
       {/* Internal Hero Section - custom for Nuiyanzhi */}
       <InternalPagesHero
         variant="nuiyanzhi"
+        onHeroImageLoad={onHeroImageLoad}
         // Optionally, you can extend InternalPagesHero to accept custom props for this hub
       />
 

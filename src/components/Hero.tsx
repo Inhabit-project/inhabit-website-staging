@@ -7,9 +7,10 @@ import { LoadingContext } from '../App';
 
 interface HeroProps {
   scrollToRef?: React.RefObject<HTMLElement>;
+  onHeroImageLoad?: () => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ scrollToRef }) => {
+const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
   const { t, i18n } = useTranslation();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
@@ -229,6 +230,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef }) => {
           src="/assets/hero.webp"
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
+          onLoad={onHeroImageLoad}
         />
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-secondary/30 to-transparent"></div>

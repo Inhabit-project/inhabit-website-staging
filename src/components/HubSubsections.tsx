@@ -111,6 +111,7 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
           alt=""
           className="w-full h-full object-cover transition-opacity duration-700 opacity-100"
           style={{ transition: 'opacity 0.7s' }}
+          loading="lazy"
         />
       </div>
 
@@ -131,6 +132,7 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
                 src={mapImage} 
                 alt={`Map of ${title} hub location`} 
                 className="w-full h-40 object-cover rounded-lg mb-4" 
+                loading="lazy"
               />
             </div>
             <span ref={labelRef} className="text-light eyebrow opacity-80">{label}</span>

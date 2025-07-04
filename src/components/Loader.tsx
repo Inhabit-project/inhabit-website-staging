@@ -36,20 +36,19 @@ const Loader: React.FC<LoaderProps> = ({ onLoadingComplete }) => {
 
   useEffect(() => {
     const duration = 2000; // 2 seconds for the loading animation
-    const interval = 10; // Update every 10ms
-    const steps = duration / interval;
-    const increment = 100 / steps;
-    let currentProgress = 0;
+    const interval = duration / 100; // 100 steps, one per percent
 
     const timer = setInterval(() => {
-      currentProgress += increment;
-      if (currentProgress >= 100) {
-        clearInterval(timer);
-        setProgress(100);
-        onLoadingComplete?.();
-      } else {
-        setProgress(Math.min(currentProgress, 100));
-      }
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(timer);
+          setTimeout(() => {
+            onLoadingComplete?.();
+          }, 200); // Wait 200ms to ensure 100% is visible
+          return 100;
+        }
+        return prev + 1;
+      });
     }, interval);
 
     return () => clearInterval(timer);
@@ -74,6 +73,7 @@ const Loader: React.FC<LoaderProps> = ({ onLoadingComplete }) => {
           src="/assets/small-earth.webp" 
           alt="Earth loader" 
           className="w-full h-full object-cover animate-loaderPulse"
+          loading="eager"
         />
       </div>
       <div 

@@ -18,9 +18,10 @@ import { scrollManager } from '../utils/scrollManager';
 
 interface MainPageProps {
   onPageReady?: () => void;
+  onHeroImageLoad?: () => void;
 }
 
-const MainPage: React.FC<MainPageProps> = ({ onPageReady }) => {
+const MainPage: React.FC<MainPageProps> = ({ onPageReady, onHeroImageLoad }) => {
   const videoSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const MainPage: React.FC<MainPageProps> = ({ onPageReady }) => {
       <Menu />
       <main id="main-content" tabIndex={-1} role="main">
         <section aria-label="Hero section">
-          <Hero scrollToRef={videoSectionRef} />
+          <Hero scrollToRef={videoSectionRef} onHeroImageLoad={onHeroImageLoad} />
         </section>
         <section aria-label="Video section" ref={videoSectionRef}>
           <Video />

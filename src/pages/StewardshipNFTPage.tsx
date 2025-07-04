@@ -15,9 +15,10 @@ import NFTGrid from '../components/NFTGrid';
 
 interface StewardshipNFTPageProps {
   onPageReady?: () => void;
+  onHeroImageLoad?: () => void;
 }
 
-const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({ onPageReady }) => {
+const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({ onPageReady, onHeroImageLoad }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -34,7 +35,7 @@ const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({ onPageReady }) 
         <Menu />
         <main id="main-content" role="main" tabIndex={-1}>
           <section aria-label="Stewardship NFT hero section">
-            <InternalPagesHero variant="stewardship" />
+            <InternalPagesHero variant="stewardship" onHeroImageLoad={onHeroImageLoad} />
           </section>
           <section aria-label="Stewardship NFT introduction">
             <ImageSection

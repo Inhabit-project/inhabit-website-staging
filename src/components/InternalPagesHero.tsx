@@ -11,6 +11,7 @@ interface InternalPagesHeroProps {
   description?: string;
   image?: string;
   alt?: string;
+  onHeroImageLoad?: () => void;
 }
 
 const heroContent = {
@@ -36,7 +37,7 @@ const heroContent = {
   },
 };
 
-const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({ variant, title, strong, description, image, alt }) => {
+const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({ variant, title, strong, description, image, alt, onHeroImageLoad }) => {
   const { t } = useTranslation();
   const content = heroContent[variant];
   const tKey = `internalPagesHero.${variant}`;
@@ -164,6 +165,7 @@ const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({ variant, title, s
             className="w-full rounded-xl object-cover"
             loading="lazy"
             aria-describedby={heroDescriptionId}
+            onLoad={onHeroImageLoad}
           />
         </div>
       </div>

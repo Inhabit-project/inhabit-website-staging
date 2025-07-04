@@ -15,6 +15,7 @@ const SubLoader: React.FC<SubLoaderProps> = ({ isLoading }) => {
           src="/assets/loader-logo.svg" 
           alt="Loading..." 
           className="sub-loader-image"
+          loading="eager"
         />
       </div>
     </div>

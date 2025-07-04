@@ -158,6 +158,13 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
         <div className="fixed inset-0 z-50 flex bg-black/60">
           {/* Modal content */}
           <div className="relative bg-secondary w-[100vw] h-[100vh] flex flex-col items-center gap-8 animate-fadeIn p-8 overflow-y-auto pt-16">
+            {/* Logo at the top left */}
+            <div className="absolute top-4 left-4 flex items-center">
+              <Link to="/" aria-label="INHABIT Home" onClick={() => setMobileOpen(false)}>
+                <img src="/assets/logo.svg" alt="INHABIT" className="h-[1.75rem]" />
+              </Link>
+            </div>
+            {/* Close button at the top right */}
             <button className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center" onClick={() => setMobileOpen(false)} aria-label="Close menu">
               <svg className="w-6 h-6 text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
