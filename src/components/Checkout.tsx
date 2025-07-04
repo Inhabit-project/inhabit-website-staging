@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import BecomeStewardButton from './BecomeStewardButton';
 import DownloadButton from './DownloadButton';
 import Menu from './Menu';
+import { LoadingContext } from '@/App';
 
 // NFT Membership data model
 export type NFTMembership = {
@@ -100,11 +101,17 @@ interface CheckoutProps {
 }
 
 const Checkout: React.FC<CheckoutProps> = ({ membershipId, onPageReady }) => {
+  const isLoading = useContext(LoadingContext);
   const membership = getMembershipById(membershipId);
 
   useEffect(() => {
     if (onPageReady) onPageReady();
   }, [onPageReady]);
+
+  if (isLoading) {
+    // Optionally, you could return null or a minimal loader here
+    return null;
+  }
 
   return (
     <>

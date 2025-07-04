@@ -115,6 +115,28 @@ const App: React.FC = () => {
   // Helper to pass onPageReady to all pages
   const pageProps = { onPageReady: () => setPageReady(true) };
 
+  // Add this useEffect after your other useEffects
+  useEffect(() => {
+    // List of routes that do NOT use a hero image
+    const noHeroRoutes = [
+      '/checkout',
+      '/blog',
+      '/hubs/agua-de-luna',
+      '/hubs/tierrakilwa',
+      '/terms',
+      '/privacy',
+      '/projects',
+      '/contact',
+      '/blog/article/:id',
+      // Add any other routes that don't use a hero image
+    ];
+
+    // If the current route is in the list, set heroImageLoaded to true
+    if (noHeroRoutes.some(route => location.pathname.startsWith(route))) {
+      setHeroImageLoaded(true);
+    }
+  }, [location]);
+
   return (
     <LoadingContext.Provider value={isLoading}>
       <div
