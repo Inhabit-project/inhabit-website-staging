@@ -16,16 +16,24 @@ import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 import { scrollManager } from '../utils/scrollManager';
 
-const MainPage: React.FC = () => {
+interface MainPageProps {
+  onPageReady?: () => void;
+  onHeroImageLoad?: () => void;
+}
+
+const MainPage: React.FC<MainPageProps> = ({ onPageReady, onHeroImageLoad }) => {
   const videoSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (scrollManager && typeof scrollManager.update === 'function') {
       setTimeout(() => {
         scrollManager.update();
+        if (onPageReady) onPageReady();
       }, 200);
+    } else {
+      if (onPageReady) onPageReady();
     }
-  }, []);
+  }, [onPageReady]);
 
   return (
     <>
@@ -34,7 +42,7 @@ const MainPage: React.FC = () => {
       <Menu />
       <main id="main-content" tabIndex={-1} role="main">
         <section aria-label="Hero section">
-          <Hero scrollToRef={videoSectionRef} />
+          <Hero scrollToRef={videoSectionRef} onHeroImageLoad={onHeroImageLoad} />
         </section>
         <section aria-label="Video section" ref={videoSectionRef}>
           <Video />

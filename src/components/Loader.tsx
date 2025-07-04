@@ -36,29 +36,19 @@ const Loader: React.FC<LoaderProps> = ({ onLoadingComplete }) => {
 
   useEffect(() => {
     const duration = 2000; // 2 seconds for the loading animation
-    const interval = 10; // Update every 10ms
-    const steps = duration / interval;
-    const increment = 100 / steps;
-    let currentProgress = 0;
+    const interval = duration / 100; // 100 steps, one per percent
 
     const timer = setInterval(() => {
-      currentProgress += increment;
-      if (currentProgress >= 100) {
-        clearInterval(timer);
-        setProgress(100);
-        
-        // Fade out animation when loading is complete
-        if (loaderRef.current) {
-          gsap.to(loaderRef.current, {
-            opacity: 0,
-            duration: 0.8,
-            ease: "power3.inOut",
-            onComplete: () => onLoadingComplete?.()
-          });
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(timer);
+          setTimeout(() => {
+            onLoadingComplete?.();
+          }, 200); // Wait 200ms to ensure 100% is visible
+          return 100;
         }
-      } else {
-        setProgress(Math.min(currentProgress, 100));
-      }
+        return prev + 1;
+      });
     }, interval);
 
     return () => clearInterval(timer);
@@ -71,7 +61,7 @@ const Loader: React.FC<LoaderProps> = ({ onLoadingComplete }) => {
     >
       <div 
         ref={textRef}
-        className="absolute top-16 left-24 font-abel text-sm text-secondary uppercase"
+        className="absolute top-12 left-12 font-abel text-sm text-secondary uppercase"
       >
         LOADING
       </div>
@@ -83,11 +73,12 @@ const Loader: React.FC<LoaderProps> = ({ onLoadingComplete }) => {
           src="/assets/small-earth.webp" 
           alt="Earth loader" 
           className="w-full h-full object-cover animate-loaderPulse"
+          loading="eager"
         />
       </div>
       <div 
         ref={progressRef}
-        className="absolute bottom-16 right-24 font-abel text-[53.48px] text-secondary"
+        className="absolute bottom-12 right-12 font-abel text-[9rem] text-secondary"
       >
         {String(Math.floor(progress)).padStart(3, '0')}%
       </div>

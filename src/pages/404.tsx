@@ -29,7 +29,11 @@ const leafIcons = [
   '/assets/icons/leaf6.svg',
 ];
 
-const FourOhFourPage: React.FC = () => {
+interface FourOhFourPageProps {
+  onPageReady?: () => void;
+}
+
+const FourOhFourPage: React.FC<FourOhFourPageProps> = ({ onPageReady }) => {
   const [isMobile, setIsMobile] = useState(false);
   const leafRefs = useRef<(HTMLImageElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -79,6 +83,10 @@ const FourOhFourPage: React.FC = () => {
       container.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, [isMobile]);
+
+  useEffect(() => {
+    if (onPageReady) onPageReady();
+  }, [onPageReady]);
 
   const leafPositions = isMobile ? mobileLeafPositions : desktopLeafPositions;
 

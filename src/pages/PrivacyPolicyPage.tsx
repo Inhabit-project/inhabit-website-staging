@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Menu from '../components/Menu';
 import Footer from '../components/Footer';
 import { useTranslation } from 'react-i18next';
 
-const PrivacyPolicyPage: React.FC = () => {
+interface PrivacyPolicyPageProps {
+  onPageReady?: () => void;
+}
+
+const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onPageReady }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (onPageReady) onPageReady();
+  }, [onPageReady]);
 
   return (
     <div className="min-h-screen background-gradient-light">

@@ -4,6 +4,10 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  safelist: [
+    'translate-y-0',
+    '-translate-y-full',
+  ],
   theme: {
     extend: {
       colors: {
@@ -28,6 +32,16 @@ export default {
             backgroundColor: 'rgba(255, 166, 0, 0.2)',
             borderColor: 'rgb(255, 166, 0)',
           },
+        },
+        dropIn: {
+          '0%': {
+            transform: 'translateY(-100%)',
+            opacity: '0'
+          },
+          '100%': {
+            transform: 'translateY(0)',
+            opacity: '1'
+          }
         },
         scroll: {
           '0%': { transform: 'translateX(0)' },
@@ -67,7 +81,8 @@ export default {
         scroll: 'scroll 50s linear infinite',
         loaderPulse: 'loaderPulse 2s ease-in-out infinite',
         loaderRotate: 'loaderRotate 20s linear infinite',
-        loaderFadeIn: 'loaderFadeIn 0.8s ease-out forwards'
+        loaderFadeIn: 'loaderFadeIn 0.8s ease-out forwards',
+        dropIn: 'dropIn 0.8s ease-out forwards'
       },
       container: {
         center: true,

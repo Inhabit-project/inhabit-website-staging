@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Menu from '../components/Menu';
 import Footer from '../components/Footer';
 
-const TermsAndConditionsPage: React.FC = () => {
+interface TermsAndConditionsPageProps {
+  onPageReady?: () => void;
+}
+
+const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ onPageReady }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (onPageReady) onPageReady();
+  }, [onPageReady]);
+
   return (
     <div className="min-h-screen background-gradient-light">
       <Menu />

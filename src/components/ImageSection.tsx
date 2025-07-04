@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useRef, useEffect, useContext, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { LoadingContext } from '../App';
 
 interface ImageSectionProps {
   eyebrow: string;
@@ -8,8 +11,101 @@ interface ImageSectionProps {
 }
 
 const ImageSection: React.FC<ImageSectionProps> = ({ eyebrow, heading, imageSrc, imageAlt = '' }) => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
+  const scrollTriggerRef = useRef<ScrollTrigger>();
+  const timelineRef = useRef<gsap.core.Timeline>();
+
+  // Set initial states only once when component mounts
+  useEffect(() => {
+    if (sectionRef.current && eyebrowRef.current && headingRef.current && imageRef.current) {
+      gsap.set([eyebrowRef.current, headingRef.current], {
+        opacity: 0,
+        y: 50
+      });
+      gsap.set(imageRef.current, {
+        opacity: 0,
+        y: 100,
+        scale: 0.95
+      });
+    }
+  }, []);
+
+  // Handle loading state change with debounce
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    
+    if (!isLoading) {
+      timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+    } else {
+      setCanAnimate(false);
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [isLoading]);
+
+  // Handle animations with better cleanup
+  useEffect(() => {
+    if (!canAnimate || !sectionRef.current) return;
+
+    // Create a new timeline
+    timelineRef.current = gsap.timeline({
+      paused: true,
+      defaults: { ease: 'power3.out' }
+    });
+
+    // Build the animation sequence
+    if (eyebrowRef.current && headingRef.current && imageRef.current) {
+      timelineRef.current
+        .to(eyebrowRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+        })
+        .to(headingRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+        }, '-=0.6')
+        .to(imageRef.current, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.2,
+        }, '-=0.7');
+    }
+
+    // Create ScrollTrigger for this specific section
+    scrollTriggerRef.current = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top center',
+      end: 'center center',
+      onEnter: () => timelineRef.current?.play(),
+      onLeaveBack: () => timelineRef.current?.reverse(),
+      toggleActions: 'play none none reverse',
+    });
+
+    // Cleanup function
+    return () => {
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+      }
+      if (timelineRef.current) {
+        timelineRef.current.kill();
+      }
+    };
+  }, [canAnimate]);
+
   return (
-    <section className="relative w-full background-gradient-dark flex flex-col items-center scroll-container">
+    <section ref={sectionRef} className="relative w-full background-gradient-dark flex flex-col items-center scroll-container">
       {/* Background with decorative elements */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <img 
@@ -24,17 +120,18 @@ const ImageSection: React.FC<ImageSectionProps> = ({ eyebrow, heading, imageSrc,
         {/* Text content */}
         <div className="flex flex-col gap-3">
           {/* Eyebrow text */}
-          <p className="eyebrow text-light">
+          <p ref={eyebrowRef} className="eyebrow text-light">
             {eyebrow}
           </p>
           {/* Main heading */}
-          <h2 className="heading-2 text-light max-w-[1100px]">
+          <h2 ref={headingRef} className="heading-2 text-light max-w-[1100px]">
             {heading}
           </h2>
         </div>
         {/* Image container */}
         <div className="self-end w-full md:w-[45rem] h-[16rem] md:h-[22rem] rounded-xl overflow-hidden mt-12">
           <img 
+            ref={imageRef}
             src={imageSrc} 
             alt={imageAlt} 
             className="w-full h-full object-cover" 

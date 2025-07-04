@@ -48,7 +48,7 @@
     "foundationSubtitle": "Foundation",
     "foundationText": "The INHABIT Foundation is a non-profit organization designed to serve as the legal body of a new land tenure framework that effectively enforces the Rights of Nature and the Rights of Earth Stewards, as well as stewardship-based regeneration principles in specific territories.\nThe Foundation supports 'Rural Change Agents'—farmers, individuals, and organizations—by securing land tenure, providing restoration funding, granting access to education, and fostering a supportive community around them, enabling their role as catalysts for long-term regeneration, ecological and cultural resilience, climate justice, and locally-led territorial governance.",
     "teamTitle": "Meet our <strong><br />Team</strong>",
-    "teamSubtitle": "We are purpose-driven entrepreneurs, farmers, artists, facilitators — Experts in law, restoration, technology and rural development—united to reinvest ways of inhabiting Earth",
+    "teamSubtitle": "We are purpose-driven entrepreneurs, farmers, artists, facilitators, Experts in law, restoration, technology and rural development, united to reinvest ways of inhabiting Earth",
     "teamShowLess": "Show less",
     "teamReadMore": "Read more",
     "team": [
@@ -73,16 +73,17 @@
         "role": "Attorney with a Master's in Territorial Studies, experienced in environmental law and legal territorial protection frameworks from a biocultural perspective. Founder of the Foundation of Mother Earth operating across Colombia."
       },
       {
-        "name": "Junior Rojaas",
-        "role": "Senior developer and entrepreneur with 11+ years in software development, specializing in blockchain and cryptocurrencies. CTO of Futswap and CEO of Intechchain, leading projects in decentralized finance and technological solutions."
+        "name": "Santiago Viana",
+        "role": "Ecologist and Web3 developer, consecutive winner of the Funding the Commons hackathon in 2023 and 2024. Organizer and educator of open educational programs on blockchain in EVM environments, as well as ongoing courses at universities in Bogotá."
       },
+      
       {
         "name": "Gaia Pagano",
         "role": "Bachelor of Social Sciences, Master in Innovation and Development, Human Rights and Culture of Peace. Coordinator at Pontificia Universidad Javeriana, 12+ years in peace and reconciliation, intercultural relations, and dialogue projects with indigenous and Afro-descendant communities."
       },
       {
-        "name": "Juan Pablo Lievano",
-        "role": "Economist and MA in anthropology with 13+ years of experience in sustainable rural development, climate change, project management, and financial evaluation of small farmer agribusiness models. Founder of two natural reserves in Colombia."
+        "name": "Juan Sánchez",
+        "role": "Digital communications and marketing expert born, raised and based in Bogotá with over 13 years of experience delivering brand and content strategies. Skilled at simplifying complex topics like climate change, biodiversity, blockchain and community-based conservation. Passionate about humanising technology through stories and working on restoring humanity's relationship with nature. Communications Lead at INHABIT."
       },
       {
         "name": "Mohamd Ibrahim",
@@ -93,13 +94,14 @@
         "role": "10 years of experience as an eco-psycho-social transformation facilitator. Industrial engineer, Master in Rural Development, and specialized in Transpersonal-Integral Psychology. She leads sustainable projects and fosters inclusive initiatives within rural communities in Colombia. With the INHABIT Foundation, she actively co-creates biocultural methodologies and supports territorial regeneration through community-based stewardship strategies."
       },
       {
-        "name": "Juan Diego Agudelo",
-        "role": "A developer with 4 years of experience specializing in real-world asset tokenization and blockchain interoperability. His work focuses on process traceability, capital distribution, and asset tokenization. Committed to blockchain for good, he designs systems that support the creation, collective governance, and long-term stewardship of physical commons, fostering regenerative, community-driven economies."
+        "name": "Junior Rojaas",
+        "role": "Senior developer and entrepreneur with 11+ years in software development, specializing in blockchain and cryptocurrencies. CTO of Futswap and CEO of Intechchain, leading projects in decentralized finance and technological solutions."
       },
       {
         "name": "Fernanda Herrera",
         "role": "Visual designer with 12 years of experience in the field of digital project development, working as UI and UX designer for websites and applications, many of these websites have been fully developed from the conceptualization phase of the design to the code development itself, usually using Html5, css3 and basic javascript or CMS like wordpress, webflow, etc. I have basic knowledge in frameworks such as vue, react, angular, python and ruby on rails, microintreactions and advanced web animations."
       }
+      
     ]
   },
   "hubsMain": {
@@ -110,7 +112,7 @@
       "title": "ÑUIYANZHI",
       "description": "Since 2021, the family of Amelia, Juan, and their son León have lived and cared for Ñuiyanzhi in partnership with the Kogi elders of the Kaggaba tribe, from the Sierra Nevada de Santa Marta.",
       "visionHeading": "HUB VISION",
-      "visionText": "The Ñuiyanzhi Hub is a living laboratory where ecological restoration meets ancestral knowledge. It regenerates soils degraded by overgrazing, monocultures, and agrochemicals, creating a biodiversity hotspot for endangered species. As a training center, it combines hands-on learning with indigenous and academic wisdom. NFT guardians gain exclusive access to restoration tools, immersive experiences, and direct links to Kogi ecological and spiritual knowledge."
+      "visionText": "The Ñuiyanzhi Hub is a living laboratory where ecological restoration meets ancestral knowledge. It regenerates soils degraded by overgrazing, monocultures, and agrochemicals, creating a biodiversity hotspot for endangered species. As a training center, it combines hands-on learning with indigenous and academic wisdom. "
     },
     "aguaDeLuna": {
       "label": "Biodiversity Hotspot",
@@ -197,18 +199,18 @@
     },
     "photo": {
       "section1": "By purchasing an NFT you become a lifelong guardian of a specific Hub, allowing you to monitor and participate in important decisions affecting these ecosystems, and gain exclusive access to biocultural experiences, events, workshops, visit the hubs, and explore the entire Corridor.",
-      "section2": "Funds raised from these NFTs are used to acquire degraded lands and transform them into biocultural Hubs. These areas are protected under the INHABIT land tenure framework—a pioneering model of nature reserves that grants legal rights to nature, redefining land protection and stewardship to a new level."
+      "section2": "The funds raised from these NFTs are used to acquire degraded lands and transform them into biocultural Hubs. These areas are protected under the INHABIT land tenure framework—a pioneering model of nature reserves that grants legal rights to nature, redefining land protection and stewardship to a new level."
     },
     "nftGrid": {
       "title": "Our innovative <br /><strong>NFTs</strong>",
-      "description": "Stewardship NFTs are blockchain-verified contracts that grant fractional rights to protect ecosystems in tokenized land parcels.",
+      "description": "Each NFT represents a direct connection between you and a specific conservation area, granting you rights and exclusive access to key hotspots and unique bio-cultural experiences along the corridor.",
       "checkThisNFT": "CHECK THIS NFT",
       "availableMembership": "Available memberships"
     },
     "infographic": {
       "landTenureTitle": "Land Tenure<br /><strong>Framework</strong>",
-      "landTenureDescription": "The INHABIT stewardship-based restoration model is designed to be the most robust and effective approach to ensure the long-term protection and regeneration of degraded lands, actively involving everyone in ecosystem stewardship.",
-      "nftStewardsTitle": "NFT Stewards<br /><strong>Benefits</strong>",
+      "landTenureDescription": "A groundbreaking model of natural reserves that recognises nature as a legal entity with rights, and provides specific rights and benefits to individuals who support the permanent protection and regeneration of these biodiversity hotspots.",
+      "nftStewardsTitle": "NFT Stewards",
       "nftStewardsDescription": "People from anywhere in the world can become lifelong protectors of nature, with the ability to monitor, safeguard, and access these thriving hubs, along with numerous benefits as they travel the Corridor.",
       "natureTitle": "Nature",
       "natureDescription": "Nature is considered an entity with rights within the land boundaries, according to the Declaration of the Rights of Nature (e.g., the right to self-regulation, restoration, protection, decision-making...)",
@@ -217,7 +219,7 @@
     },
     "testimonials": {
       "title": "Meet our <br /> <strong>Allies</strong>",
-      "description": "Stewardship NFTs are blockchain-verified contracts that grant fractional rights to protect ecosystems in tokenized land parcels.",
+      "description": "From local stewards and bioregional experts to global organizations and innovation leaders, each ally contributes unique knowledge, tools, and heart to grow a network of bio-cultural HUBS—together weaving a global corridor of bio-cultural diversity.",
       "testimonial": {
         "name": "Louise Borreani",
         "quote": "Inhabit is a powerful expression of how decentralized tools can support nature stewardship communities. It is one of the most concrete manifestations of the green crypto research we have done at Ecofrontiers and it is inspiring to see it come to life.",
@@ -232,7 +234,11 @@
     },
     "blog": {
       "title": "Stay<br /><strong>informed</strong>",
-      "description": "Stay up to date with our latest news and insights on biodiversity and ecological preservation."
+      "description": "Stay up to date with our latest news and insights on biodiversity and ecological preservation.",
+      "loading": "Loading list of posts",
+      "noPosts": "No posts available",
+      "readTime_one": "{{count}} min read",
+      "readTime_other": "{{count}} mins read"
     },
     "faq": {
       "title": "Frequently Asked<br /><strong>Questions</strong>",
@@ -264,9 +270,32 @@
       "connect": "CONNECT",
       "location": "LOCATION",
       "locationText": "Tierra Kilwa, Palomino, La Guajira, Colombia",
-      "newsletter": "NEWSLETTER",
-      "newsletterText": "Subscribe to get the best updates from us!",
-      "emailPlaceholder": "Your email",
+      "newsletter": {
+        "title": "NEWSLETTER",
+        "text": "Subscribe to get the best updates from us!",
+        "status": {
+          "success": "Suscripción realizada",
+          "errors": {
+            "generic": "Unexpected error. Please try again.",
+            "400": "The email is invalid"
+          }
+        },
+        "email": {
+          "placeholder": "Your email",
+          "validations": {
+            "required": "Required",
+            "invalid": "Invalid email address"
+          }
+        },
+        "privacy": {
+          "validations": {
+            "required": "You must accept the privacy policy"
+          }
+        },
+        "subscribing": "Subscribing...",
+        "subscribe": "Subscribe",
+        "join_newsletter": "Join newsletter"
+      },
       "acceptPolicy": "I accept the privacy policy",
       "menu": "MENU",
       "copyright": "COPYRIGHT 2025 ALL RIGHTS RESERVED DESIGNED BY FERNANDA HERRERA"
@@ -301,26 +330,26 @@
       "description": "The INHABIT stewardship-based restoration model is designed to be the most robust and effective approach to ensure the long-term protection and regeneration of lands, involving everyone in ecosystem stewardship.",
       "cards": [
         {
-          "number": "01",
+          "label": "Permanent Protection",
           "title": "Nature",
           "subtitle": "Rights",
           "description": "This framework permanently protects the land by recognizing it as a legal entity with rights, and grants specific rights and benefits to those who support its protection and regeneration."
         },
         {
-          "number": "02",
+          "label": "Land Security for Long-lasting Restoration",
           "title": "Guardians",
           "subtitle": "Rights",
           "description": "This framework grants permanent use rights and restoration funding to land guardians, creating the essential conditions for long-term regeneration and corridor expansion."
         },
         {
-          "number": "03",
-          "title": "NFT Guardians",
+          "label": "System of Guarantee",
+          "title": "NFT Stewards",
           "subtitle": "Rights",
           "description": "This framework grants NFT guardians stewardship rights over the land, acting as guarantors of nature's rights. It allows them to monitor and support restoration while enjoying exclusive benefits and access to biodiversity hotspots and essential knowledge."
         },
         {
-          "number": "04",
-          "title": "Compliance",
+          "label": "Transparency, Verification and Active Participation",
+          "title": "Enforcement",
           "subtitle": "Rights",
           "description": "Smart contracts ensure that the entire framework and actors' rights are transparently enforced and verified, providing a reliable digital system for compliance tracking and enabling meaningful participation in restoration initiatives along the Corridor."
         }
@@ -330,31 +359,31 @@
       "title": "Four Criteria <br /><strong>To Be a HUB</strong>",
       "description": "The INHABIT framework envisions that each HUB develops four key fields to become a biocultural HUB, each developing according to its own vision and uniqueness."
     },
-    "criteriaCardsSection2": {
+    "FourCriteriaHubGlobal": {
       "cards": [
         {
           "number": "01",
-          "title": "Protect",
-          "subtitle": "Nature",
-          "description": "Acquire and permanently protect lands under the innovative INHABIT legal framework, recognizing ecosystems as legal entities with protected rights, and granting specific rights and benefits to those who support their regeneration."
+          "title": "Biodiversity",
+          "subtitle": "Hotspots",
+          "description": "Each HUB must generate and host a vast pool of biodiversity and ecosystem-specific knowledge. These 'living seed hubs' allow animals and humans to naturally disperse seeds, spreading biodiversity across the Corridor. Each HUB must host an 'inner corridor' that connects fragmented landscapes and shelters endangered species."
         },
         {
           "number": "02",
-          "title": "Restore",
-          "subtitle": "Ecosystems",
-          "description": "Fund long-term stewardship-based land regeneration through three-year programs, restoring the full diversity and functionality of the ecosystem, not just planting trees."
+          "title": "Incubators of",
+          "subtitle": "Land guardians",
+          "description": "Each HUB has to become a learning center for future land guardians, providing expertise in various fields of knowledge and rural-social innovation, while enabling the allocation of key resources to establish new Hubs."
         },
         {
           "number": "03",
-          "title": "Transform",
-          "subtitle": "Society",
-          "description": "Fund the development of hubs dedicated to unique fields of knowledge, fostering the production and dissemination of wisdom, and actively working to expand the corridor and broaden access to transformative knowledge for all."
+          "title": "Wisdom",
+          "subtitle": "HUBS",
+          "description": "Each HUB is a research center dedicated to a unique field of knowledge, producing and disseminating information that integrates systemic and academic research with ancestral wisdom."
         },
         {
           "number": "04",
-          "title": "Enhance",
-          "subtitle": "Benefits",
-          "description": "Develop an improved and more valuable version of the Stewardship NFT, offering greater benefits to NFT holders and further expanding the corridor."
+          "title": "Corridor",
+          "subtitle": "Pathfinder",
+          "description": "Each HUB is tasked with extending the corridor, by engaging with other hubs and through collaborative work with key restoration projects and communities within their bioregion."
         }
       ]
     },
@@ -387,6 +416,39 @@
           {
             "question": "Is using blockchain environmentally sustainable for INHABIT?",
             "answer": "Yes — INHABIT uses CELO, a carbon-negative blockchain designed for climate-friendly projects.<br /><br />Minting all the NFTs needed to finance an INHABIT Hub produces less CO₂ than brewing a single cup of coffee.<br /><br />Each NFT uses just 0.00001 kWh and emits only 5 mg of CO₂ — less than a Google search.<br /><br />In comparison:<ul><li>Ethereum (pre-merge) = 15,000× more emissions</li><li>Bitcoin = 100,000× more</li></ul>Plus, CELO runs a built-in carbon offset program: a portion of every transaction fee funds verified projects that remove CO₂ from the atmosphere. This makes CELO carbon-negative, meaning it offsets more than it emits — so even our NFTs end up being carbon-negative, turning blockchain into a tool for climate regeneration."
+          }
+        ]
+      },
+      "fundsCardsSection": {
+        "title": "<span style=\"font-weight: 300\">Your funds</span><br /><span style=\"font-weight: 700\">Are used to</span>",
+        "cards": [
+          {
+            "number": "01",
+            "label": "LEGAL STABILITY",
+            "title": "Protect",
+            "subtitle": "Nature",
+            "description": "To purchase and permanently safeguard lands under the INHABIT's groundbreaking legal framework, recognizing ecosystems as legal entities with protected rights, while providing specific rights and benefits to individuals who support its regeneration."
+          },
+          {
+            "number": "02",
+            "label": "LONG-TERM ECOSYSTEM RESTORATION AND STEWARDSHIP",
+            "title": "Restore",
+            "subtitle": "Ecosystems",
+            "description": "To finance long-term, stewardship-based land regeneration through three-year programs, restoring the full diversity and functionality of the ecosystem—not just planting trees."
+          },
+          {
+            "number": "03",
+            "label": "THRIVING BIO-CULTURAL HUBS",
+            "title": "Transform",
+            "subtitle": "Society",
+            "description": "To fund the development of hubs dedicated to unique fields of knowledge, fostering the production and dissemination of wisdom, while actively working to expand the corridor and broaden access to transformative knowledge for all."
+          },
+          {
+            "number": "04",
+            "label": "NFT 2.0",
+            "title": "Improve",
+            "subtitle": "Benefits",
+            "description": "To develop an enhanced and more valuable version of the Stewardship NFT, offering greater benefits to NFT holders while further expanding the corridor."
           }
         ]
       }
@@ -547,6 +609,10 @@
           "answer": "You can participate by purchasing a Stewardship NFT, which grants you lifetime stewardship of a specific Hub and the whole corridor, and access to its biodiversity-rich lands, programs, and learning experiences. As a life steward, you become part of a community actively supporting the creation of a global regenerative corridor.\n\nAlternatively, you can also join as a visitor, taking part in selected activities, workshops, and immersive experiences offered by each Hub."
         }
       ]
+    },
+    "imageSection": {
+      "eyebrow": "Discover Ñuiyanzhi",
+      "heading": "A living <span style=\"color: var(--color-primary)\">laboratory</span> where <span style=\"color: var(--color-primary)\">ecological restoration</span>, ancestral <span style=\"color: var(--color-primary)\">knowledge</span>, and territorial stewardship <span style=\"color: var(--color-primary)\">converge</span>."
     }
   },
   "aguaDeLunaPage": {
@@ -722,7 +788,7 @@
     "projects": {
       "title": "Our",
       "strong": "Projects",
-      "description": "Discover the initiatives and collaborations that are driving real-world impact. Our projects span ecosystem restoration, biocultural innovation, and community empowerment—each one a step toward a regenerative future."
+      "description": "Discover the initiatives and collaborations that are driving real-world impact. Our projects span ecosystem restoration, biocultural innovation, and community empowerment each one a step toward a regenerative future."
     }
   },
   "projectsPage": {
@@ -909,5 +975,34 @@
       }
     },
     "footer": "By using this website or engaging with our digital assets, you agree to these Terms."
+  },
+  "fundsUsedSection": {
+    "title": "How are the funds used?",
+    "cards": [
+      {
+        "label": "Conservation",
+        "title": "Protecting Biodiversity",
+        "subtitle": "Safeguarding habitats",
+        "description": "Funds are allocated to preserve and restore natural habitats, ensuring the survival of diverse species."
+      },
+      {
+        "label": "Community",
+        "title": "Empowering Local Communities",
+        "subtitle": "Supporting livelihoods",
+        "description": "Investments go towards education, healthcare, and sustainable development for local communities."
+      },
+      {
+        "label": "Innovation",
+        "title": "Driving Innovation",
+        "subtitle": "Sustainable solutions",
+        "description": "Resources are used to develop and implement innovative solutions for environmental challenges."
+      },
+      {
+        "label": "Transparency",
+        "title": "Ensuring Transparency",
+        "subtitle": "Open reporting",
+        "description": "We provide clear and regular reports on how every contribution is used."
+      }
+    ]
   }
 } 

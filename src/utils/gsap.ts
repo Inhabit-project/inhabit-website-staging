@@ -51,4 +51,6 @@ gsap.registerPlugin(
   // CustomEase,
   // CustomBounce,
   // CustomWiggle
-); 
+);
+
+export { gsap, ScrollTrigger }; 

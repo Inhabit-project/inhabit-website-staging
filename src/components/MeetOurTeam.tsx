@@ -1,5 +1,8 @@
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { LoadingContext } from '../App';
 
 const teamMembers = [
   {
@@ -29,8 +32,8 @@ const teamMembers = [
   },
   {
     key: 5,
-    image: '/assets/team/junior.webp',
-    linkedin: 'https://www.linkedin.com/in/rojasjuniore/',
+    image: '/assets/team/Santiago.webp',
+    linkedin: 'https://www.linkedin.com/in/salviega/',
   },
   {
     key: 6,
@@ -40,7 +43,7 @@ const teamMembers = [
   {
     key: 7,
     image: '/assets/team/juan.webp',
-    linkedin: '#',
+    linkedin: 'https://www.linkedin.com/in/themute/',
   },
   {
     key: 8,
@@ -54,8 +57,8 @@ const teamMembers = [
   },
   {
     key: 10,
-    image: '/assets/team/JuanDiego.webp',
-    linkedin: 'https://www.linkedin.com/in/juandiegoagudelom/',
+    image: '/assets/team/junior.webp',
+    linkedin: 'https://www.linkedin.com/in/rojasjuniore/',
   },
   {
     key: 11,
@@ -95,9 +98,16 @@ const fallbackRoleKeys = [
 
 const MeetOurTeam: React.FC = () => {
   const { t } = useTranslation();
+  const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
   const [expanded, setExpanded] = useState<number | null>(null);
   const descRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [heights, setHeights] = useState<number[]>([]);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const cardRefs = useRef<(HTMLElement | null)[]>([]);
+  const animationRef = useRef<gsap.Context | null>(null);
 
   // Fetch the team array with returnObjects: true for i18next array support
   const teamArray = t('aboutUsPage.team', { returnObjects: true }) as { name: string; role: string }[];
@@ -114,8 +124,108 @@ const MeetOurTeam: React.FC = () => {
     );
   }, [expanded]);
 
+  // Set initial states for animation
+  useEffect(() => {
+    if (sectionRef.current) {
+      const ctx = gsap.context(() => {
+        gsap.set([titleRef.current, subtitleRef.current], {
+          opacity: 0,
+          y: 50
+        });
+        gsap.set(cardRefs.current, {
+          opacity: 0,
+          y: 50,
+          scale: 0.95
+        });
+      }, sectionRef);
+
+      return () => ctx.revert();
+    }
+  }, []);
+
+  // Handle loading state change
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (!isLoading) {
+      timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+    } else {
+      setCanAnimate(false);
+    }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [isLoading]);
+
+  // Animate on scroll when ready
+  useEffect(() => {
+    if (!canAnimate || !sectionRef.current) return;
+
+    // Register ScrollTrigger plugin within the context
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Create a new context for this component's animations
+    animationRef.current = gsap.context(() => {
+      const scrollTrigger = {
+        trigger: sectionRef.current,
+        start: 'top center',
+        end: 'center center',
+        toggleActions: 'play none none reverse',
+        // Add markers only in development
+        // markers: process.env.NODE_ENV === 'development',
+      };
+
+      const tl = gsap.timeline({ scrollTrigger });
+
+      // Title animation
+      tl.to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+      });
+
+      // Subtitle animation
+      tl.to(subtitleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+      }, '-=0.6');
+
+      // Cards animation with stagger
+      tl.to(cardRefs.current, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.8,
+        stagger: {
+          amount: 0.8,
+          ease: 'power3.out',
+        },
+      }, '-=0.4');
+
+    }, sectionRef); // Scope to section
+
+    // Cleanup function
+    return () => {
+      if (animationRef.current) {
+        // Kill all ScrollTriggers created in this context
+        ScrollTrigger.getAll().forEach(st => {
+          if (st.vars.trigger === sectionRef.current) {
+            st.kill();
+          }
+        });
+        // Revert the context
+        animationRef.current.revert();
+      }
+    };
+  }, [canAnimate]);
+
   return (
     <section 
+      ref={sectionRef}
       className="w-full py-20 px-4 background-gradient-light scroll-container"
       aria-labelledby="team-title"
     >
@@ -123,13 +233,14 @@ const MeetOurTeam: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12 gap-6">
           <div>
             <h2 
+              ref={titleRef}
               id="team-title"
               className="heading-2 text-secondary mb-2"
             >
               <span dangerouslySetInnerHTML={{ __html: t('aboutUsPage.teamTitle') }} />
             </h2>
           </div>
-          <p className="body-M text-secondary max-w-xl">
+          <p ref={subtitleRef} className="body-M text-secondary max-w-xl">
             {t('aboutUsPage.teamSubtitle')}
           </p>
         </div>
@@ -146,6 +257,7 @@ const MeetOurTeam: React.FC = () => {
             return (
               <article 
                 key={idx} 
+                ref={el => cardRefs.current[idx] = el}
                 className="relative rounded-xl overflow-hidden shadow-lg group flex flex-col h-full bg-[#1B3A2B]"
                 role="listitem"
                 aria-labelledby={`team-member-${idx}-name`}

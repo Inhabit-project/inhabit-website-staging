@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import BecomeStewardButton from './BecomeStewardButton';
 import DownloadButton from './DownloadButton';
 import Menu from './Menu';
+import { LoadingContext } from '@/App';
 
 // NFT Membership data model
 export type NFTMembership = {
@@ -96,10 +97,22 @@ function getMembershipById(id: string | undefined): NFTMembership {
 // Accept membershipId as prop (or from route param in parent)
 interface CheckoutProps {
   membershipId?: string;
+  onPageReady?: () => void;
 }
 
-const Checkout: React.FC<CheckoutProps> = ({ membershipId }) => {
+const Checkout: React.FC<CheckoutProps> = ({ membershipId, onPageReady }) => {
+  const isLoading = useContext(LoadingContext);
   const membership = getMembershipById(membershipId);
+
+  useEffect(() => {
+    if (onPageReady) onPageReady();
+  }, [onPageReady]);
+
+  if (isLoading) {
+    // Optionally, you could return null or a minimal loader here
+    return null;
+  }
+
   return (
     <>
       <Menu />
@@ -301,31 +314,31 @@ const Checkout: React.FC<CheckoutProps> = ({ membershipId }) => {
           </div>
         </div>
         {/* Right: Checkout Form */}
-        <div className="w-full max-w-lg bg-menu-backdrop backdrop-blur-lg rounded-3xl shadow-xl border border-green-soft p-8 flex flex-col gap-6 self-start sticky top-8">
+        <div className="w-full max-w-lg background-gradient-dark backdrop-blur-lg rounded-3xl shadow-xl border border-green-soft p-8 flex flex-col gap-6 self-start sticky top-8">
           <button className="btn-primary w-full mb-2">Connect Wallet</button>
           <form className="flex flex-col gap-4">
             <div>
-              <label className="body-S block text-secondary font-semibold mb-1">Name*</label>
+              <label className="body-S block text-light font-semibold mb-1">Name*</label>
               <input type="text" className="input-main" placeholder="Enter your full name" />
             </div>
             <div>
-              <label className="body-S block text-secondary font-semibold mb-1">E-Mail*</label>
+              <label className="body-S block text-light font-semibold mb-1">E-Mail*</label>
               <input type="email" className="input-main" placeholder="your@email.com" />
             </div>
             <div>
-              <label className="body-S block text-secondary font-semibold mb-1">Telephone</label>
+              <label className="body-S block text-light font-semibold mb-1">Telephone</label>
               <input type="tel" className="input-main" placeholder="1234567890" />
             </div>
             <div>
-              <label className="body-S block text-secondary font-semibold mb-1">Telegram user</label>
+              <label className="body-S block text-light font-semibold mb-1">Telegram user</label>
               <input type="text" className="input-main" placeholder="@pepio-perez" />
             </div>
             <div className="flex flex-col gap-2 mt-2">
-              <label className="flex items-start gap-2 text-xs text-secondary">
+              <label className="flex items-start gap-2 text-xs text-light">
                 <input type="checkbox" className="mt-1" />
                 I understand that I'll need to complete a KYC Verification to eventually fully access the rights and benefits associated with my membership.
               </label>
-              <label className="flex items-start gap-2 text-xs text-secondary">
+              <label className="flex items-start gap-2 text-xs text-light">
                 <input type="checkbox" className="mt-1" />
                 I accept the terms and conditions of the Membership Agreement granting me rights and benefits related to this Land and Project.
               </label>
@@ -334,16 +347,16 @@ const Checkout: React.FC<CheckoutProps> = ({ membershipId }) => {
           {/* Summary */}
           <div className="bg-green-soft/30 rounded-xl p-4 flex flex-col gap-2 mt-2">
             <div className="flex justify-between font-semibold">
-              <span className="body-S text-secondary">subtotal</span>
-              <span className="body-S text-secondary">$ {(membership.valueUSD * 0.95).toFixed(2)} USD</span>
+              <span className="body-S text-light">subtotal</span>
+              <span className="body-S text-light">$ {(membership.valueUSD * 0.95).toFixed(2)} USD</span>
             </div>
-            <div className="flex justify-between text-secondary font-bold text-lg">
-              <span className="body-M text-secondary">Total taxes included</span>
-              <span className="body-M text-secondary">$ {membership.valueUSD} USD</span>
+            <div className="flex justify-between text-light font-bold text-lg">
+              <span className="body-M text-light">Total taxes included</span>
+              <span className="body-M text-light">$ {membership.valueUSD} USD</span>
             </div>
             <div className="flex justify-between">
-              <span className="body-S text-secondary">Value in crypto</span>
-              <span className="body-S text-secondary">{membership.valueCrypto}</span>
+              <span className="body-S text-light">Value in crypto</span>
+              <span className="body-S text-light">{membership.valueCrypto}</span>
             </div>
           </div>
           <button className="btn-secondary w-full mt-2">Get here your NFT</button>

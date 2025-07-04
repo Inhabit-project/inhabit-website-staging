@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Menu from '../components/Menu';
 import InternalPagesHero from '../components/InternalPagesHero';
 import InfoCard, { InfoCardRightImage } from '../components/InfoCard';
@@ -8,9 +8,19 @@ import NFTGrid from '../components/NFTGrid';
 import NFTComparisonTable from '../components/NFTComparisonTable';
 import Footer from '../components/Footer';
 import { useTranslation } from 'react-i18next';
+import ImageSection from '../components/ImageSection';
 
-const NuiyanzhiPage: React.FC = () => {
+interface NuiyanzhiPageProps {
+  onPageReady?: () => void;
+  onHeroImageLoad?: () => void;
+}
+
+const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({ onPageReady, onHeroImageLoad }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (onPageReady) onPageReady();
+  }, [onPageReady]);
 
   return (
     <>
@@ -18,7 +28,18 @@ const NuiyanzhiPage: React.FC = () => {
       {/* Internal Hero Section - custom for Nuiyanzhi */}
       <InternalPagesHero
         variant="nuiyanzhi"
+        onHeroImageLoad={onHeroImageLoad}
         // Optionally, you can extend InternalPagesHero to accept custom props for this hub
+      />
+
+      {/* Image Section: Nuiyanzhi Vision */}
+      <ImageSection
+        eyebrow={t('nuiyanzhiPage.imageSection.eyebrow')}
+        heading={
+          <span dangerouslySetInnerHTML={{ __html: t('nuiyanzhiPage.imageSection.heading') }} />
+        }
+        imageSrc="/assets/1Hub/vision.webp"
+        imageAlt="Nuiyanzhi Vision"
       />
 
       {/* Section: Four goals to be a HUB */}
@@ -49,7 +70,6 @@ const NuiyanzhiPage: React.FC = () => {
         title={t('nuiyanzhiPage.land.title')}
         text={t('nuiyanzhiPage.land.text')}
         imageSrc="/assets/1Hub/land.webp"
-        imageAlt={t('nuiyanzhiPage.land.imageAlt')}
         showPopupButton={true}
       />
 

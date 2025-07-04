@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { LoadingContext } from '../App';
+import { useMenuScrollHide } from '../utils/scrollManager';
 
 const LanguageButton = styled.button`
   background: none;
@@ -50,26 +51,16 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const lastScrollY = useRef(0);
   const { t, i18n } = useTranslation();
   const isLoading = useContext(LoadingContext);
 
-  useEffect(() => {
-    function handleScroll() {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
-      setLastScrollY(currentScrollY);
-    }
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [lastScrollY]);
+  useMenuScrollHide(setIsVisible, { getDisable: () => mobileOpen });
+
+  const menuClassName = `fixed top-0 left-0 right-0 h-[5rem] bg-menu-backdrop backdrop-blur-lg z-50 transition-transform duration-300 no-snap ${
+    isVisible ? 'translate-y-0' : '-translate-y-full'
+  }`;
 
   const menuLinks = [
     { label: t('navigation.home'), path: '/' },
@@ -90,9 +81,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
   }
 
   return (
-    <header className={`fixed top-0 left-0 right-0 h-[5rem] bg-menu-backdrop backdrop-blur-lg z-50 transition-transform duration-300 no-snap ${
-      isVisible ? 'translate-y-0' : '-translate-y-full'
-    }`}>
+    <header className={menuClassName}>
       <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] h-full">
         <div className="flex items-center justify-between h-full">
           {/* Logo */}
@@ -103,7 +92,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav role="navigation" aria-label="Main navigation" className="font-size-xs hidden lg:flex gap-8">
+          <nav role="navigation" aria-label="Main navigation" className="font-size-xs hidden xl:flex gap-8">
             {menuLinks.map((item) => (
               <Link
                 key={item.path}
@@ -119,7 +108,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
           </nav>
 
           {/* Desktop Right side buttons */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden xl:flex items-center gap-4">
             <div className="flex gap-2">
               <LanguageButton
                 onClick={() => changeLanguage('en')}
@@ -148,7 +137,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
           </div>
 
           {/* Hamburger for mobile */}
-          <button className="lg:hidden flex items-center justify-center w-10 h-10 rounded focus:outline-none" onClick={() => setMobileOpen(true)} aria-label="Open menu">
+          <button className="xl:hidden flex items-center justify-center w-10 h-10 rounded focus:outline-none" onClick={() => setMobileOpen(true)} aria-label="Open menu">
             <svg className="w-8 h-8 text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
@@ -161,6 +150,13 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
         <div className="fixed inset-0 z-50 flex bg-black/60">
           {/* Modal content */}
           <div className="relative bg-secondary w-[100vw] h-[100vh] flex flex-col items-center gap-8 animate-fadeIn p-8 overflow-y-auto pt-16">
+            {/* Logo at the top left */}
+            <div className="absolute top-4 left-4 flex items-center">
+              <Link to="/" aria-label="INHABIT Home" onClick={() => setMobileOpen(false)}>
+                <img src="/assets/logo.svg" alt="INHABIT" className="h-[1.75rem]" />
+              </Link>
+            </div>
+            {/* Close button at the top right */}
             <button className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center" onClick={() => setMobileOpen(false)} aria-label="Close menu">
               <svg className="w-6 h-6 text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />

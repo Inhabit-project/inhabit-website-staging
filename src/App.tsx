@@ -1,64 +1,171 @@
-import React, { useState, createContext, useContext } from 'react';
-import '@fontsource/nunito-sans/400.css';
-import './i18n';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MainPage from './pages/MainPage';
-import HubsPage from './pages/HubsPage';
-import AboutUsPage from './pages/AboutUsPage';
-import StewardshipNFTPage from './pages/StewardshipNFTPage';
-import Checkout from './components/Checkout';
-import BlogPage from './pages/BlogPage';
-import NuiyanzhiPage from './pages/NuiyanzhiPage';
-import AguaDeLunaPage from './pages/AguaDeLunaPage';
-import TierraKilwaPage from './pages/tierrakilwaPage';
-import './utils/gsap';
-import { useScrollToTopOnNavigation } from './utils/scrollToTopOnNavigation';
-import FourOhFourPage from './pages/404';
-import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
-import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
-import ContactPage from './pages/ContactPage';
-import ProjectsPage from './pages/ProjectsPage';
-import ArticlePage from './pages/ArticlePage';
-import Loader from './components/Loader';
+import React, { useState, createContext, useEffect } from "react";
+
+import "@/i18n";
+import "@/utils/gsap";
+import "@fontsource/nunito-sans/400.css";
+
+import Loader from "@/components/Loader";
+import { scrollManager } from "@/utils/scrollManager";
+import PageTransition from '@/components/PageTransition';
+import { useLocation } from 'react-router-dom';
+import { useScrollToTopOnNavigation } from '@/utils/scrollToTopOnNavigation';
+
+import { Routes, Route } from "react-router-dom";
+
+import MainPage from "@/pages/MainPage";
+import HubsPage from "@/pages/HubsPage";
+import AboutUsPage from "@/pages/AboutUsPage";
+import StewardshipNFTPage from "@/pages/StewardshipNFTPage";
+import Checkout from "@/components/Checkout";
+import BlogPage from "@/pages/BlogPage";
+import NuiyanzhiPage from "@/pages/NuiyanzhiPage";
+import AguaDeLunaPage from "@/pages/AguaDeLunaPage";
+import TierraKilwaPage from "@/pages/tierrakilwaPage";
+import FourOhFourPage from "@/pages/404";
+import TermsAndConditionsPage from "@/pages/TermsAndConditionsPage";
+import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
+import ContactPage from "@/pages/ContactPage";
+import ProjectsPage from "@/pages/ProjectsPage";
+import ArticlePage from "@/pages/ArticlePage";
 
 // Create a context for the loading state
 export const LoadingContext = createContext<boolean>(false);
 
-function ScrollToTopOnNavigation() {
-  useScrollToTopOnNavigation();
-  return null;
-}
-
 const App: React.FC = () => {
+  useScrollToTopOnNavigation();
   const [isLoading, setIsLoading] = useState(true);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+  const [showTransition, setShowTransition] = useState(false);
+  const [transitionIn, setTransitionIn] = useState(false);
+  const [pageReady, setPageReady] = useState(false);
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
+  const [minLoaderTimeElapsed, setMinLoaderTimeElapsed] = useState(false);
+  const [canFinishLoading, setCanFinishLoading] = useState(false);
+  const location = useLocation();
+  const [pendingLocation, setPendingLocation] = useState(location);
 
-  const handleLoadingComplete = () => {
+  // Only allow loader to finish when both hero image and timer are done
+  useEffect(() => {
+    if (heroImageLoaded && minLoaderTimeElapsed) {
+      setCanFinishLoading(true);
+    }
+  }, [heroImageLoaded, minLoaderTimeElapsed]);
+
+  // Start minimum loader timer on mount
+  useEffect(() => {
+    const timer = setTimeout(() => setMinLoaderTimeElapsed(true), 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    if (isLoading) {
+      html.classList.add("loading");
+      document.body.classList.add("loading");
+    } else {
+      setTimeout(() => {
+        html.classList.remove("loading");
+        document.body.classList.remove("loading");
+        setIsTransitioning(false);
+      }, 500);
+    }
+  }, [isLoading]);
+
+  // Handle page transitions
+  useEffect(() => {
+    if (location !== pendingLocation) {
+      setShowTransition(true);
+      setTransitionIn(false); // Start with cover
+      setPageReady(false); // Reset page ready on navigation
+      setTimeout(() => {
+        setPendingLocation(location);
+        setTransitionIn(true); // Reveal
+      }, 1200); // match animation duration (1.2s)
+    }
+  }, [location]);
+
+  // Scroll to top only after both transition and page are ready
+  useEffect(() => {
+    if (transitionIn && pageReady) {
+      setShowTransition(false);
+      setTimeout(() => {
+        if (scrollManager && typeof scrollManager.scrollTo === "function") {
+          scrollManager.scrollTo(0, { immediate: true });
+        } else {
+          window.scrollTo({ top: 0, behavior: "auto" });
+        }
+      }, 50);
+    }
+  }, [transitionIn, pageReady]);
+
+  const handleTransitionComplete = () => {
+    // No-op: scroll now handled in useEffect above
+  };
+
+  // Called when the hero image is loaded
+  const handleHeroImageLoad = () => {
+    setHeroImageLoaded(true);
+  };
+
+  // Called when Loader finishes its progress animation
+  const handleLoaderComplete = () => {
     setIsLoading(false);
   };
 
+  // Helper to pass onPageReady to all pages
+  const pageProps = { onPageReady: () => setPageReady(true) };
+
+  // Add this useEffect after your other useEffects
+  useEffect(() => {
+    // List of routes that do NOT use a hero image
+    const noHeroRoutes = [
+      '/checkout',
+      '/blog',
+      '/hubs/agua-de-luna',
+      '/hubs/tierrakilwa',
+      '/terms',
+      '/privacy',
+      '/projects',
+      '/contact',
+      '/blog/article/:id',
+      // Add any other routes that don't use a hero image
+    ];
+
+    // If the current route is in the list, set heroImageLoaded to true
+    if (noHeroRoutes.some(route => location.pathname.startsWith(route))) {
+      setHeroImageLoaded(true);
+    }
+  }, [location]);
+
   return (
     <LoadingContext.Provider value={isLoading}>
-    <Router>
-        {isLoading && <Loader onLoadingComplete={handleLoadingComplete} />}
-      <ScrollToTopOnNavigation />
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/hubs" element={<HubsPage />} />
-        <Route path="/about" element={<AboutUsPage />} />
-        <Route path="/stewardship-nft" element={<StewardshipNFTPage />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/hubs/nuiyanzhi" element={<NuiyanzhiPage />} />
-        <Route path="/hubs/agua-de-luna" element={<AguaDeLunaPage />} />
-        <Route path="/hubs/TierraKilwa" element={<TierraKilwaPage />} />
-        <Route path="/terms" element={<TermsAndConditionsPage />} />
-        <Route path="/privacy" element={<PrivacyPolicyPage />} />
-        <Route path="/projects" element={<ProjectsPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/article/example" element={<ArticlePage />} />
-        <Route path="*" element={<FourOhFourPage />} />
-      </Routes>
-    </Router>
+      <div
+        className={`app-container ${isTransitioning ? "transitioning" : ""}`}
+      >
+        {isLoading && (
+          <Loader onLoadingComplete={canFinishLoading ? handleLoaderComplete : undefined} />
+        )}
+        {showTransition && (
+          <PageTransition in={transitionIn} onComplete={handleTransitionComplete} />
+        )}
+        <Routes location={pendingLocation}>
+          <Route path="/" element={<MainPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+          <Route path="/hubs" element={<HubsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+          <Route path="/about" element={<AboutUsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+          <Route path="/stewardship-nft" element={<StewardshipNFTPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+          <Route path="/checkout" element={<Checkout {...pageProps} />} />
+          <Route path="/blog" element={<BlogPage {...pageProps} />} />
+          <Route path="/hubs/nuiyanzhi" element={<NuiyanzhiPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+          <Route path="/hubs/agua-de-luna" element={<AguaDeLunaPage {...pageProps} />} />
+          <Route path="/hubs/tierrakilwa" element={<TierraKilwaPage {...pageProps} />} />
+          <Route path="/terms" element={<TermsAndConditionsPage {...pageProps} />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage {...pageProps} />} />
+          <Route path="/projects" element={<ProjectsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+          <Route path="/contact" element={<ContactPage {...pageProps} />} />
+          <Route path="/blog/article/:id" element={<ArticlePage {...pageProps} />} />
+          <Route path="*" element={<FourOhFourPage {...pageProps} />} />
+        </Routes>
+      </div>
     </LoadingContext.Provider>
   );
 };
