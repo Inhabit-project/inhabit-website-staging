@@ -161,60 +161,90 @@ const NewsletterCTA: React.FC = () => {
               errors,
               touched,
               status,
-            }) => (
-              <>
-                <form
-                  ref={formRef}
-                  className="flex flex-row w-full max-w-3xl items-center bg-white/10 rounded-3xl shadow-md"
-                  onSubmit={handleSubmit}
-                  aria-label="Newsletter signup"
-                >
-                  <span className="flex items-center pl-6 text-light opacity-70">
-                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
-                      <path
-                        d="M3 6.75C3 5.50736 4.00736 4.5 5.25 4.5H18.75C19.9926 4.5 21 5.50736 21 6.75V17.25C21 18.4926 19.9926 19.5 18.75 19.5H5.25C4.00736 19.5 3 18.4926 3 17.25V6.75Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                      />
-                      <path
-                        d="M3.75 7.5L12 13.5L20.25 7.5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                      />
-                    </svg>
-                  </span>
-                  <input
-                    name="email"
-                    type="email"
-                    placeholder={t(
-                      "mainPage.footer.newsletter.email.placeholder"
-                    )}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.email}
-                    required
-                    className="flex-1 py-5 px-6 rounded-3xl border-none text-base font-nunito bg-transparent text-light focus:outline-none mr-2 min-w-0"
-                    aria-label="Email address"
-                  />
-                  {errors.email && touched.email && (
-                    <div className="text-orange-400 text-xs">{errors.email}</div>
-                  )}
-                  <button
-                    ref={buttonRef}
-                    type="submit"
-                    className="btn-primary button-text rounded-3xl py-4 px-9 ml-2 text-base font-abel font-normal uppercase"
-                    disabled={isSubmitting}
+            }) => {
+              const [inputFocused, setInputFocused] = React.useState(false);
+              return (
+                <>
+                  <form
+                    ref={formRef}
+                    className="flex flex-col sm:flex-row w-full max-w-3xl items-center bg-white/10 rounded-3xl shadow-md gap-3 sm:gap-0"
+                    onSubmit={handleSubmit}
+                    aria-label="Newsletter signup"
                   >
-                    {isSubmitting
-                      ? t("mainPage.footer.newsletter.subscribing")
-                      : t("mainPage.footer.newsletter.join_newsletter")}
-                  </button>
-                </form>
-                {status && (
-                  <div className="text-green-400 text-xs mt-2">{status}</div>
-                )}
-              </>
-            )}
+                    {/* Mobile: icon inside input, Desktop: icon outside */}
+                    <div className="relative flex-1 w-full">
+                      <span
+                        className="absolute left-4 top-1/2 -translate-y-1/2 text-light opacity-70 pointer-events-none block sm:hidden"
+                        style={{ zIndex: 2 }}
+                      >
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                          <path
+                            d="M3 6.75C3 5.50736 4.00736 4.5 5.25 4.5H18.75C19.9926 4.5 21 5.50736 21 6.75V17.25C21 18.4926 19.9926 19.5 18.75 19.5H5.25C4.00736 19.5 3 18.4926 3 17.25V6.75Z"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          />
+                          <path
+                            d="M3.75 7.5L12 13.5L20.25 7.5"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          />
+                        </svg>
+                      </span>
+                      <input
+                        name="email"
+                        type="email"
+                        placeholder={t(
+                          "mainPage.footer.newsletter.email.placeholder"
+                        )}
+                        onChange={handleChange}
+                        onBlur={e => { handleBlur(e); setInputFocused(false); }}
+                        onFocus={() => setInputFocused(true)}
+                        value={values.email}
+                        required
+                        className="flex-1 py-5 px-12 sm:px-6 rounded-3xl border-none text-base font-nunito bg-transparent text-light focus:outline-none mr-2 min-w-0 w-full"
+                        aria-label="Email address"
+                        autoComplete="email"
+                      />
+                      {/* Animated cursor: only show when input is empty and not focused */}
+                      {!(values.email || inputFocused) && (
+                        <span className="absolute left-12 sm:left-6 top-1/2 -translate-y-1/2 text-light animate-blink pointer-events-none select-none text-base" style={{fontFamily: 'monospace', opacity: 0.7}}>|</span>
+                      )}
+                    </div>
+                    {/* Desktop: icon outside input */}
+                    <span className="hidden sm:flex items-center pl-6 text-light opacity-70">
+                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path
+                          d="M3 6.75C3 5.50736 4.00736 4.5 5.25 4.5H18.75C19.9926 4.5 21 5.50736 21 6.75V17.25C21 18.4926 19.9926 19.5 18.75 19.5H5.25C4.00736 19.5 3 18.4926 3 17.25V6.75Z"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                        />
+                        <path
+                          d="M3.75 7.5L12 13.5L20.25 7.5"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                        />
+                      </svg>
+                    </span>
+                    {errors.email && touched.email && (
+                      <div className="text-orange-400 text-xs">{errors.email}</div>
+                    )}
+                    <button
+                      ref={buttonRef}
+                      type="submit"
+                      className="btn-primary button-text rounded-3xl py-4 px-9 mt-3 sm:mt-0 w-full sm:w-auto"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting
+                        ? t("mainPage.footer.newsletter.subscribing")
+                        : t("mainPage.footer.newsletter.join_newsletter")}
+                    </button>
+                  </form>
+                  {status && (
+                    <div className="text-green-400 text-xs mt-2">{status}</div>
+                  )}
+                </>
+              );
+            }}
           </Formik>
         </div>
       </div>

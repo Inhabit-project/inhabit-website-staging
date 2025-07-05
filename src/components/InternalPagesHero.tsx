@@ -57,12 +57,12 @@ const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({ variant, title, s
   useEffect(() => {
     gsap.set([titleRef.current, strongRef.current, descriptionRef.current], {
       opacity: 0,
-      y: 50
+      y: 100
     });
 
     gsap.set(imageRef.current, {
       opacity: 0,
-      y: 100,
+      y: 20,
       scale: 0.95
     });
   }, []);

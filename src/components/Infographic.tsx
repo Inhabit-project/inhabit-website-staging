@@ -67,20 +67,23 @@ const Infographic: React.FC = () => {
 
   // Set initial states
   useEffect(() => {
-    gsap.set([
-      slide1TitleRef.current, slide1DescRef.current, slide1ImgRef.current,
-      slide2TitleRef.current, slide2DescRef.current, slide2ImgRef.current,
-      slide3TitleRef.current, slide3DescRef.current, slide3ImgRef.current,
-      slide4TitleRef.current, slide4DescRef.current, slide4ImgRef.current
-    ], {
-      opacity: 0,
-      y: 50
-    });
-    gsap.set([
-      slide1ImgRef.current, slide2ImgRef.current, slide3ImgRef.current, slide4ImgRef.current
-    ], {
-      scale: 0.95
-    });
+    let ctx = gsap.context(() => {
+      gsap.set([
+        slide1TitleRef.current, slide1DescRef.current, slide1ImgRef.current,
+        slide2TitleRef.current, slide2DescRef.current, slide2ImgRef.current,
+        slide3TitleRef.current, slide3DescRef.current, slide3ImgRef.current,
+        slide4TitleRef.current, slide4DescRef.current, slide4ImgRef.current
+      ], {
+        opacity: 0,
+        y: 50
+      });
+      gsap.set([
+        slide1ImgRef.current, slide2ImgRef.current, slide3ImgRef.current, slide4ImgRef.current
+      ], {
+        scale: 0.95
+      });
+    }, rootRef);
+    return () => ctx.revert();
   }, []);
 
   // Handle loading state change

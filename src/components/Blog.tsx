@@ -224,7 +224,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
                             {mainPost.date}
                           </span>
                           <h2
-                            className="heading-5"
+                            className="heading-4"
                             style={{ color: "var(--color-secondary)" }}
                           >
                             {mainPost.title}
@@ -272,7 +272,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
                                 {post.date}
                               </span>
                               <h3
-                                className="heading-6"
+                                className="heading-5"
                                 style={{ color: "var(--color-secondary)" }}
                               >
                                 {post.title}

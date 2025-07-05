@@ -29,7 +29,7 @@ const Footer: React.FC = () => {
 
   // Set initial states
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    let ctx = gsap.context(() => {
       gsap.set(logoRef.current, {
         opacity: 0,
         y: 50
@@ -65,7 +65,7 @@ const Footer: React.FC = () => {
   useEffect(() => {
     if (!canAnimate || !footerRef.current) return;
 
-    const ctx = gsap.context(() => {
+    let ctx = gsap.context(() => {
       // Kill existing timeline and scroll trigger if they exist
       if (timelineRef.current) {
         timelineRef.current.kill();
@@ -122,12 +122,15 @@ const Footer: React.FC = () => {
         animation: timelineRef.current,
         id: `footer-${Date.now()}` // Unique ID to avoid conflicts
       });
+      // Refresh ScrollTrigger after timeline is set up
+      ScrollTrigger.refresh();
     }, footerRef);
 
     return () => {
       ctx.revert(); // This will clean up all animations created in this context
       if (timelineRef.current) timelineRef.current.kill();
       if (scrollTriggerRef.current) scrollTriggerRef.current.kill();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [canAnimate]);
 

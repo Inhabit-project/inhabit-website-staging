@@ -127,7 +127,7 @@ const RelatedPost: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      style={{ background: "var(--color-background-light)", padding: 20 }}
+      style={{ background: "var(--color-background-light)", }}
     >
       <div className="relative z-10 w-full container py-24 background-gradient-light">
         <h2

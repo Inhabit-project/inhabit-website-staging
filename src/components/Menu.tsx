@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { LoadingContext } from '../App';
 import { useMenuScrollHide } from '../utils/scrollManager';
+import { gsap } from '../utils/gsap';
 
 const LanguageButton = styled.button`
   background: none;
@@ -56,7 +57,49 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
   const { t, i18n } = useTranslation();
   const isLoading = useContext(LoadingContext);
 
+  // Refs for mobile menu animation
+  const mobileMenuLinksRef = useRef<(HTMLAnchorElement | null)[]>([]);
+  const mobileLangBtnRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const mobileDownloadBtnRef = useRef<HTMLButtonElement | null>(null);
+
   useMenuScrollHide(setIsVisible, { getDisable: () => mobileOpen });
+
+  useEffect(() => {
+    if (mobileOpen) {
+      // Animate menu links and language buttons with nature-inspired stagger
+      const menuItems = [
+        ...mobileMenuLinksRef.current,
+        ...mobileLangBtnRef.current,
+      ].filter(Boolean);
+      const downloadBtn = mobileDownloadBtnRef.current;
+      if (menuItems.length > 0) {
+        gsap.set(menuItems, { opacity: 0, y: 40, scale: 0.92, rotateZ: -3 });
+        gsap.to(menuItems, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          rotateZ: 0,
+          duration: 0.85,
+          ease: 'back.out(1.7)',
+          stagger: {
+            each: 0.11,
+            from: 'start',
+          },
+        });
+      }
+      // Animate the download button straight (no y or rotateZ), just scale and fade with bounce
+      if (downloadBtn) {
+        gsap.set(downloadBtn, { opacity: 0, scale: 0.85 });
+        gsap.to(downloadBtn, {
+          opacity: 1,
+          scale: 1,
+          duration: 1.1,
+          delay: 0.11 * menuItems.length, // after the last menu item
+          ease: 'elastic.out(1, 0.6)',
+        });
+      }
+    }
+  }, [mobileOpen]);
 
   const menuClassName = `fixed top-0 left-0 right-0 h-[5rem] bg-menu-backdrop backdrop-blur-lg z-50 transition-transform duration-300 no-snap ${
     isVisible ? 'translate-y-0' : '-translate-y-full'
@@ -163,12 +206,13 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
               </svg>
             </button>
             <nav role="navigation" aria-label="Mobile navigation" className="flex flex-col items-center gap-6 mt-12">
-              {menuLinks.map((item) => (
+              {menuLinks.map((item, idx) => (
                 <Link
                   key={item.path}
                   to={item.path}
                   className="nav-text text-xl text-light hover:opacity-80"
                   onClick={() => setMobileOpen(false)}
+                  ref={el => (mobileMenuLinksRef.current[idx] = el)}
                 >
                   {item.label}
                 </Link>
@@ -178,18 +222,24 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
               <LanguageButton
                 onClick={() => changeLanguage('en')}
                 className={i18n.language === 'en' ? 'active' : ''}
+                ref={el => (mobileLangBtnRef.current[0] = el)}
               >
                 EN
               </LanguageButton>
               <LanguageButton
                 onClick={() => changeLanguage('es')}
                 className={i18n.language === 'es' ? 'active' : ''}
+                ref={el => (mobileLangBtnRef.current[1] = el)}
               >
                 ES
               </LanguageButton>
             </div>
             <a href="https://docsend.com/view/z34fcq8w3f8hgz7h" target="_blank" rel="noopener noreferrer">
-              <button className="btn-secondary transition-all duration-200 group mt-4">
+              <button
+                className="btn-secondary transition-all duration-200 group mt-4"
+                style={{ paddingLeft: '2rem', paddingRight: '2rem' }}
+                ref={mobileDownloadBtnRef}
+              >
                 <div className="flex items-center gap-2">
                   <svg className="w-6 h-6 transition-colors duration-200 group-hover:[&>path]:stroke-[var(--color-light)]" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" style={{stroke: 'var(--color-secondary)'}}>
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>

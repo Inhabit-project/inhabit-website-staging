@@ -11,7 +11,7 @@ interface ImpactCardProps {
 }
 
 const ImpactCard: React.FC<ImpactCardProps> = ({ label, icon, title, subtitle, description, id, number }) => (
-  <article 
+  <div 
     className="relative bg-green-soft rounded-[var(--radius-2xl)] p-10 flex flex-col gap-4 min-h-[22rem] h-full shadow-md w-full"
     aria-labelledby={id}
   >
@@ -35,7 +35,7 @@ const ImpactCard: React.FC<ImpactCardProps> = ({ label, icon, title, subtitle, d
     )}
     {/* Label */}
     <span 
-      className="font-abel uppercase tracking-[0.07em] text-base text-secondary"
+      className="font-abel uppercase tracking-[0.07em] text-base text-secondary w-[23rem]"
       aria-hidden="true"
     >
       {label}
@@ -52,7 +52,7 @@ const ImpactCard: React.FC<ImpactCardProps> = ({ label, icon, title, subtitle, d
     </h3>
     {/* Description */}
     <p className="font-nunito font-light text-[1.3125rem] leading-[1.4] text-secondary flex-1 overflow-auto">{description}</p>
-  </article>
+  </div>
 );
 
 export default ImpactCard; 

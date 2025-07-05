@@ -34,51 +34,54 @@ const FAQ: React.FC<FAQProps> = ({ faqItems, title, description }) => {
   useEffect(() => {
     if (isLoading) return;
 
-    // Set initial states
-    gsap.set([titleRef.current, descriptionRef.current], {
-      opacity: 0,
-      y: 50
-    });
+    let ctx = gsap.context(() => {
+      // Set initial states
+      gsap.set([titleRef.current, descriptionRef.current], {
+        opacity: 0,
+        y: 50
+      });
 
-    gsap.set(faqItemsArray.current, {
-      opacity: 0,
-      y: 30
-    });
+      gsap.set(faqItemsArray.current, {
+        opacity: 0,
+        y: 30
+      });
 
-    // Create scroll-triggered animation
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top center",
-        end: "center center",
-        toggleActions: "play none none reverse"
-      }
-    });
+      // Create scroll-triggered animation
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top center",
+          end: "center center",
+          toggleActions: "play none none reverse"
+        }
+      });
 
-    tl.to(titleRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    })
-    .to(descriptionRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    }, "-=0.6")
-    .to(faqItemsArray.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: "power3.out"
-    }, "-=0.4");
+      tl.to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      })
+      .to(descriptionRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      }, "-=0.6")
+      .to(faqItemsArray.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out"
+      }, "-=0.4");
 
-    // Refresh ScrollTrigger after timeline is set up
-    ScrollTrigger.refresh();
+      // Refresh ScrollTrigger after timeline is set up
+      ScrollTrigger.refresh();
+    }, sectionRef);
 
     return () => {
+      ctx.revert();
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [isLoading]);
@@ -134,7 +137,7 @@ const FAQ: React.FC<FAQProps> = ({ faqItems, title, description }) => {
                 <div 
                   id={`faq-answer-${index}`}
                   className={`overflow-hidden transition-all duration-300 ${
-                    openIndex === index ? 'max-h-[500px] opacity-100 pb-6' : 'max-h-0 opacity-0'
+                    openIndex === index ? 'max-h-[auto] opacity-100 pb-6' : 'max-h-0 opacity-0'
                   }`}
                 >
                   <div className="text-white/80 font-nunito text-base leading-[1.5]" dangerouslySetInnerHTML={{ __html: item.answer }} />
@@ -183,45 +186,48 @@ export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string 
   useEffect(() => {
     if (isLoading) return;
 
-    // Set initial states
-    gsap.set(titleRef.current, {
-      opacity: 0,
-      y: 50
-    });
+    let ctx = gsap.context(() => {
+      // Set initial states
+      gsap.set(titleRef.current, {
+        opacity: 0,
+        y: 50
+      });
 
-    gsap.set(faqItemsArray.current, {
-      opacity: 0,
-      y: 30
-    });
+      gsap.set(faqItemsArray.current, {
+        opacity: 0,
+        y: 30
+      });
 
-    // Create scroll-triggered animation
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top center",
-        end: "center center",
-        toggleActions: "play none none reverse"
-      }
-    });
+      // Create scroll-triggered animation
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top center",
+          end: "center center",
+          toggleActions: "play none none reverse"
+        }
+      });
 
-    tl.to(titleRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    })
-    .to(faqItemsArray.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: "power3.out"
-    }, "-=0.4");
+      tl.to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      })
+      .to(faqItemsArray.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out"
+      }, "-=0.4");
 
-    // Refresh ScrollTrigger after timeline is set up
-    ScrollTrigger.refresh();
+      // Refresh ScrollTrigger after timeline is set up
+      ScrollTrigger.refresh();
+    }, sectionRef);
 
     return () => {
+      ctx.revert();
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [isLoading]);
@@ -308,51 +314,54 @@ export const FAQHubs: React.FC = () => {
   useEffect(() => {
     if (!canAnimate) return;
 
-    // Set initial states
-    gsap.set([titleRef.current, descriptionRef.current], {
-      opacity: 0,
-      y: 50
-    });
+    let ctx = gsap.context(() => {
+      // Set initial states
+      gsap.set([titleRef.current, descriptionRef.current], {
+        opacity: 0,
+        y: 50
+      });
 
-    gsap.set(faqItemsArray.current, {
-      opacity: 0,
-      y: 30
-    });
+      gsap.set(faqItemsArray.current, {
+        opacity: 0,
+        y: 30
+      });
 
-    // Create scroll-triggered animation
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top center",
-        end: "center center",
-        toggleActions: "play none none reverse"
-      }
-    });
+      // Create scroll-triggered animation
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top center",
+          end: "center center",
+          toggleActions: "play none none reverse"
+        }
+      });
 
-    tl.to(titleRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    })
-    .to(descriptionRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    }, "-=0.6")
-    .to(faqItemsArray.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: "power3.out"
-    }, "-=0.4");
+      tl.to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      })
+      .to(descriptionRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      }, "-=0.6")
+      .to(faqItemsArray.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out"
+      }, "-=0.4");
 
-    // Refresh ScrollTrigger after timeline is set up
-    ScrollTrigger.refresh();
+      // Refresh ScrollTrigger after timeline is set up
+      ScrollTrigger.refresh();
+    }, sectionRef);
 
     return () => {
+      ctx.revert();
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [canAnimate]);
@@ -441,7 +450,7 @@ export const FAQStewardshipNFT: React.FC = () => {
 
   // Set initial states
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    let ctx = gsap.context(() => {
       gsap.set([titleRef.current, descriptionRef.current], {
         opacity: 0,
         y: 50
@@ -472,7 +481,7 @@ export const FAQStewardshipNFT: React.FC = () => {
   useEffect(() => {
     if (!canAnimate || !sectionRef.current) return;
 
-    const ctx = gsap.context(() => {
+    let ctx = gsap.context(() => {
       // Kill existing timeline and scroll trigger if they exist
       if (timelineRef.current) {
         timelineRef.current.kill();
@@ -514,12 +523,15 @@ export const FAQStewardshipNFT: React.FC = () => {
         animation: timelineRef.current,
         id: `faq-stewardship-${Date.now()}` // Unique ID to avoid conflicts
       });
+      // Refresh ScrollTrigger after timeline is set up
+      ScrollTrigger.refresh();
     }, sectionRef);
 
     return () => {
       ctx.revert(); // This will clean up all animations created in this context
       if (timelineRef.current) timelineRef.current.kill();
       if (scrollTriggerRef.current) scrollTriggerRef.current.kill();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [canAnimate]);
 

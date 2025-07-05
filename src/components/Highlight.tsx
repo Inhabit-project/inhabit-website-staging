@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useContext } from 'react';
 import { ReactSVG } from 'react-svg';
 import { useTranslation } from 'react-i18next';
-import { gsap } from 'gsap';
+import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
 
 const Highlight = () => {
@@ -55,61 +55,64 @@ const Highlight = () => {
     // Apply word wrapping to description
     wrapWordsInHTML(description);
 
-    // Set initial states
-    gsap.set(svg, { 
-      opacity: 0, 
-      scale: 0.8 
-    });
-    
-    gsap.set(title, {
-      opacity: 0,
-      y: 30
-    });
+    let ctx = gsap.context(() => {
+      // Set initial states
+      gsap.set(svg, { 
+        opacity: 0, 
+        scale: 0.8 
+      });
+      
+      gsap.set(title, {
+        opacity: 0,
+        y: 30
+      });
 
-    gsap.set('.word', {
-      opacity: 0,
-      y: 30,
-      rotateX: -90
-    });
+      gsap.set(description.querySelectorAll('.word'), {
+        opacity: 0,
+        y: 30,
+        rotateX: -90
+      });
 
-    // Create the animation timeline
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: content,
-        start: "top center",
-        end: "center center",
-        toggleActions: "play none none reverse"
-      }
-    });
+      // Create the animation timeline
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: content,
+          start: "top center",
+          end: "center center",
+          toggleActions: "play none none reverse"
+        }
+      });
 
-    // Animate background SVG
-    tl.to(svg, {
-      opacity: 0.3,
-      scale: 1,
-      duration: 1,
-      ease: "power3.out"
-    })
-    // Animate title
-    .to(title, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    }, "-=0.5")
-    // Animate words
-    .to('.word', {
-      opacity: 1,
-      y: 0,
-      rotateX: 0,
-      duration: 0.8,
-      stagger: 0.02,
-      ease: "power3.out"
-    }, "-=0.4");
+      // Animate background SVG
+      tl.to(svg, {
+        opacity: 0.3,
+        scale: 1,
+        duration: 1,
+        ease: "power3.out"
+      })
+      // Animate title
+      .to(title, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      }, "-=0.5")
+      // Animate words
+      .to(description.querySelectorAll('.word'), {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        duration: 0.8,
+        stagger: 0.02,
+        ease: "power3.out"
+      }, "-=0.4");
+
+      // Refresh ScrollTrigger after timeline is set up
+      ScrollTrigger.refresh();
+    }, content);
 
     return () => {
-      if (tl.scrollTrigger) {
-        tl.scrollTrigger.kill();
-      }
+      ctx.revert();
     };
   }, [isLoading]);
 

@@ -78,7 +78,9 @@ const CTA: React.FC = () => {
           '+=0.1' // after bg+image
         );
       // Refresh ScrollTrigger after timeline is set up
-      ScrollTrigger.refresh();
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 0);
     }, sectionRef);
     return () => {
       ctx.revert();
@@ -122,19 +124,20 @@ const CTA: React.FC = () => {
                 <div className="mt-8 md:mt-12 flex flex-col md:flex-row gap-4 justify-center md:justify-start">
                   {/* Primary Button (Orange) */}
                   <button
-                    onClick={() => (window.location.href = 'mailto:hello@inhabit.earth')}
+                    onClick={() => (window.location.href = '/hubs/nuiyanzhi')}
                     className="mt-0 flex items-center h-[4.2rem] bg-[var(--color-accent)] hover:bg-[var(--color-green-soft)] text-light hover:text-secondary rounded-button backdrop-blur-sm transition-all duration-200 group no-underline"
-                    aria-label={t('mainPage.cta.becomeGuardian')}
+                    aria-label="Explore Nuiyanzhi Hub"
                   >
                     <div className="flex items-center gap-2 px-6">
-                      <img
-                        src="assets/icons/Chield_check_light.svg"
-                        alt=""
-                        className="w-5 h-5 transition-colors duration-200 group-hover:invert"
+                      <svg
+                        className="w-5 h-5 text-light group-hover:text-[var(--color-green-dark)] transition-colors duration-200"
+                        width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg"
                         aria-hidden="true"
-                      />
+                      >
+                        <path d="M6.8291 17.2954C13.9002 21.5381 19.557 15.8812 18.8499 5.27465C8.24352 4.56753 2.58692 10.2246 6.8291 17.2954ZM6.8291 17.2954C6.82902 17.2953 6.82918 17.2956 6.8291 17.2954ZM6.8291 17.2954L5 19.1239M6.8291 17.2954L10.6569 13.467" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
                       <span className="button-text text-sm tracking-[0.02em] uppercase">
-                        {t('mainPage.cta.becomeGuardian')}
+                        Explore Nuiyanzhi Hub
                       </span>
                     </div>
                     <div className="flex items-center px-4">

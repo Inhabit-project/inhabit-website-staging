@@ -21,103 +21,130 @@ const Photo: React.FC = () => {
     gsap.registerPlugin(ScrollTrigger);
 
     // Set initial states
-    gsap.set([image1Ref.current, image2Ref.current], {
-      scale: 1.1
-    });
-    gsap.set([text1Ref.current, text2Ref.current], {
-      opacity: 0,
-      y: 50
-    });
+    if (image1Ref.current && image2Ref.current) {
+      gsap.set([image1Ref.current, image2Ref.current], {
+        scale: 1.1
+      });
+    }
+    if (text1Ref.current && text2Ref.current) {
+      gsap.set([text1Ref.current, text2Ref.current], {
+        opacity: 0,
+        y: 50
+      });
+    }
 
     // Responsive scroll triggers
     ScrollTrigger.matchMedia({
       // Desktop
       "(min-width: 768px)": function() {
-        const tl1 = gsap.timeline({
-          scrollTrigger: {
-            trigger: section1Ref.current,
-            start: "top center",
-            end: "center center",
-            toggleActions: "play none none reverse"
-          }
-        });
-        tl1.to(image1Ref.current, {
-          scale: 1,
-          duration: 1.2,
-          ease: "power3.out"
-        })
-        .to(text1Ref.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        }, "-=0.8");
+        if (section1Ref.current && image1Ref.current && text1Ref.current) {
+          const tl1 = gsap.timeline({
+            scrollTrigger: {
+              trigger: section1Ref.current,
+              start: "top center",
+              end: "center center",
+              toggleActions: "play none none reverse"
+            }
+          });
+          tl1.to(image1Ref.current, {
+            scale: 1,
+            duration: 1.2,
+            ease: "power3.out"
+          })
+          .to(text1Ref.current, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out"
+          }, "-=0.8");
+        }
 
-        const tl2 = gsap.timeline({
-          scrollTrigger: {
-            trigger: section2Ref.current,
-            start: "top center",
-            end: "center center",
-            toggleActions: "play none none reverse"
-          }
-        });
-        tl2.to(image2Ref.current, {
-          scale: 1,
-          duration: 1.2,
-          ease: "power3.out"
-        })
-        .to(text2Ref.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        }, "-=0.8");
+        if (section2Ref.current && image2Ref.current && text2Ref.current) {
+          const tl2 = gsap.timeline({
+            scrollTrigger: {
+              trigger: section2Ref.current,
+              start: "top center",
+              end: "center center",
+              toggleActions: "play none none reverse"
+            }
+          });
+          tl2.to(image2Ref.current, {
+            scale: 1,
+            duration: 1.2,
+            ease: "power3.out"
+          })
+          .to(text2Ref.current, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out"
+          }, "-=0.8");
+        }
       },
       // Mobile
       "(max-width: 767px)": function() {
-        // Use simple onEnter/onLeave animations for mobile to avoid scrub/jump issues
-        ScrollTrigger.create({
-          trigger: section1Ref.current,
-          start: "top 80%",
-          onEnter: () => {
-            gsap.to(image1Ref.current, {
-              scale: 1,
-              duration: 0.7,
-              ease: "power2.out"
-            });
-            gsap.to(text1Ref.current, {
-              opacity: 1,
-              y: 0,
-              duration: 0.5,
-              ease: "power2.out"
-            });
-          },
-          onLeaveBack: () => {
-            gsap.to(image1Ref.current, { scale: 1.1, duration: 0.5 });
-            gsap.to(text1Ref.current, { opacity: 0, y: 50, duration: 0.4 });
-          }
-        });
-        ScrollTrigger.create({
-          trigger: section2Ref.current,
-          start: "top 80%",
-          onEnter: () => {
-            gsap.to(image2Ref.current, {
-              scale: 1,
-              duration: 0.7,
-              ease: "power2.out"
-            });
-            gsap.to(text2Ref.current, {
-              opacity: 1,
-              y: 0,
-              duration: 0.5,
-              ease: "power2.out"
-            });
-          },
-          onLeaveBack: () => {
-            gsap.to(image2Ref.current, { scale: 1.1, duration: 0.5 });
-            gsap.to(text2Ref.current, { opacity: 0, y: 50, duration: 0.4 });
-          }
-        });
+        if (section1Ref.current && image1Ref.current && text1Ref.current) {
+          ScrollTrigger.create({
+            trigger: section1Ref.current,
+            start: "top 80%",
+            onEnter: () => {
+              if (image1Ref.current) {
+                gsap.to(image1Ref.current, {
+                  scale: 1,
+                  duration: 0.7,
+                  ease: "power2.out"
+                });
+              }
+              if (text1Ref.current) {
+                gsap.to(text1Ref.current, {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.5,
+                  ease: "power2.out"
+                });
+              }
+            },
+            onLeaveBack: () => {
+              if (image1Ref.current) {
+                gsap.to(image1Ref.current, { scale: 1.1, duration: 0.5 });
+              }
+              if (text1Ref.current) {
+                gsap.to(text1Ref.current, { opacity: 0, y: 50, duration: 0.4 });
+              }
+            }
+          });
+        }
+        if (section2Ref.current && image2Ref.current && text2Ref.current) {
+          ScrollTrigger.create({
+            trigger: section2Ref.current,
+            start: "top 80%",
+            onEnter: () => {
+              if (image2Ref.current) {
+                gsap.to(image2Ref.current, {
+                  scale: 1,
+                  duration: 0.7,
+                  ease: "power2.out"
+                });
+              }
+              if (text2Ref.current) {
+                gsap.to(text2Ref.current, {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.5,
+                  ease: "power2.out"
+                });
+              }
+            },
+            onLeaveBack: () => {
+              if (image2Ref.current) {
+                gsap.to(image2Ref.current, { scale: 1.1, duration: 0.5 });
+              }
+              if (text2Ref.current) {
+                gsap.to(text2Ref.current, { opacity: 0, y: 50, duration: 0.4 });
+              }
+            }
+          });
+        }
       }
     });
 

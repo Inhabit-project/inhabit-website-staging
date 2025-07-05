@@ -219,7 +219,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
   }, [t, i18n.language, isLoading]);
 
   return (
-    <div className="relative w-full min-h-screen bg-secondary flex flex-col no-snap overflow-hidden">
+    <div className="relative w-full h-screen bg-secondary flex flex-col no-snap overflow-hidden">
       {/* Background Image with Overlay */}
       <div 
         ref={backgroundRef}
