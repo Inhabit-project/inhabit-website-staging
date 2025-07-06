@@ -245,7 +245,7 @@ const Hubs: React.FC = () => {
         imageSrc="/assets/sierra.jpg"
         imageAlt="Sierra Nevada de Santa Marta mountain range"
       />
-      <section aria-labelledby="hubs-section-title" className="hubs-section" ref={sectionRef}>
+      <section aria-labelledby="hubs-section-title" className="hubs-section py-10 " ref={sectionRef}>
         <h2 id="hubs-section-title" className="sr-only">Hubs Overview</h2>
         <div ref={el => hubsRefs.current[0] = el}>
           <HubSubsections

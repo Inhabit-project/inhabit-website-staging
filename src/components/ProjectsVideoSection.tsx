@@ -164,7 +164,7 @@ const ProjectsVideoSection: React.FC = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative w-full background-gradient-dark flex flex-col items-center" 
+      className="relative w-full background-gradient-dark flex flex-col items-center custom-cursor-hide" 
       aria-labelledby="projects-video-title"
     >
       {/* Background with decorative elements */}

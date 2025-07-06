@@ -172,6 +172,28 @@ const Hubs: React.FC = () => {
             }
           }
 
+          /* Marker color transition on hover */
+          .hub-marker .marker-outer {
+            border: 2px solid var(--color-green-soft);
+            transition: border-color 0.3s;
+          }
+          .hub-marker .marker-inner {
+            background: var(--color-green-soft);
+            transition: background 0.3s;
+          }
+          .hub-marker:hover .marker-outer,
+          .hub-marker:focus .marker-outer,
+          .hub-marker:active .marker-outer,
+          .hub-marker.group:hover .marker-outer {
+            border-color: var(--color-primary);
+          }
+          .hub-marker:hover .marker-inner,
+          .hub-marker:focus .marker-inner,
+          .hub-marker:active .marker-inner,
+          .hub-marker.group:hover .marker-inner {
+            background: var(--color-primary);
+          }
+
           /* Desktop marker positions (using original clamp values) */
           @media (min-width: 768px) {
             .hub-marker-1 { 
@@ -262,8 +284,8 @@ const Hubs: React.FC = () => {
                   >
                     {/* Animated marker (pulse) - now always visible */}
                     <div className="relative mobile-marker-pulse mr-2">
-                      <div className="w-8 h-8 rounded-full border border-green-soft"></div>
-                      <div className="w-4 h-4 rounded-full bg-green-soft absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                      <div className="w-8 h-8 rounded-full marker-outer"></div>
+                      <div className="w-4 h-4 rounded-full marker-inner absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
                     </div>
 
                     {/* Desktop marker with vertical line and text */}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { LoadingContext } from '../App';
 import { useMenuScrollHide } from '../utils/scrollManager';
 import { gsap } from '../utils/gsap';
@@ -56,6 +56,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
   const lastScrollY = useRef(0);
   const { t, i18n } = useTranslation();
   const isLoading = useContext(LoadingContext);
+  const location = useLocation();
 
   // Refs for mobile menu animation
   const mobileMenuLinksRef = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -210,9 +211,10 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="nav-text text-xl text-light hover:opacity-80"
+                  className={`nav-text text-xl hover:opacity-80 ${location.pathname === item.path ? 'text-primary' : 'text-light'}`}
                   onClick={() => setMobileOpen(false)}
                   ref={el => (mobileMenuLinksRef.current[idx] = el)}
+                  aria-current={location.pathname === item.path ? 'page' : undefined}
                 >
                   {item.label}
                 </Link>

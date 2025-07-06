@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Nunito+Sans:wght@300;400;500;600;700&family=Abel&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Nunito+Sans:wght@300;400;500;600;700&family=Abel&display=swap&subset=latin");
 
 @tailwind base;
 @tailwind components;
@@ -500,7 +500,7 @@
     background: #bdbdbd;
     color: #f6ffea;
     cursor: not-allowed;
-    opacity: 0.7;
+    
   }
 
   .btn-primary.inactive svg,
@@ -1081,4 +1081,51 @@ section {
 }
 .animate-blink {
   animation: blink 1s steps(2, start) infinite;
+}
+
+.cursor {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+  z-index: 9999;
+  transition: none;
+  will-change: transform;
+  background: none;
+}
+
+.cursor img {
+  width: 100%;
+  height: 100%;
+  transform: scaleX(-1); /* Flip horizontally to point left */
+  opacity: 1;
+}
+
+.particle {
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  z-index: 9998;
+  animation: particle-float 0.8s ease-out forwards;
+}
+
+.particle img {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes particle-float {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -100%) scale(0.7) rotate(40deg);
+  }
+}
+
+html, body, *, *:hover, *:active, *:focus {
+  cursor: none !important;
 }

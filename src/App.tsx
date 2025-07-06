@@ -27,6 +27,7 @@ import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import ContactPage from "@/pages/ContactPage";
 import ProjectsPage from "@/pages/ProjectsPage";
 import ArticlePage from "@/pages/ArticlePage";
+import Cursor from './utils/cursor';
 
 // Create a context for the loading state
 export const LoadingContext = createContext<boolean>(false);
@@ -136,6 +137,13 @@ const App: React.FC = () => {
       setHeroImageLoaded(true);
     }
   }, [location]);
+
+  useEffect(() => {
+    const cursor = new Cursor();
+    return () => {
+      cursor.destroy();
+    };
+  }, []);
 
   return (
     <LoadingContext.Provider value={isLoading}>
