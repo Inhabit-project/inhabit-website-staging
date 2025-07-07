@@ -129,15 +129,26 @@ const App: React.FC = () => {
       '/privacy',
       '/projects',
       '/contact',
-      '/blog/article/:id',
+      '/blog/article', // match base for dynamic article routes
       // Add any other routes that don't use a hero image
     ];
 
-    // If the current route is in the list, set heroImageLoaded to true
-    if (noHeroRoutes.some(route => location.pathname.startsWith(route))) {
+    // If the current route matches any no-hero route, set heroImageLoaded to true
+    if (noHeroRoutes.some(route => location.pathname === route || location.pathname.startsWith(route + '/'))) {
       setHeroImageLoaded(true);
     }
   }, [location]);
+
+  // Fallback: Always finish loading after 5 seconds (in case hero image never loads)
+  useEffect(() => {
+    if (!canFinishLoading) {
+      const fallback = setTimeout(() => {
+        setHeroImageLoaded(true);
+        setMinLoaderTimeElapsed(true);
+      }, 5000);
+      return () => clearTimeout(fallback);
+    }
+  }, [canFinishLoading]);
 
   useEffect(() => {
     const cursor = new Cursor();
