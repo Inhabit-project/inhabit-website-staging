@@ -13,164 +13,71 @@ const Photo: React.FC = () => {
   const text1Ref = useRef<HTMLDivElement>(null);
   const text2Ref = useRef<HTMLDivElement>(null);
   const isLoading = useContext(LoadingContext);
+  const image1ContainerRef = useRef<HTMLDivElement>(null);
+  const image2ContainerRef = useRef<HTMLDivElement>(null);
+  const textBox1Ref = useRef<HTMLDivElement>(null);
+  const textBox2Ref = useRef<HTMLDivElement>(null);
+  const animation1Ref = useRef<gsap.core.Timeline | null>(null);
+  const animation2Ref = useRef<gsap.core.Timeline | null>(null);
 
-  // Initialize section animations
   useEffect(() => {
     if (isLoading) return;
-
     gsap.registerPlugin(ScrollTrigger);
 
-    // Set initial states
-    if (image1Ref.current && image2Ref.current) {
-      gsap.set([image1Ref.current, image2Ref.current], {
-        scale: 1.1
+    // Section 1 animation (scroll-triggered)
+    if (image1ContainerRef.current && textBox1Ref.current && section1Ref.current) {
+      animation1Ref.current = gsap.timeline({
+        defaults: { ease: 'power3.out' },
+        scrollTrigger: {
+          trigger: section1Ref.current,
+          start: 'top center',
+          end: 'center center',
+          toggleActions: 'play none none reverse',
+        },
       });
+      animation1Ref.current
+        .fromTo(image1ContainerRef.current, { opacity: 0.8, }, { opacity: 1,  duration: 1.2, ease: 'power2.out' })
+        .fromTo(textBox1Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.8');
     }
-    if (text1Ref.current && text2Ref.current) {
-      gsap.set([text1Ref.current, text2Ref.current], {
-        opacity: 0,
-        y: 50
+    // Section 2 animation (scroll-triggered)
+    if (image2ContainerRef.current && textBox2Ref.current && section2Ref.current) {
+      animation2Ref.current = gsap.timeline({
+        defaults: { ease: 'power3.out' },
+        scrollTrigger: {
+          trigger: section2Ref.current,
+          start: 'top center',
+          end: 'center center',
+          toggleActions: 'play none none reverse',
+        },
       });
+      animation2Ref.current
+        .fromTo(image2ContainerRef.current, { opacity: 0.8, }, { opacity: 1, duration: 1.2, ease: 'power2.out' })
+        .fromTo(textBox2Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.8');
     }
-
-    // Responsive scroll triggers
-    ScrollTrigger.matchMedia({
-      // Desktop
-      "(min-width: 768px)": function() {
-        if (section1Ref.current && image1Ref.current && text1Ref.current) {
-          const tl1 = gsap.timeline({
-            scrollTrigger: {
-              trigger: section1Ref.current,
-              start: "top center",
-              end: "center center",
-              toggleActions: "play none none reverse"
-            }
-          });
-          tl1.to(image1Ref.current, {
-            scale: 1,
-            duration: 1.2,
-            ease: "power3.out"
-          })
-          .to(text1Ref.current, {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out"
-          }, "-=0.8");
-        }
-
-        if (section2Ref.current && image2Ref.current && text2Ref.current) {
-          const tl2 = gsap.timeline({
-            scrollTrigger: {
-              trigger: section2Ref.current,
-              start: "top center",
-              end: "center center",
-              toggleActions: "play none none reverse"
-            }
-          });
-          tl2.to(image2Ref.current, {
-            scale: 1,
-            duration: 1.2,
-            ease: "power3.out"
-          })
-          .to(text2Ref.current, {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out"
-          }, "-=0.8");
-        }
-      },
-      // Mobile
-      "(max-width: 767px)": function() {
-        if (section1Ref.current && image1Ref.current && text1Ref.current) {
-          ScrollTrigger.create({
-            trigger: section1Ref.current,
-            start: "top 80%",
-            onEnter: () => {
-              if (image1Ref.current) {
-                gsap.to(image1Ref.current, {
-                  scale: 1,
-                  duration: 0.7,
-                  ease: "power2.out"
-                });
-              }
-              if (text1Ref.current) {
-                gsap.to(text1Ref.current, {
-                  opacity: 1,
-                  y: 0,
-                  duration: 0.5,
-                  ease: "power2.out"
-                });
-              }
-            },
-            onLeaveBack: () => {
-              if (image1Ref.current) {
-                gsap.to(image1Ref.current, { scale: 1.1, duration: 0.5 });
-              }
-              if (text1Ref.current) {
-                gsap.to(text1Ref.current, { opacity: 0, y: 50, duration: 0.4 });
-              }
-            }
-          });
-        }
-        if (section2Ref.current && image2Ref.current && text2Ref.current) {
-          ScrollTrigger.create({
-            trigger: section2Ref.current,
-            start: "top 80%",
-            onEnter: () => {
-              if (image2Ref.current) {
-                gsap.to(image2Ref.current, {
-                  scale: 1,
-                  duration: 0.7,
-                  ease: "power2.out"
-                });
-              }
-              if (text2Ref.current) {
-                gsap.to(text2Ref.current, {
-                  opacity: 1,
-                  y: 0,
-                  duration: 0.5,
-                  ease: "power2.out"
-                });
-              }
-            },
-            onLeaveBack: () => {
-              if (image2Ref.current) {
-                gsap.to(image2Ref.current, { scale: 1.1, duration: 0.5 });
-              }
-              if (text2Ref.current) {
-                gsap.to(text2Ref.current, { opacity: 0, y: 50, duration: 0.4 });
-              }
-            }
-          });
-        }
-      }
-    });
-
     return () => {
+      if (animation1Ref.current) { animation1Ref.current.kill(); animation1Ref.current = null; }
+      if (animation2Ref.current) { animation2Ref.current.kill(); animation2Ref.current = null; }
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [isLoading]);
 
   return (
-    <div className="w-full">
+    <div className="relative w-full">
       {/* Photo 1 */}
       <section 
         ref={section1Ref}
         className="relative w-full h-screen min-h-screen"
       >
-        <div className="relative w-full h-full">
+        <div ref={image1ContainerRef} className="relative w-full h-full min-h-screen">
           <img 
             ref={image1Ref}
             src="/assets/photo1.webp" 
             alt="Person in natural environment" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-fill"
             loading="lazy"
           />
-          
           <div 
-            ref={text1Ref}
+            ref={textBox1Ref}
             className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] right-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/10 backdrop-blur-2xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0 shadow-lg"
           >
             <p className="body-M text-light">
@@ -185,17 +92,16 @@ const Photo: React.FC = () => {
         ref={section2Ref}
         className="relative w-full h-screen min-h-screen"
       >
-        <div className="relative w-full h-full">
+        <div ref={image2ContainerRef} className="relative w-full h-full min-h-screen">
           <img 
             ref={image2Ref}
             src="/assets/photo-2.webp" 
             alt="Natural environment" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-fill"
             loading="lazy"
           />
-          
           <div 
-            ref={text2Ref}
+            ref={textBox2Ref}
             className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] left-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/10 backdrop-blur-2xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0 shadow-lg"
           >
             <p className="body-M text-light">

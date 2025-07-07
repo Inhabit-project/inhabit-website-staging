@@ -151,16 +151,6 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
     };
   }, [readyToAnimate]);
 
-  useEffect(() => {
-    console.log('Refs:', {
-      title: titleRef.current,
-      desc: descriptionRef.current,
-      main: mainPostRef.current,
-      small: smallPostsRef.current,
-      readyToAnimate
-    });
-  }, [readyToAnimate]);
-
   return (
     <section ref={sectionRef} className="background-gradient-light w-full min-h-screen">
       <div className="relative z-10 w-full container py-24 background-gradient-light">

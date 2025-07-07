@@ -125,7 +125,7 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
       <div className="container relative z-20 flex flex-col w-full max-w-5xl px-4 md:px-0 min-h-screen">
         {/* Content Card */}
         <div className="w-full md:w-auto flex flex-col items-start gap-6 my-auto">
-          <article className="min-h-[50rem] w-full md:max-w-xl bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl flex flex-col p-6 md:p-8 gap-2">
+          <article className="min-h-[40rem] w-full md:max-w-xl bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl flex flex-col p-6 md:p-8 gap-2">
             {/* Map image */}
             <div ref={mapRef}>
               <img 

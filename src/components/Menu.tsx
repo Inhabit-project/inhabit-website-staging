@@ -141,7 +141,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`nav-text hover:opacity-80 focus:outline-none ${
+                className={`nav-text hover:text-primary focus:outline-none ${
                   window.location.pathname === item.path ? 'text-accent' : ''
                 }`}
                 aria-current={window.location.pathname === item.path ? 'page' : undefined}

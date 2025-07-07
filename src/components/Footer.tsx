@@ -140,15 +140,12 @@ const Footer: React.FC = () => {
       <div
         className="absolute inset-0 w-full h-full"
         style={{
-          backgroundImage: 'url("/assets/footer-bg.webp")',
+          backgroundImage: 'url("/assets/FOOTER.webp")',
           backgroundSize: "cover",
           backgroundPosition: "center",
           opacity: 1,
         }}
       />
-
-      {/* Blur Overlay */}
-      <div className="absolute inset-0 bg-white/5 backdrop-blur-4xl border-[0.5px] border-white/20" />
 
       {/* Content */}
       <div className="relative z-10 w-full min-h-screen flex flex-col py-[5rem]">

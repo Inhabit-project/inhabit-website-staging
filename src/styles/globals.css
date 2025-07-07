@@ -19,7 +19,7 @@
     /* 28px to 60px */
     --font-size-xl: clamp(1.5rem, 2vw + 1rem, 2.5rem);
     /* 24px to 40px */
-    --font-size-lg: clamp(1.25rem,1.5vw + 0.875rem,1.75rem);
+    --font-size-lg: clamp(1.25rem, 1.5vw + 0.875rem, 1.75rem);
     /* 20px to 28px */
     --font-size-base: clamp(1rem, 1vw + 0.75rem, 1.125rem);
     --font-size-sm: clamp(0.875rem, 0.8vw + 0.6rem, 1rem);
@@ -53,7 +53,7 @@
     /* 32px with fluid scaling */
     --body-M: clamp(1.2rem, 1.5vw + 1rem, 1.5rem);
     /* 24px with fluid scaling */
-    --body-S: clamp(1rem,1vw + 0.75rem,1.125rem);
+    --body-S: clamp(1rem, 1vw + 0.75rem, 1.125rem);
     /* 16px with fluid scaling */
     --eyebrow: clamp(0.9rem, 0.8vw + 0.6rem, 0.9rem);
 
@@ -170,13 +170,12 @@
     height: 100%;
   }
 
+
   *,
   ::after,
   ::before {
-    -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    scroll-snap-type: y mandatory;
-    scroll-snap-align: start;
+    -webkit-box-sizing: border-box;
   }
 
   body {
@@ -193,17 +192,6 @@
     scrollbar-width: none;
     -ms-scroll-chaining: none;
     overscroll-behavior: none;
-  }
-
-  html.loading,
-  body.loading {
-    overflow: hidden !important;
-    position: fixed !important;
-    width: 100% !important;
-    height: 100% !important;
-    scroll-snap-type: none !important;
-    touch-action: none !important;
-    -webkit-overflow-scrolling: none !important;
   }
 
   input,
@@ -237,8 +225,6 @@
     height: 100%;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-    scroll-snap-type: y mandatory;
-    scroll-snap-align: start;
   }
 
   button,
@@ -266,7 +252,8 @@
     color: var(--heading-color-light);
   }
 
-  h1, .heading-1 {
+  h1,
+  .heading-1 {
     font-size: var(--font-size-4xl);
     line-height: 1.1;
     letter-spacing: -0.03em;
@@ -274,7 +261,8 @@
     color: var(--heading-color-light);
   }
 
-  h2, .heading-2 {
+  h2,
+  .heading-2 {
     font-size: var(--font-size-3xl);
     line-height: 1.1;
     letter-spacing: -0.03em;
@@ -282,7 +270,8 @@
     color: var(--heading-color-light);
   }
 
-  h3, .heading-3 {
+  h3,
+  .heading-3 {
     font-size: var(--font-size-2xl);
     line-height: 1.1;
     letter-spacing: -0.03em;
@@ -290,21 +279,24 @@
     color: var(--heading-color-light);
   }
 
-  h4, .heading-4 {
+  h4,
+  .heading-4 {
     font-size: var(--font-size-xl);
     line-height: 1.15;
     font-weight: 500;
     color: var(--heading-color-light);
   }
 
-  h5, .heading-5 {
+  h5,
+  .heading-5 {
     font-size: var(--font-size-lg);
     line-height: 1.05;
     font-weight: 500;
     color: var(--heading-color-light);
   }
 
-  h6, .heading-6 {
+  h6,
+  .heading-6 {
     font-size: var(--font-size-sm);
     line-height: 1.3;
     letter-spacing: -0.01em;
@@ -500,7 +492,7 @@
     background: #bdbdbd;
     color: #f6ffea;
     cursor: not-allowed;
-    
+
   }
 
   .btn-primary.inactive svg,
@@ -900,24 +892,6 @@
   filter: none;
 }
 
-/* Enable scroll snap for vertical sections only in specific containers */
-.scroll-snap-container {
-  scroll-snap-type: y mandatory;
-  overflow-y: auto;
-  height: 100vh;
-}
-
-.scroll-snap-section {
-  scroll-snap-align: start;
-  min-height: 100vh;
-}
-
-section {
-  scroll-snap-type: y mandatory;
-  scroll-snap-align: start;
-  overflow: auto;
-}
-
 .four-oh-four-number {
   font-family: abel;
   font-size: clamp(18rem, 38vw, 28rem);
@@ -1076,9 +1050,17 @@ section {
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
+
 .animate-blink {
   animation: blink 1s steps(2, start) infinite;
 }
@@ -1097,7 +1079,8 @@ section {
 .cursor img {
   width: 100%;
   height: 100%;
-  transform: scaleX(-1); /* Flip horizontally to point left */
+  transform: scaleX(-1);
+  /* Flip horizontally to point left */
   opacity: 1;
 }
 
@@ -1120,12 +1103,48 @@ section {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1) rotate(0deg);
   }
+
   100% {
     opacity: 0;
     transform: translate(-50%, -100%) scale(0.7) rotate(40deg);
   }
 }
 
-html, body, *, *:hover, *:active, *:focus {
+html,
+body,
+*,
+*:hover,
+*:active,
+*:focus {
   cursor: none !important;
+}
+
+@media not all and (min-resolution:.001dpcm) {
+  @supports (scroll-snap-type: y mandatory) {
+
+    /* This is Safari only, so we do nothing here to override */
+    *,
+    ::after,
+    ::before {
+      scroll-snap-type: none !important;
+      scroll-snap-align: none !important;
+    }
+  }
+}
+
+.scroll-snap-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.scroll-snap-section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+}
+
+.no-scroll-snap {
+  scroll-snap-type: none !important;
+  scroll-snap-align: none !important;
+  scroll-behavior: auto !important;
 }

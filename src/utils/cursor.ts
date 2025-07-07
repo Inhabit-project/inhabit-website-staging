@@ -7,17 +7,31 @@ const LEAFS = [
   '/assets/icons/leaf6.svg',
 ];
 
+function isTouchDevice() {
+  return (
+    'ontouchstart' in window ||
+    navigator.maxTouchPoints > 0
+  );
+}
+
 class Cursor {
-  cursor: HTMLDivElement;
+  cursor: HTMLDivElement | null = null;
   particles: Set<HTMLDivElement>;
   lastTime: number;
-  handleMouseMove: (e: MouseEvent) => void;
-  handleMouseLeave: () => void;
   videoSections: HTMLElement[];
-  handleSectionEnter: (e: MouseEvent) => void;
-  handleSectionLeave: (e: MouseEvent) => void;
+  handleMouseMove!: (e: MouseEvent) => void;
+  handleMouseLeave!: () => void;
+  handleSectionEnter!: (e: MouseEvent) => void;
+  handleSectionLeave!: (e: MouseEvent) => void;
 
   constructor() {
+    if (isTouchDevice()) {
+      this.cursor = null;
+      this.particles = new Set();
+      this.lastTime = Date.now();
+      this.videoSections = [];
+      return;
+    }
     this.cursor = this.createCursor();
     this.particles = new Set();
     this.lastTime = Date.now();
@@ -50,6 +64,7 @@ class Cursor {
   }
 
   createParticle(x: number, y: number) {
+    if (!this.cursor) return;
     const particle = document.createElement('div');
     particle.className = 'particle';
     particle.style.transform = 'translate(-50%, -50%)';
@@ -72,12 +87,13 @@ class Cursor {
   }
 
   _handleMouseMove(e: MouseEvent) {
+    if (!this.cursor) return;
     const now = Date.now();
     requestAnimationFrame(() => {
-      this.cursor.style.display = 'block';
-      this.cursor.style.transform = 'translate(-50%, -50%)';
-      this.cursor.style.left = `${e.clientX}px`;
-      this.cursor.style.top = `${e.clientY}px`;
+      this.cursor!.style.display = 'block';
+      this.cursor!.style.transform = 'translate(-50%, -50%)';
+      this.cursor!.style.left = `${e.clientX}px`;
+      this.cursor!.style.top = `${e.clientY}px`;
     });
     if (now - this.lastTime > 50) {
       this.createParticle(e.clientX, e.clientY);
@@ -86,18 +102,22 @@ class Cursor {
   }
 
   _handleMouseLeave() {
+    if (!this.cursor) return;
     this.cursor.style.display = 'none';
   }
 
   _handleSectionEnter() {
+    if (!this.cursor) return;
     this.cursor.style.display = 'none';
   }
 
   _handleSectionLeave() {
+    if (!this.cursor) return;
     this.cursor.style.display = 'block';
   }
 
   destroy() {
+    if (!this.cursor) return;
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('mouseleave', this.handleMouseLeave);
     this.videoSections.forEach(section => {

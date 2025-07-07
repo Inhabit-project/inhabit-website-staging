@@ -166,7 +166,7 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
         </div>
         <p
           ref={descriptionRef}
-          className="font-nunito text-[1.75rem] font-light text-[var(--color-secondary)] max-w-[38rem]"
+          className="body-M text-[var(--color-secondary)] max-w-[38rem]"
         >
           {t('mainPage.stewardshipNFTBenefits.description')}
         </p>
@@ -193,7 +193,7 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
               <img src={b.icon} alt="" className="w-full h-full object-contain" aria-hidden="true" />
             </div>
             <span className="eyebrow">{b.eyebrow}</span>
-            <h3 id={`benefit-${i}-title`} className="heading-4 mb-2">
+            <h3 id={`benefit-${i}-title`} className="heading-4  mb-2">
               <span dangerouslySetInnerHTML={{ __html: b.title }} />
             </h3>
             <p className="font-nunito text-base font-light whitespace-pre-line opacity-90 mt-auto">{b.description}</p>

@@ -28,6 +28,7 @@ import ContactPage from "@/pages/ContactPage";
 import ProjectsPage from "@/pages/ProjectsPage";
 import ArticlePage from "@/pages/ArticlePage";
 import Cursor from './utils/cursor';
+import { injectScrollSnapCss } from './utils/browserCss';
 
 // Create a context for the loading state
 export const LoadingContext = createContext<boolean>(false);
@@ -144,6 +145,8 @@ const App: React.FC = () => {
       cursor.destroy();
     };
   }, []);
+
+  injectScrollSnapCss();
 
   return (
     <LoadingContext.Provider value={isLoading}>

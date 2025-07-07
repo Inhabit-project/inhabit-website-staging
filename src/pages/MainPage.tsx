@@ -41,7 +41,7 @@ const MainPage: React.FC<MainPageProps> = ({ onPageReady, onHeroImageLoad }) => 
       <a href="#main-content" className="sr-only focus:not-sr-only absolute top-2 left-2 bg-white text-black p-2 z-50 rounded">Skip to main content</a>
       <Menu />
       <main id="main-content" tabIndex={-1} role="main">
-        <section aria-label="Hero section">
+        <section className="no-scroll-snap" aria-label="Hero section">
           <Hero scrollToRef={videoSectionRef} onHeroImageLoad={onHeroImageLoad} />
         </section>
         <section aria-label="Video section" ref={videoSectionRef}>

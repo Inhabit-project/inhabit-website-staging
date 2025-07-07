@@ -83,20 +83,13 @@ const Highlight = () => {
         }
       });
 
-      // Animate background SVG
-      tl.to(svg, {
-        opacity: 0.3,
-        scale: 1,
-        duration: 1,
-        ease: "power3.out"
-      })
       // Animate title
-      .to(title, {
+      tl.to(title, {
         opacity: 1,
         y: 0,
         duration: 0.8,
         ease: "power3.out"
-      }, "-=0.5")
+      })
       // Animate words
       .to(description.querySelectorAll('.word'), {
         opacity: 1,
@@ -105,7 +98,14 @@ const Highlight = () => {
         duration: 0.8,
         stagger: 0.02,
         ease: "power3.out"
-      }, "-=0.4");
+      }, "-=0.4")
+      // Animate background SVG immediately after text
+      .to(svg, {
+        opacity: 0.3,
+        scale: 1,
+        duration: 0.4,
+        ease: "power3.out"
+      });
 
       // Refresh ScrollTrigger after timeline is set up
       ScrollTrigger.refresh();

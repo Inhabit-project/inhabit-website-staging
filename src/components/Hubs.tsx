@@ -220,7 +220,7 @@ const Hubs: React.FC = () => {
             width: 100%;
             max-width: calc(100vw - 2rem);
             width: 30rem;
-            height: 38rem;
+            height: 36rem;
             max-height: calc(100vh - 2rem);
             transform: translateX(-50%);
             top: 0;
@@ -230,7 +230,7 @@ const Hubs: React.FC = () => {
             .hub-card-centered {
               position: absolute;
             left: 50%;
-            top: 10%;
+            top: 15%;
             transform: translate(-50%, -50%);
             z-index: 30;
             }
@@ -239,7 +239,7 @@ const Hubs: React.FC = () => {
       </style>
       <section
         ref={sectionRef}
-        className="hubs-section relative w-full flex flex-col items-center background-gradient-light min-h-screen max-h-screen overflow-hidden"
+        className="hubs-section relative w-full flex flex-col items-center background-gradient-light min-h-screen max-h-screen overflow-hidden scroll-snap-section"
         style={{ minHeight: '100vh', maxHeight: '100vh', overflow: 'hidden' }}
       >
         {/* Content */}

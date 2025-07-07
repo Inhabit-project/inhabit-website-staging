@@ -118,7 +118,7 @@ const SingleBlog: React.FC = () => {
             <span>{post?.readTime}</span>
           </div>
           {/* Cover Image */}
-          <div className="mb-10">
+          {/* <div className="mb-10">
             <img
               src={post?.featuredImage.sourceUrl}
               alt={post?.title}
@@ -129,7 +129,7 @@ const SingleBlog: React.FC = () => {
                 maxHeight: 340,
               }}
             />
-          </div>
+          </div> */}
           {/** Post content */}
           <div
             className="body-S blog-content"

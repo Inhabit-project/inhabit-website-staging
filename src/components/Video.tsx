@@ -197,7 +197,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
   return ( 
     <section 
       ref={sectionRef}
-      className="relative w-full background-gradient-dark flex flex-col items-center custom-cursor-hide" 
+      className="relative w-full background-gradient-dark flex flex-col items-center custom-cursor-hide no-scroll-snap" 
       aria-labelledby="video-title"
     >
       {/* Background with decorative elements */}

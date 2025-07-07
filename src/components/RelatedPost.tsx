@@ -26,6 +26,11 @@ const RelatedPost: React.FC = () => {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [canAnimate, setCanAnimate] = useState(false);
 
+  // Ensure cardRefs.current is always the right length and reset on posts change
+  useEffect(() => {
+    cardRefs.current = Array(posts.length).fill(null);
+  }, [posts.length]);
+
   const loadPosts = async (newPage: number) => {
     if (newPage < 1 || (totalPages && newPage > totalPages)) return;
 
@@ -67,8 +72,17 @@ const RelatedPost: React.FC = () => {
   // Set initial states for animation
   useEffect(() => {
     gsap.set(titleRef.current, { opacity: 0, y: 50 });
-    gsap.set(cardRefs.current, { opacity: 0, y: 50, scale: 0.97 });
   }, []);
+
+  // Set initial state for cards only when posts are loaded and refs are attached
+  useEffect(() => {
+    if (!isLoading && posts.length > 0) {
+      const validCardRefs = cardRefs.current.filter(Boolean);
+      if (validCardRefs.length === posts.length) {
+        gsap.set(validCardRefs, { opacity: 0, y: 50, scale: 0.97 });
+      }
+    }
+  }, [isLoading, posts.length]);
 
   // Wait for posts to load, then allow animation
   useEffect(() => {
@@ -84,6 +98,8 @@ const RelatedPost: React.FC = () => {
   useEffect(() => {
     if (!canAnimate) return;
     let ctx: gsap.Context | null = null;
+    // Filter out null refs to avoid GSAP errors
+    const validCardRefs = cardRefs.current.filter(Boolean);
     ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -100,7 +116,7 @@ const RelatedPost: React.FC = () => {
         ease: "power3.out",
       })
         .to(
-          cardRefs.current,
+          validCardRefs,
           {
             opacity: 1,
             y: 0,

@@ -35,7 +35,7 @@ const ImpactCard: React.FC<ImpactCardProps> = ({ label, icon, title, subtitle, d
     )}
     {/* Label */}
     <span 
-      className="font-abel uppercase tracking-[0.07em] text-base text-secondary w-[23rem]"
+      className="font-abel uppercase tracking-[0.07em] text-base text-secondary max-w-[60vw]"
       aria-hidden="true"
     >
       {label}
