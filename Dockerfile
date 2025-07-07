@@ -1,29 +1,38 @@
-# Etapa 1: build
-FROM node:20-alpine AS builder
+FROM oven/bun:latest AS builder
 
 WORKDIR /app
 
-# Copia los archivos necesarios e instala dependencias
-COPY package*.json bun.lockb* ./
-COPY bunfig.toml ./
-RUN npm install -g bun && bun install
+COPY bun.lock package.json ./
+RUN bun install
 
-# Copia el resto del código y genera la build
 COPY . .
+
+ARG VITE_BACKEND_HOST
+ARG VITE_BACKEND_API_KEY
+ARG VITE_IS_PRODUCTION
+ARG VITE_HOST
+ARG VITE_PORT
+ARG VITE_WALLET_CONNECT_PROJECT_ID
+
+ENV VITE_BACKEND_HOST=$VITE_BACKEND_HOST
+ENV VITE_BACKEND_API_KEY=$VITE_BACKEND_API_KEY
+ENV VITE_IS_PRODUCTION=$VITE_IS_PRODUCTION
+ENV VITE_HOST=$VITE_HOST
+ENV VITE_PORT=$VITE_PORT
+ENV VITE_WALLET_CONNECT_PROJECT_ID=$VITE_WALLET_CONNECT_PROJECT_ID
+
 RUN bun run build
 
-# Etapa 2: producción
-FROM nginx:alpine AS production
+FROM nginx:alpine
 
-# Elimina la configuración por defecto de nginx
-RUN rm /etc/nginx/conf.d/default.conf
+RUN apk add --no-cache bash gettext
 
-# Copia una configuración básica para servir Vite
-COPY nginx.conf /etc/nginx/conf.d
+RUN rm -f /etc/nginx/conf.d/default.conf
 
-# Copia los archivos construidos desde el builder
+COPY nginx.conf.template /etc/nginx/conf.d/nginx.conf.template
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-EXPOSE 80
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/entrypoint.sh"]

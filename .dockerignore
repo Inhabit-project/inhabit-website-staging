@@ -1,0 +1,61 @@
+# Node.js
+node_modules
+*.log
+npm-debug.log*
+
+# Build output
+dist
+build
+
+# Bun
+*.tsbuildinfo
+*.vite
+
+# Environment files
+.env*
+!.env.example
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker files (only if you don't need in the docker container) 
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Documentation
+README.md
+*.md
+CHANGELOG.md
+
+# Testing
+coverage
+test
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+.nyc_output
+
+# IDEs
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data directory (PostgreSQL data)
+data
+
+# Temporary files
+.tmp
+.temp
+
+# CI/CD
+.github
+.gitlab-ci.yml

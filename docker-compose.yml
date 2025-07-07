@@ -1,0 +1,29 @@
+services:
+  vite:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - HOST=${HOST}
+        - PORT=${PORT}
+        - SERVER_NAME=${SERVER_NAME}
+        - VITE_BACKEND_HOST=${VITE_BACKEND_HOST}
+        - VITE_BACKEND_API_KEY=${VITE_BACKEND_API_KEY}
+        - VITE_IS_PRODUCTION=${VITE_IS_PRODUCTION}
+        - VITE_HOST=${VITE_HOST}
+        - VITE_PORT=${VITE_PORT}
+        - VITE_WALLET_CONNECT_PROJECT_ID=${VITE_WALLET_CONNECT_PROJECT_ID}
+    ports:
+      - "${PORT}:${PORT}"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - HOST=${HOST}
+      - PORT=${PORT}
+      - VITE_BACKEND_HOST=${VITE_BACKEND_HOST}
+      - VITE_BACKEND_API_KEY=${VITE_BACKEND_API_KEY}
+      - VITE_IS_PRODUCTION=${VITE_IS_PRODUCTION}
+      - VITE_HOST=${VITE_HOST}
+      - VITE_PORT=${VITE_PORT}
+      - VITE_WALLET_CONNECT_PROJECT_ID=${VITE_WALLET_CONNECT_PROJECT_ID}
