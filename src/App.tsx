@@ -6,9 +6,9 @@ import "@fontsource/nunito-sans/400.css";
 
 import Loader from "@/components/Loader";
 import { scrollManager } from "@/utils/scrollManager";
-import PageTransition from '@/components/PageTransition';
-import { useLocation } from 'react-router-dom';
-import { useScrollToTopOnNavigation } from '@/utils/scrollToTopOnNavigation';
+import PageTransition from "@/components/PageTransition";
+import { useLocation } from "react-router-dom";
+import { useScrollToTopOnNavigation } from "@/utils/scrollToTopOnNavigation";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -20,7 +20,7 @@ import Checkout from "@/components/Checkout";
 import BlogPage from "@/pages/BlogPage";
 import NuiyanzhiPage from "@/pages/NuiyanzhiPage";
 import AguaDeLunaPage from "@/pages/AguaDeLunaPage";
-import TierraKilwaPage from "@/pages/tierrakilwaPage";
+// import TierraKilwaPage from "@/pages/tierrakilwaPage";
 import FourOhFourPage from "@/pages/404";
 import TermsAndConditionsPage from "@/pages/TermsAndConditionsPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
@@ -119,20 +119,20 @@ const App: React.FC = () => {
   useEffect(() => {
     // List of routes that do NOT use a hero image
     const noHeroRoutes = [
-      '/checkout',
-      '/blog',
-      '/hubs/agua-de-luna',
-      '/hubs/tierrakilwa',
-      '/terms',
-      '/privacy',
-      '/projects',
-      '/contact',
-      '/blog/article/:id',
+      "/checkout",
+      "/blog",
+      "/hubs/agua-de-luna",
+      "/hubs/tierrakilwa",
+      "/terms",
+      "/privacy",
+      "/projects",
+      "/contact",
+      "/blog/article/:id",
       // Add any other routes that don't use a hero image
     ];
 
     // If the current route is in the list, set heroImageLoaded to true
-    if (noHeroRoutes.some(route => location.pathname.startsWith(route))) {
+    if (noHeroRoutes.some((route) => location.pathname.startsWith(route))) {
       setHeroImageLoaded(true);
     }
   }, [location]);
@@ -143,26 +143,87 @@ const App: React.FC = () => {
         className={`app-container ${isTransitioning ? "transitioning" : ""}`}
       >
         {isLoading && (
-          <Loader onLoadingComplete={canFinishLoading ? handleLoaderComplete : undefined} />
+          <Loader
+            onLoadingComplete={
+              canFinishLoading ? handleLoaderComplete : undefined
+            }
+          />
         )}
         {showTransition && (
-          <PageTransition in={transitionIn} onComplete={handleTransitionComplete} />
+          <PageTransition
+            in={transitionIn}
+            onComplete={handleTransitionComplete}
+          />
         )}
         <Routes location={pendingLocation}>
-          <Route path="/" element={<MainPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
-          <Route path="/hubs" element={<HubsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
-          <Route path="/about" element={<AboutUsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
-          <Route path="/stewardship-nft" element={<StewardshipNFTPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+          <Route
+            path="/"
+            element={
+              <MainPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />
+            }
+          />
+          <Route
+            path="/hubs"
+            element={
+              <HubsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <AboutUsPage
+                {...pageProps}
+                onHeroImageLoad={handleHeroImageLoad}
+              />
+            }
+          />
+          <Route
+            path="/stewardship-nft"
+            element={
+              <StewardshipNFTPage
+                {...pageProps}
+                onHeroImageLoad={handleHeroImageLoad}
+              />
+            }
+          />
           <Route path="/checkout" element={<Checkout {...pageProps} />} />
           <Route path="/blog" element={<BlogPage {...pageProps} />} />
-          <Route path="/hubs/nuiyanzhi" element={<NuiyanzhiPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
-          <Route path="/hubs/agua-de-luna" element={<AguaDeLunaPage {...pageProps} />} />
-          <Route path="/hubs/tierrakilwa" element={<TierraKilwaPage {...pageProps} />} />
-          <Route path="/terms" element={<TermsAndConditionsPage {...pageProps} />} />
-          <Route path="/privacy" element={<PrivacyPolicyPage {...pageProps} />} />
-          <Route path="/projects" element={<ProjectsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+          <Route
+            path="/hubs/nuiyanzhi"
+            element={
+              <NuiyanzhiPage
+                {...pageProps}
+                onHeroImageLoad={handleHeroImageLoad}
+              />
+            }
+          />
+          <Route
+            path="/hubs/agua-de-luna"
+            element={<AguaDeLunaPage {...pageProps} />}
+          />
+          {/* <Route path="/hubs/tierrakilwa" element={<TierraKilwaPage {...pageProps} />} /> */}
+          <Route
+            path="/terms"
+            element={<TermsAndConditionsPage {...pageProps} />}
+          />
+          <Route
+            path="/privacy"
+            element={<PrivacyPolicyPage {...pageProps} />}
+          />
+          <Route
+            path="/projects"
+            element={
+              <ProjectsPage
+                {...pageProps}
+                onHeroImageLoad={handleHeroImageLoad}
+              />
+            }
+          />
           <Route path="/contact" element={<ContactPage {...pageProps} />} />
-          <Route path="/blog/article/:id" element={<ArticlePage {...pageProps} />} />
+          <Route
+            path="/blog/article/:id"
+            element={<ArticlePage {...pageProps} />}
+          />
           <Route path="*" element={<FourOhFourPage {...pageProps} />} />
         </Routes>
       </div>
