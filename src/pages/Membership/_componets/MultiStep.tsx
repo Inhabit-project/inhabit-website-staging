@@ -61,13 +61,17 @@ export default function MultiStepCheckout(
   useEffect(() => {
     if (!address) return;
 
-    if (MUST_DO_KYC_HARD(price) && !hasSentKycHard) {
-      startKycPolling(address, price);
+    // TODO: add another validation because always entering this block when price, address, hasSentKycHard, hasSentKycSoft, isKycHardCompleted changed
+    if (!MUST_DO_KYC_HARD(price)) {
+      getHasSentKyc(address, KYC_TYPE.SOFT);
     }
 
-    if (!MUST_DO_KYC_HARD(price) && !hasSentKycSoft) {
-      console.log("1. Getting soft KYC status");
-      getHasSentKyc(address, KYC_TYPE.SOFT);
+    if (!MUST_DO_KYC_HARD(price) && hasSentKycSoft) {
+      goNext();
+    }
+
+    if (MUST_DO_KYC_HARD(price)) {
+      startKycPolling(address, price);
     }
 
     if (MUST_DO_KYC_HARD(price) && hasSentKycHard && isKycHardCompleted) {
@@ -75,15 +79,10 @@ export default function MultiStepCheckout(
     } else {
       goPrev();
     }
-
-    if (!MUST_DO_KYC_HARD(price) && hasSentKycSoft) {
-      console.log("2. Skipping KYC Soft check");
-      goNext();
-    }
   }, [price, address, hasSentKycHard, hasSentKycSoft, isKycHardCompleted]);
 
   return (
-    <div className="w-full max-w-lg bg-menu-backdrop backdrop-blur-lg rounded-3xl shadow-xl border border-green-soft p-8 flex flex-col gap-6 self-start sticky top-8">
+    <div className="w-full max-w-lg background-gradient-dark backdrop-blur-lg rounded-3xl shadow-xl border border-green-soft p-8 flex flex-col gap-6 self-start sticky top-8">
       <StepperIndicator step={step} />
       <ConnectButton />
 

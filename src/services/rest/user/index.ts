@@ -33,6 +33,7 @@ export function userServices() {
       const response = await axiosInstance.get<boolean>(
         `${host}/users/${address}/hasSentKyc/${kycType}`
       );
+
       return { success: true, data: response.data };
     } catch (error) {
       const apiError = error as APIError;

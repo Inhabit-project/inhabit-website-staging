@@ -8,6 +8,7 @@ import { Campaign } from "../models/campaign.model";
 import { userServices } from "../services/rest/user";
 import { MUST_DO_KYC_HARD } from "../config/const";
 import { ERROR, KYC_TYPE } from "../config/enums";
+import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 
 type Store = {
   campaign: Campaign | null;
@@ -86,34 +87,29 @@ export const useStore = create<Store>((set, get) => {
     getIsKycCompleted: async (address: Address, kycType: KYC_TYPE) => {
       const serviceResponse = await isKycCompletedApi(address, kycType);
 
-      if (serviceResponse.success) {
-        if (kycType === KYC_TYPE.HARD) {
-          set({ isKycHardCompleted: serviceResponse.data });
-        } else if (kycType === KYC_TYPE.SOFT) {
-          set({ isKycSoftCompleted: serviceResponse.data });
-        } else {
-          console.warn(`${ERROR.UNKNOWN_KYC_TYPE}: ${kycType}`);
-        }
+      if (kycType === KYC_TYPE.HARD) {
+        set({ isKycHardCompleted: serviceResponse.data });
+      } else if (kycType === KYC_TYPE.SOFT) {
+        set({ isKycSoftCompleted: serviceResponse.data });
+      } else {
+        console.warn(`${ERROR.UNKNOWN_KYC_TYPE}: ${kycType}`);
       }
 
-      return serviceResponse.success;
+      return serviceResponse.data ?? false;
     },
 
     getHasSentKyc: async (address: Address, kycType: KYC_TYPE) => {
       const serviceResponse = await hasSentKycApi(address, kycType);
 
-      if (serviceResponse.success) {
-        if (kycType === KYC_TYPE.HARD) {
-          set({ hasSentKycHard: serviceResponse.data });
-        } else if (kycType === KYC_TYPE.SOFT) {
-          set({ hasSentKycSoft: true });
-          // set({ hasSentKycSoft: serviceResponse.data });
-        } else {
-          console.warn(`${ERROR.UNKNOWN_KYC_TYPE}: ${kycType}`);
-        }
+      if (kycType === KYC_TYPE.HARD) {
+        set({ hasSentKycHard: serviceResponse.data });
+      } else if (kycType === KYC_TYPE.SOFT) {
+        set({ hasSentKycSoft: serviceResponse.data });
+      } else {
+        console.warn(`${ERROR.UNKNOWN_KYC_TYPE}: ${kycType}`);
       }
 
-      return serviceResponse.success;
+      return serviceResponse.data ?? false;
     },
 
     setCampaign: (campaign: Campaign) => {

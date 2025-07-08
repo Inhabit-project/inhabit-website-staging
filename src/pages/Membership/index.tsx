@@ -7,10 +7,14 @@ import { useStore } from "../../store";
 import RightsTable from "./_componets/RightsTable";
 import { Info } from "./_componets/Info";
 import OtherCollections from "./_componets/OtherCollections";
-import Spinner from "../../ui/Loader";
 import MultiStepCheckout from "./_componets/MultiStep";
 
-export default function Membership(): JSX.Element {
+type Props = { onHeroImageLoad?: () => void; onPageReady?: () => void };
+
+export default function Membership(props: Props): JSX.Element {
+  // props
+  const { onHeroImageLoad } = props;
+
   // hooks
   const [collection, setCollection] = useState<Collection | null>(null);
   const [isReferralValid, setIsReferralValid] = useState<boolean>(false);
@@ -33,6 +37,12 @@ export default function Membership(): JSX.Element {
   } = useStore();
 
   // effects
+  useEffect(() => {
+    if (!campaignLoading && collection && onHeroImageLoad) {
+      onHeroImageLoad();
+    }
+  }, [campaignLoading, collection, onHeroImageLoad]);
+
   useEffect(() => {
     const validateReferral = async () => {
       if (referral === undefined) {
@@ -87,24 +97,22 @@ export default function Membership(): JSX.Element {
     loadCampaign();
   }, [isReferralValid, state]);
 
-  // TODO: See this logic, it seems to be a bit convoluted
-  if (campaignLoading) return <Spinner />;
-  if (!campaignLoading && !collection) return <Spinner />;
-
   return (
     <>
       <Menu />
-      <div className="mt-8 w-full background-gradient-light flex flex-col lg:flex-row gap-8 px-4 py-12 lg:py-20 max-w-[1600px] mx-auto pb-24">
-        <div className="flex-1 flex flex-col gap-8">
-          <Info collection={collection!} />
-          <OtherCollections collectionId={collectionId!} />
-          <RightsTable rights={collection!.rights} />
+      {collection && (
+        <div className="mt-8 w-full background-gradient-light flex flex-col lg:flex-row gap-8 px-4 py-12 lg:py-20 max-w-[1600px] mx-auto pb-24">
+          <div className="flex-1 flex flex-col gap-8">
+            <Info collection={collection} />
+            <OtherCollections collectionId={collectionId!} />
+            <RightsTable rights={collection.rights} />
+          </div>
+          <MultiStepCheckout
+            price={collection.price}
+            membershipContract={collection.membershipContract}
+          />
         </div>
-        <MultiStepCheckout
-          price={collection!.price}
-          membershipContract={collection!.membershipContract}
-        />
-      </div>
+      )}
     </>
   );
 }

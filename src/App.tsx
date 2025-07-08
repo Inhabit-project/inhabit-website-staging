@@ -27,6 +27,7 @@ import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import ContactPage from "@/pages/ContactPage";
 import ProjectsPage from "@/pages/ProjectsPage";
 import ArticlePage from "@/pages/ArticlePage";
+import Membership from "./pages/Membership";
 
 // Create a context for the loading state
 export const LoadingContext = createContext<boolean>(false);
@@ -117,9 +118,9 @@ const App: React.FC = () => {
 
   // Add this useEffect after your other useEffects
   useEffect(() => {
-    // List of routes that do NOT use a hero image
-    const noHeroRoutes = [
+    const matchNoHeroRoute = [
       "/checkout",
+      "/membership",
       "/blog",
       "/hubs/agua-de-luna",
       "/hubs/tierrakilwa",
@@ -127,12 +128,10 @@ const App: React.FC = () => {
       "/privacy",
       "/projects",
       "/contact",
-      "/blog/article/:id",
-      // Add any other routes that don't use a hero image
-    ];
+      "/blog/article",
+    ].some((route) => location.pathname.startsWith(route));
 
-    // If the current route is in the list, set heroImageLoaded to true
-    if (noHeroRoutes.some((route) => location.pathname.startsWith(route))) {
+    if (matchNoHeroRoute) {
       setHeroImageLoaded(true);
     }
   }, [location]);
@@ -187,6 +186,10 @@ const App: React.FC = () => {
             }
           />
           <Route path="/checkout" element={<Checkout {...pageProps} />} />
+          <Route
+            path="/membership/:campaignId/:collectionId/:referral?"
+            element={<Membership {...pageProps} />}
+          />
           <Route path="/blog" element={<BlogPage {...pageProps} />} />
           <Route
             path="/hubs/nuiyanzhi"
