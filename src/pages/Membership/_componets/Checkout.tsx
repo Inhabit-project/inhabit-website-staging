@@ -1,6 +1,4 @@
 import { JSX, useEffect, useRef, useState } from "react";
-import usdcImage from "../../../assets/images/tokens/USDC.svg";
-import usdtImage from "../../../assets/images/tokens/USDT.svg";
 import { useAccount, useSignMessage } from "wagmi";
 import { Indicator, indicators } from "../../../assets/json/form/indicators";
 import { z } from "zod";
@@ -112,13 +110,7 @@ export function Checkout(props: Props): JSX.Element {
   type Form = z.infer<typeof schema>;
 
   // props
-  const {
-    membershipContract,
-    price,
-    usdcBalance,
-    usdtBalance,
-    hasSufficientBalance,
-  } = props;
+  const { membershipContract, price, hasSufficientBalance } = props;
 
   // hooks
   const [selectedIndicator, setSelectedIndicator] = useState<string>("");
@@ -256,7 +248,7 @@ export function Checkout(props: Props): JSX.Element {
       <fieldset disabled={formDisabled} className="contents">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="body-S block text-secondary font-semibold mb-1">
+            <label className="body-S block text-light font-semibold mb-1">
               First Name*
             </label>
             <input
@@ -267,7 +259,7 @@ export function Checkout(props: Props): JSX.Element {
             />
           </div>
           <div>
-            <label className="body-S block text-secondary font-semibold mb-1">
+            <label className="body-S block text-light font-semibold mb-1">
               Last Name*
             </label>
             <input
@@ -279,7 +271,7 @@ export function Checkout(props: Props): JSX.Element {
           </div>
         </div>
         <div>
-          <label className="body-S block text-secondary font-semibold mb-1">
+          <label className="body-S block text-light font-semibold mb-1">
             E-Mail*
           </label>
           <input
@@ -292,7 +284,7 @@ export function Checkout(props: Props): JSX.Element {
         {/* Indicator + Cellphone */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="relative" ref={dropdownRef}>
-            <label className="body-S block text-secondary font-semibold mb-1">
+            <label className="body-S block text-light font-semibold mb-1">
               Country Code
             </label>
             <div
@@ -303,7 +295,7 @@ export function Checkout(props: Props): JSX.Element {
             >
               <div className="custom-dropdown-display">
                 {selectedIndicatorData ? (
-                  <span>
+                  <span className="body-S text-light">
                     {selectedIndicatorData.flag} {selectedIndicatorData.name} (
                     {selectedIndicatorData.code})
                   </span>
@@ -358,7 +350,7 @@ export function Checkout(props: Props): JSX.Element {
           </div>
 
           <div>
-            <label className="body-S block text-secondary font-semibold mb-1">
+            <label className="body-S block text-light font-semibold mb-1">
               Cellphone
             </label>
             <input
@@ -374,7 +366,7 @@ export function Checkout(props: Props): JSX.Element {
         </div>
         {/* Telegram handle */}
         <div>
-          <label className="body-S block text-secondary font-semibold mb-1">
+          <label className="body-S block text-light font-semibold mb-1">
             Telegram handle
           </label>
           <input
@@ -392,14 +384,14 @@ export function Checkout(props: Props): JSX.Element {
               className="mt-1"
               {...register("termsAcceptance")}
             />
-            <span>
+            <span className="body-S text-light">
               I consent to the processing of my personal data in accordance with
               the{" "}
               <a
                 href={privacyPolicyPDF}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-bold text-[#D57300] hover:underline inline"
+                className="body-S text-[#D57300] hover:underline inline normal-case"
                 onClick={(e) => e.stopPropagation()}
               >
                 Privacy Policy
@@ -412,11 +404,11 @@ export function Checkout(props: Props): JSX.Element {
               className="mt-1"
               {...register("MembershipAgreetment")}
             />
-            <span>
+            <span className="body-S text-light">
               I consent to adhere to the{" "}
               <button
                 type="button"
-                className="font-bold text-[#D57300] hover:underline inline normal-case"
+                className="body-S text-[#D57300] hover:underline inline normal-case"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -439,13 +431,16 @@ export function Checkout(props: Props): JSX.Element {
               <input
                 type="checkbox"
                 className="mt-1"
-                {...register("kycAcceptance")}
+                {...register("termsAcceptance")}
               />
-              I understand that I'll need to complete a KYC Verification to
-              eventually fully access the rights and benefits associated with my
-              membership.
+              <span className="body-S text-light">
+                I understand that I'll need to complete a KYC Verification to
+                eventually fully access the rights and benefits associated with
+                my membership.
+              </span>
             </label>
           )}
+
           {MUST_DO_KYC_HARD(price) && hasSentKycHard && !isKycHardCompleted && (
             <>
               <div className="text-xs text-secondary">
@@ -466,55 +461,8 @@ export function Checkout(props: Props): JSX.Element {
             </>
           )}
         </div>
-        {/* Summary */}
-        <div className="bg-green-soft/30 rounded-xl p-4 pt-0 flex flex-col gap-2 mt-2">
-          <div className="flex justify-between">
-            <span className="body-S text-secondary font-bold">Balance</span>
-          </div>
-          <div className="flex justify-between font-semibold">
-            <span className="body-S text-secondary">USDC</span>
-            <div className="flex items-center space-x-3">
-              <span className="body-S text-secondary">
-                ${usdcBalance.toFixed(2)}
-              </span>
-              <img
-                src={usdcImage}
-                alt="USDC"
-                className="inline-block w-9 h-9 ml-1"
-              />
-            </div>
-          </div>
-          <div className="flex justify-between font-semibold">
-            <span className="body-S text-secondary">USDT</span>
-            <div className="flex items-center space-x-3">
-              <span className="body-S text-secondary">
-                ${usdtBalance.toFixed(2)}{" "}
-              </span>
-              <img
-                src={usdtImage}
-                alt="USDC"
-                className="inline-block w-9 h-9 ml-1"
-              />
-            </div>
-          </div>
-          {/* TODO: add to i18n */}
-          {/* TODO: add styles */}
-          {address && !hasSufficientBalance && (
-            <label className="flex justify-center p-1  text-xs text-secondary">
-              "You don't have enough balance to buy this membership"
-            </label>
-          )}
-          {/* <div className="flex justify-between text-secondary font-bold text-lg">
-              <span className="body-M text-secondary">
-                Total taxes included
-              </span>
-              <span className="body-M text-secondary">
-                $ {membership.valueUSD} USD
-              </span>
-            </div> */}
-        </div>
         <button
-          className="btn-secondary w-full mt-4"
+          className="btn-secondary w-full mt-2"
           type="submit"
           disabled={formDisabled}
         >

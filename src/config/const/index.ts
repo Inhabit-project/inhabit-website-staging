@@ -7,7 +7,7 @@ import usdtCeloJson from "../../assets/json/contracts/celo/USDT.json";
 import usdtAlfajoresJson from "../../assets/json/contracts/celo-alfajores/USDT.json";
 import { celo, celoAlfajores } from "viem/chains";
 import { SiweMessage } from "siwe";
-import { zeroAddress } from "viem";
+import { Address, zeroAddress } from "viem";
 
 export const IS_PRODUCTION: string = ensureEnvVar(
   import.meta.env.VITE_IS_PRODUCTION,
@@ -15,6 +15,15 @@ export const IS_PRODUCTION: string = ensureEnvVar(
 );
 
 export const CHAIN = IS_PRODUCTION === "true" ? celo : celoAlfajores;
+
+export const ALFAJORES_SCAN_URL = "https://alfajores.celoscan.io";
+
+export const CELO_SCAN_URL = "https://explorer.celo.org";
+
+export const SCAN_URL = (address: Address) =>
+  IS_PRODUCTION === "true"
+    ? `${CELO_SCAN_URL}/address/${address}`
+    : `${ALFAJORES_SCAN_URL}/address/${address}`;
 
 export const HTTP_TRANSPORT =
   IS_PRODUCTION === "true"
@@ -29,8 +38,6 @@ export const USDC_JSON =
 
 export const USDT_JSON =
   IS_PRODUCTION === "true" ? usdtCeloJson : usdtAlfajoresJson;
-
-// Siwe
 
 // SiweMessage
 

@@ -1,9 +1,10 @@
-import { JSX } from "react";
+import { JSX, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useStore } from "../../../store";
 import { Collection } from "src/models/collection.model";
 import { NatureSpinner } from "../../../ui/Loader";
+import { SCAN_URL } from "@/config/const";
 
 type Props = {
   collectionId: string;
@@ -43,10 +44,15 @@ export default function OtherCollections({ collectionId }: Props): JSX.Element {
           role="listitem"
         >
           <div className="absolute top-4 right-4 hover-scale-up">
-            <Link
-              to={`/membership/${collection.campaignId}/${collection.id}`}
-              state={{ campaign, collection }}
-              className="block"
+            <a
+              href={
+                typeof SCAN_URL === "function"
+                  ? SCAN_URL(collection.address || "") || ""
+                  : ""
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary-n w-full flex items-center justify-center group"
               aria-label={t(
                 "mainPage.nftGrid.checkoutNFT",
                 "Checkout TITI NFT"
@@ -77,7 +83,7 @@ export default function OtherCollections({ collectionId }: Props): JSX.Element {
                   />
                 </svg>
               </div>
-            </Link>
+            </a>
           </div>
           <div
             className="absolute inset-0 rounded-[var(--radius-2xl)] opacity-80"
@@ -121,7 +127,7 @@ export default function OtherCollections({ collectionId }: Props): JSX.Element {
                   "Checkout TITI NFT"
                 )}
               >
-                <span className="button-text group-hover:text-secondary transition-colors duration-300">
+                <span className="btn-primary w-full flex items-center justify-center group">
                   {t("mainPage.nftGrid.checkThisNFT")}
                 </span>
               </Link>

@@ -6,9 +6,9 @@ import { useStore } from "../../../store";
 import { MUST_DO_KYC_HARD } from "../../../config/const";
 import { ConnectButton } from "../../../ui/ConnectButton";
 import { COIN, KYC_TYPE } from "../../../config/enums";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Collection } from "src/models/collection.model";
-import { Campaign } from "src/models/campaign.model";
+import { useNavigate, useParams } from "react-router-dom";
+import usdcImage from "../../../assets/images/tokens/USDC.svg";
+import usdtImage from "../../../assets/images/tokens/USDT.svg";
 import confetti from "canvas-confetti";
 
 export type MultiStepCheckoutProps = {
@@ -67,6 +67,7 @@ export default function MultiStepCheckout(
     }
 
     if (!MUST_DO_KYC_HARD(price) && hasSentKycSoft) {
+      console.log("Lololo");
       goNext();
     }
 
@@ -76,8 +77,6 @@ export default function MultiStepCheckout(
 
     if (MUST_DO_KYC_HARD(price) && hasSentKycHard && isKycHardCompleted) {
       goNext();
-    } else {
-      goPrev();
     }
   }, [price, address, hasSentKycHard, hasSentKycSoft, isKycHardCompleted]);
 
@@ -104,6 +103,7 @@ export default function MultiStepCheckout(
           usdcAllowance={usdcAllowance}
           usdtAllowance={usdtAllowance}
           selectedCoin={selectedCoin}
+          hasSufficientBalance={hasSufficientBalance}
           refetchBalances={refetchBalances}
           setSelectedCoin={setSelectedCoin}
         />
@@ -118,6 +118,7 @@ interface VoucherProps {
   usdtBalance: number;
   usdcAllowance: number;
   usdtAllowance: number;
+  hasSufficientBalance: boolean;
   selectedCoin?: COIN;
   refetchBalances: () => void;
   setSelectedCoin: (coin: COIN) => void;
@@ -132,6 +133,7 @@ function VoucherStep(props: VoucherProps) {
     usdcAllowance,
     usdtAllowance,
     selectedCoin,
+    hasSufficientBalance,
     refetchBalances,
     setSelectedCoin,
   } = props;
@@ -205,6 +207,51 @@ function VoucherStep(props: VoucherProps) {
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Summary */}
+      <div className="bg-green-soft/30 rounded-xl p-4 flex flex-col gap-2 mt-2">
+        <div className="flex justify-between font-semibold">
+          <span className="body-S text-light">Balance</span>
+        </div>
+        <div className="flex justify-between font-semibold">
+          <span className="body-S text-light">USDC</span>
+          <div className="flex items-center space-x-3">
+            <span className="body-S text-light">${usdcBalance.toFixed(2)}</span>
+            <img
+              src={usdcImage}
+              alt="USDC"
+              className="inline-block w-9 h-9 ml-1"
+            />
+          </div>
+        </div>
+        <div className="flex justify-between font-semibold">
+          <span className="body-S text-light">USDT</span>
+          <div className="flex items-center space-x-3">
+            <span className="body-S text-light">
+              ${usdtBalance.toFixed(2)}{" "}
+            </span>
+            <img
+              src={usdtImage}
+              alt="USDC"
+              className="inline-block w-9 h-9 ml-1"
+            />
+          </div>
+        </div>
+        {/* TODO: add to i18n */}
+        {/* TODO: add styles */}
+        {address && !hasSufficientBalance && (
+          <label className="flex justify-center p-1  text-xs text-secondary">
+            "You don't have enough balance to buy this membership"
+          </label>
+        )}
+        {/* <div className="flex justify-between text-secondary font-bold text-lg">
+              <span className="body-M text-secondary">
+                Total taxes included
+              </span>
+              <span className="body-M text-secondary">
+                $ {membership.valueUSD} USD
+              </span>
+            </div> */}
+      </div>
       <div className="bg-green-soft/30 rounded-xl p-4 flex flex-col gap-4">
         <h4 className="heading-4">Select coin</h4>
 
@@ -225,13 +272,13 @@ function VoucherStep(props: VoucherProps) {
               className="custom-checkbox"
             />
             <span className="body-S">{c.symbol}</span>
-            <span className="ml-auto body-S">${c.balance.toFixed(2)}</span>
+            {/* <span className="ml-auto body-S">${c.balance.toFixed(2)}</span> */}
           </label>
         ))}
 
-        <div className="flex justify-between mt-2 font-semibold text-secondary">
-          <span>Total</span>
-          <span>
+        <div className="flex justify-between mt-2">
+          <span className="body-S text-light">Total</span>
+          <span className="body-S text-light">
             ${price.toFixed(2)} {selectedCoin ?? ""}
           </span>
         </div>
