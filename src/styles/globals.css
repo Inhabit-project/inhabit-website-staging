@@ -1067,8 +1067,8 @@
 
 .cursor {
   position: fixed;
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
   pointer-events: none;
   z-index: 9999;
   transition: none;
@@ -1086,8 +1086,8 @@
 
 .particle {
   position: fixed;
-  width: 32px;
-  height: 32px;
+  width: 20px;
+  height: 20px;
   pointer-events: none;
   z-index: 9998;
   animation: particle-float 0.8s ease-out forwards;

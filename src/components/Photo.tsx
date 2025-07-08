@@ -73,7 +73,7 @@ const Photo: React.FC = () => {
             ref={image1Ref}
             src="/assets/photo1.webp" 
             alt="Person in natural environment" 
-            className="w-full h-full object-fill"
+            className="w-full h-full object-cover object-center"
             loading="lazy"
           />
           <div 
@@ -97,7 +97,7 @@ const Photo: React.FC = () => {
             ref={image2Ref}
             src="/assets/photo-2.webp" 
             alt="Natural environment" 
-            className="w-full h-full object-fill"
+            className="w-full h-full object-cover object-center"
             loading="lazy"
           />
           <div 

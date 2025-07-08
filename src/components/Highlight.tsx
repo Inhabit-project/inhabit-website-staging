@@ -103,7 +103,7 @@ const Highlight = () => {
       .to(svg, {
         opacity: 0.3,
         scale: 1,
-        duration: 0.4,
+        duration: 0.3,
         ease: "power3.out"
       });
 

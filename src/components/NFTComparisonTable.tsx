@@ -106,8 +106,8 @@ const NFTComparisonTable: React.FC = () => {
             <td className="px-6 py-4 font-bold border border-white" colSpan={9}>EDUCATION RIGHTS</td>
           </tr>
           <tr>
-            <td className="px-6 py-4 border border-white">Access to educational contents<br/><span className="text-xs font-normal">About inhabiting knowledge and techniques</span></td>
-            {[EmptyCheckIcon(), 'Basic level contents', EmptyCheckIcon(), 'Basic level contents', 'Basic level contents', 'Medium level contents', 'Medium level contents', 'Full level contents'].map((val, i) => <td key={i} className="px-4 py-4 text-center border border-white">{typeof val === 'string' ? val : val}</td>)}
+            <td className="px-6 py-4 border border-white">Access to educational FourCriteriaHubGlobal<br/><span className="text-xs font-normal">About inhabiting knowledge and techniques</span></td>
+            {[EmptyCheckIcon(), 'Basic level', EmptyCheckIcon(), 'Basic level', 'Basic level', 'Medium level', 'Medium level', 'Full level'].map((val, i) => <td key={i} className="px-4 py-4 text-center border border-white">{typeof val === 'string' ? val : val}</td>)}
           </tr>
           {/* ASSET RIGHTS */}
           <tr className="bg-white/5">
