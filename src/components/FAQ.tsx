@@ -1,54 +1,132 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { gsap, ScrollTrigger } from '../utils/gsap';
+import { LoadingContext } from '../App';
 
 interface FAQItem {
   question: string;
   answer: string;
 }
 
-const FAQ: React.FC = () => {
+interface FAQProps {
+  faqItems?: FAQItem[];
+  title?: string;
+  description?: string;
+}
+
+const FAQ: React.FC<FAQProps> = ({ faqItems, title, description }) => {
   const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const isLoading = useContext(LoadingContext);
 
-  const faqItems: FAQItem[] = (t('mainPage.faq.items', { returnObjects: true }) as FAQItem[]);
+  // Refs for animations
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const faqItemsRef = useRef<HTMLDivElement>(null);
+  const faqItemsArray = useRef<HTMLDivElement[]>([]);
+
+  const defaultFaqItems: FAQItem[] = (t('mainPage.faq.items', { returnObjects: true }) as FAQItem[]);
+  const items = faqItems || defaultFaqItems;
+  const headerTitle = title || t('mainPage.faq.title');
+  const headerDescription = description || t('mainPage.faq.description');
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    // Set initial states
+    gsap.set([titleRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 50
+    });
+
+    gsap.set(faqItemsArray.current, {
+      opacity: 0,
+      y: 30
+    });
+
+    // Create scroll-triggered animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "play none none reverse"
+      }
+    });
+
+    tl.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    })
+    .to(descriptionRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    }, "-=0.6")
+    .to(faqItemsArray.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: "power3.out"
+    }, "-=0.4");
+
+    // Refresh ScrollTrigger after timeline is set up
+    ScrollTrigger.refresh();
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, [isLoading]);
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
-    <section className="relative w-full min-h-screen  background-gradient-dark">
+    <section ref={sectionRef} className="relative w-full min-h-screen background-gradient-dark">
       <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24 flex flex-col">
         <div className="flex flex-col items-end gap-24">
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
-            <h2 className="heading-2 text-light max-w-[40.9375rem]">
-              <span dangerouslySetInnerHTML={{ __html: t('mainPage.faq.title') }} />
+            <h2 ref={titleRef} className="heading-2 text-light max-w-[40.9375rem]">
+              <span dangerouslySetInnerHTML={{ __html: headerTitle }} />
             </h2>
-            <p className="body-M text-light max-w-[35rem]">
-              {t('mainPage.faq.description')}
+            <p ref={descriptionRef} className="body-M text-light max-w-[35rem]">
+              {headerDescription}
             </p>
           </div>
 
           {/* FAQ Items */}
-          <div className="w-full max-w-[50rem] ml-auto">
-            {faqItems.map((item, index) => (
-              <div key={index} className="border-b border-[#F6FFEA]/20 last:border-b-0">
+          <div ref={faqItemsRef} className="w-full max-w-[50rem] ml-auto">
+            {items.map((item, index) => (
+              <div
+                key={index}
+                ref={el => {
+                  if (el) faqItemsArray.current[index] = el;
+                }}
+                className="border-b border-[#F6FFEA]/20 last:border-b-0"
+              >
                 <div 
-                  className="flex items-center justify-between py-6 group"
+                  className="flex items-center justify-between py-6 group gap-4"
                 >
                   <h3 className="text-white body-M">
                     {item.question}
                   </h3>
-                  <button 
-                    className={`w-8 h-8 rounded-full bg-white/30 backdrop-blur-[7.5px] border border-[#EFEFEF]/50 flex items-center justify-center transition-all duration-300 group-hover:border-white group-hover:bg-white/40 ${openIndex === index ? 'rotate-45' : ''}`}
+                  <button
+                    className={`min-w-8 min-h-8 w-8 h-8 aspect-square rounded-full bg-white/30 backdrop-blur-[7.5px] border border-[#EFEFEF]/50 flex items-center justify-center transition-all duration-300 group-hover:border-white group-hover:bg-white/40 ${openIndex === index ? 'rotate-45' : ''}`}
                     aria-expanded={openIndex === index}
                     aria-controls={`faq-answer-${index}`}
                     onClick={() => toggleAccordion(index)}
+                    style={{ marginLeft: '1rem' }}
                   >
-                    <img 
-                      src="/assets/faq-plus-icon.svg" 
-                      alt={openIndex === index ? "Close" : "Open"} 
+                    <img
+                      src="/assets/faq-plus-icon.svg"
+                      alt={openIndex === index ? "Close" : "Open"}
                       className="w-4 h-4"
                     />
                   </button>
@@ -59,9 +137,7 @@ const FAQ: React.FC = () => {
                     openIndex === index ? 'max-h-[500px] opacity-100 pb-6' : 'max-h-0 opacity-0'
                   }`}
                 >
-                  <p className="text-white/80 font-nunito text-base leading-[1.5]">
-                    {item.answer}
-                  </p>
+                  <div className="text-white/80 font-nunito text-base leading-[1.5]" dangerouslySetInnerHTML={{ __html: item.answer }} />
                 </div>
               </div>
             ))}
@@ -76,6 +152,14 @@ export default FAQ;
 
 export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string }[]; title?: string; description?: string }> = ({ faqItems, title, description }) => {
   const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+  const isLoading = useContext(LoadingContext);
+
+  // Refs for animations
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const faqItemsRef = useRef<HTMLDivElement>(null);
+  const faqItemsArray = useRef<HTMLDivElement[]>([]);
+
   const defaultFaqItems = [
     {
       question: "What is a Stewardship NFT?",
@@ -95,26 +179,79 @@ export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string 
     },
   ];
   const items = faqItems || defaultFaqItems;
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    // Set initial states
+    gsap.set(titleRef.current, {
+      opacity: 0,
+      y: 50
+    });
+
+    gsap.set(faqItemsArray.current, {
+      opacity: 0,
+      y: 30
+    });
+
+    // Create scroll-triggered animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "play none none reverse"
+      }
+    });
+
+    tl.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    })
+    .to(faqItemsArray.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: "power3.out"
+    }, "-=0.4");
+
+    // Refresh ScrollTrigger after timeline is set up
+    ScrollTrigger.refresh();
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, [isLoading]);
+
   return (
-    <section className="relative w-full min-h-screen background-gradient-light scroll-container">
+    <section ref={sectionRef} className="relative w-full min-h-screen background-gradient-light scroll-container">
       <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24 flex flex-col">
         <div className="flex flex-col items-end gap-24">
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
-            <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
+            <h2 ref={titleRef} className="heading-2 text-secondary max-w-[40.9375rem]">
               {title || 'Frequently Asked'}<br />
               <strong>{description || 'Questions'}</strong>
             </h2>
           </div>
           {/* FAQ Items */}
-          <div className="w-full max-w-[50rem] ml-auto text-secondary ">
+          <div ref={faqItemsRef} className="w-full max-w-[50rem] ml-auto text-secondary">
             {items.map((item, index) => (
-              <div key={index} className="border-b border-[#1B3A2B]/20 last:border-b-0">
+              <div
+                key={index}
+                ref={el => {
+                  if (el) faqItemsArray.current[index] = el;
+                }}
+                className="border-b border-[#1B3A2B]/20 last:border-b-0"
+              >
                 <div 
                   className="flex items-center justify-between py-6 cursor-pointer group"
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 >
-                  <h3 className=" text-secondary body-M">
+                  <h3 className="text-secondary body-M">
                     {item.question}
                   </h3>
                   <button 
@@ -130,9 +267,317 @@ export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string 
                     openIndex === index ? 'max-h-[500px] opacity-100 pb-6' : 'max-h-0 opacity-0'
                   }`}
                 >
-                  <p className="text-secondary/80 font-nunito text-base leading-[1.5]">
-                    {item.answer}
-                  </p>
+                  <div className="text-secondary/80 font-nunito text-base leading-[1.5]" dangerouslySetInnerHTML={{ __html: item.answer }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export const FAQHubs: React.FC = () => {
+  const { t } = useTranslation();
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
+
+  // Refs for animations
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const faqItemsRef = useRef<HTMLDivElement>(null);
+  const faqItemsArray = useRef<HTMLDivElement[]>([]);
+
+  const faqItems: FAQItem[] = (t('hubsPage.faq.items', { returnObjects: true }) as FAQItem[]);
+
+  // Handle loading state change
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (!canAnimate) return;
+
+    // Set initial states
+    gsap.set([titleRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 50
+    });
+
+    gsap.set(faqItemsArray.current, {
+      opacity: 0,
+      y: 30
+    });
+
+    // Create scroll-triggered animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "play none none reverse"
+      }
+    });
+
+    tl.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    })
+    .to(descriptionRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    }, "-=0.6")
+    .to(faqItemsArray.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: "power3.out"
+    }, "-=0.4");
+
+    // Refresh ScrollTrigger after timeline is set up
+    ScrollTrigger.refresh();
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, [canAnimate]);
+
+  const toggleAccordion = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  return (
+    <section ref={sectionRef} className="relative w-full min-h-screen background-gradient-dark">
+      <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24 flex flex-col">
+        <div className="flex flex-col items-end gap-24">
+          {/* Header section */}
+          <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
+            <h2 ref={titleRef} className="heading-2 text-light max-w-[40.9375rem]">
+              <span dangerouslySetInnerHTML={{ __html: t('hubsPage.faq.title') }} />
+            </h2>
+            <p ref={descriptionRef} className="body-M text-light max-w-[35rem]">
+              {t('hubsPage.faq.description')}
+            </p>
+          </div>
+
+          {/* FAQ Items */}
+          <div ref={faqItemsRef} className="w-full max-w-[50rem] ml-auto">
+            {faqItems.map((item, index) => (
+              <div
+                key={index}
+                ref={el => {
+                  if (el) faqItemsArray.current[index] = el;
+                }}
+                className="border-b border-[#F6FFEA]/20 last:border-b-0"
+              >
+                <div 
+                  className="flex items-center justify-between py-6 group gap-4"
+                >
+                  <h3 className="text-white body-M">
+                    {item.question}
+                  </h3>
+                  <button
+                    className={`min-w-8 min-h-8 w-8 h-8 aspect-square rounded-full bg-white/30 backdrop-blur-[7.5px] border border-[#EFEFEF]/50 flex items-center justify-center transition-all duration-300 group-hover:border-white group-hover:bg-white/40 ${openIndex === index ? 'rotate-45' : ''}`}
+                    aria-expanded={openIndex === index}
+                    aria-controls={`faq-answer-${index}`}
+                    onClick={() => toggleAccordion(index)}
+                    style={{ marginLeft: '1rem' }}
+                  >
+                    <img
+                      src="/assets/faq-plus-icon.svg"
+                      alt={openIndex === index ? "Close" : "Open"}
+                      className="w-4 h-4"
+                    />
+                  </button>
+                </div>
+                <div 
+                  id={`faq-answer-${index}`}
+                  className={`overflow-hidden transition-all duration-300 ${
+                    openIndex === index ? 'max-h-[500px] opacity-100 pb-6' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className="text-white/80 font-nunito text-base leading-[1.5]" dangerouslySetInnerHTML={{ __html: item.answer }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export const FAQStewardshipNFT: React.FC = () => {
+  const { t } = useTranslation();
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
+
+  // Refs for animations
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const faqItemsRef = useRef<HTMLDivElement>(null);
+  const faqItemsArray = useRef<HTMLDivElement[]>([]);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
+
+  const faqItems: FAQItem[] = (t('mainPage.stewardshipNFTPage.faq.items', { returnObjects: true }) as FAQItem[]);
+
+  // Set initial states
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.set([titleRef.current, descriptionRef.current], {
+        opacity: 0,
+        y: 50
+      });
+
+      gsap.set(faqItemsArray.current, {
+        opacity: 0,
+        y: 30
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // Handle loading state change
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading]);
+
+  // Handle animations
+  useEffect(() => {
+    if (!canAnimate || !sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Kill existing timeline and scroll trigger if they exist
+      if (timelineRef.current) {
+        timelineRef.current.kill();
+      }
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+      }
+
+      // Create new timeline
+      timelineRef.current = gsap.timeline({
+        paused: true,
+        defaults: { ease: 'power3.out' }
+      });
+
+      timelineRef.current
+        .to(titleRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8
+        })
+        .to(descriptionRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8
+        }, '-=0.6')
+        .to(faqItemsArray.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.1
+        }, '-=0.4');
+
+      // Create new scroll trigger
+      scrollTriggerRef.current = ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top 75%',
+        end: 'center center',
+        toggleActions: 'play none none reverse',
+        animation: timelineRef.current,
+        id: `faq-stewardship-${Date.now()}` // Unique ID to avoid conflicts
+      });
+    }, sectionRef);
+
+    return () => {
+      ctx.revert(); // This will clean up all animations created in this context
+      if (timelineRef.current) timelineRef.current.kill();
+      if (scrollTriggerRef.current) scrollTriggerRef.current.kill();
+    };
+  }, [canAnimate]);
+
+  const toggleAccordion = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  return (
+    <section ref={sectionRef} className="relative w-full min-h-screen background-gradient-dark">
+      <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24 flex flex-col">
+        <div className="flex flex-col items-end gap-24">
+          {/* Header section */}
+          <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
+            <h2 ref={titleRef} className="heading-2 text-light max-w-[40.9375rem]">
+              <span dangerouslySetInnerHTML={{ __html: t('mainPage.stewardshipNFTPage.faq.title') }} />
+            </h2>
+            <p ref={descriptionRef} className="body-M text-light max-w-[35rem]">
+              {t('mainPage.stewardshipNFTPage.faq.description')}
+            </p>
+          </div>
+
+          {/* FAQ Items */}
+          <div ref={faqItemsRef} className="w-full max-w-[50rem] ml-auto">
+            {faqItems.map((item, index) => (
+              <div
+                key={index}
+                ref={el => {
+                  if (el) faqItemsArray.current[index] = el;
+                }}
+                className="border-b border-[#F6FFEA]/20 last:border-b-0"
+              >
+                <div 
+                  className="flex items-center justify-between py-6 group gap-4"
+                >
+                  <h3 className="text-white body-M">
+                    {item.question}
+                  </h3>
+                  <button
+                    className={`min-w-8 min-h-8 w-8 h-8 aspect-square rounded-full bg-white/30 backdrop-blur-[7.5px] border border-[#EFEFEF]/50 flex items-center justify-center transition-all duration-300 group-hover:border-white group-hover:bg-white/40 ${openIndex === index ? 'rotate-45' : ''}`}
+                    aria-expanded={openIndex === index}
+                    aria-controls={`faq-answer-${index}`}
+                    onClick={() => toggleAccordion(index)}
+                    style={{ marginLeft: '1rem' }}
+                  >
+                    <img
+                      src="/assets/faq-plus-icon.svg"
+                      alt={openIndex === index ? "Close" : "Open"}
+                      className="w-4 h-4"
+                    />
+                  </button>
+                </div>
+                <div 
+                  id={`faq-answer-${index}`}
+                  className={`overflow-hidden transition-all duration-300 ${
+                    openIndex === index ? 'max-h-[500px] opacity-100 pb-6' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className="text-white/80 font-nunito text-base leading-[1.5]" dangerouslySetInnerHTML={{ __html: item.answer }} />
                 </div>
               </div>
             ))}

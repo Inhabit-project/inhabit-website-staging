@@ -276,8 +276,9 @@ export default function PhotoGallery({ images = [
           >
             <img
               src={img.src}
-              alt={img.alt}
+              alt={img.alt || ''}
               className="w-full h-full object-cover rounded-[1.2rem]"
+              loading="lazy"
               draggable={false}
             />
           </li>

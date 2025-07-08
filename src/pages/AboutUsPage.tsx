@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Menu from '../components/Menu';
 import InternalPagesHero from '../components/InternalPagesHero';
 import CTA from '../components/CTA';
 import Blog from '../components/Blog';
-import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 import ImageSection from '../components/ImageSection';
 import InfoCard from '../components/InfoCard';
@@ -12,8 +11,18 @@ import { InfoCardRightImage } from '../components/InfoCard';
 import MeetOurTeam from '../components/MeetOurTeam';
 import LogosSection from '../components/LogosSection';
 
-const AboutUsPage: React.FC = () => {
+interface AboutUsPageProps {
+  onPageReady?: () => void;
+  onHeroImageLoad?: () => void;
+}
+
+const AboutUsPage: React.FC<AboutUsPageProps> = ({ onPageReady, onHeroImageLoad }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (onPageReady) onPageReady();
+  }, [onPageReady]);
+
   return (
     <>
       {/* Skip to main content link for accessibility */}
@@ -24,7 +33,7 @@ const AboutUsPage: React.FC = () => {
         <Menu />
         <main id="main-content" role="main" tabIndex={-1}>
           <section aria-label="About Us hero section">
-            <InternalPagesHero variant="about" />
+            <InternalPagesHero variant="about" onHeroImageLoad={onHeroImageLoad} />
           </section>
           <section aria-label="About Us introduction">
             <ImageSection
@@ -73,7 +82,6 @@ const AboutUsPage: React.FC = () => {
             <Blog />
           </section>
           <section aria-label="Frequently asked questions">
-            <FAQ />
           </section>
         </main>
         <Footer />

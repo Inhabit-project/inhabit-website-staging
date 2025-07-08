@@ -1,20 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Menu from '../components/Menu';
 import InternalPagesHero from '../components/InternalPagesHero';
 import CTA from '../components/CTA';
 import Blog from '../components/Blog';
-import FAQ from '../components/FAQ';
+import FAQ, { FAQStewardshipNFT } from '../components/FAQ';
 import Footer from '../components/Footer';
 import ImageSection from '../components/ImageSection';
 import StewardshipNFTBenefitsSection from '../components/StewardshipNFTBenefitsSection';
 import Highlight from '../components/Highlight';
 import NFTWorksSection from '../components/NFTWorksSection';
-import CriteriaCardsSection2 from '../components/CriteriaCardsSection2';
+import FourCriteriaHubGlobal from '../components/FourCriteriaHubGlobal';
 import NFTGrid from '../components/NFTGrid';
 
-const StewardshipNFTPage: React.FC = () => {
+interface StewardshipNFTPageProps {
+  onPageReady?: () => void;
+  onHeroImageLoad?: () => void;
+}
+
+const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({ onPageReady, onHeroImageLoad }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (onPageReady) onPageReady();
+  }, [onPageReady]);
+
   return (
     <>
       {/* Skip to main content link for accessibility */}
@@ -25,7 +35,7 @@ const StewardshipNFTPage: React.FC = () => {
         <Menu />
         <main id="main-content" role="main" tabIndex={-1}>
           <section aria-label="Stewardship NFT hero section">
-            <InternalPagesHero variant="stewardship" />
+            <InternalPagesHero variant="stewardship" onHeroImageLoad={onHeroImageLoad} />
           </section>
           <section aria-label="Stewardship NFT introduction">
             <ImageSection
@@ -47,7 +57,7 @@ const StewardshipNFTPage: React.FC = () => {
             <NFTWorksSection />
           </section>
           <section aria-label="Stewardship NFT criteria">
-            <CriteriaCardsSection2 />
+            <FourCriteriaHubGlobal />
           </section>
           <section aria-label="Available Stewardship NFTs">
             <NFTGrid />
@@ -59,7 +69,7 @@ const StewardshipNFTPage: React.FC = () => {
             <CTA />
           </section>
           <section aria-label="Frequently asked questions">
-            <FAQ />
+            <FAQStewardshipNFT />
           </section>
         </main>
         <Footer />

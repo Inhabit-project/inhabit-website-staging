@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import Menu from "../components/Menu";
 import Hero from "../components/Hero";
 import Video from "../components/Video";
@@ -6,7 +6,6 @@ import Hubs from "../components/Hubs";
 import StewardshipNFT from "../components/StewardshipNFT";
 import Highlight from "../components/Highlight";
 import Photo from "../components/Photo";
-import PhotoGallery from "../components/PhotoGallery";
 import NFTGrid from "../components/NFTGrid";
 import Infographic from "../components/Infographic";
 import Testimonials from "../components/Testimonials";
@@ -16,10 +15,17 @@ import FAQ from "../components/FAQ";
 import Footer from "../components/Footer";
 import { scrollManager } from "../utils/scrollManager";
 import { useStore } from "../store";
-import Spinner, { NatureSpinner } from "../ui/Loader";
+import  { NatureSpinner } from "../ui/Loader";
 
-const MainPage: React.FC = () => {
-  const { campaigns, campaignsLoading, getCampaigns } = useStore();
+
+interface Props {
+  onPageReady?: () => void;
+  onHeroImageLoad?: () => void;
+}
+
+ function MainPage(props: Props) {
+  const { onHeroImageLoad, onPageReady } = props;
+ const { campaigns, campaignsLoading, getCampaigns } = useStore();
   const videoSectionRef = useRef<HTMLElement>(null as unknown as HTMLElement);
 
   useEffect(() => {
@@ -28,9 +34,12 @@ const MainPage: React.FC = () => {
     if (scrollManager && typeof scrollManager.update === "function") {
       setTimeout(() => {
         scrollManager.update();
+        if (onPageReady) onPageReady();
       }, 200);
+    } else {
+      if (onPageReady) onPageReady();
     }
-  }, []);
+  }, [onPageReady]);
 
   return (
     <>
@@ -44,7 +53,7 @@ const MainPage: React.FC = () => {
       <Menu />
       <main id="main-content" tabIndex={-1} role="main">
         <section aria-label="Hero section">
-          <Hero scrollToRef={videoSectionRef} />
+          <Hero scrollToRef={videoSectionRef} onHeroImageLoad={onHeroImageLoad} />
         </section>
         <section aria-label="Video section" ref={videoSectionRef}>
           <Video />

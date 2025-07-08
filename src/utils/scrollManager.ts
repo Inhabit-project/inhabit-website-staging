@@ -43,4 +43,39 @@ class ScrollManager {
   }
 }
 
-export const scrollManager = new ScrollManager(); 
+export const scrollManager = new ScrollManager();
+
+import { useEffect, useRef } from 'react';
+
+/**
+ * React hook: Adds a scroll listener to handle menu hide/show based on scroll direction and threshold.
+ * @param onVisibilityChange Callback called with true (show) or false (hide)
+ * @param options Optional: { threshold: number, getDisable: () => boolean }
+ */
+export function useMenuScrollHide(
+  onVisibilityChange: (isVisible: boolean) => void,
+  options?: { threshold?: number; getDisable?: () => boolean }
+) {
+  const threshold = options?.threshold ?? 10;
+  const lastScrollY = useRef(typeof window !== 'undefined' ? window.scrollY : 0);
+
+  useEffect(() => {
+    function handleScroll() {
+      if (options?.getDisable && options.getDisable()) return;
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY.current;
+      if (currentScrollY === 0) {
+        onVisibilityChange(true);
+      } else if (delta > threshold) {
+        onVisibilityChange(false);
+      } else if (delta < -threshold) {
+        onVisibilityChange(true);
+      }
+      lastScrollY.current = currentScrollY;
+    }
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [onVisibilityChange, threshold, options]);
+} 

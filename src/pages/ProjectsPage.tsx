@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Menu from '../components/Menu';
 import InternalPagesHero from '../components/InternalPagesHero';
@@ -8,11 +8,20 @@ import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 import ProjectsVideoSection from '../components/ProjectsVideoSection';
 import ImageSection from '../components/ImageSection';
-import Gallery from '../components/Gallery';
 import ProjectsMain from '../components/ProjectsMain';
 
-const ProjectsPage: React.FC = () => {
+interface ProjectsPageProps {
+  onPageReady?: () => void;
+  onHeroImageLoad?: () => void;
+}
+
+const ProjectsPage: React.FC<ProjectsPageProps> = ({ onPageReady, onHeroImageLoad }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (onPageReady) onPageReady();
+  }, [onPageReady]);
+
   return (
     <>
       {/* Skip to main content link for accessibility */}
@@ -36,6 +45,7 @@ const ProjectsPage: React.FC = () => {
           >
             <InternalPagesHero
               variant="projects"
+              onHeroImageLoad={onHeroImageLoad}
             />
           </section>
           <section 

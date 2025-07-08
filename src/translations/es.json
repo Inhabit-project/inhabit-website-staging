@@ -69,16 +69,17 @@
         "role": "Abogada con Maestría en Estudios Territoriales, experta en derecho ambiental y marcos legales de protección territorial desde una perspectiva biocultural. Fundadora de la Fundación Madre Tierra que opera en toda Colombia."
       },
       {
-        "name": "Junior Rojaas",
-        "role": "Desarrollador senior y emprendedor con más de 11 años en desarrollo de software, especializado en blockchain y criptomonedas. CTO de Futswap y CEO de Intechchain, liderando proyectos en finanzas descentralizadas y soluciones tecnológicas."
+        "name": "Santiago Viana",
+        "role": "Ecólogo y desarrollador Web3, ganador consecutivo del hackathon Funding the Commons en 2023 y 2024. Organizador y educador de programas educativos abiertos sobre blockchain en entornos EVM, así como de cursos permanentes en universidades de Bogotá."
       },
+      
       {
         "name": "Gaia Pagano",
         "role": "Licenciada en Ciencias Sociales, Máster en Innovación y Desarrollo, Derechos Humanos y Cultura de Paz. Coordinadora en la Pontificia Universidad Javeriana, más de 12 años en proyectos de paz y reconciliación, relaciones interculturales y diálogo con comunidades indígenas y afrodescendientes."
       },
       {
-        "name": "Juan Pablo Lievano",
-        "role": "Economista y Magíster en antropología con más de 13 años de experiencia en desarrollo rural sostenible, cambio climático, gestión de proyectos y evaluación financiera de modelos agroempresariales de pequeños agricultores. Fundador de dos reservas naturales en Colombia."
+        "name": "Juan Sebastián Sánchez Hernández",
+        "role": "Experto en comunicaciones digitales y marketing, nacido, criado y radicado en Bogotá, con más de 13 años de experiencia desarrollando estrategias de marca y contenido. Especialista en simplificar temas complejos como cambio climático, biodiversidad, blockchain y conservación comunitaria. Apasionado por humanizar la tecnología a través de historias y trabajar en la restauración de la relación de la humanidad con la naturaleza. Líder de Comunicaciones en INHABIT."
       },
       {
         "name": "Mohamd Ibrahim",
@@ -89,8 +90,8 @@
         "role": "10 años de experiencia como facilitadora de transformación eco-psico-social. Ingeniera industrial, Máster en Desarrollo Rural y especializada en Psicología Transpersonal-Integral. Lidera proyectos sostenibles e impulsa iniciativas inclusivas en comunidades rurales de Colombia. Con la Fundación INHABIT, co-crea metodologías bioculturales y apoya la regeneración territorial a través de estrategias de custodia comunitaria."
       },
       {
-        "name": "Juan Diego Agudelo",
-        "role": "Desarrollador con 4 años de experiencia especializado en tokenización de activos del mundo real e interoperabilidad blockchain. Su trabajo se centra en la trazabilidad de procesos, distribución de capital y tokenización de activos. Comprometido con el blockchain para el bien, diseña sistemas que apoyan la creación, gobernanza colectiva y custodia a largo plazo de bienes comunes físicos, fomentando economías regenerativas y comunitarias."
+        "name": "Junior Rojaas",
+        "role": "Desarrollador senior y emprendedor con más de 11 años en desarrollo de software, especializado en blockchain y criptomonedas. CTO de Futswap y CEO de Intechchain, liderando proyectos en finanzas descentralizadas y soluciones tecnológicas."
       },
       {
         "name": "Fernanda Herrera",
@@ -98,7 +99,7 @@
       }
     ],
     "teamTitle": "Conoce a nuestro <strong><br />Equipo</strong>",
-    "teamSubtitle": "Somos emprendedores, agricultores, artistas y facilitadores con propósito — Expertos en derecho, restauración, tecnología y desarrollo rural—unidos para reinventar las formas de habitar la Tierra",
+    "teamSubtitle": "Somos emprendedores, agricultores, artistas y facilitadores con propósito, Expertos en derecho, restauración, tecnología y desarrollo rural, unidos para reinventar las formas de habitar la Tierra",
     "teamShowLess": "Ver menos",
     "teamReadMore": "Leer más"
   },
@@ -189,8 +190,67 @@
     "stewardshipNFTPage": {
       "imageSection": {
         "eyebrow": "El poder de nuestros NFTs",
-        "heading": "Tener un <span class=\"highlighted-text\">NFT</span> te convierte en <span class=\"highlighted-text\">co-creador de un corredor global</span>, uno que puedes recorrer, salvaguardar y <span class=\"highlighted-text\">regenerar biodiversidad</span>.",
+        "heading": "Poseer un <span class=\"highlighted-text\">NFT</span> te convierte en <span class=\"highlighted-text\">co-creador de un corredor global</span> que<br />puedes recorrer, proteger y <span class=\"highlighted-text\">regenerar su biodiversidad</span>.",
         "imageAlt": "Beneficios del NFT de Custodia"
+      },
+      "faq": {
+        "title": "Preguntas<br /><strong>Frecuentes</strong>",
+        "description": "Encuentra respuestas a preguntas comunes sobre los NFTs de Custodia, derechos, beneficios y sostenibilidad.",
+        "items": [
+          {
+            "question": "¿Qué es exactamente un NFT de Custodia?",
+            "answer": "Imagina tener un contrato especial en tu billetera digital—algo así como un pasaporte o escritura—que demuestra que eres parte de algo real. No es solo una imagen o un token. Es una llave. Te otorga derechos y beneficios tangibles vinculados a una parcela específica de tierra, junto con acceso al valor intrínseco que se está regenerando en el terreno.<br /><br />El contrato está almacenado de forma segura y permanente en la blockchain, lo que significa que no se puede perder, alterar o falsificar. Cada NFT es único—como una obra de arte—y solo se emite un número limitado para cada terreno. Es un activo digital con valor real que puede ser transferido.<br /><br />Además de asegurar tus derechos en relación con la tierra, el NFT encapsula todo el marco legal que protege el terreno en sí. Refleja y protege tanto los Derechos de la Naturaleza como el papel de los custodios humanos, a través de un modelo innovador que redefine lo que significa la propiedad de la tierra—pasando del control al cuidado, de la posesión a la responsabilidad.<br /><br />Muchos creen que la custodia dará forma al futuro de las economías—y el NFT de Custodia de Inhabit es una de las primeras herramientas que hace tangible esta visión, vinculando la creación de valor con el cuidado, la regeneración y la responsabilidad compartida."
+          },
+          {
+            "question": "¿Qué derechos y beneficios recibo como titular de un NFT?",
+            "answer": "El NFT de Custodia te otorga una membresía de por vida y un vínculo vivo entre tú y un HUB biocultural.<br /><br /><ul><li>• Derechos legales como protector de un Hub</li><li>• Obras de arte exclusivas</li><li>• Alojamiento gratuito y talleres in situ</li><li>• Experiencias bioculturales inmersivas</li><li>• Participación en la gobernanza DAO</li><li>• Acceso a herramientas para monitorear el impacto real de tu contribución</li><li>• Contenidos educativos exclusivos</li><li>• Airdrops</li><li>...y mucho más</li></ul>"
+          },
+          {
+            "question": "¿Puedo transferir o vender mi NFT de Custodia?",
+            "answer": "Sí, puedes transferir o vender tu NFT. El nuevo titular heredará todos los derechos y beneficios de custodia después de completar la verificación KYC y recibir la aprobación de la fundación."
+          },
+          {
+            "question": "¿Cuándo podré acceder a los derechos y beneficios asociados con mi membresía?",
+            "answer": "Podrás acceder a todos tus derechos y beneficios de custodia una vez que la campaña alcance el \"monto mínimo\" necesario para comprar y restaurar el terreno. En ese momento, la tierra se tokeniza y tus beneficios se activan. Sin embargo, la obra de arte digital incluida con tu NFT está disponible inmediatamente después de tu compra."
+          },
+          {
+            "question": "¿Es el uso de blockchain ambientalmente sostenible para INHABIT?",
+            "answer": "Sí — INHABIT utiliza CELO, una blockchain carbono-negativa diseñada para proyectos respetuosos con el clima.<br /><br />Acuñar todos los NFTs necesarios para financiar un HUB de INHABIT produce menos CO₂ que preparar una sola taza de café.<br /><br />Cada NFT usa solo 0.00001 kWh y emite solo 5 mg de CO₂ — menos que una búsqueda en Google.<br /><br />En comparación:<ul><li>Ethereum (pre-fusión) = 15,000× más emisiones</li><li>Bitcoin = 100,000× más</li></ul>Además, CELO ejecuta un programa integrado de compensación de carbono: una parte de cada tarifa de transacción financia proyectos verificados que eliminan CO₂ de la atmósfera. Esto hace que CELO sea carbono-negativo, lo que significa que compensa más de lo que emite — por lo que incluso nuestros NFTs terminan siendo carbono-negativos, convirtiendo la blockchain en una herramienta para la regeneración climática."
+          }
+        ]
+      },
+      "fundsCardsSection": {
+        "title": "<span style=\"font-weight: 300\">Tus fondos</span><br /><span style=\"font-weight: 700\">Se usan para</span>",
+        "cards": [
+          {
+            "number": "01",
+            "label": "ESTABILIDAD LEGAL",
+            "title": "Proteger",
+            "subtitle": "La Naturaleza",
+            "description": "Para comprar y salvaguardar permanentemente tierras bajo el innovador marco legal de INHABIT, reconociendo los ecosistemas como entidades legales con derechos protegidos, y brindando derechos y beneficios específicos a quienes apoyan su regeneración."
+          },
+          {
+            "number": "02",
+            "label": "RESTAURACIÓN Y CUSTODIA ECOSISTÉMICA A LARGO PLAZO",
+            "title": "Restaurar",
+            "subtitle": "Ecosistemas",
+            "description": "Para financiar la regeneración de tierras basada en la custodia a través de programas de tres años, restaurando la diversidad y funcionalidad completa del ecosistema—no solo plantando árboles."
+          },
+          {
+            "number": "03",
+            "label": "HUBS BIOCULTURALES PRÓSPEROS",
+            "title": "Transformar",
+            "subtitle": "La Sociedad",
+            "description": "Para financiar el desarrollo de hubs dedicados a campos únicos de conocimiento, fomentando la producción y difusión de sabiduría, y ampliando el acceso a conocimiento transformador para todos."
+          },
+          {
+            "number": "04",
+            "label": "NFT 2.0",
+            "title": "Mejorar",
+            "subtitle": "Beneficios",
+            "description": "Para desarrollar una versión mejorada y más valiosa del NFT de Custodia, ofreciendo mayores beneficios a los titulares y expandiendo aún más el corredor."
+          }
+        ]
       }
     },
     "highlight": {
@@ -209,7 +269,7 @@
     },
     "infographic": {
       "landTenureTitle": "Marco de Tenencia<br /><strong>de la Tierra</strong>",
-      "landTenureDescription": "El modelo de restauración basado en la custodia de INHABIT está diseñado para ser el enfoque más robusto y efectivo para garantizar la protección y regeneración a largo plazo de tierras degradadas, involucrando activamente a todos en la custodia de los ecosistemas.",
+      "landTenureDescription": "Un modelo innovador de reservas naturales que reconoce a la naturaleza como una entidad legal con derechos y otorga derechos y beneficios específicos a las personas que apoyan la protección y regeneración permanente de estos puntos críticos de biodiversidad.",
       "nftStewardsTitle": "Guardianes NFT",
       "nftStewardsDescription": "Personas de cualquier parte del mundo pueden convertirse en protectores vitalicios de la naturaleza, con la capacidad de monitorear, salvaguardar y acceder a estos hubs prósperos, junto con numerosos beneficios al recorrer el Corredor.",
       "natureTitle": "Naturaleza",
@@ -219,7 +279,7 @@
     },
     "testimonials": {
       "title": "Conoce a nuestros <strong>Aliados</strong>",
-      "description": "Los NFTs de custodia son contratos verificados en blockchain que otorgan derechos fraccionarios para proteger ecosistemas en parcelas de tierra tokenizadas.",
+      "description": "Desde administradores locales y expertos biorregionales hasta organizaciones globales y líderes en innovación, cada aliado aporta conocimientos, herramientas y un corazón únicos para hacer crecer una red de centros bioculturales.",
       "testimonial": {
         "name": "Louise Borreani",
         "quote": "Inhabit es una poderosa expresión de cómo las herramientas descentralizadas pueden apoyar a las comunidades de custodia de la naturaleza. Es una de las manifestaciones más concretas de la investigación cripto-verde que hemos realizado en Ecofrontiers y es inspirador verla cobrar vida.",
@@ -234,7 +294,11 @@
     },
     "blog": {
       "title": "Mantente<br /><strong>informado</strong>",
-      "description": "Mantente actualizado con nuestras últimas noticias y perspectivas sobre biodiversidad y preservación ecológica."
+      "description": "Mantente actualizado con nuestras últimas noticias y perspectivas sobre biodiversidad y preservación ecológica.",
+      "loading": "Cargando listado de entradas",
+      "noPosts": "No hay entradas disponibles",
+      "readTime_one": "{{count}} minuto de lectura",
+      "readTime_other": "{{count}} minutos de lectura"
     },
     "blogPosts": {
       "main": {
@@ -269,24 +333,24 @@
       "description": "Encuentra respuestas a preguntas comunes sobre nuestros programas de protección y custodia de ecosistemas.",
       "items": [
         {
+          "question": "¿El corredor INHABIT es un corredor físico real?",
+          "answer": "Sí — el Corredor INHABIT es una red real y en crecimiento de hubs bioculturales que se extienden por todo el mundo, cada uno un lugar físico. Liderados por agentes de cambio, estos hubs restauran ecosistemas, reviven el conocimiento ancestral y tienen la misión de crear un corredor continuo que conecte sitios clave de restauración dentro de su bioregión. ¡Cada NFT representa un hub real y activo — acuñar uno forja una pieza real de un corredor que cruza la Tierra!\nLos corredores no son solo estructuras físicas, sino sistemas vivos—dinámicos, interdependientes y esenciales para la supervivencia de comunidades humanas y no humanas. Facilitan el intercambio de biodiversidad, semillas y conocimiento vivo a escala global. Como infraestructura crítica para las generaciones presentes y futuras, los corredores permiten que la biodiversidad prospere, se adapte y regenere."
+        },
+        {
+          "question": "¿Qué hace que un Hub sea un hotspot de biodiversidad?",
+          "answer": "Un hotspot de biodiversidad es un espacio con niveles excepcionalmente altos de diversidad biológica que además está bajo una amenaza significativa por la actividad humana. Los Hubs bioculturales funcionan como 'hubs semilla vivientes'—espacios de importancia ecológica crítica, diseñados para salvaguardar y propagar la vida a lo largo del Corredor.\nAl igual que un jardín botánico regional, pero enraizado solo en los ecosistemas nativos, cada Hub sirve como un nodo vital en una red más amplia, fomentando la conectividad ecológica en el tejido mayor del Corredor. Estos hubs permiten que tanto personas como polinizadores actúen como portadores vivos de biodiversidad, dispersando naturalmente semillas, conocimiento y prácticas regenerativas a lo largo del paisaje.\nEn el corazón de cada Hub hay un Corredor Interno—un camino ecológico diseñado que:\nConecta paisajes fragmentados o degradados,\nProporciona refugio para especies en peligro,\nApoya el flujo de genes, especies y conocimiento cultural,\nY fortalece tanto la resiliencia local como la conectividad ecológica global."
+        },
+        {
           "question": "¿Qué es exactamente un NFT de Custodia?",
-          "answer": "Un NFT de Custodia representa tu compromiso con la conservación de la biodiversidad. Es un activo digital único que te conecta directamente con iniciativas de conservación dentro de nuestro corredor global de biodiversidad."
+          "answer": "Imagina tener un contrato especial en tu billetera digital—como un pasaporte o escritura—que demuestra que eres parte de algo real. No es solo una imagen o un token. Es una llave. Te otorga derechos de por vida y beneficios tangibles vinculados a una parcela específica de tierra, junto con acceso al valor intrínseco que se regenera en el terreno.\nEl contrato se almacena de forma segura y permanente en la blockchain, lo que significa que no se puede perder, alterar ni falsificar. Cada NFT es único—como una obra de arte—y solo se emite un número limitado para cada tierra. Es un activo digital con valor real que puede transferirse.\nAdemás de asegurar tus derechos sobre la tierra, el NFT encapsula todo el marco legal que protege la tierra misma. Refleja y protege tanto los Derechos de la Naturaleza como el rol de los guardianes humanos, a través de un modelo innovador que redefine lo que significa la propiedad de la tierra—pasando del control al cuidado, de la posesión a la responsabilidad.\nMuchos creen que la custodia dará forma al futuro de las economías—y el NFT de Custodia de Inhabit es una de las primeras herramientas que hace tangible esa visión, vinculando la creación de valor con el cuidado, la regeneración y la responsabilidad compartida."
         },
         {
-          "question": "¿Cómo ayuda mi compra de NFT a la conservación?",
-          "answer": "Tu compra de NFT financia directamente los esfuerzos de conservación en el terreno. Los fondos se destinan a proteger y restaurar hábitats críticos, apoyar a las comunidades locales y mantener la infraestructura del corredor de biodiversidad."
+          "question": "¿Qué derechos y beneficios recibo como titular de un NFT?",
+          "answer": "El NFT de Custodia te otorga una membresía de por vida y un vínculo vivo entre tú y un HUB biocultural.<br /><br />Explora los derechos y beneficios generales incluidos con todos los NFTs de Custodia [AQUÍ] (*hyperlink).<br />Haz clic en NFTs específicos (*hyperlink) para descubrir sus ofertas únicas, que pueden incluir:<ul><li>• Derechos legales como protector de un Hub</li><li>• Obras de arte exclusivas</li><li>• Alojamiento gratuito y talleres presenciales</li><li>• Experiencias bioculturales inmersivas</li><li>• Participación en la gobernanza DAO</li><li>• Acceso a herramientas para monitorear el impacto real de tu contribución</li><li>• Contenidos educativos exclusivos</li><li>• Airdrops</li><li>• ...y mucho más</li></ul>"
         },
         {
-          "question": "¿Qué beneficios recibo como titular de un NFT?",
-          "answer": "Como titular de un NFT, obtienes acceso exclusivo a informes de impacto, visitas virtuales y físicas a sitios de conservación, eventos comunitarios y derechos de voto en ciertas decisiones de conservación. También formas parte de una comunidad creciente de guardianes de la conservación."
-        },
-        {
-          "question": "¿Puedo transferir o vender mi NFT de Custodia?",
-          "answer": "Sí, los NFTs de Custodia son transferibles. Puedes vender o regalar tu NFT a otros que compartan tu compromiso con la conservación, aunque fomentamos la custodia a largo plazo para un mayor impacto."
-        },
-        {
-          "question": "¿Qué hace diferente a este proyecto de otros NFTs?",
-          "answer": "Nuestros NFTs tienen un impacto real, apoyando directamente la conservación de la biodiversidad. Están respaldados por investigación científica, participación comunitaria y resultados tangibles de conservación, no solo arte digital o especulación."
+          "question": "¿Qué hace único y diferente al NFT de Inhabit frente a los NFTs convencionales?",
+          "answer": "A diferencia de los NFTs puramente digitales, los NFTs de Custodia de Inhabit están arraigados en tierras reales y ecosistemas vivos. La tierra—y tu relación con ella—está protegida por un marco legal innovador que te otorga derechos y beneficios tangibles sobre un territorio físico y acceso al valor intrínseco que se regenera en el terreno. Más que un coleccionable digital en línea, cada NFT es un portal a un impacto y movimiento en el mundo real—diseñado para cultivar relaciones fuera de línea entre personas, lugares y los ecosistemas que ayudan a devolver a la vida. No se trata de poseer algo virtual; se trata de pertenecer a algo real: No es solo propiedad; es custodia."
         }
       ]
     },
@@ -294,9 +358,32 @@
       "connect": "CONECTA",
       "location": "UBICACIÓN",
       "locationText": "Tierra Kilwa, Palomino, La Guajira, Colombia",
-      "newsletter": "BOLETÍN",
-      "newsletterText": "¡Suscríbete para recibir las mejores actualizaciones de nosotros!",
-      "emailPlaceholder": "Tu correo electrónico",
+      "newsletter": {
+        "title": "BOLETÍN",
+        "text": "¡Suscríbete para recibir las mejores actualizaciones de nosotros!",
+        "status": {
+          "success": "Suscripción realizada",
+          "errors": {
+            "generic": "Error inesperado. Por favor, inténtelo de nuevo.",
+            "400": "El correo no es válido"
+          }
+        },
+        "email": {
+          "placeholder": "Tu correo electrónico",
+          "validations": {
+            "required": "Campo requerido",
+            "invalid": "Correo electrónico no válido"
+          }
+        },
+        "privacy": {
+          "validations": {
+            "required": "Debe aceptar la política de privacidad"
+          }
+        },
+        "subscribing": "Suscribiéndose...",
+        "subscribe": "Subcríbase",
+        "join_newsletter": "Suscribirse al boletín"
+      },
       "acceptPolicy": "Acepto la política de privacidad",
       "menu": "MENÚ",
       "copyright": "COPYRIGHT 2025 TODOS LOS DERECHOS RESERVADOS DISEÑADO POR FERNANDA HERRERA"
@@ -331,25 +418,25 @@
       "description": "El modelo de restauración basado en la custodia de INHABIT está diseñado para ser el enfoque más robusto y efectivo para garantizar la protección y regeneración a largo plazo de las tierras, involucrando a todos en la custodia de los ecosistemas.",
       "cards": [
         {
-          "number": "01",
+          "label": "Protección Permanente",
           "title": "Naturaleza",
           "subtitle": "Derechos",
           "description": "Este marco protege permanentemente la tierra reconociéndola como una entidad legal con derechos, y otorga derechos y beneficios específicos a quienes apoyan su protección y regeneración."
         },
         {
-          "number": "02",
+          "label": "Seguridad de la Tierra para Restauración Duradera",
           "title": "Guardianes",
           "subtitle": "Derechos",
           "description": "Este marco otorga derechos de uso permanente y financiamiento para la restauración a los guardianes de la tierra, creando las condiciones esenciales para la regeneración a largo plazo y la expansión del corredor ecológico."
         },
         {
-          "number": "03",
+          "label": "Sistema de Garantía",
           "title": "Guardianes NFT",
           "subtitle": "Derechos",
           "description": "Este marco otorga a los guardianes NFT derechos de custodia sobre la tierra, actuando como garantes de los derechos de la naturaleza. Les permite monitorear y apoyar la restauración mientras disfrutan de beneficios exclusivos y acceso a puntos calientes de biodiversidad y conocimiento esencial."
         },
         {
-          "number": "04",
+          "label": "Transparencia, Verificación y Participación Activa",
           "title": "Cumplimiento",
           "subtitle": "Derechos",
           "description": "Los contratos inteligentes garantizan que todo el marco y los derechos de los actores se apliquen y verifiquen de manera transparente, proporcionando un sistema digital confiable para el seguimiento del cumplimiento y permitiendo una participación significativa en las iniciativas de restauración a lo largo del Corredor."
@@ -360,31 +447,31 @@
       "title": "Cuatro Criterios <br /><strong>Para Ser un HUB</strong>",
       "description": "El marco de INHABIT prevé que cada HUB desarrolle cuatro campos clave para convertirse en un HUB biocultural, desarrollando cada uno según su propia visión y singularidad."
     },
-    "criteriaCardsSection2": {
+    "FourCriteriaHubGlobal": {
       "cards": [
         {
           "number": "01",
-          "title": "Proteger",
-          "subtitle": "Naturaleza",
-          "description": "Adquirir y proteger permanentemente tierras bajo el innovador marco legal de INHABIT, reconociendo los ecosistemas como entidades legales con derechos protegidos, y otorgando derechos y beneficios específicos a quienes apoyan su regeneración."
+          "title": "Biodiversidad",
+          "subtitle": "Puntos calientes",
+          "description": "Cada HUB debe generar y albergar un vasto reservorio de biodiversidad y conocimiento específico del ecosistema. Estos 'hubs semilla vivientes' permiten que animales y humanos dispersen semillas de forma natural, expandiendo la biodiversidad a lo largo del Corredor. Cada HUB debe albergar un 'corredor interno' que conecte paisajes fragmentados y refugie especies en peligro."
         },
         {
           "number": "02",
-          "title": "Restaurar",
-          "subtitle": "Ecosistemas",
-          "description": "Financiar la regeneración de la tierra a largo plazo basada en la custodia a través de programas de tres años, restaurando la diversidad y funcionalidad completa del ecosistema, no solo plantando árboles."
+          "title": "Incubadoras de",
+          "subtitle": "Guardianes de la tierra",
+          "description": "Cada HUB debe convertirse en un centro de aprendizaje para futuros guardianes de la tierra, brindando experiencia en diversos campos del conocimiento e innovación rural-social, y facilitando la asignación de recursos clave para establecer nuevos Hubs."
         },
         {
           "number": "03",
-          "title": "Transformar",
-          "subtitle": "Sociedad",
-          "description": "Financiar el desarrollo de hubs dedicados a campos únicos de conocimiento, fomentando la producción y difusión de sabiduría, y trabajando activamente para expandir el corredor y ampliar el acceso al conocimiento transformador para todos."
+          "title": "HUBS de",
+          "subtitle": "Sabiduría",
+          "description": "Cada HUB es un centro de investigación dedicado a un campo único de conocimiento, produciendo y difundiendo información que integra investigación sistémica y académica con sabiduría ancestral."
         },
         {
           "number": "04",
-          "title": "Mejorar",
-          "subtitle": "Beneficios",
-          "description": "Desarrollar una versión mejorada y más valiosa del NFT de Custodia, ofreciendo mayores beneficios a los titulares de NFT y expandiendo aún más el corredor."
+          "title": "Trazador de",
+          "subtitle": "Corredores",
+          "description": "Cada HUB tiene la tarea de extender el corredor, colaborando con otros hubs y trabajando conjuntamente en proyectos clave de restauración y comunidades dentro de su biorregión."
         }
       ]
     },
@@ -477,9 +564,10 @@
         "role": "Abogada con Maestría en Estudios Territoriales, experta en derecho ambiental y marcos legales de protección territorial desde una perspectiva biocultural. Fundadora de la Fundación Madre Tierra que opera en toda Colombia."
       },
       {
-        "name": "Junior Rojaas",
-        "role": "Desarrollador senior y emprendedor con más de 11 años en desarrollo de software, especializado en blockchain y criptomonedas. CTO de Futswap y CEO de Intechchain, liderando proyectos en finanzas descentralizadas y soluciones tecnológicas."
+        "name": "Santiago Viana",
+        "role": "Ecólogo y desarrollador Web3, ganador consecutivo del hackathon Funding the Commons en 2023 y 2024. Organizador y educador de programas educativos abiertos sobre blockchain en entornos EVM, así como de cursos permanentes en universidades de Bogotá."
       },
+      
       {
         "name": "Gaia Pagano",
         "role": "Licenciada en Ciencias Sociales, Máster en Innovación y Desarrollo, Derechos Humanos y Cultura de Paz. Coordinadora en la Pontificia Universidad Javeriana, más de 12 años en proyectos de paz y reconciliación, relaciones interculturales y diálogo con comunidades indígenas y afrodescendientes."
@@ -497,12 +585,16 @@
         "role": "10 años de experiencia como facilitadora de transformación eco-psico-social. Ingeniera industrial, Máster en Desarrollo Rural y especializada en Psicología Transpersonal-Integral. Lidera proyectos sostenibles e impulsa iniciativas inclusivas en comunidades rurales de Colombia. Con la Fundación INHABIT, co-crea metodologías bioculturales y apoya la regeneración territorial a través de estrategias de custodia comunitaria."
       },
       {
-        "name": "Juan Diego Agudelo",
-        "role": "Desarrollador con 4 años de experiencia especializado en tokenización de activos del mundo real e interoperabilidad blockchain. Su trabajo se centra en la trazabilidad de procesos, distribución de capital y tokenización de activos. Comprometido con el blockchain para el bien, diseña sistemas que apoyan la creación, gobernanza colectiva y custodia a largo plazo de bienes comunes físicos, fomentando economías regenerativas y comunitarias."
+        "name": "Junior Rojaas",
+        "role": "Desarrollador senior y emprendedor con más de 11 años en desarrollo de software, especializado en blockchain y criptomonedas. CTO de Futswap y CEO de Intechchain, liderando proyectos en finanzas descentralizadas y soluciones tecnológicas."
       },
       {
         "name": "Fernanda Herrera",
         "role": "Diseñadora visual con 12 años de experiencia en desarrollo de proyectos digitales, trabajando como diseñadora UI y UX para sitios web y aplicaciones. Muchos de estos sitios han sido desarrollados completamente desde la conceptualización hasta el desarrollo del código, generalmente usando Html5, css3 y javascript básico o CMS como wordpress, webflow, etc. Tengo conocimientos básicos en frameworks como vue, react, angular, python y ruby on rails, microinteracciones y animaciones web avanzadas."
+      },
+      {
+        "name": "Juan Sebastián Sánchez Hernández",
+        "role": "Experto en comunicaciones digitales y marketing, nacido, criado y radicado en Bogotá, con más de 13 años de experiencia desarrollando estrategias de marca y contenido. Especialista en simplificar temas complejos como cambio climático, biodiversidad, blockchain y conservación comunitaria. Apasionado por humanizar la tecnología a través de historias y trabajar en la restauración de la relación de la humanidad con la naturaleza. Líder de Comunicaciones en INHABIT."
       }
     ],
     "logosSection": {
@@ -525,7 +617,7 @@
     },
     "projectsVideo": {
       "eyebrow": "Video Destacado del Proyecto",
-      "heading": "Explora nuestros <span class=\"highlighted-text\">proyectos emblemáticos</span> que impulsan la <span class=\"highlighted-text\">regeneración</span> y el <span class=\"highlighted-text\">empoderamiento comunitario</span>.",
+      "heading": "Explora nuestros <span class=\"highlighted-text\">proyectos </span> que impulsan la <span class=\"highlighted-text\">regeneración</span> y <span class=\"highlighted-text\">empoderamiento </span> comunitario.",
       "playFeaturedVideo": "Reproducir video destacado del proyecto",
       "playVideo": "Reproducir video",
       "videoPlayer": "Reproductor de video",
@@ -533,21 +625,76 @@
       "iframeTitle": "Video del Proyecto",
       "iframeAriaLabel": "Reproductor de video del proyecto"
     },
-    "visitThisProject": "Visitar este proyecto"
+    "visitThisProject": "Visitar este proyecto",
+    "visitThisHub": "Visitar este hub"
   },
   "nuiyanzhiPage": {
-    "theVision": "La Visión",
-    "theGuardians": "Los Guardianes",
-    "theLand": "La Tierra",
-    "faq": {
-      "title": "Preguntas Frecuentes",
-      "description": "Preguntas sobre el Hub Nuiyanzhi",
+    "fourCriteria": {
+      "title": "Cuatro Criterios ",
+      "description": "para ser un HUB",
       "items": [
-        {"question": "¿Qué hace único al Hub Nuiyanzhi?", "answer": "El Hub Nuiyanzhi es un laboratorio viviente donde la restauración ecológica se encuentra con el conocimiento ancestral, combinando la sabiduría indígena con la ciencia moderna."},
-        {"question": "¿Cómo puedo ser guardián de Nuiyanzhi?", "answer": "Puedes convertirte en guardián adquiriendo un NFT de Custodia para Nuiyanzhi y participando en nuestros programas de restauración y custodia."},
-        {"question": "¿Cuáles son los principales objetivos del Hub?", "answer": "Los principales objetivos son la restauración ecológica, el intercambio de conocimientos, la participación comunitaria y la gestión sostenible de la tierra."},
-        {"question": "¿Puedo visitar el Hub Nuiyanzhi?", "answer": "Sí, los guardianes y custodios NFT tienen oportunidades exclusivas para visitar, aprender y participar en experiencias prácticas en el Hub."}
+        {
+          "question": "01 Punto Caliente de Biodiversidad – \"Hub semilla viviente\"",
+          "answer": "El Hub Ñuiyanzhi regenerará suelos afectados por degradación y agroquímicos, restaurando la diversidad y funcionalidad completa de estos ecosistemas y transformando el sitio en un refugio seguro para especies en peligro. El proyecto restaurará un corredor ecológico interno para apoyar la migración de especies y la recuperación de la biodiversidad. Al plantar la mayor variedad de especies, creará un \"banco de semillas viviente\" que animales y humanos podrán transportar y dispersar naturalmente, expandiendo la biodiversidad en el paisaje.\nEl enfoque en arquitectura bioclimática y orgánica inspirada en la tradición ancestral Kogui y el uso de materiales naturales ayudará a crear áreas de conservación donde humanos y otras especies puedan coexistir, minimizando el impacto ambiental y fortaleciendo la simbiosis entre los espacios habitados y la naturaleza."
+        },
+        {
+          "question": "02 Incubadora de Guardianes de la Tierra – \"Aprender viviendo\"",
+          "answer": "El Hub Ñuiyanzhi funciona como un centro de formación para futuros guardianes de la tierra, ofreciendo experiencia práctica en restauración ecológica, arquitectura bioclimática y prácticas tradicionales. A través de programas de aprendizaje inmersivo que integran sabiduría ancestral con conocimientos académicos y sistémicos, cultiva una nueva generación de custodios capaces de adaptar y replicar estas prácticas en otros territorios.\nEl enfoque enfatiza el \"aprender viviendo\", donde los participantes se involucran directamente con el entorno y sus ciclos naturales, experimentando los ritmos del cuidado diario y fomentando una comprensión profunda de la dinámica ecológica y la interconexión de todos los seres vivos. Ubicado en la Sierra y conectado tanto al mar como al río, Ñuiyanzhi brinda la oportunidad de presenciar la restauración ecológica de primera mano, evidenciada por el regreso de aves y la recuperación de la tierra bajo custodia local. La iniciativa resalta el rol de la custodia, donde los participantes aprenden de los mayores indígenas que comparten conocimientos enraizados en la Ley de Origen—un marco ecológico y espiritual que guía la coexistencia sostenible con la naturaleza.\nAl participar activamente en este proceso, los aprendices no solo adquieren habilidades prácticas sino que también cultivan un compromiso duradero con la sostenibilidad y la biodiversidad en sus propias comunidades. La experiencia Ñuiyanzhi fomenta el equilibrio ecológico, la sostenibilidad cultural y los principios del Buen Vivir, que integran bienestar, sostenibilidad y reciprocidad en el tejido social y ecológico."
+        },
+        {
+          "question": "03 Hub de Sabiduría – \"Encuentro de saberes\"",
+          "answer": "El Hub Ñuiyanzhi es un Centro de Investigación-Acción para la restauración de suelos y arquitectura bioclimática, sirviendo como espacio de reflexión, intercambio y producción de conocimiento a través del encuentro entre mayores Kogui y académicos dedicados a estas áreas. El desarrollo espacial del Hub encarna el encuentro de saberes, integrando los valores de armonía con la naturaleza del pueblo Kogui y perspectivas contemporáneas.\nA través de talleres, residencias, seminarios y prácticas inmersivas, facilita el diálogo entre comunidades locales, investigadores, arquitectos, agricultores y estudiantes, promoviendo una visión holística de la regeneración territorial. Este espacio fomenta la sanación y la renovación, reconociendo impactos pasados, mientras une la sabiduría tradicional con el conocimiento científico."
+        },
+        {
+          "question": "04 Trazador de Corredores – \"Corredor de Saberes\"",
+          "answer": "Entre el Parque Nacional Tayrona y el Parque Nacional Sierra Nevada, entre las cuencas de los ríos Piedras y Mendihuaca, el Hub Ñuiyanzhi contribuye a la creación de un corredor ecológico al reconectar paisajes fragmentados y permitir el movimiento de la fauna. El área sirve como corredor para especies migratorias y mamíferos como la guartinaja centroamericana (Dasyprocta punctata), así como especies críticamente amenazadas como el Paujil de pico azul (Crax alberti), el tití cabeciblanco (Saguinus oedipus) y los monos aulladores (Alouatta spp.). A través de la regeneración de suelos y la reforestación, ayuda a recuperar ecosistemas funcionales que conectan hábitats naturales. Además, involucra a comunidades locales y actores territoriales en el codiseño del corredor, mapeando y reforestando a lo largo de la cuenca, asegurando continuidad ecológica y gestión participativa a nivel biorregional. Ñuiyanzhi también está comprometido con extender un corredor de saberes, compartiendo y propagando los aprendizajes generados en el encuentro de sistemas de conocimiento diversos a lo largo y más allá del corredor."
+        }
       ]
+    },
+    "vision": {
+      "title": "La Visión",
+      "text": "El Hub Ñuiyanzhi es un santuario e incubadora de guardianes de la tierra, enraizado en la contemplación de la naturaleza y la sabiduría ancestral Kogui. Combina restauración ecológica, diseño bioclimático y prácticas tradicionales, formando futuros custodios a través de aprendizaje práctico e inmersivo. Como centro de intercambio de saberes entre mayores indígenas e investigadores, fomenta la regeneración de suelos, la bioconstrucción sostenible, el reciclaje de recursos y la continuidad cultural. Hogar de custodios, fauna y ecosistemas vitales, Ñuiyanzhi es un modelo viviente de Buen Vivir y custodia ecológica.\n\nEnraizado en la contemplación de la naturaleza y la biomímesis, el proyecto honra el enfoque atemporal del pueblo Kogui para vivir en equilibrio con la naturaleza. Al combinar sabiduría ancestral con diseño ecológico moderno, Ñuiyanzhi se convierte en un laboratorio viviente donde los futuros guardianes aprenden a través de la práctica regenerativa basada en la tierra.",
+      "imageAlt": "La Visión"
+    },
+    "guardians": {
+      "title": "Los Guardianes",
+      "text": "Desde 2021, Amelia (abogada de Derechos de la Naturaleza), Juan (arquitecto bioclimático) y su hijo León (entusiasta del monitoreo de la naturaleza) han custodiado Ñuiyanzhi en colaboración con los mayores Kogui de la tribu Kaggaba, autoridades tradicionales de la Sierra Nevada de Santa Marta. Con formación académica y una década de experiencia en desarrollo rural regenerativo, co-crean soluciones sostenibles enraizadas en la sabiduría ancestral que se aplican en este HUB.\n\nMás que un lugar, Ñuiyanzhi es un santuario—hogar de una familia custodio, los mayores de la Sierra y las aves, monos, abejas y plantas que resguardan las aguas. Ñuiyanzhi es un hogar para la Vida—una invitación a cuidar la Tierra con ternura, responsabilidad y conciencia",
+      "imageAlt": "Guardianes"
+    },
+    "land": {
+      "title": "La Tierra",
+      "text": "En su esencia, Ñuiyanzhi está restaurando un vital corredor ecológico interno que conecta con los Parques Nacionales Tayrona y Sierra Nevada. A través de la regeneración de suelos, la reforestación y un banco de semillas viviente, apoya el regreso de especies en peligro como el Paujil de pico azul y el tití cabeciblanco. Al fusionar la sabiduría ancestral Kogui con la práctica científica, crea hábitats compartidos que honran tanto el conocimiento ecológico como el cultural. Este hotspot de biodiversidad reconecta paisajes fragmentados, permitiendo la migración de especies y la custodia ecológica.\n\nEnraizado en la contemplación de la naturaleza, el proyecto honra el enfoque atemporal del pueblo Kogui para vivir en equilibrio con ella. Al fusionar arquitectura ancestral con diseño bioclimático contemporáneo, fomenta la construcción sostenible mediante bioconstrucción, uso responsable de materiales locales y reciclaje de recursos.",
+      "imageAlt": "La Tierra"
+    },
+    "faq": {
+      "title": "Centros Bioculturales",
+      "description": "Preguntas Frecuentes",
+      "items": [
+        {
+          "question": "¿Qué es un centro biocultural?",
+          "answer": "La regeneración verdadera y duradera necesita más que plantar árboles—requiere un cambio profundo en cómo valoramos y cuidamos la tierra. Los Centros Bioculturales lideran esta transformación.\n\nLos CENTROS son espacios de regeneración y renovación cultural, diseñados para encender y cultivar el sentido de custodia necesario para restaurar nuestro planeta. Los CENTROS protegen la biodiversidad, forman a la próxima generación de custodios de la tierra, y entrelazan la sabiduría ancestral con el conocimiento contemporáneo para impulsar un cambio profundo.\n\nSon espacios donde cualquiera puede aprender las prácticas más profundas de habitar y custodiar la naturaleza—lugares para explorar nuevas formas de relacionarse con la tierra, reconocer sus múltiples valores intrínsecos, y realizar el poder de nuestro rol en nutrirlos y multiplicarlos.\n\nCada Centro no solo restaura ecosistemas sino que también tiene la tarea de expandir un Corredor global mediante el aumento de áreas de conservación a través de la colaboración con centros cercanos, proyectos y comunidades en su biorregión.\n\nLos CENTROS son los bloques fundamentales del Corredor—una red mundial de islas de biodiversidad y puntos de referencia culturales. El Corredor busca inspirar un movimiento de custodia en todo el mundo."
+        },
+        {
+          "question": "¿Qué hace que un Centro sea un punto caliente de biodiversidad?",
+          "answer": "Un punto caliente de biodiversidad es un espacio con niveles excepcionalmente altos de diversidad biológica que también está bajo una amenaza significativa por la actividad humana. Los Centros Bioculturales funcionan como 'centros de semillas vivas'—espacios de importancia ecológica crítica, diseñados para salvaguardar y propagar la vida a través del Corredor.\n\nSimilar a un jardín botánico regional, pero arraigado únicamente en los ecosistemas nativos, cada Centro sirve como un nodo vital en una red más amplia - fomentando la conectividad ecológica a través del tejido más grande del Corredor. Estos centros permiten que tanto las personas como los polinizadores actúen como portadores vivos de biodiversidad, dispersando naturalmente semillas, conocimiento y prácticas regenerativas a través del paisaje.\n\nEn el corazón de cada Centro yace un Corredor Interior—una vía ecológica diseñada que:\n• Conecta paisajes fragmentados o degradados,\n• Proporciona refugio para especies en peligro,\n• Apoya el flujo de genes, especies y conocimiento cultural,\n• Y fortalece tanto la resiliencia local como la conectividad ecológica global."
+        },
+        {
+          "question": "¿Qué actividades se realizan en un Centro Biocultural?",
+          "answer": "Los Centros Bioculturales son espacios vibrantes donde convergen la regeneración ecológica, la renovación cultural y la participación comunitaria. Cada CENTRO es único—moldeado por su ubicación específica, contexto ecológico y guiado por la visión de sus guardianes de la tierra. Cada Centro está dedicado a un campo distinto de conocimiento, produciendo y compartiendo información que integra el conocimiento sistémico y contemporáneo con la sabiduría ancestral alrededor de un tema específico.\n\nEnfocado en un tema específico—como restauración ecológica, construcción de paz, emprendimiento regenerativo, diseño bioclimático, micro-agricultura, eco-alfabetización, sanación y desarrollo interior arraigado en la sabiduría biocultural—por nombrar algunos.\n\nAlbergan actividades basadas en el lugar, experiencias de aprendizaje práctico a través de diversos campos de conocimiento. Los Custodios NFT y visitantes pueden diseñar viajes de aprendizaje personalizados, moviéndose a través de diferentes Centros en el Corredor cada uno un guardián de conocimiento ecológico y cultural único.\n\nEl marco INHABIT define 4 criterios clave para que un sitio evolucione hacia un Centro Biocultural, permitiendo que cada uno desarrolle su propio enfoque único y expresión de estos pilares."
+        },
+        {
+          "question": "¿Cómo participan las comunidades locales?",
+          "answer": "INHABIT empodera a los custodios locales—a menudo neo-agricultores—otorgándoles derechos permanentes de uso de la tierra a través de contratos formales. A cambio, los custodios se comprometen con la restauración ecológica a largo plazo y la protección cultural.\n\nLos custodios reciben:\n• Seguridad de la tierra, vinculada a su compromiso con la regeneración\n• Tres años de financiamiento para restaurar tierra degradada\n• Apoyo comunitario a través de los titulares de NFT\n• Mentoría del equipo experto de INHABIT\n\nAl asegurar la tenencia de la tierra e invertir en agentes de cambio, INHABIT asegura una restauración duradera. Los custodios, profundamente conectados con sus territorios, trabajan en colaboración con comunidades Indígenas y locales para restaurar ecosistemas y preservar el conocimiento biocultural.\n\nHonran la gobernanza ancestral y sirven como puentes vivos entre las prácticas tradicionales y regenerativas—educando a otros en sabiduría ecológica, memoria cultural y relaciones basadas en el lugar arraigadas en la reciprocidad y el cuidado a largo plazo.\n\nA través de su liderazgo, la sabiduría ancestral se vuelve accionable, inspirando a nuevas generaciones a participar en la regeneración con profunda conciencia cultural y ecológica."
+        },
+        {
+          "question": "¿Cómo puedo participar en las actividades de los Centros Bioculturales?",
+          "answer": "Puedes participar comprando un NFT de Custodia, que te otorga la custodia vitalicia de un Centro específico y todo el corredor, y acceso a sus tierras ricas en biodiversidad, programas y experiencias de aprendizaje. Como custodio vitalicio, te conviertes en parte de una comunidad que apoya activamente la creación de un corredor regenerativo global.\n\nAlternativamente, también puedes unirte como visitante, participando en actividades seleccionadas, talleres y experiencias inmersivas ofrecidas por cada Centro."
+        }
+      ]
+    },
+    "imageSection": {
+      "eyebrow": "Descubre Ñuiyanzhi",
+      "heading": "Un <span style=\"color: var(--color-primary)\">laboratorio viviente</span> donde la <span style=\"color: var(--color-primary)\">restauración ecológica</span>, el <span style=\"color: var(--color-primary)\">conocimiento ancestral</span> y la custodia territorial <span style=\"color: var(--color-primary)\">convergen</span>."
     }
   },
   "amazonPage": {
@@ -664,13 +811,75 @@
     "annexNo1NotificationTemplate": "Plantilla de notificación para obtener la autorización del titular para la recolección, uso y tratamiento de sus datos personales",
     "annexNo1Declaration": "Declaración y autorización para consultar, reportar y compartir información",
     "annexNo1Authorization": "Autorizo expresa e irrevocablemente a INHABIT CO S.A.S., a quien represento o a quien cedo mis derechos, o a quien contrate para el ejercicio de estos derechos, sus obligaciones o su posición contractual en cualquier calidad, en relación con los productos o servicios de los cuales soy titular principal o conjunto, o como su representante, a consultar, solicitar, suministrar, reportar, procesar, obtener, recopilar, compilar, conformar, intercambiar, modificar, usar, analizar, estudiar, retener, recibir y enviar mis datos personales...",
-    "annexNo1Note": "* Nota: Este formulario debe ser firmado para su validez y atención y presentado en original a INHABIT CO S.A.S., que, como responsable del tratamiento, tramitará el reclamo dentro de los plazos establecidos por la ley, a partir del día siguiente a la fecha de recepción."
+    "annexNo1Note": "* Nota: Este formulario debe ser firmado para su validez y atención y presentado en original a INHABIT CO S.A.S., que, como responsable del tratamiento, tramitará el reclamo dentro de los plazos establecidos por la ley, a partir del día siguiente a la fecha de recepción.",
+    "fundsUsedSection": {
+      "title": "¿Cómo se utilizan los fondos?",
+      "cards": [
+        {
+          "label": "Conservación",
+          "title": "Protegiendo la Biodiversidad",
+          "subtitle": "Salvaguardando hábitats",
+          "description": "Los fondos se destinan a preservar y restaurar hábitats naturales, asegurando la supervivencia de diversas especies."
+        },
+        {
+          "label": "Comunidad",
+          "title": "Empoderando Comunidades Locales",
+          "subtitle": "Apoyando medios de vida",
+          "description": "Las inversiones se destinan a educación, salud y desarrollo sostenible para las comunidades locales."
+        },
+        {
+          "label": "Innovación",
+          "title": "Impulsando la Innovación",
+          "subtitle": "Soluciones sostenibles",
+          "description": "Los recursos se utilizan para desarrollar e implementar soluciones innovadoras a los desafíos ambientales."
+        },
+        {
+          "label": "Transparencia",
+          "title": "Garantizando la Transparencia",
+          "subtitle": "Reportes abiertos",
+          "description": "Proporcionamos informes claros y regulares sobre cómo se utiliza cada contribución."
+        }
+      ]
+    }
   },
   "stewardshipNFTPage": {
     "imageSection": {
       "eyebrow": "El poder de nuestros NFTs",
       "heading": "Tener un <span class=\"highlighted-text\">NFT</span> te convierte en <span class=\"highlighted-text\">co-creador de un corredor global</span>, uno que puedes recorrer, salvaguardar y <span class=\"highlighted-text\">regenerar biodiversidad</span>.",
       "imageAlt": "Beneficios del NFT de Custodia"
+    },
+    "fundsCardsSection": {
+      "title": "<span style=\"font-weight: 300\">Tus fondos</span><br /><span style=\"font-weight: 700\">Se usan para</span>",
+      "cards": [
+        {
+          "number": "01",
+          "label": "ESTABILIDAD LEGAL",
+          "title": "Proteger",
+          "subtitle": "La Naturaleza",
+          "description": "Para comprar y salvaguardar permanentemente tierras bajo el innovador marco legal de INHABIT, reconociendo los ecosistemas como entidades legales con derechos protegidos, y brindando derechos y beneficios específicos a quienes apoyan su regeneración."
+        },
+        {
+          "number": "02",
+          "label": "RESTAURACIÓN Y CUSTODIA ECOSISTÉMICA A LARGO PLAZO",
+          "title": "Restaurar",
+          "subtitle": "Ecosistemas",
+          "description": "Para financiar la regeneración de tierras basada en la custodia a través de programas de tres años, restaurando la diversidad y funcionalidad completa del ecosistema—no solo plantando árboles."
+        },
+        {
+          "number": "03",
+          "label": "HUBS BIOCULTURALES PRÓSPEROS",
+          "title": "Transformar",
+          "subtitle": "La Sociedad",
+          "description": "Para financiar el desarrollo de hubs dedicados a campos únicos de conocimiento, fomentando la producción y difusión de sabiduría, y ampliando el acceso a conocimiento transformador para todos."
+        },
+        {
+          "number": "04",
+          "label": "NFT 2.0",
+          "title": "Mejorar",
+          "subtitle": "Beneficios",
+          "description": "Para desarrollar una versión mejorada y más valiosa del NFT de Custodia, ofreciendo mayores beneficios a los titulares y expandiendo aún más el corredor."
+        }
+      ]
     }
   },
   "stewardshipNFTBenefits": {
@@ -745,12 +954,12 @@
     "projects": {
       "title": "Nuestros",
       "strong": "Proyectos",
-      "description": "Descubre las iniciativas y colaboraciones que están generando un impacto real. Nuestros proyectos abarcan restauración de ecosistemas, innovación biocultural y empoderamiento comunitario—cada uno es un paso hacia un futuro regenerativo."
+      "description": "Descubre las iniciativas y colaboraciones que están generando un impacto real. Nuestros proyectos abarcan restauración de ecosistemas, innovación biocultural y empoderamiento comunitario cada uno es un paso hacia un futuro regenerativo."
     }
   },
   "projectsPage": {
     "title": "Nuestros<br /><strong>Proyectos</strong>",
-    "description": "Descubre las iniciativas y colaboraciones que están generando un impacto real. Nuestros proyectos abarcan restauración de ecosistemas, innovación biocultural y empoderamiento comunitario—cada uno es un paso hacia un futuro regenerativo.",
+    "description": "Descubre las iniciativas y colaboraciones que están generando un impacto real. Nuestros proyectos abarcan restauración de ecosistemas, innovación biocultural y empoderamiento comunitario cada uno es un paso hacia un futuro regenerativo.",
     "skipToMainContent": "Saltar al contenido principal",
     "mainContent": "Contenido principal de la página de Proyectos"
   },
@@ -785,32 +994,134 @@
     "eyebrow": "Nuestras Iniciativas de Proyectos",
     "heading": "Explora nuestros <span class=\"highlighted-text\">proyectos emblemáticos</span> que impulsan la <span class=\"highlighted-text\">regeneración</span> y el <span class=\"highlighted-text\">empoderamiento comunitario</span>.",
     "project1": {
-      "label": "Restauración Forestal",
-      "title": "Corredores Verdes",
-      "description": "Conectando hábitats fragmentados mediante la plantación de árboles nativos y la restauración ecológica, este proyecto revive la biodiversidad y apoya la fauna local.",
+      "label": "Bosque de Alimentos",
+      "title": "CORREDOR SEWINDUA",
+      "description": "Fue establecido en 2024 por la Fundación INHABIT. Ubicado en el corazón de Palomino, el corredor sirve como un santuario para la biodiversidad, diseñado para apoyar a polinizadores y fauna silvestre.",
       "visionHeading": "VISIÓN DEL PROYECTO",
-      "visionText": "Crear corredores verdes continuos que permitan la migración de especies y restauren la salud del ecosistema, involucrando a las comunidades locales en la custodia.",
-      "backgroundImage": "/assets/images/img1.webp",
-      "mapImage": "/assets/images/img2.webp",
-      "sliderImages": [
-        "/assets/images/img1.webp",
-        "/assets/images/img2.webp",
-        "/assets/images/img3.webp"
-      ]
+      "visionText": "Hogar de más de 140 especies de árboles nativos, restaura diferentes estratos de un bosque seco tropical, en transición hacia un ecosistema húmedo. El corredor también cuenta con un Bosque de Alimentos con más de 60 especies nativas de frutas y nueces del Caribe, junto a un jardín de alimentos agroecológico intensivo en mandala, fomentando la agricultura regenerativa y la soberanía alimentaria local."
     },
     "project2": {
       "label": "Agroecología",
-      "title": "Bosques Comestibles",
-      "description": "Transformando tierras degradadas en bosques comestibles productivos, este proyecto combina el conocimiento tradicional con la agroecología moderna para la seguridad alimentaria y la resiliencia.",
+      "title": "ARTE SELVA",
+      "description": "Transformando tierras degradadas en bosques de alimentos productivos, este proyecto combina el conocimiento tradicional con la agroecología moderna para la seguridad alimentaria y la resiliencia.",
       "visionHeading": "VISIÓN DEL PROYECTO",
-      "visionText": "Empoderar a las comunidades para cultivar sistemas alimentarios diversos y sostenibles que restauren la salud del suelo y fomenten la independencia económica.",
-      "backgroundImage": "/assets/images/img4.webp",
-      "mapImage": "/assets/images/img5.webp",
-      "sliderImages": [
-        "/assets/images/img4.webp",
-        "/assets/images/img5.webp",
-        "/assets/images/img6.webp"
+      "visionText": "ArteSelva es un programa que encarna un enfoque único para crear corredores biológicos y jardines botánicos—puntos calientes de biodiversidad enriquecidos por senderos experimentales de ArtScape diseñados para despertar la conciencia ambiental e invitar a experiencias inmersivas y multisensoriales que profundizan nuestra conexión con la naturaleza."
+    }
+  },
+  "termsAndConditionsPage": {
+    "title": "Términos de Uso",
+    "strong": "y Condiciones",
+    "subtitle": "Estos Términos de Uso y Condiciones (\"Términos\") rigen su acceso y uso del sitio web, la plataforma y los servicios asociados operados por INHABIT CO S.A.S. (\"INHABIT\", \"nosotros\" o \"nuestro\"). Al acceder a www.inhabit.one o cualquier contenido relacionado, usted acepta estar sujeto a estos Términos.",
+    "sections": {
+      "1": {
+        "title": "Aceptación de los Términos",
+        "text": "Al utilizar nuestro sitio web o servicios, usted acepta estos Términos y nuestra Política de Privacidad. Si no está de acuerdo, por favor no utilice el Servicio."
+      },
+      "2": {
+        "title": "Uso del Sitio Web y la Plataforma",
+        "text": "Solo puede utilizar el Servicio para fines legales y de acuerdo con estos Términos. Usted acepta no:",
+        "list": {
+          "1": "Participar en el uso, acceso o manipulación no autorizados de sistemas, datos o contenido",
+          "2": "Interferir con la funcionalidad o los protocolos de seguridad de la plataforma",
+          "3": "Utilizar la plataforma para actividades fraudulentas, abusivas o dañinas",
+          "4": "Suplantar a cualquier persona o entidad o tergiversar su afiliación",
+          "5": "Violar derechos de propiedad intelectual o cualquier ley aplicable"
+        }
+      },
+      "3": {
+        "title": "Propiedad Intelectual",
+        "text": "Todo el material y contenido del Servicio—including pero no limitado a texto, gráficos, marca, contratos inteligentes y multimedia—son propiedad exclusiva de INHABIT CO S.A.S. o sus licenciantes. Se le otorga una licencia limitada, no exclusiva e intransferible para acceder y usar este contenido solo para fines personales y no comerciales. No puede:",
+        "list": {
+          "1": "Reproducir, redistribuir, publicar o explotar cualquier contenido sin permiso previo por escrito",
+          "2": "Utilizar los logotipos, nombres o marcas de INHABIT sin autorización expresa",
+          "3": "Modificar, descompilar o crear obras derivadas basadas en el Servicio"
+        }
+      },
+      "4": {
+        "title": "Descargo de Responsabilidad sobre NFT y Activos Digitales",
+        "text": "Al interactuar con NFTs de INHABIT u otros elementos integrados en blockchain de la plataforma, usted reconoce y acepta que:",
+        "list": {
+          "1": "INHABIT no almacena ni controla claves privadas, billeteras ni la infraestructura blockchain subyacente",
+          "2": "INHABIT no es responsable de pérdidas por transacciones NFT fallidas, brechas de billetera o intercambios de terceros",
+          "3": "La funcionalidad NFT puede depender de contratos inteligentes y operaciones blockchain fuera de nuestro control"
+        }
+      },
+      "5": {
+        "title": "Derechos y Beneficios de los Titulares de NFT",
+        "text": "Todos los derechos, beneficios y obligaciones relacionados con la tenencia de un NFT de INHABIT se rigen por el Contrato de Membresía acordado en el momento de la adquisición. Este contrato establece, entre otras disposiciones:",
+        "list": {
+          "1": "El derecho a transferir o revender el NFT a través de plataformas y mercados compatibles",
+          "2": "Una licencia no exclusiva y no comercial para mostrar, compartir o usar la obra asociada para fines personales",
+          "3": "Acceso a utilidades, eventos, contenido, programas y beneficios relacionados con la custodia definidos por INHABIT"
+        },
+        "note": "El alcance de estos derechos está sujeto a los términos del Contrato de Membresía. Se recomienda a los titulares de NFT consultar su Contrato de Membresía para obtener todos los detalles."
+      },
+      "6": {
+        "title": "Contenido Generado por el Usuario",
+        "text": "Si envía o comparte contenido (por ejemplo, testimonios, comentarios, fotos, ideas), otorga a INHABIT una licencia perpetua, libre de regalías y global para usar, reproducir, modificar y mostrar dicho contenido en cualquier medio. Usted garantiza que:",
+        "list": {
+          "1": "Tiene los derechos y permisos para compartir dicho contenido",
+          "2": "El contenido no infringe los derechos de terceros"
+        }
+      },
+      "7": {
+        "title": "Terminación de Acceso",
+        "text": "Nos reservamos el derecho de suspender o terminar su acceso al Servicio en cualquier momento, sin previo aviso, si viola estos Términos, leyes aplicables o por cualquier otra razón a nuestra entera discreción."
+      },
+      "8": {
+        "title": "Limitación de Responsabilidad",
+        "text": "En la máxima medida permitida por la ley, INHABIT no será responsable de daños indirectos, incidentales, consecuentes o punitivos derivados de:",
+        "list": {
+          "1": "Su uso o incapacidad de usar el Servicio",
+          "2": "Errores, fallos u omisiones en la plataforma",
+          "3": "Acceso no autorizado, hackeo o mal uso de datos"
+        }
+      },
+      "9": {
+        "title": "Indemnización",
+        "text": "Usted acepta indemnizar, defender y eximir de responsabilidad a INHABIT, sus directores, funcionarios, empleados, afiliados y socios de cualquier reclamo, responsabilidad, daño, costo o gasto legal que surja de su uso del Servicio o violación de estos Términos."
+      },
+      "10": {
+        "title": "Cambios en los Términos",
+        "text": "Podemos actualizar estos Términos en cualquier momento sin previo aviso. Los cambios entran en vigor una vez publicados. Su uso continuado del Servicio constituye la aceptación de los Términos actualizados."
+      },
+      "11": {
+        "title": "Ley Aplicable y Jurisdicción",
+        "text": "Estos Términos se rigen por las leyes de la República de Colombia. Cualquier disputa o reclamo relacionado con estos Términos se resolverá exclusivamente en los tribunales de Cali, Valle del Cauca."
+      },
+      "12": {
+        "title": "Contacto",
+        "text": "INHABIT CO S.A.S.\nCali, Colombia\n📧 Correo: hello@inhabit.one\n🌐 Sitio web: www.inhabit.one\n📞 Teléfono: +57 315 7255514"
+      }
+    },
+    "footer": "Al usar este sitio web o interactuar con nuestros activos digitales, usted acepta estos Términos."
+  },
+  "hubsPage": {
+    "faq": {
+      "title": "Preguntas<br /><strong>Frecuentes</strong>",
+      "description": "Encuentra respuestas a preguntas comunes sobre los Hubs Bioculturales, conservación e impacto de los NFT.",
+      "items": [
+        {
+          "question": "¿Cómo contribuyen los Hubs Bioculturales a la conservación?",
+          "answer": "<ul><li><strong>• Protección de la Biodiversidad:</strong> Salvaguardan la biodiversidad protegiendo ecosistemas vitales y restaurando hábitats para especies nativas y en peligro de extinción. Como \"centros vivos de semillas\", ayudan a propagar la vida a lo largo del Corredor.</li><li><strong>• Restauración de Tierras:</strong> Restauran tierras degradadas mediante la reforestación, regeneración del suelo, protección de cuencas hidrográficas y difusión del conocimiento ecológico.</li><li><strong>• Conocimiento Indígena:</strong> Revitalizan el conocimiento indígena colaborando con las comunidades locales para honrar y compartir las prácticas ancestrales.</li><li><strong>• Conectividad Ecológica:</strong> Expanden los corredores ecológicos conectando hábitats fragmentados y fomentando la conectividad en toda la bioregión.</li><li><strong>• Innovación Rural:</strong> Promueven la innovación rural sirviendo como laboratorios de prácticas regenerativas y vida sostenible basada en el lugar.</li><li><strong>• Empoderamiento Comunitario:</strong> Empoderan a los guardianes locales a través de la capacitación y la gobernanza dirigida por la comunidad.</li><li><strong>• Modelos de Tenencia:</strong> Introducen nuevos modelos de tenencia de la tierra, reconociendo los Derechos de la Naturaleza y las responsabilidades de custodia a largo plazo.</li><li><strong>• Conservación Compartida:</strong> Redefinen la conservación como una responsabilidad compartida, donde los titulares de NFT obtienen custodia legal y participan en la regeneración del mundo real a través del compromiso biocultural.</li></ul>"
+        },
+        {
+          "question": "¿Cómo ayuda mi compra de NFT a la conservación?",
+          "answer": "Tu compra de NFT apoya directamente la conservación y regeneración del mundo real. El Corredor está diseñado para impulsar un movimiento global de custodia ecológica, y tu contribución juega un papel vital.<br/><br/>85% de los fondos van directamente a:<br/><br/><ul><li><strong>PROTEGER:</strong> Comprar y salvaguardar permanentemente tierras bajo el innovador marco legal de INHABIT, reconociendo los ecosistemas como entidades legales con derechos protegidos, mientras se otorgan derechos y beneficios específicos a las personas que apoyan su regeneración.</li><li><strong>RESTAURAR:</strong> Financiar la regeneración del ecosistema a largo plazo a través de la restauración basada en la custodia con programas de tres años, restaurando la diversidad y funcionalidad completa del ecosistema, no solo plantando árboles.</li><li><strong>TRANSFORMAR:</strong> Desarrollar hubs bioculturales prósperos dedicados a campos únicos de conocimiento, fomentando la producción y difusión de sabiduría, y expandiendo activamente el corredor.</li><li><strong>MEJORAR:</strong> Desarrollar una versión mejorada y más valiosa del NFT de Custodia, ofreciendo mayores beneficios a los titulares de NFT mientras se expande aún más el corredor (NFT 2.0).</li></ul>"
+        },
+        {
+          "question": "¿Qué sucede si no se alcanza el monto mínimo necesario para comprar la tierra y financiar el proyecto?",
+          "answer": "Si no se alcanza el monto mínimo necesario para comprar la tierra dentro de 12 meses, la Fundación INHABIT puede usar los fondos para adquirir una parcela más pequeña y establecer un HUB más pequeño. Si esto no es posible, se ofrecerá un reembolso completo (menos las comisiones), en la misma moneda utilizada para la compra. Los miembros serán mantenidos informados en todas las fases durante el proceso, incluyendo el progreso de la financiación, las decisiones de adquisición de tierras y cualquier actualización sobre el uso de los fondos o posibles reembolsos."
+        },
+        {
+          "question": "¿Cómo se asegura la transparencia y seguridad en el uso de los fondos recaudados?",
+          "answer": "Cada proyecto sigue un presupuesto y plan de implementación claramente definido y pre-aprobado, como se detalla en el Libro Blanco oficial y la documentación del Plan de Proyecto específica para cada HUB. La transparencia está garantizada a través de la integración de tecnología blockchain y contratos inteligentes seguros, que hacen que todas las transacciones de fondos sean rastreables, a prueba de manipulaciones y auditables públicamente. Los fondos se mantienen de forma segura, y su desembolso se rige por procedimientos transparentes de contabilidad e informes, asegurando visibilidad y responsabilidad para todos los interesados y contribuyentes."
+        },
+        {
+          "question": "¿Qué garantiza que la tierra esté protegida a perpetuidad?",
+          "answer": "El marco legal de INHABIT asegura la protección permanente de la tierra a través de un sistema en capas que integra los Derechos de la Naturaleza, gobernanza tokenizada, contratos inteligentes y custodia en el terreno:<br/><br/><ul><li><strong>1-Derechos de la Naturaleza:</strong> La tierra es legalmente reconocida como una entidad con derechos. Una vez tokenizada, no puede ser vendida ni explotada, asegurando una protección duradera.</li><li><strong>2-NFTs de Custodia:</strong> Cada NFT está vinculado a un contrato legal de membresía. Los titulares obtienen derechos de gobernanza para monitorear la tierra, intervenir si la naturaleza está en riesgo y ayudar a dar forma a las decisiones, utilizando narrativas geolocalizadas y KPIs para verificación en tiempo real.</li><li><strong>3-Guardianes en el Terreno:</strong> Los guardianes locales reciben derechos permanentes de uso de la tierra y aseguran el cuidado y protección ecológica diaria.</li><li><strong>4-Contratos Inteligentes:</strong> Los derechos y responsabilidades (incluidos los de la Naturaleza) se hacen cumplir a través de contratos transparentes e inmutables que codifican instrumentos legales y permiten la gobernanza digital y física.</li><li><strong>5-Supervisión Institucional:</strong> INHABIT SAS y la Fundación INHABIT supervisan el uso de fondos, el cumplimiento legal y la aplicación de derechos, con documentos encriptados en la cadena de bloques.</li></ul>"
+        }
       ]
     }
   }
-} 
+}

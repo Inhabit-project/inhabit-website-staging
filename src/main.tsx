@@ -14,6 +14,7 @@ import "@fontsource/montserrat/700.css"; // Bold
 import "@fontsource/nunito-sans/400.css";
 import "@fontsource/nunito-sans/600.css";
 import { RainbowKitProviderConfig } from "./config/rainbow-kit.config";
+import { BrowserRouter } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
@@ -24,7 +25,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <RainbowKitProviderConfig>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </QueryClientProvider>
     </RainbowKitProviderConfig>
   </React.StrictMode>

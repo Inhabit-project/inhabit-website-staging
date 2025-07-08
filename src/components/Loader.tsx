@@ -1,0 +1,89 @@
+import React, { useEffect, useState, useRef } from 'react';
+import gsap from 'gsap';
+
+interface LoaderProps {
+  onLoadingComplete?: () => void;
+}
+
+const Loader: React.FC<LoaderProps> = ({ onLoadingComplete }) => {
+  const [progress, setProgress] = useState(0);
+  const loaderRef = useRef<HTMLDivElement>(null);
+  const earthRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Initial animation
+    if (loaderRef.current && earthRef.current && progressRef.current && textRef.current) {
+      gsap.set([earthRef.current, progressRef.current, textRef.current], { opacity: 0, y: 20 });
+      
+      gsap.timeline()
+        .to(earthRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        })
+        .to([progressRef.current, textRef.current], {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "power3.out"
+        }, "-=0.4");
+    }
+  }, []);
+
+  useEffect(() => {
+    const duration = 2000; // 2 seconds for the loading animation
+    const interval = duration / 100; // 100 steps, one per percent
+
+    const timer = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(timer);
+          setTimeout(() => {
+            onLoadingComplete?.();
+          }, 200); // Wait 200ms to ensure 100% is visible
+          return 100;
+        }
+        return prev + 1;
+      });
+    }, interval);
+
+    return () => clearInterval(timer);
+  }, [onLoadingComplete]);
+
+  return (
+    <div 
+      ref={loaderRef} 
+      className="fixed inset-0 bg-light z-50 flex items-center justify-center"
+    >
+      <div 
+        ref={textRef}
+        className="absolute top-12 left-12 font-abel text-sm text-secondary uppercase"
+      >
+        LOADING
+      </div>
+      <div 
+        ref={earthRef}
+        className="relative w-[20rem] h-[20rem] animate-loaderRotate m-auto"
+      >
+        <img 
+          src="/assets/small-earth.webp" 
+          alt="Earth loader" 
+          className="w-full h-full object-cover animate-loaderPulse"
+          loading="eager"
+        />
+      </div>
+      <div 
+        ref={progressRef}
+        className="absolute bottom-12 right-12 font-abel text-[9rem] text-secondary"
+      >
+        {String(Math.floor(progress)).padStart(3, '0')}%
+      </div>
+    </div>
+  );
+};
+
+export default Loader; 

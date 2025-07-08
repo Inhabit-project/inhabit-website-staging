@@ -1,26 +1,98 @@
-import React from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { LoadingContext } from '../App';
 
 const StewardshipNFT: React.FC = () => {
   const { t } = useTranslation();
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const isLoading = useContext(LoadingContext);
+
+  // Initialize section animations
+  useEffect(() => {
+    if (isLoading) return;
+
+    // Set initial states
+    gsap.set([titleRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 50
+    });
+
+    gsap.set(imageRef.current, {
+      opacity: 0,
+      y: 100,
+      scale: 0.95
+    });
+
+    // Create scroll-triggered animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "play none none reverse"
+      }
+    });
+
+    tl.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    })
+    .to(descriptionRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power3.out"
+    }, "-=0.6")
+    .to(imageRef.current, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 1.2,
+      ease: "power3.out"
+    }, "-=0.7");
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, [isLoading]);
+
   return (
-    <section className="relative w-full background-gradient-dark flex flex-col items-center scroll-container">
+    <section 
+      ref={sectionRef}
+      className="relative w-full background-gradient-dark flex flex-col items-center scroll-container"
+    >
       <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
         <div className="flex flex-col items-start gap-6">
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full">
-            <h2 className="heading-2 text-light max-w-[40.9375rem]">
+            <h2 
+              ref={titleRef}
+              className="heading-2 text-light max-w-[40.9375rem]"
+            >
               {t('mainPage.stewardshipNFT.title')}
               <br />
               <span dangerouslySetInnerHTML={{ __html: t('mainPage.stewardshipNFT.subtitle') }} />
             </h2>
-            <p className="body-M text-light max-w-[35rem]">
+            <p 
+              ref={descriptionRef}
+              className="body-M text-light max-w-[35rem]"
+            >
               {t('mainPage.stewardshipNFT.description')}
             </p>
           </div>
 
           {/* Image */}
-          <div className="self-center relative overflow-hidden">
+          <div 
+            ref={imageRef}
+            className="self-center relative overflow-hidden"
+          >
             <img 
               src="/assets/figma-images/stewardship-nft.webp" 
               alt="Stewardship NFT illustration" 

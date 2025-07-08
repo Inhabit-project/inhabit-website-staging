@@ -1,17 +1,18 @@
 import React from 'react';
 
 interface ImpactCardProps {
-  number: string;
+  label: string;
   icon: string;
   title: string;
   subtitle: string;
   description: string;
   id?: string;
+  number?: string;
 }
 
-const ImpactCard: React.FC<ImpactCardProps> = ({ number, icon, title, subtitle, description, id }) => (
+const ImpactCard: React.FC<ImpactCardProps> = ({ label, icon, title, subtitle, description, id, number }) => (
   <article 
-    className="relative bg-green-soft rounded-[var(--radius-2xl)] p-10 flex flex-col gap-8 min-h-[340px] shadow-md w-full"
+    className="relative bg-green-soft rounded-[var(--radius-2xl)] p-10 flex flex-col gap-4 min-h-[22rem] h-full shadow-md w-full"
     aria-labelledby={id}
   >
     {/* Icon */}
@@ -24,11 +25,20 @@ const ImpactCard: React.FC<ImpactCardProps> = ({ number, icon, title, subtitle, 
       />
     </div>
     {/* Number */}
+    {number && (
+      <span 
+        className="eyebrow text-secondary opacity-70"
+        aria-hidden="true"
+      >
+        {number}
+      </span>
+    )}
+    {/* Label */}
     <span 
       className="font-abel uppercase tracking-[0.07em] text-base text-secondary"
       aria-hidden="true"
     >
-      {number}
+      {label}
     </span>
     {/* Title + Subtitle */}
     <h3
@@ -41,7 +51,7 @@ const ImpactCard: React.FC<ImpactCardProps> = ({ number, icon, title, subtitle, 
       <span style={{ fontWeight: 400 }}>{subtitle}</span>
     </h3>
     {/* Description */}
-    <p className="font-nunito font-light text-[1.3125rem] leading-[1.4] text-secondary">{description}</p>
+    <p className="font-nunito font-light text-[1.3125rem] leading-[1.4] text-secondary flex-1 overflow-auto">{description}</p>
   </article>
 );
 

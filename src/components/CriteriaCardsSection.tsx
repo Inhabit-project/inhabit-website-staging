@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useRef, useEffect, useContext, useState } from 'react';
 import ImpactCard from './ImpactCard';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { LoadingContext } from '../App';
 
 const impactCards = [
   {
@@ -33,13 +36,87 @@ const impactCards = [
 ];
 
 const CriteriaCardsSection: React.FC = () => {
+  const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
+
+  // Refs for animations
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Set initial states
+  useEffect(() => {
+    gsap.set(titleRef.current, {
+      opacity: 0,
+      y: 50
+    });
+
+    gsap.set(cardsRef.current, {
+      opacity: 0,
+      y: 50
+    });
+  }, []);
+
+  // Handle loading state change
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading]);
+
+  // Handle animations
+  useEffect(() => {
+    let ctx = gsap.context(() => {});
+
+    if (canAnimate) {
+      ctx = gsap.context(() => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top center",
+            end: "center center",
+            toggleActions: "play none none reverse"
+          }
+        });
+
+        // Title animation
+        tl.to(titleRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        })
+        // Cards stagger animation
+        .to(cardsRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "power3.out"
+        }, "-=0.4");
+      });
+    }
+
+    return () => {
+      ctx.revert();
+    };
+  }, [canAnimate]);
+
   return (
     <section 
+      ref={sectionRef}
       className="w-full py-24 background-gradient-light"
       aria-labelledby="criteria-cards-title"
     >
       <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)]">
         <h2 
+          ref={titleRef}
           id="criteria-cards-title"
           className="heading-2 text-secondary mb-16"
         >
@@ -53,6 +130,7 @@ const CriteriaCardsSection: React.FC = () => {
           {impactCards.map((card, index) => (
             <div 
               key={card.number}
+              ref={el => cardsRef.current[index] = el}
               role="listitem"
               aria-labelledby={`card-${card.number}-title`}
             >

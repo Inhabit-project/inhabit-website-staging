@@ -100,6 +100,7 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
                     alt={alt || ''}
                     className="w-full h-full object-cover"
                     draggable={false}
+                    loading="lazy"
                   />
                 </div>
               );
