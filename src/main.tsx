@@ -7,6 +7,7 @@ import { scrollManager } from './utils/scrollManager'
 import './utils/gsap'
 
 // Import fonts
+// @fontsource packages only include latin subset by default. No cyrillic or vietnamese fonts are included.
 import '@fontsource/montserrat/300.css' // Light
 import '@fontsource/montserrat/400.css' // Regular
 import '@fontsource/montserrat/500.css' // Medium

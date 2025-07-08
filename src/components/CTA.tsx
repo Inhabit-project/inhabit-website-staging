@@ -84,7 +84,6 @@ const CTA: React.FC = () => {
     }, sectionRef);
     return () => {
       ctx.revert();
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, [canAnimate]);
 

@@ -82,7 +82,6 @@ const FAQ: React.FC<FAQProps> = ({ faqItems, title, description }) => {
 
     return () => {
       ctx.revert();
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [isLoading]);
 
@@ -228,7 +227,6 @@ export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string 
 
     return () => {
       ctx.revert();
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [isLoading]);
 
@@ -362,7 +360,6 @@ export const FAQHubs: React.FC = () => {
 
     return () => {
       ctx.revert();
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [canAnimate]);
 

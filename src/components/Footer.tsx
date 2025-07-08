@@ -130,7 +130,6 @@ const Footer: React.FC = () => {
       ctx.revert(); // This will clean up all animations created in this context
       if (timelineRef.current) timelineRef.current.kill();
       if (scrollTriggerRef.current) scrollTriggerRef.current.kill();
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [canAnimate]);
 

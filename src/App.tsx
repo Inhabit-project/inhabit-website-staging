@@ -28,7 +28,6 @@ import ContactPage from "@/pages/ContactPage";
 import ProjectsPage from "@/pages/ProjectsPage";
 import ArticlePage from "@/pages/ArticlePage";
 import Cursor from './utils/cursor';
-import { injectScrollSnapCss } from './utils/browserCss';
 
 // Create a context for the loading state
 export const LoadingContext = createContext<boolean>(false);
@@ -96,6 +95,13 @@ const App: React.FC = () => {
         } else {
           window.scrollTo({ top: 0, behavior: "auto" });
         }
+        // Refresh ScrollTrigger after page transition completes
+        setTimeout(() => {
+          // Dynamically import to avoid SSR issues
+          import('./utils/gsap').then(({ ScrollTrigger }) => {
+            ScrollTrigger.refresh();
+          });
+        }, 100);
       }, 50);
     }
   }, [transitionIn, pageReady]);
@@ -156,8 +162,6 @@ const App: React.FC = () => {
       cursor.destroy();
     };
   }, []);
-
-  injectScrollSnapCss();
 
   return (
     <LoadingContext.Provider value={isLoading}>

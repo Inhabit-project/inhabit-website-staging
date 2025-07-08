@@ -164,7 +164,6 @@
 
   html {
     @apply font-nunito;
-    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     height: 100%;
@@ -176,6 +175,10 @@
   ::before {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
+    scroll-snap-type: y mandatory;
+    scroll-snap-align: start;
+    -webkit-scroll-snap-type: none;
+    -webkit-scroll-snap-align: none;
   }
 
   body {
@@ -1121,30 +1124,11 @@ body,
 
 @media not all and (min-resolution:.001dpcm) {
   @supports (scroll-snap-type: y mandatory) {
-
-    /* This is Safari only, so we do nothing here to override */
     *,
     ::after,
     ::before {
-      scroll-snap-type: none !important;
-      scroll-snap-align: none !important;
+      /* Removed scroll-snap-type and scroll-snap-align overrides */
     }
   }
 }
 
-.scroll-snap-container {
-  scroll-snap-type: y mandatory;
-  overflow-y: auto;
-  height: 100vh;
-}
-
-.scroll-snap-section {
-  scroll-snap-align: start;
-  min-height: 100vh;
-}
-
-.no-scroll-snap {
-  scroll-snap-type: none !important;
-  scroll-snap-align: none !important;
-  scroll-behavior: auto !important;
-}
