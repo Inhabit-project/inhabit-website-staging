@@ -4,9 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start:dev": "vite --mode dev",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start:dev": "vite --mode dev",
+    "start:staging": "bun run build && vite preview --mode staging"
   },
   "dependencies": {
     "@fontsource/ibm-plex-sans-condensed": "^5.2.6",
