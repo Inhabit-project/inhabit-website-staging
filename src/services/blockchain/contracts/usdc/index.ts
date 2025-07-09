@@ -74,6 +74,7 @@ export class UsdcContract {
     try {
       const contract = this.getReadContract();
       const balance = (await contract.read.balanceOf([address])) as bigint;
+      console.log("USDC Balance:", balance);
       return formatUsdcToUsd(balance);
     } catch (error) {
       console.error("❌", error);

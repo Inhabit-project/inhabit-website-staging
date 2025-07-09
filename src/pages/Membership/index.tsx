@@ -1,4 +1,4 @@
-import { useEffect, useState, JSX, use } from "react";
+import { useEffect, useState, JSX } from "react";
 import Menu from "../../components/Menu";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Campaign } from "../../models/campaign.model";
@@ -9,7 +9,7 @@ import { Info } from "./_componets/Info";
 import OtherCollections from "./_componets/OtherCollections";
 import MultiStepCheckout from "./_componets/MultiStep";
 
-type Props = { onHeroImageLoad?: () => void; onPageReady?: () => void };
+type Props = { onHeroImageLoad?: VoidFunction };
 
 export default function Membership(props: Props): JSX.Element {
   // props

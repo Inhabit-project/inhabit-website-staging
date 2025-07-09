@@ -140,19 +140,6 @@ export const useStore = create<Store>((set, get) => {
     startKycPolling: async (address, price) => {
       const { hasSentKycHard, isKycHardCompleted, isPollingKyc } = get();
 
-      const hasSentKycHardResult = await hasSentKycApi(address, KYC_TYPE.HARD);
-
-      if (!hasSentKycHardResult.success) {
-        return;
-      }
-
-      const fetchedHasSentKycHard = hasSentKycHardResult.data;
-
-      if (fetchedHasSentKycHard) {
-        set({ hasSentKycHard: fetchedHasSentKycHard });
-        return;
-      }
-
       if (!MUST_DO_KYC_HARD(price)) return;
       if (!hasSentKycHard) return;
       if (isKycHardCompleted) return;
@@ -166,19 +153,17 @@ export const useStore = create<Store>((set, get) => {
           KYC_TYPE.HARD
         );
 
-        if (!isKycCompletedResult.success) {
+        const done = isKycCompletedResult.data;
+
+        if (!done) {
           return;
         }
 
-        const done = isKycCompletedResult.data;
-
-        if (done) {
-          clearInterval(interval);
-          set({
-            isPollingKyc: false,
-            isKycHardCompleted: true,
-          });
-        }
+        clearInterval(interval);
+        set({
+          isPollingKyc: false,
+          isKycHardCompleted: true,
+        });
       }, 500);
     },
   };
