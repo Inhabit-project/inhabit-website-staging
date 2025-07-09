@@ -27,13 +27,13 @@ const ComparisonCards: React.FC = () => {
   return (
     <div className="overflow-x-auto pb-4">
       {/* Header row */}
-      <div className="flex bg-[#1a2b14] text-white font-bold text-base border-b border-white/10 min-w-[65rem]">
+      <div className="flex bg-[#1a2b14] text-white font-bold text-base border-b border-white/10 min-w-fit">
         <div className="px-4 py-3 border-r border-white/10 bg-[#1c3625] sticky left-0 z-10" style={{ width: 'clamp(140px, 45vw, 220px)', minWidth: '140px', maxWidth: '220px' }}>
           <span className="md:hidden">&nbsp;</span>
           <span className="hidden md:inline" style={{ width: 320, minWidth: 320 }}> &nbsp; </span>
         </div>
         {packages.map(pkg => (
-          <div key={pkg} className="flex flex-col flex-1 min-w-[180px] border-r border-white/10 last:border-r-0">
+          <div key={pkg} className="flex flex-col flex-1 min-w-[220px] border-r border-white/10 last:border-r-0">
             <div className="text-center py-2 border-b border-white/10">{pkg}</div>
             <div className="flex">
               <div className="w-1/2 text-xs text-white/80 py-1 text-center border-r border-white/10">MINIMUM <br/> FUNDRAISE</div>
@@ -98,7 +98,7 @@ const ComparisonCards: React.FC = () => {
                   {/* Card value cells */}
                   <div className="flex flex-1">
                     {packages.map(pkg => (
-                      <div key={pkg} className="flex flex-1 min-w-[205px] border-r border-white/10 last:border-r-0">
+                      <div key={pkg} className="flex flex-1 min-w-[220px] border-r border-white/10 last:border-r-0">
                         {(['min','full'] as const).map(fund => {
                           const val = feature.values[pkg]?.[fund];
                           return (

@@ -47,6 +47,10 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
     loadPosts();
   }, [t]);
 
+  useEffect(() => {
+    // console.log('Blog component rendered, posts:', posts); // Debug: log posts state on update
+  }, [posts]);
+
   const [mainPost, ...smallPosts] = posts;
 
   // Set initial states
@@ -160,14 +164,14 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
             <h2
               ref={titleRef}
               className="heading-2 text-secondary max-w-[40.9375rem]"
-              style={{ color: "var(--color-secondary)", opacity: 0, transform: "translateY(50px)" }}
+              style={{ color: "var(--color-secondary)" }}
             >
               <span dangerouslySetInnerHTML={{ __html: t("mainPage.blog.title") }} />
             </h2>
             <p
               ref={descriptionRef}
               className="body-M text-secondary max-w-[36rem]"
-              style={{ color: "var(--color-secondary)", opacity: 0, transform: "translateY(50px)" }}
+              style={{ color: "var(--color-secondary)" }}
             >
               {t("mainPage.blog.description")}
             </p>
@@ -194,7 +198,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
                   </div>
                 )}
 
-                {posts.length > 0 && (
+                {posts.length > 0 && mainPost && (
                   <div className="flex flex-col lg:flex-row gap-8">
                     {/* Main Blog Post */}
                     <div ref={mainPostRef} className="lg:w-1/2">

@@ -6,10 +6,7 @@
 
 @layer base {
   :root {
-    background-color: linear-gradient(90deg,
-        #deedcb 2.26%,
-        #f6ffea 50.64%,
-        #deedcb 99.01%);
+    background-color: #F6FFEA;
     /* Base sizes */
     --font-size-4xl: clamp(2.5rem, 4vw + 1.5rem, 6.875rem);
     /* 40px to 110px */
@@ -175,11 +172,29 @@
   ::before {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
-    scroll-snap-type: y mandatory;
-    scroll-snap-align: start;
-    -webkit-scroll-snap-type: none;
-    -webkit-scroll-snap-align: none;
   }
+
+  /* Only apply scroll snap if supported 
+  @supports (scroll-snap-type: y mandatory) {
+    *,
+  ::after,
+  ::before {
+      scroll-snap-type: y mandatory;
+      scroll-snap-align: start;
+    }
+  }*/
+
+  /* Safari 10.1+ (but not Chrome) 
+  @media not all and (min-resolution:.001dpcm) {
+    @supports (-webkit-appearance:none) {
+      *,
+  ::after,
+  ::before  {
+        scroll-snap-type: none !important;
+        scroll-snap-align: none !important;
+      }
+    }
+  }*/
 
   body {
     @apply bg-light text-primary font-nunito m-0 min-h-screen;
@@ -1122,13 +1137,15 @@ body,
   cursor: none !important;
 }
 
-@media not all and (min-resolution:.001dpcm) {
-  @supports (scroll-snap-type: y mandatory) {
-    *,
-    ::after,
-    ::before {
-      /* Removed scroll-snap-type and scroll-snap-align overrides */
-    }
+.photo-parallax-bg {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed; /* Parallax effect on desktop */
+}
+@media (max-width: 1024px) {
+  .photo-parallax-bg {
+    background-attachment: scroll; /* Normal scroll on mobile */
   }
 }
 

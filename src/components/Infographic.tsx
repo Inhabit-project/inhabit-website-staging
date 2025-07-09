@@ -50,7 +50,6 @@ const Infographic: React.FC = () => {
 
   // Debug logging
   useEffect(() => {
-    console.log('[Infographic] isLoading:', isLoading, 'canAnimate:', canAnimate);
   }, [isLoading, canAnimate]);
 
   // Slide 1 refs
@@ -108,7 +107,6 @@ const Infographic: React.FC = () => {
   useEffect(() => {
     let ctx: gsap.Context | undefined;
     if (canAnimate) {
-      console.log('[Infographic] Animation code running');
       ctx = gsap.context(() => {
         // Slide 1
         gsap.timeline({

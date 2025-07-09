@@ -132,7 +132,7 @@ const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({ variant, title, s
   return (
     <section 
       ref={sectionRef}
-      className="w-full flex flex-col items-center justify-center min-h-screen py-8 md:py-32 background-gradient-light pt-32"
+      className="w-full flex flex-col items-center justify-center min-h-screen py-8  background-gradient-light pt-32"
       aria-labelledby={heroTitleId}
     >
       <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col justify-between h-full flex-1 md:items-start md:gap-8">
@@ -157,7 +157,7 @@ const InternalPagesHero: React.FC<InternalPagesHeroProps> = ({ variant, title, s
             {description || t(`${tKey}.description`)}
           </p>
         </div>
-        <div className="w-full flex justify-center">
+        <div className="w-full flex justify-center mb-8 md:mb-0">
           <img 
             ref={imageRef}
             src={image || content.image} 

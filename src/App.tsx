@@ -9,6 +9,7 @@ import { scrollManager } from "@/utils/scrollManager";
 import PageTransition from '@/components/PageTransition';
 import { useLocation } from 'react-router-dom';
 import { useScrollToTopOnNavigation } from '@/utils/scrollToTopOnNavigation';
+import ScrollToTop from '@/components/ScrollToTop';
 
 import { Routes, Route } from "react-router-dom";
 
@@ -33,7 +34,6 @@ import Cursor from './utils/cursor';
 export const LoadingContext = createContext<boolean>(false);
 
 const App: React.FC = () => {
-  useScrollToTopOnNavigation();
   const [isLoading, setIsLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [showTransition, setShowTransition] = useState(false);
@@ -89,20 +89,18 @@ const App: React.FC = () => {
   useEffect(() => {
     if (transitionIn && pageReady) {
       setShowTransition(false);
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         if (scrollManager && typeof scrollManager.scrollTo === "function") {
           scrollManager.scrollTo(0, { immediate: true });
         } else {
           window.scrollTo({ top: 0, behavior: "auto" });
         }
-        // Refresh ScrollTrigger after page transition completes
         setTimeout(() => {
-          // Dynamically import to avoid SSR issues
           import('./utils/gsap').then(({ ScrollTrigger }) => {
             ScrollTrigger.refresh();
           });
         }, 100);
-      }, 50);
+      });
     }
   }, [transitionIn, pageReady]);
 
@@ -156,6 +154,22 @@ const App: React.FC = () => {
     }
   }, [canFinishLoading]);
 
+  // Scroll to top on initial mount (page refresh)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Ensure scroll position is reset before page unload (for browser scroll restoration)
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
   useEffect(() => {
     const cursor = new Cursor();
     return () => {
@@ -165,6 +179,7 @@ const App: React.FC = () => {
 
   return (
     <LoadingContext.Provider value={isLoading}>
+      <ScrollToTop />
       <div
         className={`app-container ${isTransitioning ? "transitioning" : ""}`}
       >

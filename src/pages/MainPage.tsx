@@ -24,6 +24,11 @@ interface MainPageProps {
 const MainPage: React.FC<MainPageProps> = ({ onPageReady, onHeroImageLoad }) => {
   const videoSectionRef = useRef<HTMLDivElement>(null);
 
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     if (scrollManager && typeof scrollManager.update === 'function') {
       setTimeout(() => {

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { scrollManager } from "./scrollManager";
 
+// DEPRECATED: This hook is no longer needed. Scroll-to-top is now handled centrally in App.tsx after transitions.
 export const useScrollToTopOnNavigation = () => {
   const { pathname } = useLocation();
 

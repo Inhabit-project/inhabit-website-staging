@@ -1,31 +1,75 @@
-import React, { useRef, useEffect, useContext } from 'react';
+import React, { useRef, useLayoutEffect, useState, useContext, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
 
+// Utility to set --vh CSS variable for mobile viewport height
+function useMobileVh() {
+  React.useEffect(() => {
+    const setVh = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+    setVh();
+    window.addEventListener('resize', setVh);
+    return () => window.removeEventListener('resize', setVh);
+  }, []);
+}
+
+// Preload images before component mounts
+function usePreloadImages(srcs: string[], onAllLoaded: () => void) {
+  React.useEffect(() => {
+    let loaded = 0;
+    const total = srcs.length;
+    const imgElements: HTMLImageElement[] = [];
+    srcs.forEach(src => {
+      const img = new window.Image();
+      img.src = src;
+      img.onload = img.onerror = () => {
+        loaded++;
+        if (loaded === total) {
+          onAllLoaded();
+        }
+      };
+      imgElements.push(img);
+    });
+    // No cleanup needed for preloaded images
+    // eslint-disable-next-line
+  }, []);
+}
+
 const Photo: React.FC = () => {
   const { t } = useTranslation();
   const section1Ref = useRef<HTMLElement>(null);
   const section2Ref = useRef<HTMLElement>(null);
-  const image1Ref = useRef<HTMLImageElement>(null);
-  const image2Ref = useRef<HTMLImageElement>(null);
-  const text1Ref = useRef<HTMLDivElement>(null);
-  const text2Ref = useRef<HTMLDivElement>(null);
-  const isLoading = useContext(LoadingContext);
   const image1ContainerRef = useRef<HTMLDivElement>(null);
   const image2ContainerRef = useRef<HTMLDivElement>(null);
   const textBox1Ref = useRef<HTMLDivElement>(null);
   const textBox2Ref = useRef<HTMLDivElement>(null);
   const animation1Ref = useRef<gsap.core.Timeline | null>(null);
   const animation2Ref = useRef<gsap.core.Timeline | null>(null);
+  const isLoading = useContext(LoadingContext);
 
-  useEffect(() => {
-    if (isLoading) return;
+  // Track image loading
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  // Preload images before rendering
+  usePreloadImages([
+    '/assets/photo1.webp',
+    '/assets/photo-2.webp',
+  ], () => setImagesLoaded(true));
+
+  // Set --vh for mobile
+  useMobileVh();
+
+  // Only animate text boxes when not loading and images are loaded
+  useLayoutEffect(() => {
+    if (isLoading || !imagesLoaded) return;
     gsap.registerPlugin(ScrollTrigger);
 
-    // Section 1 animation (scroll-triggered)
-    if (image1ContainerRef.current && textBox1Ref.current && section1Ref.current) {
+    // Section 1 text box animation only
+    if (textBox1Ref.current && section1Ref.current) {
       animation1Ref.current = gsap.timeline({
         defaults: { ease: 'power3.out' },
         scrollTrigger: {
@@ -36,11 +80,10 @@ const Photo: React.FC = () => {
         },
       });
       animation1Ref.current
-        .fromTo(image1ContainerRef.current, { opacity: 0.8, }, { opacity: 1,  duration: 1.2, ease: 'power2.out' })
-        .fromTo(textBox1Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.8');
+        .fromTo(textBox1Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
     }
-    // Section 2 animation (scroll-triggered)
-    if (image2ContainerRef.current && textBox2Ref.current && section2Ref.current) {
+    // Section 2 text box animation only
+    if (textBox2Ref.current && section2Ref.current) {
       animation2Ref.current = gsap.timeline({
         defaults: { ease: 'power3.out' },
         scrollTrigger: {
@@ -51,63 +94,62 @@ const Photo: React.FC = () => {
         },
       });
       animation2Ref.current
-        .fromTo(image2ContainerRef.current, { opacity: 0.8, }, { opacity: 1, duration: 1.2, ease: 'power2.out' })
-        .fromTo(textBox2Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.8');
+        .fromTo(textBox2Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
     }
     return () => {
       if (animation1Ref.current) { animation1Ref.current.kill(); animation1Ref.current = null; }
       if (animation2Ref.current) { animation2Ref.current.kill(); animation2Ref.current = null; }
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-  }, [isLoading]);
+  }, [isLoading, imagesLoaded]);
+
+  // Aspect ratio for image containers (e.g., 3/2)
+  const aspectRatio = '3/2';
+
+  // Don't render until images are preloaded
+  if (!imagesLoaded) {
+    return null;
+  }
 
   return (
     <div className="relative w-full">
       {/* Photo 1 */}
-      <section 
+      <section
         ref={section1Ref}
-        className="relative w-full h-screen min-h-screen"
+        className="relative w-full photo-parallax-bg"
+        style={{
+          minHeight: 'calc(var(--vh, 1vh) * 100)',
+          height: '100dvh',
+          backgroundImage: "url('/assets/photo1.webp')",
+        }}
       >
-        <div ref={image1ContainerRef} className="relative w-full h-full min-h-screen">
-          <img 
-            ref={image1Ref}
-            src="/assets/photo1.webp" 
-            alt="Person in natural environment" 
-            className="w-full h-full object-cover object-center"
-            loading="lazy"
-          />
-          <div 
-            ref={textBox1Ref}
-            className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] right-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/10 backdrop-blur-2xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0 shadow-lg"
-          >
-            <p className="body-M text-light">
-              {t('mainPage.photo.section1')}
-            </p>
-          </div>
+        <div
+          ref={textBox1Ref}
+          className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] right-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/10 backdrop-blur-2xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0 shadow-lg"
+        >
+          <p className="body-M text-light">
+            {t('mainPage.photo.section1')}
+          </p>
         </div>
       </section>
 
       {/* Photo 2 */}
-      <section 
+      <section
         ref={section2Ref}
-        className="relative w-full h-screen min-h-screen"
+        className="relative w-full photo-parallax-bg"
+        style={{
+          minHeight: 'calc(var(--vh, 1vh) * 100)',
+          height: '100dvh',
+          backgroundImage: "url('/assets/photo-2.webp')",
+        }}
       >
-        <div ref={image2ContainerRef} className="relative w-full h-full min-h-screen">
-          <img 
-            ref={image2Ref}
-            src="/assets/photo-2.webp" 
-            alt="Natural environment" 
-            className="w-full h-full object-cover object-center"
-            loading="lazy"
-          />
-          <div 
-            ref={textBox2Ref}
-            className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] left-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/10 backdrop-blur-2xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0 shadow-lg"
-          >
-            <p className="body-M text-light">
-              {t('mainPage.photo.section2')}
-            </p>
-          </div>
+        <div
+          ref={textBox2Ref}
+          className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] left-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/10 backdrop-blur-2xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0 shadow-lg"
+        >
+          <p className="body-M text-light">
+            {t('mainPage.photo.section2')}
+          </p>
         </div>
       </section>
     </div>

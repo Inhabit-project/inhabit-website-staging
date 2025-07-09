@@ -240,7 +240,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
       <Menu />
 
       {/* Hero Content */}
-      <div ref={contentRef} className="relative mt-[7rem] w-full h-[80vh] flex flex-col justify-between">
+      <div ref={contentRef} className="relative mt-[7rem] w-full h-[90vh] flex flex-col justify-between">
         {/* Centered Title Container */}
         <div className="flex justify-center">
           <h1 
@@ -269,7 +269,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
               {/* CTA Button */}
               <button
                 ref={buttonRef}
-                className="mt-4 flex items-center btn-primary transition-colors duration-200 group opacity-0 "
+                className="mt-4 mb-12 flex items-center btn-primary transition-colors duration-200 group opacity-0 "
                 onClick={handleScrollClick}
               >
                 <div className="flex items-center gap-2 px-6">
