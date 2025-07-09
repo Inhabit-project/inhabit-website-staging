@@ -7,7 +7,7 @@ import { MUST_DO_KYC_HARD } from "../../../config/const";
 import { ConnectButton } from "../../../ui/ConnectButton";
 import { COIN, KYC_TYPE } from "../../../config/enums";
 
-import { StepperIndicator } from "./StepperIndicator";
+import { Indicator } from "./Indicator";
 import { VoucherStep } from "./Voucher";
 
 export type Props = {
@@ -15,7 +15,7 @@ export type Props = {
   price: number;
 };
 
-export default function MultiStepCheckout(props: Props): JSX.Element {
+export default function Stepper(props: Props): JSX.Element {
   // props
   const { membershipContract, price } = props;
 
@@ -86,16 +86,14 @@ export default function MultiStepCheckout(props: Props): JSX.Element {
 
   return (
     <div className="w-full max-w-lg background-gradient-dark backdrop-blur-lg rounded-3xl shadow-xl border border-green-soft p-8 flex flex-col gap-6 self-start sticky top-8">
-      <StepperIndicator step={step} />
+      <Indicator step={step} />
       <ConnectButton />
 
       {step === 1 && (
         <Checkout
           membershipContract={membershipContract}
-          price={price}
-          usdcBalance={usdcBalance}
-          usdtBalance={usdtBalance}
-          hasSufficientBalance={hasSufficientBalance}
+          requiresHardKyc={requiresHardKyc}
+          goNext={goNext}
         />
       )}
 

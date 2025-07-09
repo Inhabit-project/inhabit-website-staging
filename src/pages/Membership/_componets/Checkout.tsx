@@ -2,7 +2,6 @@ import { JSX, useEffect, useRef, useState } from "react";
 import { useAccount, useSignMessage } from "wagmi";
 import { Indicator, indicators } from "../../../assets/json/form/indicators";
 import { z } from "zod";
-import { MUST_DO_KYC_HARD } from "../../../config/const";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import privacyPolicyPDF from "../../../assets/pdf/privacy-policy.pdf";
@@ -15,10 +14,8 @@ import { useStore } from "../../../store";
 
 type Props = {
   membershipContract: string;
-  price: number;
-  usdcBalance: number;
-  usdtBalance: number;
-  hasSufficientBalance: boolean;
+  requiresHardKyc: boolean;
+  goNext: VoidFunction;
 };
 
 // TODO: clean form data on submit success
@@ -98,7 +95,7 @@ export function Checkout(props: Props): JSX.Element {
         });
       }
 
-      if (MUST_DO_KYC_HARD(price) && !kycAcceptance) {
+      if (requiresHardKyc && !kycAcceptance) {
         ctx.addIssue({
           path: ["kycAcceptance"],
           code: z.ZodIssueCode.custom,
@@ -110,15 +107,15 @@ export function Checkout(props: Props): JSX.Element {
   type Form = z.infer<typeof schema>;
 
   // props
-  const { membershipContract, price, hasSufficientBalance } = props;
+  const { membershipContract, requiresHardKyc, goNext } = props;
 
   // hooks
   const [selectedIndicator, setSelectedIndicator] = useState<string>("");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // external hooks
-  const { register, handleSubmit, setValue, watch } = useForm<Form>({
+  const { register, handleSubmit, setValue, watch, reset } = useForm<Form>({
     resolver: zodResolver(schema),
     mode: "onChange",
   });
@@ -132,11 +129,12 @@ export function Checkout(props: Props): JSX.Element {
   const { isKycHardCompleted, hasSentKycHard, setKycSent } = useStore();
 
   // variables
+  const kycType = requiresHardKyc ? KYC_TYPE.HARD : KYC_TYPE.SOFT;
+
   const formDisabled =
     !address ||
-    (price > 0 && !hasSufficientBalance) ||
     isKycPending ||
-    (MUST_DO_KYC_HARD(price) && hasSentKycHard && !isKycHardCompleted);
+    (requiresHardKyc && hasSentKycHard && !isKycHardCompleted);
 
   const selectedIndicatorData = indicators.find(
     (indicator) => indicator.code === selectedIndicator
@@ -149,6 +147,7 @@ export function Checkout(props: Props): JSX.Element {
     setIsDropdownOpen(false);
   };
 
+  // effects
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -175,7 +174,6 @@ export function Checkout(props: Props): JSX.Element {
       onSuccess: async (nonce) => {
         if (!nonce) return;
 
-        const kycType = MUST_DO_KYC_HARD(price) ? KYC_TYPE.HARD : KYC_TYPE.SOFT;
         const message = generateSiweMessage(chainId, address, nonce);
         const signature = await signMessageAsync({ message });
         const dto = mapUserToUserDto({
@@ -196,6 +194,8 @@ export function Checkout(props: Props): JSX.Element {
           onSuccess: () => {
             kycType === KYC_TYPE.HARD && setKycSent(KYC_TYPE.HARD, true);
             alert("✅ KYC request sent successfully!");
+            goNext();
+            reset();
           },
 
           onError: (error) => {
@@ -219,7 +219,7 @@ export function Checkout(props: Props): JSX.Element {
           return !!values.countryCode;
         }
 
-        if (key === "kycAcceptance" && MUST_DO_KYC_HARD(price)) {
+        if (key === "kycAcceptance" && requiresHardKyc) {
           return true;
         }
 
@@ -426,7 +426,7 @@ export function Checkout(props: Props): JSX.Element {
               action as a valid electronic signature.
             </span>
           </label>
-          {MUST_DO_KYC_HARD(price) && (
+          {requiresHardKyc && (
             <label className="flex items-start gap-2 text-xs text-secondary">
               <input
                 type="checkbox"
@@ -441,7 +441,7 @@ export function Checkout(props: Props): JSX.Element {
             </label>
           )}
 
-          {MUST_DO_KYC_HARD(price) && hasSentKycHard && !isKycHardCompleted && (
+          {requiresHardKyc && hasSentKycHard && !isKycHardCompleted && (
             <>
               <div className="text-xs text-secondary">
                 ⏳ Your KYC request has been submitted and is awaiting

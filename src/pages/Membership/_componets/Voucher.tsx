@@ -2,7 +2,7 @@ import { COIN } from "@/config/enums";
 import { useStore } from "@/store";
 import confetti from "canvas-confetti";
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAccount, useWalletClient } from "wagmi";
 import usdcImage from "../../../assets/images/tokens/USDC.svg";
 import usdtImage from "../../../assets/images/tokens/USDT.svg";
@@ -35,7 +35,6 @@ export function VoucherStep(props: Props): JSX.Element {
 
   // external hooks
   const { campaignId, referral } = useParams();
-  const navigate = useNavigate();
 
   const { address } = useAccount();
   const { data: walletClient } = useWalletClient();
@@ -134,8 +133,8 @@ export function VoucherStep(props: Props): JSX.Element {
         {/* TODO: add to i18n */}
         {/* TODO: add styles */}
         {address && !hasSufficientBalance && (
-          <label className="flex justify-center p-1  text-xs text-secondary">
-            "You don't have enough balance to buy this membership"
+          <label className="text-center p-3 body-S text-light">
+            You don't have enough balance to buy this membership
           </label>
         )}
         {/* <div className="flex justify-between text-secondary font-bold text-lg">

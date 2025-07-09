@@ -7,7 +7,7 @@ import { useStore } from "../../store";
 import RightsTable from "./_componets/RightsTable";
 import { Info } from "./_componets/Info";
 import OtherCollections from "./_componets/OtherCollections";
-import MultiStepCheckout from "./_componets/MultiStep";
+import Stepper from "./_componets/Stepper";
 
 type Props = { onHeroImageLoad?: VoidFunction };
 
@@ -107,7 +107,7 @@ export default function Membership(props: Props): JSX.Element {
             <RightsTable rights={collection.rights} />
             <OtherCollections collectionId={collectionId!} />
           </div>
-          <MultiStepCheckout
+          <Stepper
             price={collection.price}
             membershipContract={collection.membershipContract}
           />

@@ -51,7 +51,7 @@ export const URI =
 export const SIWE_MESSAGE = new SiweMessage({
   domain: "INHABIT",
   address: zeroAddress,
-  statement: "Authenticate with INHABIT to protect ecosystems",
+  statement: "Authenticate with INHABIT and become a steward of this ecosystem",
   uri: URI,
   version: "1",
   chainId: 0,

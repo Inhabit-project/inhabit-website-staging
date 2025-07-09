@@ -2,7 +2,7 @@ type Props = {
   step: 1 | 2;
 };
 
-export function StepperIndicator(props: Props): JSX.Element {
+export function Indicator(props: Props): JSX.Element {
   const { step } = props;
   return (
     <ol className="flex flex-row items-center justify-center space-x-9">
