@@ -96,7 +96,7 @@ export function Checkout(props: Props): JSX.Element {
         });
       }
 
-      if (requiresHardKyc && !kycAcceptance) {
+      if (!requiresHardKyc && !kycAcceptance) {
         ctx.addIssue({
           path: ["kycAcceptance"],
           code: z.ZodIssueCode.custom,
@@ -212,29 +212,26 @@ export function Checkout(props: Props): JSX.Element {
 
   const onError = (formErrors: Record<string, { message?: string }>) => {
     const values = watch();
-    const messages = Object.entries(formErrors)
-      .filter(([key]) => {
-        if (key === "cellphone") {
-          return !!values.countryCode;
-        }
+    const messages: string[] = [];
 
-        if (key === "kycAcceptance" && requiresHardKyc) {
-          return true;
-        }
+    Object.entries(formErrors).forEach(([key, error]) => {
+      if (key === "cellphone" && !values.countryCode) return;
 
-        return [
+      if (
+        [
           "firstName",
           "lastName",
           "email",
           "termsAcceptance",
           "MembershipAgreetment",
-        ].includes(key);
-      })
-      .map(([, error]) => error?.message)
-      .filter(Boolean)
-      .join("\n");
+          "kycAcceptance",
+        ].includes(key)
+      ) {
+        if (error?.message) messages.push(error.message);
+      }
+    });
 
-    if (messages) alert(messages);
+    if (messages.length > 0) alert(messages.join("\n"));
   };
 
   return (
@@ -426,12 +423,12 @@ export function Checkout(props: Props): JSX.Element {
             </span>
           </label>
           {/* TODO: SOFT  */}
-          {requiresHardKyc && (
+          {!requiresHardKyc && (
             <label className="flex items-start gap-2 text-xs text-secondary">
               <input
                 type="checkbox"
                 className="mt-1"
-                {...register("termsAcceptance")}
+                {...register("kycAcceptance")}
               />
               <span className="body-S text-light">
                 I understand that I'll need to complete a KYC Verification to

@@ -56,15 +56,7 @@ export function VoucherStep(props: Props): JSX.Element {
   const { mutate: resendKycEmail, isPending: isResendingKyc } =
     useResendKycEmail();
 
-  const {
-    isKycHardCompleted,
-    hasSentKycHard,
-    collection,
-    inhabit,
-    usdc,
-    usdt,
-    startKycPolling,
-  } = useStore();
+  const { isKycHardCompleted, collection, inhabit, usdc, usdt } = useStore();
 
   // variables
   const coins = [
