@@ -45,6 +45,7 @@ export default function Stepper(props: Props): JSX.Element {
 
   // variables
   const requiresHardKyc = MUST_DO_KYC_HARD(price);
+  const kycType = requiresHardKyc ? KYC_TYPE.HARD : KYC_TYPE.SOFT;
 
   // functions
   const goNext = () => setStep((s) => (s === 1 ? 2 : s));
@@ -61,26 +62,23 @@ export default function Stepper(props: Props): JSX.Element {
   useEffect(() => {
     if (!address) return;
 
-    getHasSentKyc(address, requiresHardKyc ? KYC_TYPE.HARD : KYC_TYPE.SOFT);
+    Promise.all([
+      getHasSentKyc(address, KYC_TYPE.HARD),
+      getHasSentKyc(address, KYC_TYPE.SOFT),
+    ]);
   }, [address]);
 
   useEffect(() => {
     if (!address) return;
 
-    if (requiresHardKyc) {
-      if (!hasSentKycHard) {
-        goPrev();
-      } else if (isKycHardCompleted) {
-        goNext();
-      } else {
-        startKycPolling(address, price);
-      }
+    if (hasSentKycSoft || hasSentKycHard) {
+      goNext();
     } else {
-      if (!hasSentKycSoft) {
-        goPrev();
-      } else {
-        goNext();
-      }
+      goPrev();
+    }
+
+    if (requiresHardKyc && !isKycHardCompleted) {
+      startKycPolling(address, requiresHardKyc);
     }
   }, [price, address, hasSentKycHard, hasSentKycSoft, isKycHardCompleted]);
 
@@ -93,6 +91,7 @@ export default function Stepper(props: Props): JSX.Element {
         <Checkout
           membershipContract={membershipContract}
           requiresHardKyc={requiresHardKyc}
+          kycType={kycType}
           goNext={goNext}
         />
       )}
@@ -106,6 +105,8 @@ export default function Stepper(props: Props): JSX.Element {
           usdtAllowance={usdtAllowance}
           selectedCoin={selectedCoin}
           hasSufficientBalance={hasSufficientBalance}
+          requiresHardKyc={requiresHardKyc}
+          kycType={kycType}
           refetchBalances={refetchBalances}
           setSelectedCoin={setSelectedCoin}
         />

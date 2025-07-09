@@ -15,6 +15,7 @@ import { useStore } from "../../../store";
 type Props = {
   membershipContract: string;
   requiresHardKyc: boolean;
+  kycType: KYC_TYPE;
   goNext: VoidFunction;
 };
 
@@ -107,7 +108,7 @@ export function Checkout(props: Props): JSX.Element {
   type Form = z.infer<typeof schema>;
 
   // props
-  const { membershipContract, requiresHardKyc, goNext } = props;
+  const { membershipContract, requiresHardKyc, kycType, goNext } = props;
 
   // hooks
   const [selectedIndicator, setSelectedIndicator] = useState<string>("");
@@ -129,8 +130,6 @@ export function Checkout(props: Props): JSX.Element {
   const { isKycHardCompleted, hasSentKycHard, setKycSent } = useStore();
 
   // variables
-  const kycType = requiresHardKyc ? KYC_TYPE.HARD : KYC_TYPE.SOFT;
-
   const formDisabled =
     !address ||
     isKycPending ||
@@ -192,7 +191,7 @@ export function Checkout(props: Props): JSX.Element {
 
         sendKycEmail(dto, {
           onSuccess: () => {
-            kycType === KYC_TYPE.HARD && setKycSent(KYC_TYPE.HARD, true);
+            setKycSent(kycType, true);
             alert("✅ KYC request sent successfully!");
             goNext();
             reset();
@@ -426,6 +425,7 @@ export function Checkout(props: Props): JSX.Element {
               action as a valid electronic signature.
             </span>
           </label>
+          {/* TODO: SOFT  */}
           {requiresHardKyc && (
             <label className="flex items-start gap-2 text-xs text-secondary">
               <input
@@ -440,33 +440,15 @@ export function Checkout(props: Props): JSX.Element {
               </span>
             </label>
           )}
-
-          {requiresHardKyc && hasSentKycHard && !isKycHardCompleted && (
-            <>
-              <div className="text-xs text-secondary">
-                ⏳ Your KYC request has been submitted and is awaiting
-                verification.
-              </div>
-              {/* TODO */}
-              <button
-                type="button"
-                className="text-[#D57300] text-xs hover:underline"
-                onClick={() => {
-                  // puedes reusar el `dto` si lo guardas en un ref, o volver a generar
-                  alert("📧 Re-sending not implemented yet.");
-                }}
-              >
-                Resend KYC email
-              </button>
-            </>
-          )}
         </div>
         <button
           className="btn-secondary w-full mt-2"
           type="submit"
           disabled={formDisabled}
         >
-          Get here your NFT
+          {isNoncePending || isKycPending
+            ? "Registering..."
+            : "Get here your NFT"}
         </button>
       </fieldset>
     </form>

@@ -66,3 +66,5 @@ export const KYC_HARD_AMOUNT_USD: number = IS_PRODUCTION === "true" ? 1000 : 3;
 export const MUST_DO_KYC_HARD = (price: number): boolean => {
   return price >= KYC_HARD_AMOUNT_USD;
 };
+
+export const COOLDOWN_KEY = "kycCooldownTimestamp";

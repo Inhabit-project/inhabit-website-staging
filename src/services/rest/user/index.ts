@@ -4,6 +4,7 @@ import axiosInstance from "../../../config/axios.config";
 import { APIError, ServiceResult } from "../../../models/api.model";
 import { UserDto } from "src/services/dtos/user.dto";
 import { KYC_TYPE } from "src/config/enums";
+import { ResendKycDto } from "@/services/dtos/resend-kyc.dto";
 
 export function userServices() {
   const { host } = getHost();
@@ -15,7 +16,7 @@ export function userServices() {
   ): Promise<ServiceResult<boolean>> => {
     try {
       const response = await axiosInstance.get<boolean>(
-        `${host}/users/${address}/isKycCompleted//${kycType}`
+        `${host}/users/${address}/isKycCompleted/${kycType}`
       );
       return { success: true, data: response.data };
     } catch (error) {
@@ -54,9 +55,23 @@ export function userServices() {
     }
   };
 
+  const resendKycEmail = async (
+    resendKycDto: ResendKycDto
+  ): Promise<ServiceResult<void>> => {
+    try {
+      await axiosInstance.post<void>(`${host}/users/reSendKyc`, resendKycDto);
+      return { success: true };
+    } catch (error) {
+      const apiError = error as APIError;
+      console.error("❌", error);
+      return { success: false, error: apiError };
+    }
+  };
+
   return {
     isKycCompleted,
     hasSentKyc,
     sendKycEmail,
+    resendKycEmail,
   };
 }

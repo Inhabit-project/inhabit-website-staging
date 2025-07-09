@@ -6,9 +6,7 @@ import { UsdtContract } from "../services/blockchain/contracts/usdt";
 import { Collection } from "../models/collection.model";
 import { Campaign } from "../models/campaign.model";
 import { userServices } from "../services/rest/user";
-import { MUST_DO_KYC_HARD } from "../config/const";
 import { ERROR, KYC_TYPE } from "../config/enums";
-import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 
 type Store = {
   campaign: Campaign | null;
@@ -31,7 +29,7 @@ type Store = {
   getHasSentKyc: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
   getIsKycCompleted: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
   setCampaign: (campaign: Campaign) => void;
-  startKycPolling: (address: Address, price: number) => void;
+  startKycPolling: (address: Address, requiresHardKyc: boolean) => void;
   setCollection: (collection: Collection) => void;
   setCollections: (collections: Collection[]) => void;
   setKycSent: (kycType: KYC_TYPE, sent: boolean) => void;
@@ -137,10 +135,10 @@ export const useStore = create<Store>((set, get) => {
       get().inhabit.setWalletClient(walletClient);
     },
 
-    startKycPolling: async (address, price) => {
+    startKycPolling: async (address, requiresHardKyc) => {
       const { hasSentKycHard, isKycHardCompleted, isPollingKyc } = get();
 
-      if (!MUST_DO_KYC_HARD(price)) return;
+      if (!requiresHardKyc) return;
       if (!hasSentKycHard) return;
       if (isKycHardCompleted) return;
       if (isPollingKyc) return;
@@ -154,7 +152,6 @@ export const useStore = create<Store>((set, get) => {
         );
 
         const done = isKycCompletedResult.data;
-
         if (!done) {
           return;
         }
