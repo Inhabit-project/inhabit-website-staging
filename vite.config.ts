@@ -14,6 +14,11 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  preview: {
+    allowedHosts: ["staging.inhabit.one"],
+    port,
+    strictPort: true,
+  },
   server: {
     host,
     port: port,
