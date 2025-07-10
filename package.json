@@ -6,9 +6,11 @@
   "scripts": {
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "preview:staging": "vite preview --mode staging",
     "start:dev": "vite --mode dev",
-    "start:staging": "vite build --mode staging && vite preview --mode staging --port 5174"
+    "start:staging": "vite --mode staging",
+    "start:prod": "vite --mode prod",
+    "serve:staging": "vite build --mode staging && vite preview --mode staging --port 5174",
+    "serve:prod": "vite build --mode prod && vite preview --mode prod --port 5173"
   },
   "dependencies": {
     "@fontsource/ibm-plex-sans-condensed": "^5.2.6",

@@ -1,30 +1,32 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { ensureEnvVar } from "./src/utils/ensure-env.util";
 
-const host = ensureEnvVar(process.env.VITE_HOST || "0.0.0.0", "VITE_HOST");
-const port = Number(ensureEnvVar(process.env.VITE_PORT || "5173", "VITE_PORT"));
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
 
-// https://vitejs.dev/config
-export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
+  const host = ensureEnvVar(env.HOST, "HOST");
+  const port = Number(ensureEnvVar(env.PORT, "PORT"));
+  const domain = ensureEnvVar(env.DOMAIN, "DOMAIN");
+
+  return {
+    plugins: [react()],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+      },
     },
-  },
-  preview: {
-    allowedHosts: ["staging.inhabit.one"],
-    port,
-    strictPort: true,
-  },
-  server: {
-    host,
-    port: port,
-    strictPort: true,
-    hmr: {
-      port: port,
+    preview: {
+      allowedHosts: [domain],
+      port,
+      strictPort: true,
     },
-  },
+    server: {
+      allowedHosts: [domain],
+      host,
+      port,
+      strictPort: true,
+    },
+  };
 });
