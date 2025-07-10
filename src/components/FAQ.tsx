@@ -31,28 +31,29 @@ const FAQ: React.FC<FAQProps> = ({ faqItems, title, description }) => {
   const headerTitle = title || t('mainPage.faq.title');
   const headerDescription = description || t('mainPage.faq.description');
 
+  // Set initial states on mount for FAQ
+  useEffect(() => {
+    gsap.set([titleRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 50
+    });
+    gsap.set(faqItemsArray.current, {
+      opacity: 0,
+      y: 30
+    });
+  }, []);
+
   useEffect(() => {
     if (isLoading) return;
 
     let ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set([titleRef.current, descriptionRef.current], {
-        opacity: 0,
-        y: 50
-      });
-
-      gsap.set(faqItemsArray.current, {
-        opacity: 0,
-        y: 30
-      });
-
       // Create scroll-triggered animation
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top center",
           end: "center center",
-          toggleActions: "play none none reverse"
+          toggleActions: "restart none none none"
         }
       });
 
@@ -182,28 +183,29 @@ export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string 
   ];
   const items = faqItems || defaultFaqItems;
 
+  // Set initial states on mount for FAQWhite
+  useEffect(() => {
+    gsap.set(titleRef.current, {
+      opacity: 0,
+      y: 50
+    });
+    gsap.set(faqItemsArray.current, {
+      opacity: 0,
+      y: 30
+    });
+  }, []);
+
   useEffect(() => {
     if (isLoading) return;
 
     let ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set(titleRef.current, {
-        opacity: 0,
-        y: 50
-      });
-
-      gsap.set(faqItemsArray.current, {
-        opacity: 0,
-        y: 30
-      });
-
       // Create scroll-triggered animation
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top center",
           end: "center center",
-          toggleActions: "play none none reverse"
+          toggleActions: "restart none none none"
         }
       });
 
@@ -297,6 +299,18 @@ export const FAQHubs: React.FC = () => {
 
   const faqItems: FAQItem[] = (t('hubsPage.faq.items', { returnObjects: true }) as FAQItem[]);
 
+  // Set initial states on mount for FAQHubs
+  useEffect(() => {
+    gsap.set([titleRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 50
+    });
+    gsap.set(faqItemsArray.current, {
+      opacity: 0,
+      y: 30
+    });
+  }, []);
+
   // Handle loading state change
   useEffect(() => {
     if (!isLoading) {
@@ -313,24 +327,13 @@ export const FAQHubs: React.FC = () => {
     if (!canAnimate) return;
 
     let ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set([titleRef.current, descriptionRef.current], {
-        opacity: 0,
-        y: 50
-      });
-
-      gsap.set(faqItemsArray.current, {
-        opacity: 0,
-        y: 30
-      });
-
       // Create scroll-triggered animation
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top center",
           end: "center center",
-          toggleActions: "play none none reverse"
+          toggleActions: "restart none none none"
         }
       });
 
@@ -445,21 +448,16 @@ export const FAQStewardshipNFT: React.FC = () => {
 
   const faqItems: FAQItem[] = (t('mainPage.stewardshipNFTPage.faq.items', { returnObjects: true }) as FAQItem[]);
 
-  // Set initial states
+  // Set initial states on mount for FAQStewardshipNFT
   useEffect(() => {
-    let ctx = gsap.context(() => {
-      gsap.set([titleRef.current, descriptionRef.current], {
-        opacity: 0,
-        y: 50
-      });
-
-      gsap.set(faqItemsArray.current, {
-        opacity: 0,
-        y: 30
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
+    gsap.set([titleRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 50
+    });
+    gsap.set(faqItemsArray.current, {
+      opacity: 0,
+      y: 30
+    });
   }, []);
 
   // Handle loading state change
@@ -516,7 +514,7 @@ export const FAQStewardshipNFT: React.FC = () => {
         trigger: sectionRef.current,
         start: 'top 75%',
         end: 'center center',
-        toggleActions: 'play none none reverse',
+        toggleActions: 'restart none none none',
         animation: timelineRef.current,
         id: `faq-stewardship-${Date.now()}` // Unique ID to avoid conflicts
       });

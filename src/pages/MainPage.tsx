@@ -49,7 +49,7 @@ const MainPage: React.FC<MainPageProps> = ({ onPageReady, onHeroImageLoad }) => 
         <section className="no-scroll-snap" aria-label="Hero section">
           <Hero scrollToRef={videoSectionRef} onHeroImageLoad={onHeroImageLoad} />
         </section>
-        <section aria-label="Video section" ref={videoSectionRef}>
+        <section aria-label="Video section" className="scroll-container" ref={videoSectionRef}>
           <Video />
         </section>
         <section aria-label="Hubs section">

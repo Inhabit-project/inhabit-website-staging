@@ -27,26 +27,20 @@ const Footer: React.FC = () => {
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
-  // Set initial states
+  // Set initial states on mount
   useEffect(() => {
-    let ctx = gsap.context(() => {
-      gsap.set(logoRef.current, {
-        opacity: 0,
-        y: 50
-      });
-
-      gsap.set([connectRef.current, locationRef.current, newsletterRef.current, socialRef.current, menuRef.current], {
-        opacity: 0,
-        y: 50
-      });
-
-      gsap.set(copyrightRef.current, {
-        opacity: 0,
-        y: 20
-      });
-    }, footerRef);
-
-    return () => ctx.revert();
+    gsap.set(logoRef.current, {
+      opacity: 0,
+      y: 50
+    });
+    gsap.set([connectRef.current, locationRef.current, newsletterRef.current, socialRef.current, menuRef.current], {
+      opacity: 0,
+      y: 50
+    });
+    gsap.set(copyrightRef.current, {
+      opacity: 0,
+      y: 20
+    });
   }, []);
 
   // Handle loading state change
@@ -118,7 +112,7 @@ const Footer: React.FC = () => {
         trigger: footerRef.current,
         start: 'top 75%',
         end: 'center center',
-        toggleActions: 'play none none reverse',
+        toggleActions: 'restart none none none',
         animation: timelineRef.current,
         id: `footer-${Date.now()}` // Unique ID to avoid conflicts
       });

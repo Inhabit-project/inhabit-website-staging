@@ -16,16 +16,13 @@ const CTA: React.FC = () => {
   const textGroupRef = useRef<HTMLDivElement>(null); // title+buttons
   const imageContainerRef = useRef<HTMLDivElement>(null); // image only
 
-  // Set initial states
+  // Set initial states on mount
   useEffect(() => {
+    gsap.set(bgRef.current, { scale: 1.2 });
+    gsap.set(imageContainerRef.current, { opacity: 0, y: 40 });
+    gsap.set(mainContentRef.current, { opacity: 1 }); // keep container visible
+    gsap.set(textGroupRef.current, { opacity: 0, y: 20 });
     setReady(true); // Remove initial CSS class after mount
-    const ctx = gsap.context(() => {
-      gsap.set(bgRef.current, { scale: 1.2 });
-      gsap.set(imageContainerRef.current, { opacity: 0, y: 40 });
-      gsap.set(mainContentRef.current, { opacity: 1 }); // keep container visible
-      gsap.set(textGroupRef.current, { opacity: 0, y: 20 });
-    });
-    return () => ctx.revert();
   }, []);
 
   // Handle loading state change
@@ -42,14 +39,14 @@ const CTA: React.FC = () => {
 
   // Simplified animation
   useEffect(() => {
-    if (!canAnimate) return;
+    if (!canAnimate || !sectionRef.current) return;
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top center',
           end: 'center center',
-          toggleActions: 'play none none reverse',
+          toggleActions: 'restart none none none',
         },
       });
       tl.to(bgRef.current, {

@@ -63,6 +63,17 @@ const Photo: React.FC = () => {
   // Set --vh for mobile
   useMobileVh();
 
+  // Add Safari class to body for possible CSS overrides
+  React.useEffect(() => {
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    if (isSafari) {
+      document.body.classList.add('safari');
+    }
+    return () => {
+      document.body.classList.remove('safari');
+    };
+  }, []);
+
   // Only animate text boxes when not loading and images are loaded
   useLayoutEffect(() => {
     if (isLoading || !imagesLoaded) return;
@@ -119,13 +130,12 @@ const Photo: React.FC = () => {
         className="relative w-full photo-parallax-bg"
         style={{
           minHeight: 'calc(var(--vh, 1vh) * 100)',
-          height: '100dvh',
           backgroundImage: "url('/assets/photo1.webp')",
         }}
       >
         <div
           ref={textBox1Ref}
-          className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] right-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/10 backdrop-blur-2xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0 shadow-lg"
+          className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] right-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/10 photo-textbox-blur p-4 md:p-8 rounded-[20px] mx-4 md:mx-0 shadow-lg"
         >
           <p className="body-M text-light">
             {t('mainPage.photo.section1')}
@@ -139,13 +149,12 @@ const Photo: React.FC = () => {
         className="relative w-full photo-parallax-bg"
         style={{
           minHeight: 'calc(var(--vh, 1vh) * 100)',
-          height: '100dvh',
           backgroundImage: "url('/assets/photo-2.webp')",
         }}
       >
         <div
           ref={textBox2Ref}
-          className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] left-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/10 backdrop-blur-2xl p-4 md:p-8 rounded-[20px] mx-4 md:mx-0 shadow-lg"
+          className="absolute bottom-[clamp(1.5rem,5vw,6.25rem)] left-[clamp(1.5rem,5vw,6.25rem)] max-w-[40rem] bg-white/10 photo-textbox-blur p-4 md:p-8 rounded-[20px] mx-4 md:mx-0 shadow-lg"
         >
           <p className="body-M text-light">
             {t('mainPage.photo.section2')}

@@ -32,7 +32,7 @@ const heroContent = {
     alt: 'Hubs Hero',
   },
   projects: {
-    image: '/assets/nft-hero.jpg',
+    image: '/assets/arte-selva.webp',
     alt: 'Projects Hero',
   },
 };

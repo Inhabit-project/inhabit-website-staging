@@ -6,7 +6,10 @@
 
 @layer base {
   :root {
-    background-color: #F6FFEA;
+    background-color: linear-gradient(90deg,
+    #deedcb 2.26%,
+    #f6ffea 50.64%,
+    #deedcb 99.01%);
     /* Base sizes */
     --font-size-4xl: clamp(2.5rem, 4vw + 1.5rem, 6.875rem);
     /* 40px to 110px */
@@ -166,35 +169,6 @@
     height: 100%;
   }
 
-
-  *,
-  ::after,
-  ::before {
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-  }
-
-  /* Only apply scroll snap if supported 
-  @supports (scroll-snap-type: y mandatory) {
-    *,
-  ::after,
-  ::before {
-      scroll-snap-type: y mandatory;
-      scroll-snap-align: start;
-    }
-  }*/
-
-  /* Safari 10.1+ (but not Chrome) 
-  @media not all and (min-resolution:.001dpcm) {
-    @supports (-webkit-appearance:none) {
-      *,
-  ::after,
-  ::before  {
-        scroll-snap-type: none !important;
-        scroll-snap-align: none !important;
-      }
-    }
-  }*/
 
   body {
     @apply bg-light text-primary font-nunito m-0 min-h-screen;
@@ -1148,4 +1122,10 @@ body,
     background-attachment: scroll; /* Normal scroll on mobile */
   }
 }
+
+.photo-textbox-blur {
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+}
+
 

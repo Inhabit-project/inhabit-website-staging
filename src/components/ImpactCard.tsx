@@ -12,11 +12,14 @@ interface ImpactCardProps {
 
 const ImpactCard: React.FC<ImpactCardProps> = ({ label, icon, title, subtitle, description, id, number }) => (
   <div 
-    className="relative bg-green-soft rounded-[var(--radius-2xl)] p-10 flex flex-col gap-4 min-h-[22rem] h-full shadow-md w-full"
+    className="relative bg-green-soft rounded-[var(--radius-2xl)] p-8 sm:p-10 flex flex-col gap-4 min-h-[22rem] h-full shadow-md w-full"
     aria-labelledby={id}
   >
-    {/* Icon */}
-    <div className="absolute top-10 right-10 w-12 h-12">
+    {/* Icon - responsive positioning */}
+    <div 
+      className="block sm:absolute sm:top-10 sm:right-10 sm:w-12 sm:h-12 w-10 h-10 mb-2 sm:mb-0 self-end"
+      style={{ position: 'static' }}
+    >
       <img 
         src={icon} 
         alt={`${title} icon`} 
