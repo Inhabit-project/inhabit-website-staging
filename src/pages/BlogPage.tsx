@@ -10,14 +10,11 @@ interface BlogPageProps {
 }
 
 const BlogPage: React.FC<BlogPageProps> = ({ onPageReady }) => {
-  useEffect(() => {
-    if (onPageReady) onPageReady();
-  }, [onPageReady]);
-
+  // Remove useEffect that calls onPageReady immediately
   return (
     <div className="min-h-screen background-gradient-light">
       <Menu />
-      <Blog />
+      <Blog onReady={onPageReady} />
       <NewsletterCTA />
       <RelatedPost />
       <Footer />

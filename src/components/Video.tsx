@@ -251,6 +251,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
             <button 
               ref={playButtonRef}
               className="relative"
+              aria-label="Play video"
             >
               {/* Outer circle with animation */}
               <div 

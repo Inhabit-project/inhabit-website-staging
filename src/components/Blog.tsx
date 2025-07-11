@@ -1,13 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { fetchPosts } from "@/services/blogService";
-import { BlogPost, BlogProps } from "@/types/wordpress";
+import { BlogPost, BlogProps as ImportedBlogProps } from "@/types/wordpress";
 import { truncateHtml } from "@/utils/html";
 import { Link, useLocation } from "react-router-dom";
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import SubLoader from "@/components/SubLoader";
 
-const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
+interface BlogProps extends ImportedBlogProps {
+  onReady?: () => void;
+}
+
+const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const location = useLocation();
   const { t, i18n } = useTranslation();
   const isBlogPage = location.pathname === "/blog";
@@ -154,6 +158,12 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false }) => {
       if (ctx) ctx.revert();
     };
   }, [readyToAnimate]);
+
+  useEffect(() => {
+    if (!isLoading && posts.length > 0 && contentVisible && onReady) {
+      onReady();
+    }
+  }, [isLoading, posts.length, contentVisible, onReady]);
 
   return (
     <section ref={sectionRef} className="background-gradient-light w-full min-h-screen">

@@ -118,7 +118,7 @@ const Highlight = () => {
 
   return (
     <div className="relative w-full min-h-screen background-gradient-dark flex items-center justify-center overflow-hidden">
-      <div ref={svgRef} className="absolute opacity-0 topographic-map">
+      <div ref={svgRef} className="absolute inset-0 w-full h-full opacity-0 topographic-map" style={{ minWidth: '100vw', minHeight: '100vh' }}>
         <ReactSVG src="/assets/topographic-map.svg" />
       </div>
       <div 

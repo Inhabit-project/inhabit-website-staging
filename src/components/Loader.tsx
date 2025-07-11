@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
-import gsap from 'gsap';
+import React, { useEffect, useState } from 'react';
 
 interface LoaderProps {
   onLoadingComplete?: () => void;
@@ -7,31 +6,11 @@ interface LoaderProps {
 
 const Loader: React.FC<LoaderProps> = ({ onLoadingComplete }) => {
   const [progress, setProgress] = useState(0);
-  const loaderRef = useRef<HTMLDivElement>(null);
-  const earthRef = useRef<HTMLDivElement>(null);
-  const progressRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
-    // Initial animation
-    if (loaderRef.current && earthRef.current && progressRef.current && textRef.current) {
-      gsap.set([earthRef.current, progressRef.current, textRef.current], { opacity: 0, y: 20 });
-      
-      gsap.timeline()
-        .to(earthRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        })
-        .to([progressRef.current, textRef.current], {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power3.out"
-        }, "-=0.4");
-    }
+    // Trigger CSS animations after mount
+    setShow(true);
   }, []);
 
   useEffect(() => {
@@ -56,18 +35,15 @@ const Loader: React.FC<LoaderProps> = ({ onLoadingComplete }) => {
 
   return (
     <div 
-      ref={loaderRef} 
       className="fixed inset-0 bg-light z-50 flex items-center justify-center"
     >
       <div 
-        ref={textRef}
-        className="absolute top-12 left-12 font-abel text-sm text-secondary uppercase"
+        className={`absolute top-12 left-12 font-abel text-sm text-secondary uppercase transition-all duration-700 ${show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}
       >
         LOADING
       </div>
       <div 
-        ref={earthRef}
-        className="relative w-[20rem] h-[20rem] animate-loaderRotate m-auto"
+        className={`relative w-[20rem] h-[20rem] m-auto transition-all duration-700 ${show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'} animate-loaderRotate`}
       >
         <img 
           src="/assets/small-earth.webp" 
@@ -77,8 +53,7 @@ const Loader: React.FC<LoaderProps> = ({ onLoadingComplete }) => {
         />
       </div>
       <div 
-        ref={progressRef}
-        className="absolute bottom-12 right-12 font-abel text-[9rem] text-secondary"
+        className={`absolute bottom-12 right-12 font-abel text-[9rem] text-secondary transition-all duration-700 ${show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}
       >
         {String(Math.floor(progress)).padStart(3, '0')}%
       </div>

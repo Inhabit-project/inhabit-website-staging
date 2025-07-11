@@ -5,7 +5,11 @@ import { fetchPostWithNavigation } from "@/services/blogService";
 import { BlogPost, ProcessedPost } from "@/types/wordpress";
 import SubLoader from "@/components/SubLoader";
 
-const SingleBlog: React.FC = () => {
+interface SingleBlogProps {
+  onPageReady?: () => void;
+}
+
+const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
   const { id } = useParams();
   const { t } = useTranslation();
   const [post, setPost] = useState<ProcessedPost | null>(null);
@@ -39,6 +43,12 @@ const SingleBlog: React.FC = () => {
   useEffect(() => {
     if (id) loadPost(id);
   }, [id, t]);
+
+  useEffect(() => {
+    if (!loading && post && onPageReady) {
+      onPageReady();
+    }
+  }, [loading, post, onPageReady]);
 
   return (
     <>

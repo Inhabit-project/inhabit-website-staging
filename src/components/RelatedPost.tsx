@@ -213,6 +213,7 @@ const RelatedPost: React.FC = () => {
                     WebkitBackdropFilter: "blur(26.28px)",
                     padding: 0,
                   }}
+                  aria-label="Next post"
                 >
                   <svg
                     width="22"

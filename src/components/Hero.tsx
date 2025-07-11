@@ -240,7 +240,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
       <Menu />
 
       {/* Hero Content */}
-      <div ref={contentRef} className="relative mt-[7rem] w-full h-[90vh] flex flex-col justify-between">
+      <div ref={contentRef} className="relative mt-[7rem] w-full h-[82vh] sm:h-[90vh] flex flex-col justify-between">
         {/* Centered Title Container */}
         <div className="flex justify-center">
           <h1 
@@ -277,7 +277,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
                   <span className="button-text text-sm tracking-[0.02em] uppercase">{t('hero.scrollButton')}</span>
                 </div>
                 <div className="flex items-center px-4">
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="24" height="24">
                     <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </div>

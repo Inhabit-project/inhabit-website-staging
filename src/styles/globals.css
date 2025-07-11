@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Nunito+Sans:wght@300;400;500;600;700&family=Abel&display=swap&subset=latin");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -1126,6 +1124,11 @@ body,
 .photo-textbox-blur {
   backdrop-filter: blur(32px);
   -webkit-backdrop-filter: blur(32px);
+}
+
+/* Loader fade-in utility */
+.loader-fade-in {
+  @apply opacity-0 animate-loaderFadeIn;
 }
 
 

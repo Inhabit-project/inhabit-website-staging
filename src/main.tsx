@@ -8,12 +8,11 @@ import './utils/gsap'
 
 // Import fonts
 // @fontsource packages only include latin subset by default. No cyrillic or vietnamese fonts are included.
-import '@fontsource/montserrat/300.css' // Light
-import '@fontsource/montserrat/400.css' // Regular
-import '@fontsource/montserrat/500.css' // Medium
-import '@fontsource/montserrat/700.css' // Bold
-import '@fontsource/nunito-sans/400.css'
-import '@fontsource/nunito-sans/600.css'
+import '@fontsource/montserrat/400.css'; // Regular
+import '@fontsource/montserrat/700.css'; // Bold
+import '@fontsource/nunito-sans/400.css'; // Regular
+import '@fontsource/nunito-sans/600.css'; // SemiBold
+import '@fontsource/abel/400.css'; // Regular
 
 // Initialize smooth scrolling
 scrollManager.init();

@@ -143,6 +143,8 @@ const CTA: React.FC = () => {
                         fill="none"
                         stroke="currentColor"
                         aria-hidden="true"
+                        width="24"
+                        height="24"
                       >
                         <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
@@ -172,6 +174,8 @@ const CTA: React.FC = () => {
                         fill="none"
                         stroke="currentColor"
                         aria-hidden="true"
+                        width="24"
+                        height="24"
                       >
                         <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
