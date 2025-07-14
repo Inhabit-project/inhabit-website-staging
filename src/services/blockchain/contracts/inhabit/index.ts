@@ -1,74 +1,22 @@
-import {
-  Address,
-  Hex,
-  WalletClient,
-  createPublicClient,
-  getContract,
-  http,
-} from "viem";
-import { celoAlfajores } from "viem/chains";
-import { CampaignDto } from "../../../dtos/campaing.dto";
-import { mapCampaignDtoToCampaign } from "../../../mapping/mapCampaignDtoToCampaign";
-import { CollectionDto } from "../../../dtos/collection.dto";
-import { mapCollectionDtoToCollection } from "../../../mapping/mapColletionDtoToCollection";
-import { Campaign } from "../../../../models/campaign.model";
-import { Collection } from "../../../../models/collection.model";
-import { HTTP_TRANSPORT, INHABIT_JSON } from "../../../../config/const";
-import { GroupDto } from "../../../dtos/group.dto";
-import { mapGroupDtoToGroup } from "../../../mapping/mapGroupDtoToGroup";
-import { Group } from "../../../../models/group.model";
-import { estimateFeesPerGas } from "viem/actions";
+import { Address, Hex, WalletClient } from "viem";
 
-export class InhabitContract {
-  private address: Address;
-  private publicClient: ReturnType<typeof createPublicClient>;
-  private walletClient: WalletClient | null;
+import { INHABIT_JSON } from "../../../../config/const";
+import { ServiceResult } from "@/models/api.model";
+import { parseContractError } from "@/config/contract.config";
+import { BaseContract } from "../../base-contract";
+import { CampaignDto } from "@/services/dtos/campaing.dto";
+import { mapCampaignDtoToCampaign } from "@/services/mapping/mapCampaignDtoToCampaign";
+import { mapCollectionDtoToCollection } from "@/services/mapping/mapColletionDtoToCollection";
+import { mapGroupDtoToGroup } from "@/services/mapping/mapGroupDtoToGroup";
+import { GroupDto } from "@/services/dtos/group.dto";
+import { Group } from "@/models/group.model";
+import { CollectionDto } from "@/services/dtos/collection.dto";
+import { Collection } from "@/models/collection.model";
+import { Campaign } from "@/models/campaign.model";
 
+export class InhabitContract extends BaseContract {
   constructor(walletClient?: WalletClient) {
-    this.address = INHABIT_JSON.proxy as Address;
-
-    this.publicClient = createPublicClient({
-      chain: celoAlfajores,
-      transport: http(HTTP_TRANSPORT),
-    });
-
-    this.walletClient = walletClient ?? null;
-  }
-
-  setWalletClient(walletClient: WalletClient) {
-    this.walletClient = walletClient;
-  }
-
-  getAddress() {
-    if (!this.address) {
-      throw new Error("Contract address not set. Please set it first.");
-    }
-    return this.address;
-  }
-
-  private getReadContract() {
-    return getContract({
-      address: this.address,
-      abi: INHABIT_JSON.abi,
-      client: {
-        public: this.publicClient,
-      },
-    });
-  }
-
-  private getWriteContract() {
-    if (!this.walletClient) {
-      throw new Error("walletClient not set. Call setWalletClient() first.");
-    }
-
-    return getContract({
-      address: this.address,
-      abi: INHABIT_JSON.abi,
-      client: {
-        public: this.publicClient,
-        wallet: this.walletClient,
-      },
-    });
+    super(INHABIT_JSON, walletClient);
   }
 
   // =========================
@@ -119,9 +67,7 @@ export class InhabitContract {
       const contract = this.getReadContract();
       const dto = (await contract.read.getGroup([referral])) as GroupDto;
 
-      if (dto.referral === "") {
-        return null;
-      }
+      if (dto.referral === "") return null;
 
       return mapGroupDtoToGroup(dto);
     } catch (error) {
@@ -166,11 +112,12 @@ export class InhabitContract {
     collection: Address,
     groupId: number,
     token: Address
-  ) {
+  ): Promise<ServiceResult<Hex>> {
     try {
+      const publicClient = this.getPublicClient();
       const contract = this.getWriteContract();
-      const fees = await estimateFeesPerGas(this.publicClient);
-      const buyNFTx = await contract.write.buyNFT(
+      const fees = await this.getFees();
+      const hash = await contract.write.buyNFT(
         [BigInt(campaignId), collection, BigInt(groupId), token],
         {
           maxPriorityFeePerGas: fees.maxPriorityFeePerGas,
@@ -178,14 +125,13 @@ export class InhabitContract {
         }
       );
 
-      await this.publicClient.waitForTransactionReceipt({
-        hash: buyNFTx,
-      });
+      await publicClient.waitForTransactionReceipt({ hash });
 
-      return buyNFTx;
+      return { success: true, data: hash };
     } catch (error) {
-      console.error("❌", error);
-      return undefined;
+      const parsedError = parseContractError(error, "buyNFT");
+      console.error("❌", parsedError);
+      return { success: false, error: parsedError };
     }
   }
 }
