@@ -8,8 +8,18 @@ export interface APIError {
   timestamp: string;
 }
 
+export interface ContractError {
+  message: string;
+  name?: string;
+  reason?: string;
+  data?: any;
+  stack?: string;
+  timestamp: string;
+  method?: string;
+}
+
 export interface ServiceResult<T> {
   success: boolean;
   data?: T;
-  error?: APIError;
+  error?: APIError | ContractError;
 }
