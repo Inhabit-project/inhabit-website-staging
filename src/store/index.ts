@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Address, WalletClient } from "viem";
+import { Address, keccak256, toBytes, WalletClient } from "viem";
 import { InhabitContract } from "../services/blockchain/contracts/inhabit";
 import { UsdcContract } from "../services/blockchain/contracts/usdc";
 import { UsdtContract } from "../services/blockchain/contracts/usdt";
@@ -7,6 +7,7 @@ import { Collection } from "../models/collection.model";
 import { Campaign } from "../models/campaign.model";
 import { userServices } from "../services/rest/user";
 import { ERROR, KYC_TYPE } from "../config/enums";
+import { Group } from "@/models/group.model";
 
 type Store = {
   campaign: Campaign | null;
@@ -15,6 +16,8 @@ type Store = {
   campaignsLoading: boolean;
   collection: Collection | null;
   collections: Collection[];
+  groups: Group[];
+  groupsLoading: boolean;
   isKycHardCompleted: boolean;
   isKycSoftCompleted: boolean;
   hasSentKycHard: boolean;
@@ -26,8 +29,13 @@ type Store = {
   getCampaign: (campaignId: number) => Promise<Campaign | null>;
   getCampaignCollections: (campaignId: number) => Promise<Collection[]>;
   getCampaigns: () => Promise<Campaign[]>;
+  getGroups: () => Promise<Group[]>;
   getHasSentKyc: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
   getIsKycCompleted: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
+  isCampaignReferral: (
+    campaignId: number,
+    referral: string
+  ) => Promise<boolean>;
   setCampaign: (campaign: Campaign) => void;
   startKycPolling: (address: Address, requiresHardKyc: boolean) => void;
   setCollection: (collection: Collection) => void;
@@ -51,6 +59,8 @@ export const useStore = create<Store>((set, get) => {
     campaignsLoading: true,
     collection: null,
     collections: [],
+    groups: [],
+    groupsLoading: true,
     isKycHardCompleted: false,
     isKycSoftCompleted: false,
     hasSentKycHard: false,
@@ -80,6 +90,21 @@ export const useStore = create<Store>((set, get) => {
       const campaigns = await get().inhabit.getCampaigns();
       set({ campaigns, campaignsLoading: false });
       return campaigns;
+    },
+
+    isCampaignReferral: async (campaignId: number, referral: string) => {
+      const referralEncripted = keccak256(toBytes(referral));
+      return await get().inhabit.isCampaignReferralSupported(
+        campaignId,
+        referralEncripted
+      );
+    },
+
+    getGroups: async () => {
+      set({ groupsLoading: true });
+      const groups = await get().inhabit.getGroups();
+      set({ groups });
+      return groups;
     },
 
     getIsKycCompleted: async (address: Address, kycType: KYC_TYPE) => {

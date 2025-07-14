@@ -1,5 +1,6 @@
 import {
   Address,
+  Hex,
   WalletClient,
   createPublicClient,
   getContract,
@@ -77,7 +78,7 @@ export class InhabitContract {
   async getCampaign(campaignId: number): Promise<Campaign | null> {
     try {
       const contract = this.getReadContract();
-      const dto = (await contract.read.getCampaignInfo([
+      const dto = (await contract.read.getCampaign([
         BigInt(campaignId),
       ])) as CampaignDto;
 
@@ -91,7 +92,7 @@ export class InhabitContract {
   async getCampaigns(): Promise<Campaign[]> {
     try {
       const contract = this.getReadContract();
-      const dtos = (await contract.read.getCampaigsInfo()) as CampaignDto[];
+      const dtos = (await contract.read.getCampaignsInfo()) as CampaignDto[];
       return Promise.all(dtos.map(mapCampaignDtoToCampaign));
     } catch (error) {
       console.error("❌", error);
@@ -129,6 +130,33 @@ export class InhabitContract {
     }
   }
 
+  async getGroups(): Promise<Group[]> {
+    try {
+      const contract = this.getReadContract();
+      const dtos = (await contract.read.getGroupsInfo()) as GroupDto[];
+      return dtos.map(mapGroupDtoToGroup);
+    } catch (error) {
+      console.error("❌", error);
+      return [];
+    }
+  }
+
+  async isCampaignReferralSupported(
+    campaignId: number,
+    referral: Hex
+  ): Promise<boolean> {
+    try {
+      const contract = this.getReadContract();
+      return (await contract.read.isCampaignReferralSupported([
+        BigInt(campaignId),
+        referral,
+      ])) as boolean;
+    } catch (error) {
+      console.error("❌", error);
+      return false;
+    }
+  }
+
   // =========================
   //        WRITE METHODS
   // =========================
@@ -136,14 +164,14 @@ export class InhabitContract {
   async buyNFT(
     campaignId: string,
     collection: Address,
-    token: Address,
-    referral: string
+    groupId: number,
+    token: Address
   ) {
     try {
       const contract = this.getWriteContract();
       const fees = await estimateFeesPerGas(this.publicClient);
       const buyNFTx = await contract.write.buyNFT(
-        [BigInt(campaignId), collection, token, referral],
+        [BigInt(campaignId), collection, BigInt(groupId), token],
         {
           maxPriorityFeePerGas: fees.maxPriorityFeePerGas,
           maxFeePerGas: fees.maxFeePerGas,

@@ -56,7 +56,14 @@ export function VoucherStep(props: Props): JSX.Element {
   const { mutate: resendKycEmail, isPending: isResendingKyc } =
     useResendKycEmail();
 
-  const { isKycHardCompleted, collection, inhabit, usdc, usdt } = useStore();
+  const {
+    isKycHardCompleted,
+    collection,
+    inhabit,
+    usdc,
+    usdt,
+    isCampaignReferral,
+  } = useStore();
 
   // variables
   const coins = [
@@ -167,8 +174,8 @@ export function VoucherStep(props: Props): JSX.Element {
     await inhabit.buyNFT(
       campaignId,
       collection.address,
-      selectedCoin === COIN.USDC ? usdc.getAddress() : usdt.getAddress(),
-      referral ?? ""
+      referral ? await inhabit.getReferral(campaignId, referral) : 0,
+      selectedCoin === COIN.USDC ? usdc.getAddress() : usdt.getAddress()
     );
 
     confetti({

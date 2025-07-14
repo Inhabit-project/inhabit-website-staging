@@ -9,7 +9,7 @@ export async function mapCampaignDtoToCampaign(
   return {
     id: Number(dto.id),
     state: dto.state,
-    creator: dto.creator,
+    owner: dto.owner,
     goal: formatUsdcToUsd(dto.goal),
     fundsRaised: Number(dto.fundsRaised),
     collections: await Promise.all(

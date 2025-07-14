@@ -3,7 +3,7 @@ import { CollectionDto } from "./collection.dto";
 
 export interface CampaignDto {
   id: bigint;
-  creator: Address;
+  owner: Address;
   state: boolean;
   goal: bigint;
   fundsRaised: bigint;
