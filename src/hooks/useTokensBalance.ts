@@ -36,11 +36,6 @@ export function useTokenBalance(price: number) {
         usdt.allowance(address, INHABIT_JSON.proxy as Address),
       ]);
 
-    console.log("USDC Balance:", usdcBalance);
-    console.log("USDC Allowance:", usdcAllowance);
-    console.log("USDT Balance:", usdtBalance);
-    console.log("USDT Allowance:", usdtAllowance);
-
     setUsdcBalance(usdcBalance);
     setUsdcAllowance(usdcAllowance);
     setUsdtBalance(usdtBalance);
