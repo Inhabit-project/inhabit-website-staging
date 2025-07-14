@@ -6,10 +6,10 @@ import "@fontsource/nunito-sans/400.css";
 
 import Loader from "@/components/Loader";
 import { scrollManager } from "@/utils/scrollManager";
-import PageTransition from '@/components/PageTransition';
-import { useLocation } from 'react-router-dom';
-import { useScrollToTopOnNavigation } from '@/utils/scrollToTopOnNavigation';
-import ScrollToTop from '@/components/ScrollToTop';
+import PageTransition from "@/components/PageTransition";
+import { useLocation } from "react-router-dom";
+import { useScrollToTopOnNavigation } from "@/utils/scrollToTopOnNavigation";
+import ScrollToTop from "@/components/ScrollToTop";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -28,7 +28,7 @@ import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import ContactPage from "@/pages/ContactPage";
 import ProjectsPage from "@/pages/ProjectsPage";
 import ArticlePage from "@/pages/ArticlePage";
-import Cursor from './utils/cursor';
+import Cursor from "./utils/cursor";
 import Membership from "./pages/Membership";
 
 // Create a context for the loading state
@@ -97,7 +97,7 @@ const App: React.FC = () => {
           window.scrollTo({ top: 0, behavior: "auto" });
         }
         setTimeout(() => {
-          import('./utils/gsap').then(({ ScrollTrigger }) => {
+          import("./utils/gsap").then(({ ScrollTrigger }) => {
             ScrollTrigger.refresh();
           });
         }, 100);
@@ -126,21 +126,27 @@ const App: React.FC = () => {
   useEffect(() => {
     // List of routes that do NOT use a hero image
     const noHeroRoutes = [
-      '/checkout',
-      '/blog',
-      '/hubs/agua-de-luna',
-      '/hubs/tierrakilwa',
-      '/membership',
-      '/terms',
-      '/privacy',
-      '/projects',
-      '/contact',
-      '/blog/article', // match base for dynamic article routes
+      "/checkout",
+      "/blog",
+      "/hubs/agua-de-luna",
+      "/hubs/tierrakilwa",
+      "/membership",
+      "/terms",
+      "/privacy",
+      "/projects",
+      "/contact",
+      "/blog/article", // match base for dynamic article routes
       // Add any other routes that don't use a hero image
     ];
 
     // If the current route matches any no-hero route, set heroImageLoaded to true
-    if (noHeroRoutes.some(route => location.pathname === route || location.pathname.startsWith(route + '/'))) {
+    if (
+      noHeroRoutes.some(
+        (route) =>
+          location.pathname === route ||
+          location.pathname.startsWith(route + "/")
+      )
+    ) {
       setHeroImageLoaded(true);
     }
   }, [location]);
@@ -166,9 +172,9 @@ const App: React.FC = () => {
     const handleBeforeUnload = () => {
       window.scrollTo(0, 0);
     };
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
 
@@ -232,7 +238,7 @@ const App: React.FC = () => {
           <Route path="/checkout" element={<Checkout {...pageProps} />} />
           <Route
             path="/membership/:campaignId/:collectionId/:referral?"
-            element={<Membership {...pageProps} />}
+            element={<Membership />}
           />
           <Route path="/blog" element={<BlogPage {...pageProps} />} />
           <Route

@@ -1,11 +1,11 @@
-import React, { useRef, useEffect, useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { LoadingContext } from '../App';
-import ComparisonCards from './NFTComparison/ComparisonCards';
-import { Campaign } from '@/models/campaign.model';
+import React, { useRef, useEffect, useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { LoadingContext } from "../App";
+import ComparisonCards from "./NFTComparison/ComparisonCards";
+import { Campaign } from "@/models/campaign.model";
 
 type Props = {
   campaign: Campaign;
@@ -14,6 +14,7 @@ type Props = {
 export default function NFTGrid(props: Props): JSX.Element {
   const { campaign } = props;
   const { t } = useTranslation();
+  const tableRef = useRef<HTMLDivElement>(null);
 
   return (
     <section
