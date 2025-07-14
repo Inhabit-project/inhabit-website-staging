@@ -166,7 +166,7 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
         </div>
         <p
           ref={descriptionRef}
-          className="font-nunito text-[1.75rem] font-light text-[var(--color-secondary)] max-w-[38rem]"
+          className="body-M text-[var(--color-secondary)] max-w-[38rem]"
         >
           {t('mainPage.stewardshipNFTBenefits.description')}
         </p>
@@ -180,7 +180,7 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
           <article
             key={i}
             ref={(el: HTMLDivElement | null) => (cardRefs.current[i] = el)}
-            className="relative flex flex-col gap-6 min-h-[380px] shadow-lg text-white justify-between"
+            className="relative flex flex-col gap-3 sm:gap-6 min-h-[380px] shadow-lg text-white justify-between"
             style={{
               background: 'var(--color-primary-dark, #162F08)',
               borderRadius: 'var(--radius-2xl, 1.5rem)',
@@ -189,11 +189,15 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
             role="listitem"
             aria-labelledby={`benefit-${i}-title`}
           >
-            <div className="absolute top-10 right-10 w-12 h-12 opacity-80">
+            {/* Icon - responsive positioning and left alignment on mobile */}
+            <div 
+              className="block sm:absolute sm:top-10 sm:right-10 sm:w-12 sm:h-12 w-10 h-10 mb-2 sm:mb-0 opacity-80 text-left self-end"
+              style={{ position: 'static' }}
+            >
               <img src={b.icon} alt="" className="w-full h-full object-contain" aria-hidden="true" />
             </div>
             <span className="eyebrow">{b.eyebrow}</span>
-            <h3 id={`benefit-${i}-title`} className="heading-5 mb-2">
+            <h3 id={`benefit-${i}-title`} className="heading-4  mb-2">
               <span dangerouslySetInnerHTML={{ __html: b.title }} />
             </h3>
             <p className="font-nunito text-base font-light whitespace-pre-line opacity-90 mt-auto">{b.description}</p>

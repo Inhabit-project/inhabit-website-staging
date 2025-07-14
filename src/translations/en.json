@@ -168,20 +168,20 @@
         {
           "title": "Ñuiyanzhi",
           "subtitle": "Sierra Nevada de Santa Marta",
-          "eyebrow": "SOIL RESTORATION AND BIOCLIMATIC ARCHITECTURE:",
+          "eyebrow": "Restoration Knowledge Center",
           "description": "Action-research between traditional and academic knowledge by Amelia Carrillo Pardo and Juan Duque"
         },
         {
           "title": "AguaDeLuna",
-          "subtitle": "Amazon Rainforest",
-          "eyebrow": "BIODIVERSITY HOTSPOT:",
-          "description": "A sanctuary for rare species and a center for research and education, combining modern science and indigenous wisdom."
+          "subtitle": "Sierra Nevada de Santa Marta",
+          "eyebrow": "Peace and reconnection",
+          "description": "Integral Transformation for Reconnecting with the Sacredness of Life By Celia Mercado"
         },
         {
           "title": "Tierra Kilwa ",
           "subtitle": "Innovation Hub",
-          "eyebrow": "DESERT INNOVATION:",
-          "description": "Pioneers in sustainable living in arid environments, focused on water conservation and renewable energy."
+          "eyebrow": "Food production, regeneration, creativity, and social entrepreneurship ",
+          "description": "A Learning Ground for Regenerative and Creative Change Makers By Luca Urbano and Chiara Trotto"
         }
       ]
     },
@@ -211,18 +211,18 @@
       "landTenureTitle": "Land Tenure<br /><strong>Framework</strong>",
       "landTenureDescription": "A groundbreaking model of natural reserves that recognises nature as a legal entity with rights, and provides specific rights and benefits to individuals who support the permanent protection and regeneration of these biodiversity hotspots.",
       "nftStewardsTitle": "NFT Stewards",
-      "nftStewardsDescription": "People from anywhere in the world can become lifelong protectors of nature, with the ability to monitor, safeguard, and access these thriving hubs, along with numerous benefits as they travel the Corridor.",
+      "nftStewardsDescription": "Individuals from anywhere in the world can become lifelong protectors of nature, empowered to monitor, safeguard, and gain access to these thriving HUBS, along with numerous benefits as they travel the Corridor.",
       "natureTitle": "Nature",
       "natureDescription": "Nature is considered an entity with rights within the land boundaries, according to the Declaration of the Rights of Nature (e.g., the right to self-regulation, restoration, protection, decision-making...)",
       "guardiansTitle": "Guardians",
-      "guardiansDescription": "A family of change agents, who receive permanent use rights and restoration funding, ensuring the regeneration and conservation of the land, developing an innovative biocultural HUB, and expanding corridor protection."
+      "guardiansDescription": "A family of change-makers who receive permanent use rights and restoration funding to ensure the regeneration and conservation of the land, developing an innovative biocultural HUB and expanding the corridor."
     },
     "testimonials": {
       "title": "Meet our <br /> <strong>Allies</strong>",
       "description": "From local stewards and bioregional experts to global organizations and innovation leaders, each ally contributes unique knowledge, tools, and heart to grow a network of bio-cultural HUBS—together weaving a global corridor of bio-cultural diversity.",
       "testimonial": {
         "name": "Louise Borreani",
-        "quote": "Inhabit is a powerful expression of how decentralized tools can support nature stewardship communities. It is one of the most concrete manifestations of the green crypto research we have done at Ecofrontiers and it is inspiring to see it come to life.",
+        "quote": "“Inhabit is a powerful expression of how decentralized tools can support nature stewardship communities. It stands as one of the most concrete manifestations of the green crypto research we’ve been conducting at Ecofrontiers and it's so inspiring to see it come to life.” ",
         "role": "Co-founder, Ecofrontiers"
       },
       "partnersTitle": "Our <br /> <strong>Partners</strong>"
@@ -234,7 +234,7 @@
     },
     "blog": {
       "title": "Stay<br /><strong>informed</strong>",
-      "description": "Stay up to date with our latest news and insights on biodiversity and ecological preservation.",
+      "description": "Stay up to date with our latest news and insights on biodiversity, stewardship and ecological corridors",
       "loading": "Loading list of posts",
       "noPosts": "No posts available",
       "readTime_one": "{{count}} min read",
@@ -336,7 +336,7 @@
           "description": "This framework permanently protects the land by recognizing it as a legal entity with rights, and grants specific rights and benefits to those who support its protection and regeneration."
         },
         {
-          "label": "Land Security for Long-lasting Restoration",
+          "label": "Land Security for Long lasting Restoration",
           "title": "Guardians",
           "subtitle": "Rights",
           "description": "This framework grants permanent use rights and restoration funding to land guardians, creating the essential conditions for long-term regeneration and corridor expansion."
@@ -788,7 +788,7 @@
     "projects": {
       "title": "Our",
       "strong": "Projects",
-      "description": "Discover the initiatives and collaborations that are driving real-world impact. Our projects span ecosystem restoration, biocultural innovation, and community empowerment each one a step toward a regenerative future."
+      "description": "Discover the initiatives and collaborations that are driving real-world impact. Our projects span ecosystem restoration, biocultural innovation, and community empowerment each one a step toward shaping a global corridor that drives change"
     }
   },
   "projectsPage": {

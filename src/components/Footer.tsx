@@ -27,26 +27,20 @@ const Footer: React.FC = () => {
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
-  // Set initial states
+  // Set initial states on mount
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.set(logoRef.current, {
-        opacity: 0,
-        y: 50
-      });
-
-      gsap.set([connectRef.current, locationRef.current, newsletterRef.current, socialRef.current, menuRef.current], {
-        opacity: 0,
-        y: 50
-      });
-
-      gsap.set(copyrightRef.current, {
-        opacity: 0,
-        y: 20
-      });
-    }, footerRef);
-
-    return () => ctx.revert();
+    gsap.set(logoRef.current, {
+      opacity: 0,
+      y: 50
+    });
+    gsap.set([connectRef.current, locationRef.current, newsletterRef.current, socialRef.current, menuRef.current], {
+      opacity: 0,
+      y: 50
+    });
+    gsap.set(copyrightRef.current, {
+      opacity: 0,
+      y: 20
+    });
   }, []);
 
   // Handle loading state change
@@ -65,7 +59,7 @@ const Footer: React.FC = () => {
   useEffect(() => {
     if (!canAnimate || !footerRef.current) return;
 
-    const ctx = gsap.context(() => {
+    let ctx = gsap.context(() => {
       // Kill existing timeline and scroll trigger if they exist
       if (timelineRef.current) {
         timelineRef.current.kill();
@@ -118,10 +112,12 @@ const Footer: React.FC = () => {
         trigger: footerRef.current,
         start: 'top 75%',
         end: 'center center',
-        toggleActions: 'play none none reverse',
+        toggleActions: 'restart none none none',
         animation: timelineRef.current,
         id: `footer-${Date.now()}` // Unique ID to avoid conflicts
       });
+      // Refresh ScrollTrigger after timeline is set up
+      ScrollTrigger.refresh();
     }, footerRef);
 
     return () => {
@@ -137,15 +133,12 @@ const Footer: React.FC = () => {
       <div
         className="absolute inset-0 w-full h-full"
         style={{
-          backgroundImage: 'url("/assets/footer-bg.webp")',
+          backgroundImage: 'url("/assets/FOOTER.webp")',
           backgroundSize: "cover",
           backgroundPosition: "center",
           opacity: 1,
         }}
       />
-
-      {/* Blur Overlay */}
-      <div className="absolute inset-0 bg-white/5 backdrop-blur-4xl border-[0.5px] border-white/20" />
 
       {/* Content */}
       <div className="relative z-10 w-full min-h-screen flex flex-col py-[5rem]">

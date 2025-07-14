@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Nunito+Sans:wght@300;400;500;600;700&family=Abel&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,12 +5,10 @@
 /* Todo: translate de comments to english */
 @layer base {
   :root {
-    background-color: linear-gradient(
-      90deg,
-      #deedcb 2.26%,
-      #f6ffea 50.64%,
-      #deedcb 99.01%
-    );
+    background-color: linear-gradient(90deg,
+    #deedcb 2.26%,
+    #f6ffea 50.64%,
+    #deedcb 99.01%);
     /* Base sizes */
     --font-size-4xl: clamp(2.5rem, 4vw + 1.5rem, 6.875rem);
     /* 40px to 110px */
@@ -27,10 +23,6 @@
     --font-size-base: clamp(1rem, 1vw + 0.75rem, 1.125rem);
     --font-size-sm: clamp(0.875rem, 0.8vw + 0.6rem, 1rem);
     --font-size-xs: clamp(0.75rem, 0.7vw + 0.5rem, 0.875rem);
-    --font-size-h5: 2.5rem;
-    /* 48px */
-    --font-size-h6: 1.5rem;
-    /* 24px */
 
     /* Border Radius */
     --radius-xs: 0.25rem;
@@ -177,20 +169,11 @@
 
   html {
     @apply font-nunito;
-    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     height: 100%;
   }
 
-  *,
-  ::after,
-  ::before {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    scroll-snap-type: y mandatory;
-    scroll-snap-align: start;
-  }
   body {
     @apply bg-light text-primary font-nunito m-0 min-h-screen;
     height: 100%;
@@ -205,17 +188,6 @@
     scrollbar-width: none;
     -ms-scroll-chaining: none;
     overscroll-behavior: none;
-  }
-
-  html.loading,
-  body.loading {
-    overflow: hidden !important;
-    position: fixed !important;
-    width: 100% !important;
-    height: 100% !important;
-    scroll-snap-type: none !important;
-    touch-action: none !important;
-    -webkit-overflow-scrolling: none !important;
   }
 
   input,
@@ -248,8 +220,6 @@
     height: 100%;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-    scroll-snap-type: y mandatory;
-    scroll-snap-align: start;
   }
 
   button,
@@ -277,47 +247,56 @@
     color: var(--heading-color-light);
   }
 
-  h1 {
+  h1,
+  .heading-1 {
     font-size: var(--font-size-4xl);
-    line-height: 1;
+    line-height: 1.1;
     letter-spacing: -0.03em;
-    /* -4% tracking */
+    font-weight: 400;
+    color: var(--heading-color-light);
   }
 
-  h2 {
+  h2,
+  .heading-2 {
     font-size: var(--font-size-3xl);
     line-height: 1.1;
     letter-spacing: -0.03em;
-    /* -4% tracking */
+    font-weight: 400;
+    color: var(--heading-color-light);
   }
 
-  h3 {
+  h3,
+  .heading-3 {
     font-size: var(--font-size-2xl);
-    line-height: 1.2;
+    line-height: 1.1;
     letter-spacing: -0.03em;
-    /* -4% tracking */
+    font-weight: 400;
+    color: var(--heading-color-light);
   }
 
-  h4 {
+  h4,
+  .heading-4 {
     font-size: var(--font-size-xl);
-    line-height: 1.25;
-  }
-
-  h5 {
-    font-family: "Montserrat", sans-serif;
-    font-size: var(--font-size-h5);
-    font-weight: 600;
-    line-height: 1.05;
-    color: var(--heading-color-light);
-  }
-
-  h6 {
-    font-family: "Montserrat", sans-serif;
-    font-size: 1.5rem;
+    line-height: 1.15;
     font-weight: 500;
-    line-height: 1.3;
     color: var(--heading-color-light);
+  }
+
+  h5,
+  .heading-5 {
+    font-size: var(--font-size-lg);
+    line-height: 1.05;
+    font-weight: 500;
+    color: var(--heading-color-light);
+  }
+
+  h6,
+  .heading-6 {
+    font-size: var(--font-size-sm);
+    line-height: 1.3;
     letter-spacing: -0.01em;
+    font-weight: 500;
+    color: var(--heading-color-light);
   }
 
   /* Strong variants */
@@ -351,7 +330,8 @@
 }
 
 @layer components {
-  /* Heading Styles */
+
+  /* Heading Styles 
   .heading-1 {
     font-family: "Montserrat", sans-serif;
     font-size: var(--font-size-4xl);
@@ -403,7 +383,7 @@
     letter-spacing: -0.01em;
     color: var(--heading-color-light);
   }
-
+*/
   /* Body Text Styles */
   .body-L {
     font-family: "Nunito Sans", sans-serif;
@@ -505,7 +485,7 @@
     background: #bdbdbd;
     color: #f6ffea;
     cursor: not-allowed;
-    opacity: 0.7;
+
   }
 
   .btn-primary.inactive svg,
@@ -574,6 +554,27 @@
     border-color: var(--color-green-soft);
     font-size: 1rem;
     font-weight: 400;
+  }
+
+  /* Autofill background fix for all browsers */
+  input:-webkit-autofill,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+    box-shadow: 0 0 0 1000px transparent inset !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    -webkit-text-fill-color: var(--color-text, #fff) !important;
+    color: var(--color-text, #fff) !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  input:-moz-autofill {
+    box-shadow: 0 0 0 1000px transparent inset !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: var(--color-text, #fff) !important;
   }
 
   .input-main::placeholder {
@@ -1008,24 +1009,6 @@
   filter: none;
 }
 
-/* Enable scroll snap for vertical sections only in specific containers */
-.scroll-snap-container {
-  scroll-snap-type: y mandatory;
-  overflow-y: auto;
-  height: 100vh;
-}
-
-.scroll-snap-section {
-  scroll-snap-align: start;
-  min-height: 100vh;
-}
-
-section {
-  scroll-snap-type: y mandatory;
-  scroll-snap-align: start;
-  overflow: auto;
-}
-
 .four-oh-four-number {
   font-family: abel;
   font-size: clamp(18rem, 38vw, 28rem);
@@ -1182,3 +1165,97 @@ section {
   transform: rotate(-18deg) scale(1.15) translateY(-4px);
   fill: #d57300;
 }
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-blink {
+  animation: blink 1s steps(2, start) infinite;
+}
+
+.cursor {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+  z-index: 9999;
+  transition: none;
+  will-change: transform;
+  background: none;
+}
+
+.cursor img {
+  width: 100%;
+  height: 100%;
+  transform: scaleX(-1);
+  /* Flip horizontally to point left */
+  opacity: 1;
+}
+
+.particle {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  z-index: 9998;
+  animation: particle-float 0.8s ease-out forwards;
+}
+
+.particle img {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes particle-float {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -100%) scale(0.7) rotate(40deg);
+  }
+}
+
+html,
+body,
+*,
+*:hover,
+*:active,
+*:focus {
+  cursor: none !important;
+}
+
+.photo-parallax-bg {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed; /* Parallax effect on desktop */
+}
+@media (max-width: 1024px) {
+  .photo-parallax-bg {
+    background-attachment: scroll; /* Normal scroll on mobile */
+  }
+}
+
+.photo-textbox-blur {
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+}
+
+/* Loader fade-in utility */
+.loader-fade-in {
+  @apply opacity-0 animate-loaderFadeIn;
+}
+
+

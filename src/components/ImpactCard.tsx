@@ -11,12 +11,15 @@ interface ImpactCardProps {
 }
 
 const ImpactCard: React.FC<ImpactCardProps> = ({ label, icon, title, subtitle, description, id, number }) => (
-  <article 
-    className="relative bg-green-soft rounded-[var(--radius-2xl)] p-10 flex flex-col gap-4 min-h-[22rem] h-full shadow-md w-full"
+  <div 
+    className="relative bg-green-soft rounded-[var(--radius-2xl)] p-8 sm:p-10 flex flex-col gap-4 min-h-[22rem] h-full shadow-md w-full"
     aria-labelledby={id}
   >
-    {/* Icon */}
-    <div className="absolute top-10 right-10 w-12 h-12">
+    {/* Icon - responsive positioning */}
+    <div 
+      className="block sm:absolute sm:top-10 sm:right-10 sm:w-12 sm:h-12 w-10 h-10 mb-2 sm:mb-0 self-end"
+      style={{ position: 'static' }}
+    >
       <img 
         src={icon} 
         alt={`${title} icon`} 
@@ -35,7 +38,7 @@ const ImpactCard: React.FC<ImpactCardProps> = ({ label, icon, title, subtitle, d
     )}
     {/* Label */}
     <span 
-      className="font-abel uppercase tracking-[0.07em] text-base text-secondary"
+      className="font-abel uppercase tracking-[0.07em] text-base text-secondary max-w-[60vw]"
       aria-hidden="true"
     >
       {label}
@@ -52,7 +55,7 @@ const ImpactCard: React.FC<ImpactCardProps> = ({ label, icon, title, subtitle, d
     </h3>
     {/* Description */}
     <p className="font-nunito font-light text-[1.3125rem] leading-[1.4] text-secondary flex-1 overflow-auto">{description}</p>
-  </article>
+  </div>
 );
 
 export default ImpactCard; 

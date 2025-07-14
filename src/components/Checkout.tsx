@@ -282,7 +282,7 @@ const Checkout: React.FC<CheckoutProps> = ({ membershipId, onPageReady }) => {
                   </td>
                   <td className="py-3 px-6 text-center align-top" rowSpan={2}></td>
                   <td className="py-3 px-6 text-center align-top" rowSpan={2}>
-                    <span className="inline-block px-3 py-1 bg-[#E2EDD3] border border-green-soft text-[#1C3625] font-bold text-xs rounded-none">Basic level contents</span>
+                    <span className="inline-block px-3 py-1 bg-[#E2EDD3] border border-green-soft text-[#1C3625] font-bold text-xs rounded-none">Basic level </span>
                   </td>
                 </tr>
                 <tr className="border-b border-green-soft align-top">

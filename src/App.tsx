@@ -6,9 +6,10 @@ import "@fontsource/nunito-sans/400.css";
 
 import Loader from "@/components/Loader";
 import { scrollManager } from "@/utils/scrollManager";
-import PageTransition from "@/components/PageTransition";
-import { useLocation } from "react-router-dom";
-import { useScrollToTopOnNavigation } from "@/utils/scrollToTopOnNavigation";
+import PageTransition from '@/components/PageTransition';
+import { useLocation } from 'react-router-dom';
+import { useScrollToTopOnNavigation } from '@/utils/scrollToTopOnNavigation';
+import ScrollToTop from '@/components/ScrollToTop';
 
 import { Routes, Route } from "react-router-dom";
 
@@ -27,13 +28,13 @@ import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import ContactPage from "@/pages/ContactPage";
 import ProjectsPage from "@/pages/ProjectsPage";
 import ArticlePage from "@/pages/ArticlePage";
+import Cursor from './utils/cursor';
 import Membership from "./pages/Membership";
 
 // Create a context for the loading state
 export const LoadingContext = createContext<boolean>(false);
 
 const App: React.FC = () => {
-  useScrollToTopOnNavigation();
   const [isLoading, setIsLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [showTransition, setShowTransition] = useState(false);
@@ -89,13 +90,18 @@ const App: React.FC = () => {
   useEffect(() => {
     if (transitionIn && pageReady) {
       setShowTransition(false);
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         if (scrollManager && typeof scrollManager.scrollTo === "function") {
           scrollManager.scrollTo(0, { immediate: true });
         } else {
           window.scrollTo({ top: 0, behavior: "auto" });
         }
-      }, 50);
+        setTimeout(() => {
+          import('./utils/gsap').then(({ ScrollTrigger }) => {
+            ScrollTrigger.refresh();
+          });
+        }, 100);
+      });
     }
   }, [transitionIn, pageReady]);
 
@@ -118,26 +124,64 @@ const App: React.FC = () => {
 
   // Add this useEffect after your other useEffects
   useEffect(() => {
-    const matchNoHeroRoute = [
-      "/checkout",
-      "/membership",
-      "/blog",
-      "/hubs/agua-de-luna",
-      "/hubs/tierrakilwa",
-      "/terms",
-      "/privacy",
-      "/projects",
-      "/contact",
-      "/blog/article",
-    ].some((route) => location.pathname.startsWith(route));
+    // List of routes that do NOT use a hero image
+    const noHeroRoutes = [
+      '/checkout',
+      '/blog',
+      '/hubs/agua-de-luna',
+      '/hubs/tierrakilwa',
+      '/membership',
+      '/terms',
+      '/privacy',
+      '/projects',
+      '/contact',
+      '/blog/article', // match base for dynamic article routes
+      // Add any other routes that don't use a hero image
+    ];
 
-    if (matchNoHeroRoute) {
+    // If the current route matches any no-hero route, set heroImageLoaded to true
+    if (noHeroRoutes.some(route => location.pathname === route || location.pathname.startsWith(route + '/'))) {
       setHeroImageLoaded(true);
     }
   }, [location]);
 
+  // Fallback: Always finish loading after 5 seconds (in case hero image never loads)
+  useEffect(() => {
+    if (!canFinishLoading) {
+      const fallback = setTimeout(() => {
+        setHeroImageLoaded(true);
+        setMinLoaderTimeElapsed(true);
+      }, 5000);
+      return () => clearTimeout(fallback);
+    }
+  }, [canFinishLoading]);
+
+  // Scroll to top on initial mount (page refresh)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Ensure scroll position is reset before page unload (for browser scroll restoration)
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
+    const cursor = new Cursor();
+    return () => {
+      cursor.destroy();
+    };
+  }, []);
+
   return (
     <LoadingContext.Provider value={isLoading}>
+      <ScrollToTop />
       <div
         className={`app-container ${isTransitioning ? "transitioning" : ""}`}
       >

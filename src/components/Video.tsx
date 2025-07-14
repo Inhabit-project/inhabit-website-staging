@@ -197,7 +197,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
   return ( 
     <section 
       ref={sectionRef}
-      className="relative w-full background-gradient-dark flex flex-col items-center" 
+      className="relative w-full background-gradient-dark flex flex-col items-center custom-cursor-hide" 
       aria-labelledby="video-title"
     >
       {/* Background with decorative elements */}
@@ -251,6 +251,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
             <button 
               ref={playButtonRef}
               className="relative"
+              aria-label="Play video"
             >
               {/* Outer circle with animation */}
               <div 

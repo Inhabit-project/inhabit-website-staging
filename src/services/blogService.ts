@@ -63,7 +63,8 @@ const formatPost = (
 export const fetchPosts = async (
   params?: PaginationParams
 ): Promise<{ posts: BlogPost[]; totalPages: number }> => {
-  const currentLanguage = i18n.language;
+  // Use only the base language (e.g., 'en' from 'en-AU')
+  const currentLanguage = i18n.language.split('-')[0];
   const { per_page = 3, page = 1, skipFeatured = false } = params ?? {};
   const featuredPostsToSkip = 4;
 
@@ -82,6 +83,7 @@ export const fetchPosts = async (
 
     const response = await fetch(url.toString(), {
       headers: { Accept: "application/json" },
+      credentials: 'include', // Test if cookies are needed
     });
 
     if (!response.ok) {

@@ -17,6 +17,21 @@ const Hubs: React.FC = () => {
   const mapWrapperRef = useRef<HTMLDivElement>(null);
   const markersRef = useRef<(HTMLButtonElement | null)[]>([]);
   const isLoading = useContext(LoadingContext);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+
+  // Preload image utility
+  const preloadImage = (src: string) => {
+    if (!src) return;
+    const img = new window.Image();
+    img.src = src;
+  };
+
+  // Focus close button when card opens
+  useEffect(() => {
+    if (selectedHub !== null && closeBtnRef.current) {
+      closeBtnRef.current.focus();
+    }
+  }, [selectedHub]);
 
   // Initialize section animations
   useEffect(() => {
@@ -172,6 +187,28 @@ const Hubs: React.FC = () => {
             }
           }
 
+          /* Marker color transition on hover */
+          .hub-marker .marker-outer {
+            border: 2px solid var(--color-green-soft);
+            transition: border-color 0.3s;
+          }
+          .hub-marker .marker-inner {
+            background: var(--color-green-soft);
+            transition: background 0.3s;
+          }
+          .hub-marker:hover .marker-outer,
+          .hub-marker:focus .marker-outer,
+          .hub-marker:active .marker-outer,
+          .hub-marker.group:hover .marker-outer {
+            border-color: var(--color-primary);
+          }
+          .hub-marker:hover .marker-inner,
+          .hub-marker:focus .marker-inner,
+          .hub-marker:active .marker-inner,
+          .hub-marker.group:hover .marker-inner {
+            background: var(--color-primary);
+          }
+
           /* Desktop marker positions (using original clamp values) */
           @media (min-width: 768px) {
             .hub-marker-1 { 
@@ -198,7 +235,7 @@ const Hubs: React.FC = () => {
             width: 100%;
             max-width: calc(100vw - 2rem);
             width: 30rem;
-            height: 38rem;
+            height: 36rem;
             max-height: calc(100vh - 2rem);
             transform: translateX(-50%);
             top: 0;
@@ -208,7 +245,7 @@ const Hubs: React.FC = () => {
             .hub-card-centered {
               position: absolute;
             left: 50%;
-            top: 10%;
+            top: 15%;
             transform: translate(-50%, -50%);
             z-index: 30;
             }
@@ -217,7 +254,7 @@ const Hubs: React.FC = () => {
       </style>
       <section
         ref={sectionRef}
-        className="hubs-section relative w-full flex flex-col items-center background-gradient-light min-h-screen max-h-screen overflow-hidden"
+        className="hubs-section relative w-full flex flex-col items-center background-gradient-light min-h-screen max-h-screen overflow-hidden scroll-snap-section"
         style={{ minHeight: '100vh', maxHeight: '100vh', overflow: 'hidden' }}
       >
         {/* Content */}
@@ -258,12 +295,14 @@ const Hubs: React.FC = () => {
                     ref={el => markersRef.current[idx] = el}
                     className={`hub-marker hub-marker-${idx + 1} flex flex-row items-start group focus:outline-none`}
                     onClick={() => setSelectedHub(idx)}
+                    onMouseEnter={() => preloadImage(hub.image)}
+                    onFocus={() => preloadImage(hub.image)}
                     aria-label={`Show info for ${hub.title}`}
                   >
                     {/* Animated marker (pulse) - now always visible */}
                     <div className="relative mobile-marker-pulse mr-2">
-                      <div className="w-8 h-8 rounded-full border border-green-soft"></div>
-                      <div className="w-4 h-4 rounded-full bg-green-soft absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                      <div className="w-8 h-8 rounded-full marker-outer"></div>
+                      <div className="w-4 h-4 rounded-full marker-inner absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
                     </div>
 
                     {/* Desktop marker with vertical line and text */}
@@ -281,11 +320,32 @@ const Hubs: React.FC = () => {
                 ))}
               </div>
 
+              {/* Reserve card space to prevent layout shift */}
+              {selectedHub === null && (
+                <div
+                  style={{
+                    width: '30rem',
+                    height: '36rem',
+                    maxWidth: 'calc(100vw - 2rem)',
+                    maxHeight: 'calc(100vh - 2rem)',
+                    position: 'absolute',
+                    left: '50%',
+                    top: 0,
+                    transform: 'translateX(-50%)',
+                    zIndex: 20,
+                    pointerEvents: 'none',
+                    opacity: 0,
+                  }}
+                  aria-hidden="true"
+                />
+              )}
+
               {/* Featured image card - only show if a marker is selected */}
               {selectedHub !== null && (
                 <div
                   ref={cardRef}
                   className="hub-card-centered rounded-xl overflow-hidden"
+                  style={{ willChange: 'transform, opacity' }}
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
                 >
@@ -294,6 +354,9 @@ const Hubs: React.FC = () => {
                     <img
                       src={hubCards[selectedHub].image}
                       alt=""
+                      loading="lazy"
+                      width={400}
+                      height={400}
                       className="absolute inset-0 w-full h-full object-cover"
                     />
 
@@ -305,6 +368,7 @@ const Hubs: React.FC = () => {
                       {/* Close button */}
                       <div className="flex justify-end -mt-4">
                         <button
+                          ref={closeBtnRef}
                           className="w-10 h-10 rounded-full bg-white/30 backdrop-blur-[50px] border border-[#EFEFEF]/50 flex items-center justify-center group transition-all duration-300 hover:border-white hover:bg-white/50 text-white"
                           onClick={() => setSelectedHub(null)}
                           aria-label="Close hub card"

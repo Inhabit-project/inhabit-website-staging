@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { LoadingContext } from '../App';
 import { useMenuScrollHide } from '../utils/scrollManager';
+import { gsap } from '../utils/gsap';
 
 const LanguageButton = styled.button`
   background: none;
@@ -55,8 +56,51 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
   const lastScrollY = useRef(0);
   const { t, i18n } = useTranslation();
   const isLoading = useContext(LoadingContext);
+  const location = useLocation();
+
+  // Refs for mobile menu animation
+  const mobileMenuLinksRef = useRef<(HTMLAnchorElement | null)[]>([]);
+  const mobileLangBtnRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const mobileDownloadBtnRef = useRef<HTMLButtonElement | null>(null);
 
   useMenuScrollHide(setIsVisible, { getDisable: () => mobileOpen });
+
+  useEffect(() => {
+    if (mobileOpen) {
+      // Animate menu links and language buttons with nature-inspired stagger
+      const menuItems = [
+        ...mobileMenuLinksRef.current,
+        ...mobileLangBtnRef.current,
+      ].filter(Boolean);
+      const downloadBtn = mobileDownloadBtnRef.current;
+      if (menuItems.length > 0) {
+        gsap.set(menuItems, { opacity: 0, y: 40, scale: 0.92, rotateZ: -3 });
+        gsap.to(menuItems, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          rotateZ: 0,
+          duration: 0.85,
+          ease: 'back.out(1.7)',
+          stagger: {
+            each: 0.11,
+            from: 'start',
+          },
+        });
+      }
+      // Animate the download button straight (no y or rotateZ), just scale and fade with bounce
+      if (downloadBtn) {
+        gsap.set(downloadBtn, { opacity: 0, scale: 0.85 });
+        gsap.to(downloadBtn, {
+          opacity: 1,
+          scale: 1,
+          duration: 1.1,
+          delay: 0.11 * menuItems.length, // after the last menu item
+          ease: 'elastic.out(1, 0.6)',
+        });
+      }
+    }
+  }, [mobileOpen]);
 
   const menuClassName = `fixed top-0 left-0 right-0 h-[5rem] bg-menu-backdrop backdrop-blur-lg z-50 transition-transform duration-300 no-snap ${
     isVisible ? 'translate-y-0' : '-translate-y-full'
@@ -97,7 +141,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`nav-text hover:opacity-80 focus:outline-none ${
+                className={`nav-text hover:text-primary focus:outline-none ${
                   window.location.pathname === item.path ? 'text-accent' : ''
                 }`}
                 aria-current={window.location.pathname === item.path ? 'page' : undefined}
@@ -138,7 +182,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
 
           {/* Hamburger for mobile */}
           <button className="xl:hidden flex items-center justify-center w-10 h-10 rounded focus:outline-none" onClick={() => setMobileOpen(true)} aria-label="Open menu">
-            <svg className="w-8 h-8 text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-8 h-8 text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="32" height="32">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
@@ -158,17 +202,19 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
             </div>
             {/* Close button at the top right */}
             <button className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center" onClick={() => setMobileOpen(false)} aria-label="Close menu">
-              <svg className="w-6 h-6 text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
             <nav role="navigation" aria-label="Mobile navigation" className="flex flex-col items-center gap-6 mt-12">
-              {menuLinks.map((item) => (
+              {menuLinks.map((item, idx) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="nav-text text-xl text-light hover:opacity-80"
+                  className={`nav-text text-xl hover:opacity-80 ${location.pathname === item.path ? 'text-primary' : 'text-light'}`}
                   onClick={() => setMobileOpen(false)}
+                  ref={el => (mobileMenuLinksRef.current[idx] = el)}
+                  aria-current={location.pathname === item.path ? 'page' : undefined}
                 >
                   {item.label}
                 </Link>
@@ -178,18 +224,24 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
               <LanguageButton
                 onClick={() => changeLanguage('en')}
                 className={i18n.language === 'en' ? 'active' : ''}
+                ref={el => (mobileLangBtnRef.current[0] = el)}
               >
                 EN
               </LanguageButton>
               <LanguageButton
                 onClick={() => changeLanguage('es')}
                 className={i18n.language === 'es' ? 'active' : ''}
+                ref={el => (mobileLangBtnRef.current[1] = el)}
               >
                 ES
               </LanguageButton>
             </div>
             <a href="https://docsend.com/view/z34fcq8w3f8hgz7h" target="_blank" rel="noopener noreferrer">
-              <button className="btn-secondary transition-all duration-200 group mt-4">
+              <button
+                className="btn-secondary transition-all duration-200 group mt-4"
+                style={{ paddingLeft: '2rem', paddingRight: '2rem' }}
+                ref={mobileDownloadBtnRef}
+              >
                 <div className="flex items-center gap-2">
                   <svg className="w-6 h-6 transition-colors duration-200 group-hover:[&>path]:stroke-[var(--color-light)]" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" style={{stroke: 'var(--color-secondary)'}}>
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>

@@ -58,24 +58,21 @@ const Testimonials: React.FC = () => {
     { logo: '/assets/logos/partner-logo-5.png', name: 'Partner 5' }
   ];
 
-  // Set initial states
+  // Set initial states on mount
   useEffect(() => {
     gsap.set([titleRef.current, descriptionRef.current], {
       opacity: 0,
       y: 50
     });
-
     gsap.set(testimonialCardRef.current, {
       opacity: 0,
       y: 50,
       scale: 0.95
     });
-
     gsap.set(testimonialImageRef.current, {
       opacity: 0,
       scale: 0.95
     });
-
     gsap.set(testimonialContentRef.current, {
       opacity: 0,
       y: 30
@@ -106,7 +103,7 @@ const Testimonials: React.FC = () => {
             trigger: sectionRef.current,
             start: "top center",
             end: "center center",
-            toggleActions: "play none none reverse"
+            toggleActions: "restart none none none"
           }
         });
 

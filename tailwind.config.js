@@ -101,7 +101,6 @@ export default {
         montserrat: ['Montserrat', 'sans-serif'],
         nunito: ['Nunito Sans', 'sans-serif'],
         abel: ['Abel', 'sans-serif'],
-        prompt: ['Prompt', 'sans-serif'],
       },
       letterSpacing: {
         'abel': '0.08rem',
