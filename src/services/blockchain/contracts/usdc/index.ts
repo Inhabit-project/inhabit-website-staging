@@ -1,6 +1,6 @@
 import { Address, Hex, WalletClient } from "viem";
 
-import { USDC_JSON, USDT_JSON } from "../../../../config/const";
+import { USDC_JSON } from "../../../../config/const";
 import {
   formatUsdcToUsd,
   parseUsdToUsdc,
