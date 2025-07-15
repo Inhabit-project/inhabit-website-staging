@@ -9,7 +9,6 @@ import { mapCampaignDtoToCampaign } from "@/services/mapping/mapCampaignDtoToCam
 import { mapCollectionDtoToCollection } from "@/services/mapping/mapColletionDtoToCollection";
 import { mapGroupDtoToGroup } from "@/services/mapping/mapGroupDtoToGroup";
 import { GroupDto } from "@/services/dtos/group.dto";
-import { Group } from "@/models/group.model";
 import { CollectionDto } from "@/services/dtos/collection.dto";
 import { Collection } from "@/models/collection.model";
 import { Campaign } from "@/models/campaign.model";

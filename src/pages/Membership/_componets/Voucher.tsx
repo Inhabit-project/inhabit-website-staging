@@ -1,7 +1,7 @@
 import { COIN, KYC_TYPE } from "@/config/enums";
 import { useStore } from "@/store";
 import confetti from "canvas-confetti";
-import { useEffect, useMemo, useState } from "react";
+import { JSX, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAccount, useSignMessage, useWalletClient } from "wagmi";
 import usdcImage from "../../../assets/images/tokens/USDC.svg";
@@ -31,6 +31,10 @@ export function VoucherStep(props: Props): JSX.Element {
 
   // hooks
   const [cooldown, setCooldown] = useState<number>(0);
+  const [spent, setSpent] = useState<Record<COIN, number>>({
+    [COIN.USDC]: 0,
+    [COIN.USDT]: 0,
+  });
 
   // external hooks
   const { campaignId, referral } = useParams();
@@ -63,25 +67,32 @@ export function VoucherStep(props: Props): JSX.Element {
   const { collection, isKycHardCompleted, inhabit, usdc, usdt } = useStore();
 
   // variables
-  const coins = [
-    { symbol: COIN.USDC, balance: usdcBalance },
-    { symbol: COIN.USDT, balance: usdtBalance },
-  ];
+  const effectiveAllowance = useMemo(() => {
+    if (!selectedCoin) return 0;
+    const onChain = selectedCoin === COIN.USDC ? usdcAllowance : usdtAllowance;
+    return onChain - spent[selectedCoin];
+  }, [selectedCoin, usdcAllowance, usdtAllowance, spent]);
 
   const selectedBalance = useMemo(() => {
     if (!selectedCoin) return 0;
     return selectedCoin === COIN.USDC ? usdcBalance : usdtBalance;
   }, [selectedCoin, usdcBalance, usdtBalance]);
 
-  const selectedAllowance = useMemo(() => {
-    if (!selectedCoin) return 0;
-    return selectedCoin === COIN.USDC ? usdcAllowance : usdtAllowance;
-  }, [selectedCoin, usdcAllowance, usdtAllowance]);
-
   const hasSufficientBalance = selectedBalance >= price;
 
   const canMint =
-    !!selectedCoin && hasSufficientBalance && selectedAllowance >= price;
+    !!selectedCoin && hasSufficientBalance && effectiveAllowance >= price;
+
+  const coins = [
+    {
+      symbol: COIN.USDC,
+      balance: usdcBalance,
+    },
+    {
+      symbol: COIN.USDT,
+      balance: usdtBalance,
+    },
+  ];
 
   // effects
   useEffect(() => {
@@ -120,37 +131,6 @@ export function VoucherStep(props: Props): JSX.Element {
   }, [cooldown]);
 
   // functions
-  const onApprove = async () => {
-    if (!address) return;
-    if (!collection) return;
-    if (!selectedCoin) return;
-
-    let approve;
-
-    if (selectedCoin === COIN.USDC) {
-      approve = approveUsdc;
-    } else if (selectedCoin === COIN.USDT) {
-      approve = approveUsdt;
-    }
-
-    const params = {
-      spender: inhabit.getAddress(),
-      amount: price,
-    };
-
-    if (approve) {
-      approve(params, {
-        onSuccess: async () => {
-          await Promise.all([refetchUsdc(), refetchUsdt()]);
-          alert(`✅ ${selectedCoin} approved successfully!`);
-        },
-        onError: (error) => {
-          console.error("❌", error);
-          alert(`Error approving ${selectedCoin}. Please try again.`);
-        },
-      });
-    }
-  };
 
   const onResendKycEMail = async () => {
     if (!address || !chainId) return;
@@ -190,10 +170,40 @@ export function VoucherStep(props: Props): JSX.Element {
     });
   };
 
+  const onApprove = async () => {
+    if (!address || !collection || !campaignId) return;
+
+    let approve;
+
+    if (selectedCoin === COIN.USDC) {
+      approve = approveUsdc;
+    } else if (selectedCoin === COIN.USDT) {
+      approve = approveUsdt;
+    }
+
+    const params = {
+      spender: inhabit.getAddress(),
+      amount: price,
+    };
+
+    if (approve) {
+      approve(params, {
+        onSuccess: async () => {
+          await Promise.all([refetchUsdc(), refetchUsdt()]);
+          alert(`✅ ${selectedCoin} approved successfully!`);
+        },
+        onError: (error) => {
+          console.error("❌", error);
+          alert(`Error approving ${selectedCoin}. Please try again.`);
+        },
+      });
+    }
+  };
+
   const onMint = async () => {
     if (!address || !collection || !campaignId || !selectedCoin) return;
 
-    const currentReferral = referral || "";
+    const currentReferral = referral ?? "";
     const encryptedReferral = keccak256(toBytes(currentReferral));
 
     const params = {
@@ -212,6 +222,11 @@ export function VoucherStep(props: Props): JSX.Element {
         });
 
         await Promise.all([refetchUsdc(), refetchUsdt()]);
+        setSpent((prev) => ({
+          ...prev,
+          [selectedCoin]: prev[selectedCoin] + price,
+        }));
+
         alert("NFT purchased successfully!");
       },
       onError: (error) => {
