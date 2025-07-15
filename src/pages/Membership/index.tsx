@@ -38,19 +38,18 @@ export default function Membership(props: Props): JSX.Element {
 
   // effects
   useEffect(() => {
-    if (!campaignLoading && collection && onHeroImageLoad) {
-      onHeroImageLoad();
-    }
-  }, [campaignLoading, collection, onHeroImageLoad]);
+    if (Number.isNaN(campaignId) || Number.isNaN(collectionId))
+      navigate("/404");
+  }, [campaignId, collectionId]);
 
   useEffect(() => {
-    const validateReferral = async () => {
-      if (referral === undefined) {
+    const validateSlugs = async () => {
+      if (!referral) {
         setIsReferralValid(true);
         return;
       }
 
-      const group = await inhabit.getGroup(referral);
+      const group = await inhabit.getGroup(Number(campaignId), referral);
 
       if (!group) {
         navigate("/404");
@@ -60,8 +59,8 @@ export default function Membership(props: Props): JSX.Element {
       setIsReferralValid(true);
     };
 
-    validateReferral();
-  }, [referral]);
+    validateSlugs();
+  }, [campaignId, collectionId, referral]);
 
   useEffect(() => {
     const loadCampaign = async () => {
@@ -71,31 +70,38 @@ export default function Membership(props: Props): JSX.Element {
         setCollection(state.collection);
         setCollectionStore(state.collection);
         setCampaign(state.campaign);
-      } else if (campaignId && collectionId) {
-        const loadedCampaign = await getCampaign(Number(campaignId));
-
-        if (!loadedCampaign || Object.keys(loadedCampaign).length === 0) {
-          navigate("/404");
-          return;
-        }
-
-        const found = loadedCampaign.collections.find(
-          (c) => c.id === Number(collectionId)
-        );
-
-        if (!found) {
-          navigate("/404");
-          return;
-        }
-
-        setCollection(found);
-        setCollectionStore(found);
-        setCampaign(loadedCampaign);
+        return;
       }
+
+      const loadedCampaign = await getCampaign(Number(campaignId));
+
+      if (!loadedCampaign) {
+        navigate("/404");
+        return;
+      }
+
+      const found = loadedCampaign.collections.find(
+        (c) => c.id === Number(collectionId)
+      );
+
+      if (!found) {
+        navigate("/404");
+        return;
+      }
+
+      setCollection(found);
+      setCollectionStore(found);
+      setCampaign(loadedCampaign);
     };
 
     loadCampaign();
   }, [isReferralValid, state]);
+
+  useEffect(() => {
+    if (!campaignLoading && collection && onHeroImageLoad) {
+      onHeroImageLoad();
+    }
+  }, [campaignLoading, collection, onHeroImageLoad]);
 
   return (
     <>

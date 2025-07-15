@@ -9,9 +9,7 @@ export function useInhabit(walletClient?: WalletClient) {
     inhabit.setWalletClient(walletClient);
   }
 
-  const buyNFTMutation = walletClient ? useBuyNFT(inhabit) : undefined;
+  const buyNFT = useBuyNFT(inhabit);
 
-  return {
-    buyNFT: buyNFTMutation,
-  };
+  return { buyNFT };
 }

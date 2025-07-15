@@ -1,7 +1,6 @@
 import { JSX, useEffect, useState } from "react";
-import { useTokenBalance } from "../../../hooks/useTokensBalance";
 import { Checkout } from "./Checkout";
-import { useAccount } from "wagmi";
+import { useAccount, useWalletClient } from "wagmi";
 import { useStore } from "../../../store";
 import { MUST_DO_KYC_HARD } from "../../../config/const";
 import { ConnectButton } from "../../../ui/ConnectButton";
@@ -9,6 +8,8 @@ import { COIN, KYC_TYPE } from "../../../config/enums";
 
 import { Indicator } from "./Indicator";
 import { VoucherStep } from "./Voucher";
+import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
+import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
 
 export type Props = {
   membershipContract: string;
@@ -25,15 +26,10 @@ export default function Stepper(props: Props): JSX.Element {
 
   // external hooks
   const { address } = useAccount();
+  const { data: walletClient } = useWalletClient();
 
-  const {
-    usdcBalance,
-    usdtBalance,
-    usdcAllowance,
-    usdtAllowance,
-    hasSufficientBalance,
-    refetch: refetchBalances,
-  } = useTokenBalance(price);
+  const { balance: usdcBalance } = useUsdc(price, walletClient);
+  const { balance: usdtBalance } = useUsdt(price, walletClient);
 
   const {
     isKycHardCompleted,
@@ -98,16 +94,10 @@ export default function Stepper(props: Props): JSX.Element {
 
       {step === 2 && (
         <VoucherStep
-          price={price}
-          usdcBalance={usdcBalance}
-          usdtBalance={usdtBalance}
-          usdcAllowance={usdcAllowance}
-          usdtAllowance={usdtAllowance}
-          selectedCoin={selectedCoin}
-          hasSufficientBalance={hasSufficientBalance}
-          requiresHardKyc={requiresHardKyc}
           kycType={kycType}
-          refetchBalances={refetchBalances}
+          price={price}
+          selectedCoin={selectedCoin}
+          requiresHardKyc={requiresHardKyc}
           setSelectedCoin={setSelectedCoin}
         />
       )}

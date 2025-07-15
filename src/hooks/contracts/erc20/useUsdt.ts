@@ -19,7 +19,7 @@ export function useUsdt(price: number, walletClient?: WalletClient) {
     usdt.setWalletClient(walletClient);
   }
 
-  const approveMutation = walletClient ? useApprove(usdt) : undefined;
+  const approveMutation = useApprove(usdt);
 
   const load = async () => {
     if (!price || !address) {

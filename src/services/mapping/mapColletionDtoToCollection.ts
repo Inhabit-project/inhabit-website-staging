@@ -15,8 +15,6 @@ export async function mapCollectionDtoToCollection(
       membershipContract: "",
     }));
 
-  console.log("Collection DTO:", dto);
-
   return {
     campaignId: Number(dto.campaignId),
     id: Number(dto.collectionId),

@@ -1,27 +1,29 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { Address, Hex } from "viem";
-import { ServiceResult } from "@/models/api.model";
 import { InhabitContract } from "@/services/blockchain/contracts/inhabit";
+import { ContractError, ServiceResult } from "@/models/api.model";
 
 type Params = {
-  campaignId: string;
-  collection: Address;
-  groupId: number;
+  campaignId: number;
+  collectionAddress: Address;
+  referral: Hex;
   token: Address;
 };
 
-export function useBuyNFT(inhabit: InhabitContract) {
-  return useMutation({
+export function useBuyNFT(
+  inhabit: InhabitContract
+): UseMutationResult<Hex, ContractError, Params> {
+  return useMutation<Hex, ContractError, Params>({
     mutationFn: async ({
       campaignId,
-      collection,
-      groupId,
+      collectionAddress,
+      referral,
       token,
-    }: Params): Promise<Hex> => {
+    }): Promise<Hex> => {
       const result: ServiceResult<Hex> = await inhabit.buyNFT(
         campaignId,
-        collection,
-        groupId,
+        collectionAddress,
+        referral,
         token
       );
 

@@ -4,6 +4,7 @@ import { mapAmbassadorDtoToAmbassador } from "./mapAmbassadorDtoToAmbassador";
 
 export function mapGroupDtoToGroup(dto: GroupDto): Group {
   return {
+    id: Number(dto.id),
     referral: dto.referral,
     state: dto.state,
     ambassadors: dto.ambassadors.map(mapAmbassadorDtoToAmbassador),

@@ -1,7 +1,7 @@
 import { COIN, KYC_TYPE } from "@/config/enums";
 import { useStore } from "@/store";
 import confetti from "canvas-confetti";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAccount, useSignMessage, useWalletClient } from "wagmi";
 import usdcImage from "../../../assets/images/tokens/USDC.svg";
@@ -11,36 +11,23 @@ import { generateSiweMessage } from "@/utils/generate-siwe-message.util";
 import { useNonce } from "@/hooks/useNonce";
 import { ResendKycDto } from "@/services/dtos/resend-kyc.dto";
 import { COOLDOWN_KEY } from "@/config/const";
+import { useInhabit } from "@/hooks/contracts/inhabit";
+import { keccak256, toBytes } from "viem";
+import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
+import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
 
 interface Props {
+  kycType: KYC_TYPE;
   price: number;
-  usdcBalance: number;
-  usdtBalance: number;
-  usdcAllowance: number;
-  usdtAllowance: number;
-  hasSufficientBalance: boolean;
   requiresHardKyc: boolean;
   selectedCoin?: COIN;
-  kycType: KYC_TYPE;
-  refetchBalances: () => void;
   setSelectedCoin: (coin: COIN) => void;
 }
 
 export function VoucherStep(props: Props): JSX.Element {
   // props
-  const {
-    price,
-    usdcBalance,
-    usdtBalance,
-    usdcAllowance,
-    usdtAllowance,
-    selectedCoin,
-    hasSufficientBalance,
-    requiresHardKyc,
-    kycType,
-    refetchBalances,
-    setSelectedCoin,
-  } = props;
+  const { price, selectedCoin, requiresHardKyc, kycType, setSelectedCoin } =
+    props;
 
   // hooks
   const [cooldown, setCooldown] = useState<number>(0);
@@ -49,21 +36,31 @@ export function VoucherStep(props: Props): JSX.Element {
   const { campaignId, referral } = useParams();
 
   const { address, chainId } = useAccount();
-  const { signMessageAsync } = useSignMessage();
   const { data: walletClient } = useWalletClient();
+  const { signMessageAsync } = useSignMessage();
 
+  const { buyNFT: buyNFTHook } = useInhabit(walletClient);
+
+  const {
+    balance: usdcBalance,
+    allowance: usdcAllowance,
+    refetch: refetchUsdc,
+    approve: { mutate: approveUsdc, isPending: isApprovingUsdc },
+  } = useUsdc(price, walletClient);
+
+  const {
+    balance: usdtBalance,
+    allowance: usdtAllowance,
+    refetch: refetchUsdt,
+    approve: { mutate: approveUsdt, isPending: isApprovingUsdt },
+  } = useUsdt(price, walletClient);
+
+  const { mutate: buyNFT, isPending: isBuyingNFT } = buyNFTHook;
   const { mutate: fetchNonce, isPending: isNoncePending } = useNonce();
   const { mutate: resendKycEmail, isPending: isResendingKyc } =
     useResendKycEmail();
 
-  const {
-    isKycHardCompleted,
-    collection,
-    inhabit,
-    usdc,
-    usdt,
-    isCampaignReferral,
-  } = useStore();
+  const { collection, isKycHardCompleted, inhabit, usdc, usdt } = useStore();
 
   // variables
   const coins = [
@@ -71,13 +68,20 @@ export function VoucherStep(props: Props): JSX.Element {
     { symbol: COIN.USDT, balance: usdtBalance },
   ];
 
-  // variables
+  const selectedBalance = useMemo(() => {
+    if (!selectedCoin) return 0;
+    return selectedCoin === COIN.USDC ? usdcBalance : usdtBalance;
+  }, [selectedCoin, usdcBalance, usdtBalance]);
+
+  const selectedAllowance = useMemo(() => {
+    if (!selectedCoin) return 0;
+    return selectedCoin === COIN.USDC ? usdcAllowance : usdtAllowance;
+  }, [selectedCoin, usdcAllowance, usdtAllowance]);
+
+  const hasSufficientBalance = selectedBalance >= price;
+
   const canMint =
-    selectedCoin &&
-    coins.find((c) => c.symbol === selectedCoin)!.balance >= price &&
-    (selectedCoin === COIN.USDC
-      ? usdcAllowance >= price
-      : usdtAllowance >= price);
+    !!selectedCoin && hasSufficientBalance && selectedAllowance >= price;
 
   // effects
   useEffect(() => {
@@ -118,12 +122,33 @@ export function VoucherStep(props: Props): JSX.Element {
   // functions
   const onApprove = async () => {
     if (!address) return;
+    if (!collection) return;
     if (!selectedCoin) return;
 
+    let approve;
+
     if (selectedCoin === COIN.USDC) {
-      await usdc.approve(inhabit.getAddress(), price);
+      approve = approveUsdc;
     } else if (selectedCoin === COIN.USDT) {
-      await usdt.approve(inhabit.getAddress(), price);
+      approve = approveUsdt;
+    }
+
+    const params = {
+      spender: inhabit.getAddress(),
+      amount: price,
+    };
+
+    if (approve) {
+      approve(params, {
+        onSuccess: async () => {
+          await Promise.all([refetchUsdc(), refetchUsdt()]);
+          alert(`✅ ${selectedCoin} approved successfully!`);
+        },
+        onError: (error) => {
+          console.error("❌", error);
+          alert(`Error approving ${selectedCoin}. Please try again.`);
+        },
+      });
     }
   };
 
@@ -166,36 +191,35 @@ export function VoucherStep(props: Props): JSX.Element {
   };
 
   const onMint = async () => {
-    if (!address) return;
-    if (!campaignId) return;
-    if (!collection) return;
-    if (!selectedCoin) return;
+    if (!address || !collection || !campaignId || !selectedCoin) return;
 
-    await inhabit.buyNFT(
-      campaignId,
-      collection.address,
-      referral ? await inhabit.getReferral(campaignId, referral) : 0,
-      selectedCoin === COIN.USDC ? usdc.getAddress() : usdt.getAddress()
-    );
+    const currentReferral = referral || "";
+    const encryptedReferral = keccak256(toBytes(currentReferral));
 
-    confetti({
-      particleCount: 200,
-      spread: 100,
-      origin: { y: 0.6 },
+    const params = {
+      campaignId: Number(campaignId),
+      collectionAddress: collection.address,
+      referral: encryptedReferral,
+      token: selectedCoin === COIN.USDC ? usdc.getAddress() : usdt.getAddress(),
+    };
+
+    buyNFT(params, {
+      onSuccess: async () => {
+        confetti({
+          particleCount: 200,
+          spread: 100,
+          origin: { y: 0.6 },
+        });
+
+        await Promise.all([refetchUsdc(), refetchUsdt()]);
+        alert("NFT purchased successfully!");
+      },
+      onError: (error) => {
+        console.error("❌", error);
+        alert("Error purchasing NFT. Please try again.");
+      },
     });
-
-    refetchBalances();
   };
-
-  // effects
-  useEffect(() => {
-    if (!address) return;
-    if (!walletClient) return;
-
-    inhabit.setWalletClient(walletClient);
-    usdc.setWalletClient(walletClient);
-    usdt.setWalletClient(walletClient);
-  }, [address, walletClient]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -309,33 +333,27 @@ export function VoucherStep(props: Props): JSX.Element {
       <div className="flex justify-center mt-3">
         {!canMint ? (
           <button
-            type="button"
             className="btn-primary"
             onClick={onApprove}
             disabled={
               !hasSufficientBalance ||
               !selectedCoin ||
-              (selectedCoin === COIN.USDC
-                ? usdcAllowance >= price
-                : usdtAllowance >= price) ||
-              (requiresHardKyc && !isKycHardCompleted)
+              (requiresHardKyc && !isKycHardCompleted) ||
+              isApprovingUsdc ||
+              isApprovingUsdt
             }
           >
-            Approve {selectedCoin}
+            {isApprovingUsdc || isApprovingUsdt
+              ? "Approving…"
+              : `Approve ${selectedCoin ?? ""}`}
           </button>
         ) : (
           <button
-            type="button"
             className="btn-primary"
             onClick={onMint}
-            disabled={
-              !hasSufficientBalance ||
-              (requiresHardKyc && !isKycHardCompleted) ||
-              !canMint ||
-              (requiresHardKyc && !isKycHardCompleted)
-            }
+            disabled={(requiresHardKyc && !isKycHardCompleted) || isBuyingNFT}
           >
-            Mint NFT
+            {isBuyingNFT ? "Purchasing…" : "Purchase Membership"}
           </button>
         )}
       </div>

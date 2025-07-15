@@ -16,7 +16,7 @@ type Store = {
   campaignsLoading: boolean;
   collection: Collection | null;
   collections: Collection[];
-  groups: Group[];
+  group: Group | null;
   groupsLoading: boolean;
   isKycHardCompleted: boolean;
   isKycSoftCompleted: boolean;
@@ -29,7 +29,6 @@ type Store = {
   getCampaign: (campaignId: number) => Promise<Campaign | null>;
   getCampaignCollections: (campaignId: number) => Promise<Collection[]>;
   getCampaigns: () => Promise<Campaign[]>;
-  getGroups: () => Promise<Group[]>;
   getHasSentKyc: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
   getIsKycCompleted: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
   isCampaignReferral: (
@@ -59,6 +58,7 @@ export const useStore = create<Store>((set, get) => {
     campaignsLoading: true,
     collection: null,
     collections: [],
+    group: null,
     groups: [],
     groupsLoading: true,
     isKycHardCompleted: false,
@@ -100,11 +100,11 @@ export const useStore = create<Store>((set, get) => {
       );
     },
 
-    getGroups: async () => {
+    getGroup: async (campaignId: number, referral: string) => {
       set({ groupsLoading: true });
-      const groups = await get().inhabit.getGroups();
-      set({ groups });
-      return groups;
+      const group = await get().inhabit.getGroup(campaignId, referral);
+      set({ group, groupsLoading: false });
+      return group;
     },
 
     getIsKycCompleted: async (address: Address, kycType: KYC_TYPE) => {

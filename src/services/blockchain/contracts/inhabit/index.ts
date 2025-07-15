@@ -1,4 +1,4 @@
-import { Address, Hex, WalletClient } from "viem";
+import { Address, Hex, keccak256, toBytes, WalletClient } from "viem";
 
 import { INHABIT_JSON } from "../../../../config/const";
 import { ServiceResult } from "@/models/api.model";
@@ -26,9 +26,11 @@ export class InhabitContract extends BaseContract {
   async getCampaign(campaignId: number): Promise<Campaign | null> {
     try {
       const contract = this.getReadContract();
-      const dto = (await contract.read.getCampaign([
+      const dto = (await contract.read.getCampaignInfo([
         BigInt(campaignId),
       ])) as CampaignDto;
+
+      if (dto.id === 0n) return null;
 
       return mapCampaignDtoToCampaign(dto);
     } catch (error) {
@@ -62,28 +64,20 @@ export class InhabitContract extends BaseContract {
     }
   }
 
-  async getGroup(referral: string): Promise<Group | null> {
+  async getGroup(campaignId: number, referral: string) {
     try {
       const contract = this.getReadContract();
-      const dto = (await contract.read.getGroup([referral])) as GroupDto;
+      const dto = (await contract.read.getGroupByCampaignIdAndReferral([
+        BigInt(campaignId),
+        keccak256(toBytes(referral)),
+      ])) as GroupDto;
 
-      if (dto.referral === "") return null;
+      if (dto.id === 0n) return null;
 
       return mapGroupDtoToGroup(dto);
     } catch (error) {
       console.error("❌", error);
       return null;
-    }
-  }
-
-  async getGroups(): Promise<Group[]> {
-    try {
-      const contract = this.getReadContract();
-      const dtos = (await contract.read.getGroupsInfo()) as GroupDto[];
-      return dtos.map(mapGroupDtoToGroup);
-    } catch (error) {
-      console.error("❌", error);
-      return [];
     }
   }
 
@@ -108,9 +102,9 @@ export class InhabitContract extends BaseContract {
   // =========================
 
   async buyNFT(
-    campaignId: string,
+    campaignId: number,
     collection: Address,
-    groupId: number,
+    referral: Hex,
     token: Address
   ): Promise<ServiceResult<Hex>> {
     try {
@@ -118,7 +112,7 @@ export class InhabitContract extends BaseContract {
       const contract = this.getWriteContract();
       const fees = await this.getFees();
       const hash = await contract.write.buyNFT(
-        [BigInt(campaignId), collection, BigInt(groupId), token],
+        [BigInt(campaignId), collection, referral, token],
         {
           maxPriorityFeePerGas: fees.maxPriorityFeePerGas,
           maxFeePerGas: fees.maxFeePerGas,
