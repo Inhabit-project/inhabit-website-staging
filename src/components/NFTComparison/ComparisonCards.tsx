@@ -149,7 +149,6 @@ export function ComparisonCards({ campaign }: Props): JSX.Element {
       {features.map((feature, idx) => {
         const showCategory = feature.category !== lastCategory;
         lastCategory = feature.category;
-        const hasDescription = !!feature.description;
         const isOpen = openIdx === idx;
 
         return (
@@ -160,68 +159,90 @@ export function ComparisonCards({ campaign }: Props): JSX.Element {
               </div>
             )}
 
-            <div className="flex border-b border-white/10">
-              {/* sticky label cell */}
-              <div
-                className="px-4 py-3 border-r border-white/10 bg-[#1a2b14] sticky left-0 z-10"
-                style={{ width: "clamp(140px,45vw,220px)" }}
-              >
-                <div className="flex items-start gap-2">
-                  <span className="font-bold text-white text-sm">
-                    {feature.label}
-                  </span>
-                  {hasDescription && (
-                    <button
-                      className="text-white/70 hover:text-white focus:outline-none"
-                      onClick={() => setOpenIdx(isOpen ? null : idx)}
-                      aria-label={isOpen ? "Hide" : "Show"}
-                    >
-                      <span
-                        className={`inline-block transition-transform ${
-                          isOpen ? "rotate-90" : ""
-                        }`}
-                      >
-                        ▶
-                      </span>
-                    </button>
-                  )}
-                </div>
-                {hasDescription && isOpen && (
-                  <div className="mt-1 text-white/80 text-xs bg-[#232323] rounded p-2 border border-white/10">
-                    {feature.description}
+            {/* <iframe
+              id="news-popup"
+              src="https://explorer.land/p/project/bioculturalcorridor/site/Z6UXzL/news"
+              title="Ñuiyanzhi News"
+              style={{ width: '100%', height: '80vh', border: 'none', borderRadius: '1rem', background: 'white' }}
+            /> */}
+
+            <div className="flex border-b border-white/10 flex-col">
+              <div className="flex">
+                {/* sticky label cell */}
+                <div
+                  className="px-4 py-3 border-r border-white/10 bg-[#1a2b14] sticky left-0 z-10"
+                  style={{ width: "clamp(140px,45vw,220px)" }}
+                >
+                  <div className="flex items-start gap-2">
+                    <div className="font-bold text-white text-sm">
+                      {feature.category === "MONITORING RIGHT" ? (
+                        <>
+                          Impact Monitoring
+                          <br />
+                          access via
+                          <br />
+                          <button
+                            onClick={() => setOpenIdx(isOpen ? null : idx)}
+                            className="text-blue-400 underline mt-1"
+                          >
+                            {isOpen ? "HIDE MAP" : "MAP HERE"}
+                          </button>
+                        </>
+                      ) : (
+                        feature.label
+                      )}
+                    </div>
                   </div>
-                )}
+                </div>
+
+                {/* Data cells */}
+                <div className="flex flex-1">
+                  {packages.map((pkg) => (
+                    <div
+                      key={pkg}
+                      className="flex flex-1 min-w-[220px] border-r border-white/10 last:border-r-0"
+                    >
+                      {(["min", "full"] as const).map((fund) => {
+                        const val = feature.values[pkg]?.[fund];
+                        return (
+                          <div
+                            key={fund}
+                            className="w-1/2 flex items-center justify-center py-3"
+                          >
+                            {val === true ? (
+                              <CheckIcon />
+                            ) : val === false || val === undefined ? (
+                              <EmptyCheckIcon />
+                            ) : (
+                              <span className="font-semibold text-white text-sm">
+                                {val}
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              {/* Data cells */}
-              <div className="flex flex-1">
-                {packages.map((pkg) => (
-                  <div
-                    key={pkg}
-                    className="flex flex-1 min-w-[220px] border-r border-white/10 last:border-r-0"
-                  >
-                    {(["min", "full"] as const).map((fund) => {
-                      const val = feature.values[pkg]?.[fund];
-                      return (
-                        <div
-                          key={fund}
-                          className="w-1/2 flex items-center justify-center py-3"
-                        >
-                          {val === true ? (
-                            <CheckIcon />
-                          ) : val === false || val === undefined ? (
-                            <EmptyCheckIcon />
-                          ) : (
-                            <span className="font-semibold text-white text-sm">
-                              {val}
-                            </span>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                ))}
-              </div>
+              {/* MAP iframe */}
+              {feature.category === "MONITORING RIGHT" && isOpen && (
+                <div className="mt-2 w-full">
+                  <iframe
+                    id="news-popup"
+                    src="https://explorer.land/embed/project/bioculturalcorridor/site/Z6UXzL"
+                    title="Ñuiyanzhi News"
+                    style={{
+                      width: "100%",
+                      height: "400px",
+                      border: "none",
+                      borderRadius: "1rem",
+                      background: "white",
+                    }}
+                  />
+                </div>
+              )}
             </div>
           </React.Fragment>
         );

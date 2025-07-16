@@ -42,10 +42,10 @@ export const USDT_JSON =
 // SiweMessage
 
 export const DOMAIN =
-  IS_PRODUCTION === "true" ? "https://inhabit.one" : "http://localhost:5173";
+  IS_PRODUCTION === "true" ? "https://inhabit.one" : "http://localhost:5174";
 
 export const URI =
-  IS_PRODUCTION === "true" ? "https://inhabit.one" : "http://localhost:5173";
+  IS_PRODUCTION === "true" ? "https://inhabit.one" : "http://localhost:5174";
 
 // TODO: implement i18n support for the statement
 export const SIWE_MESSAGE = new SiweMessage({
