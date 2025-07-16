@@ -51,14 +51,10 @@ export class UsdtContract extends BaseContract {
     try {
       const publicClient = this.getPublicClient();
       const contract = this.getWriteContract();
-      const fees = await this.getFees();
-      const hash = await contract.write.approve(
-        [spender, parseUsdToUsdc(amount)],
-        {
-          maxPriorityFeePerGas: fees.maxPriorityFeePerGas,
-          maxFeePerGas: fees.maxFeePerGas,
-        }
-      );
+      const hash = await contract.write.approve([
+        spender,
+        parseUsdToUsdc(amount),
+      ]);
 
       await publicClient.waitForTransactionReceipt({ hash });
 

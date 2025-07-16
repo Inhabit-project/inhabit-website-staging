@@ -9,6 +9,7 @@
     "start:dev": "vite --mode dev",
     "start:staging": "vite --mode staging",
     "start:prod": "vite --mode prod",
+    "serve:dev": "vite build --mode dev && vite preview --mode dev --port 5174",
     "serve:staging": "vite build --mode staging && vite preview --mode staging --port 5174",
     "serve:prod": "vite build --mode prod && vite preview --mode prod --port 5173"
   },

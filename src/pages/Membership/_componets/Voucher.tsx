@@ -31,10 +31,6 @@ export function VoucherStep(props: Props): JSX.Element {
 
   // hooks
   const [cooldown, setCooldown] = useState<number>(0);
-  const [spent, setSpent] = useState<Record<COIN, number>>({
-    [COIN.USDC]: 0,
-    [COIN.USDT]: 0,
-  });
 
   // external hooks
   const { campaignId, referral } = useParams();
@@ -69,9 +65,8 @@ export function VoucherStep(props: Props): JSX.Element {
   // variables
   const effectiveAllowance = useMemo(() => {
     if (!selectedCoin) return 0;
-    const onChain = selectedCoin === COIN.USDC ? usdcAllowance : usdtAllowance;
-    return onChain - spent[selectedCoin];
-  }, [selectedCoin, usdcAllowance, usdtAllowance, spent]);
+    return selectedCoin === COIN.USDC ? usdcAllowance : usdtAllowance;
+  }, [selectedCoin, usdcAllowance, usdtAllowance]);
 
   const selectedBalance = useMemo(() => {
     if (!selectedCoin) return 0;
@@ -79,9 +74,9 @@ export function VoucherStep(props: Props): JSX.Element {
   }, [selectedCoin, usdcBalance, usdtBalance]);
 
   const hasSufficientBalance = selectedBalance >= price;
+  const hasAllowance = effectiveAllowance >= price;
 
-  const canMint =
-    !!selectedCoin && hasSufficientBalance && effectiveAllowance >= price;
+  const canMint = !!selectedCoin && hasSufficientBalance && hasAllowance;
 
   const coins = [
     {
@@ -109,14 +104,6 @@ export function VoucherStep(props: Props): JSX.Element {
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (cooldown > 0) {
-      timer = setTimeout(() => setCooldown((prev) => prev - 1), 1000);
-    }
-    return () => clearTimeout(timer);
-  }, [cooldown]);
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (cooldown > 0) {
       timer = setTimeout(
         () =>
           setCooldown((prev) => {
@@ -131,7 +118,6 @@ export function VoucherStep(props: Props): JSX.Element {
   }, [cooldown]);
 
   // functions
-
   const onResendKycEMail = async () => {
     if (!address || !chainId) return;
 
@@ -173,13 +159,9 @@ export function VoucherStep(props: Props): JSX.Element {
   const onApprove = async () => {
     if (!address || !collection || !campaignId) return;
 
-    let approve;
-
-    if (selectedCoin === COIN.USDC) {
-      approve = approveUsdc;
-    } else if (selectedCoin === COIN.USDT) {
-      approve = approveUsdt;
-    }
+    const coin = selectedCoin;
+    const approve = coin === COIN.USDC ? approveUsdc : approveUsdt;
+    const refetch = coin === COIN.USDC ? refetchUsdc : refetchUsdt;
 
     const params = {
       spender: inhabit.getAddress(),
@@ -189,12 +171,12 @@ export function VoucherStep(props: Props): JSX.Element {
     if (approve) {
       approve(params, {
         onSuccess: async () => {
-          await Promise.all([refetchUsdc(), refetchUsdt()]);
-          alert(`✅ ${selectedCoin} approved successfully!`);
+          await refetch();
+          alert(`✅ ${coin} approved successfully!`);
         },
         onError: (error) => {
           console.error("❌", error);
-          alert(`Error approving ${selectedCoin}. Please try again.`);
+          alert("Error approving token. Please try again.");
         },
       });
     }
@@ -203,35 +185,30 @@ export function VoucherStep(props: Props): JSX.Element {
   const onMint = async () => {
     if (!address || !collection || !campaignId || !selectedCoin) return;
 
-    const currentReferral = referral ?? "";
-    const encryptedReferral = keccak256(toBytes(currentReferral));
+    const coin = selectedCoin;
+    const refetch = coin === COIN.USDC ? refetchUsdc : refetchUsdt;
 
     const params = {
       campaignId: Number(campaignId),
       collectionAddress: collection.address,
-      referral: encryptedReferral,
-      token: selectedCoin === COIN.USDC ? usdc.getAddress() : usdt.getAddress(),
+      referral: keccak256(toBytes(referral ?? "")),
+      token: coin === COIN.USDC ? usdc.getAddress() : usdt.getAddress(),
     };
 
     buyNFT(params, {
       onSuccess: async () => {
+        await refetch();
+        alert("✅ Membership purchased successfully!");
+
         confetti({
-          particleCount: 200,
-          spread: 100,
+          particleCount: 100,
+          spread: 70,
           origin: { y: 0.6 },
         });
-
-        await Promise.all([refetchUsdc(), refetchUsdt()]);
-        setSpent((prev) => ({
-          ...prev,
-          [selectedCoin]: prev[selectedCoin] + price,
-        }));
-
-        alert("NFT purchased successfully!");
       },
       onError: (error) => {
         console.error("❌", error);
-        alert("Error purchasing NFT. Please try again.");
+        alert("Error purchasing membership. Please try again.");
       },
     });
   };

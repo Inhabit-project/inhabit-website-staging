@@ -109,14 +109,12 @@ export class InhabitContract extends BaseContract {
     try {
       const publicClient = this.getPublicClient();
       const contract = this.getWriteContract();
-      const fees = await this.getFees();
-      const hash = await contract.write.buyNFT(
-        [BigInt(campaignId), collection, referral, token],
-        {
-          maxPriorityFeePerGas: fees.maxPriorityFeePerGas,
-          maxFeePerGas: fees.maxFeePerGas,
-        }
-      );
+      const hash = await contract.write.buyNFT([
+        BigInt(campaignId),
+        collection,
+        referral,
+        token,
+      ]);
 
       await publicClient.waitForTransactionReceipt({ hash });
 
