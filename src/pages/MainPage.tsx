@@ -25,7 +25,8 @@ interface Props {
 
 function MainPage(props: Props) {
   const { onHeroImageLoad, onPageReady, scrollToSection } = props;
-  const { campaigns, campaignsLoading, getCampaigns } = useStore();
+  const { campaigns, campaignsLoading, lastCampaign, getCampaigns } =
+    useStore();
   const nftGridRef = useRef<HTMLElement>(null);
   const videoSectionRef = useRef<HTMLElement>(null as unknown as HTMLElement);
 
@@ -99,13 +100,11 @@ function MainPage(props: Props) {
           {campaignsLoading && <NatureSpinner />}
 
           {!campaignsLoading &&
-            (campaigns.length === 0 ? (
+            (!lastCampaign ? (
               // TODO: improve this message
               <p className="text-lg text-gray-500">No campaigns available.</p>
             ) : (
-              campaigns.map((campaign) => (
-                <NFTGrid key={campaign.id} campaign={campaign} />
-              ))
+              <NFTGrid key={lastCampaign.id} campaign={lastCampaign} />
             ))}
         </section>
 

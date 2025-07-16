@@ -1,7 +1,7 @@
 import { useRef, JSX } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import ComparisonCards from "./NFTComparison/ComparisonCards";
+import { ComparisonCards } from "./NFTComparison/ComparisonCards";
 import { Campaign } from "@/models/campaign.model";
 
 type Props = {
@@ -209,7 +209,7 @@ export default function NFTGrid(props: Props): JSX.Element {
         {/* TODO: What do we do with this? */}
         {/* NFT Table (from Figma) */}
         <div ref={tableRef} className="overflow-x-auto mt-16">
-          <ComparisonCards />
+          <ComparisonCards campaign={campaign} />
         </div>
       </div>
     </section>

@@ -24,6 +24,7 @@ type Store = {
   hasSentKycSoft: boolean;
   inhabit: InhabitContract;
   isPollingKyc: boolean;
+  lastCampaign: Campaign | null;
   usdc: UsdcContract;
   usdt: UsdtContract;
   getCampaign: (campaignId: number) => Promise<Campaign | null>;
@@ -67,6 +68,7 @@ export const useStore = create<Store>((set, get) => {
     hasSentKycSoft: false,
     inhabit,
     isPollingKyc: false,
+    lastCampaign: null,
     usdc,
     usdt,
 
@@ -88,7 +90,8 @@ export const useStore = create<Store>((set, get) => {
     getCampaigns: async () => {
       set({ campaignsLoading: true });
       const campaigns = await get().inhabit.getCampaigns();
-      set({ campaigns, campaignsLoading: false });
+      const lastCampaign = campaigns[campaigns.length - 1];
+      set({ campaigns, campaignsLoading: false, lastCampaign });
       return campaigns;
     },
 
