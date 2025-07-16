@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect } from "react";
+import React, { useState, createContext, useEffect, useRef } from "react";
 
 import "@/i18n";
 import "@/utils/gsap";
@@ -10,6 +10,7 @@ import PageTransition from "@/components/PageTransition";
 import { useLocation } from "react-router-dom";
 import { useScrollToTopOnNavigation } from "@/utils/scrollToTopOnNavigation";
 import ScrollToTop from "@/components/ScrollToTop";
+import { useNavigationType } from "react-router-dom";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -45,6 +46,16 @@ const App: React.FC = () => {
   const [canFinishLoading, setCanFinishLoading] = useState(false);
   const location = useLocation();
   const [pendingLocation, setPendingLocation] = useState(location);
+  const navigationType = useNavigationType();
+
+  const prevPath = useRef(location.pathname);
+
+  const shouldScrollToNFTGrid =
+    navigationType === "POP" && prevPath.current.startsWith("/membership");
+
+  // useEffect(() => {
+  //   prevPath.current = location.pathname;
+  // }, [location]);
 
   // Only allow loader to finish when both hero image and timer are done
   useEffect(() => {
@@ -75,6 +86,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (location !== pendingLocation) {
+      prevPath.current = pendingLocation.pathname;
+
       if ((location.state as any)?.skipTransition) {
         setPendingLocation(location); // actualiza ruta sin overlay
         return;
@@ -213,7 +226,11 @@ const App: React.FC = () => {
           <Route
             path="/"
             element={
-              <MainPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />
+              <MainPage
+                {...pageProps}
+                onHeroImageLoad={handleHeroImageLoad}
+                scrollToSection={shouldScrollToNFTGrid ? "nftGrid" : null}
+              />
             }
           />
           <Route

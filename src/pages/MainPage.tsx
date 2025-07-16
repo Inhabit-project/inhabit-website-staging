@@ -15,17 +15,18 @@ import FAQ from "../components/FAQ";
 import Footer from "../components/Footer";
 import { scrollManager } from "../utils/scrollManager";
 import { useStore } from "../store";
-import  { NatureSpinner } from "../ui/Loader";
-
+import { NatureSpinner } from "../ui/Loader";
 
 interface Props {
   onPageReady?: () => void;
   onHeroImageLoad?: () => void;
+  scrollToSection?: string | null;
 }
 
- function MainPage(props: Props) {
-  const { onHeroImageLoad, onPageReady } = props;
- const { campaigns, campaignsLoading, getCampaigns } = useStore();
+function MainPage(props: Props) {
+  const { onHeroImageLoad, onPageReady, scrollToSection } = props;
+  const { campaigns, campaignsLoading, getCampaigns } = useStore();
+  const nftGridRef = useRef<HTMLElement>(null);
   const videoSectionRef = useRef<HTMLElement>(null as unknown as HTMLElement);
 
   useEffect(() => {
@@ -41,6 +42,23 @@ interface Props {
     }
   }, [onPageReady]);
 
+  useEffect(() => {
+    if (
+      scrollToSection === "nftGrid" &&
+      nftGridRef.current &&
+      !campaignsLoading &&
+      campaigns.length > 0
+    ) {
+      const offset = -100;
+      const y =
+        nftGridRef.current.getBoundingClientRect().top +
+        window.scrollY +
+        offset;
+
+      window.scrollTo({ top: y, behavior: "auto" });
+    }
+  }, [scrollToSection, campaignsLoading, campaigns]);
+
   return (
     <>
       {/* Skip to main content link for accessibility */}
@@ -53,9 +71,16 @@ interface Props {
       <Menu />
       <main id="main-content" tabIndex={-1} role="main">
         <section className="no-scroll-snap" aria-label="Hero section">
-          <Hero scrollToRef={videoSectionRef} onHeroImageLoad={onHeroImageLoad} />
+          <Hero
+            scrollToRef={videoSectionRef}
+            onHeroImageLoad={onHeroImageLoad}
+          />
         </section>
-        <section aria-label="Video section" className="scroll-container" ref={videoSectionRef}>
+        <section
+          aria-label="Video section"
+          className="scroll-container"
+          ref={videoSectionRef}
+        >
           <Video />
         </section>
         <section aria-label="Hubs section">
@@ -70,7 +95,7 @@ interface Props {
         <section aria-label="Photo section">
           <Photo />
         </section>
-        <section aria-label="NFT Grid section">
+        <section ref={nftGridRef} aria-label="NFT Grid section">
           {campaignsLoading && <NatureSpinner />}
 
           {!campaignsLoading &&
@@ -103,6 +128,6 @@ interface Props {
       <Footer />
     </>
   );
-};
+}
 
 export default MainPage;
