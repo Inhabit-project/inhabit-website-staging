@@ -1,25 +1,36 @@
-import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import Menu from '../components/Menu';
-import InternalPagesHero from '../components/InternalPagesHero';
-import CTA from '../components/CTA';
-import Blog from '../components/Blog';
-import FAQ, { FAQStewardshipNFT } from '../components/FAQ';
-import Footer from '../components/Footer';
-import ImageSection from '../components/ImageSection';
-import StewardshipNFTBenefitsSection from '../components/StewardshipNFTBenefitsSection';
-import Highlight from '../components/Highlight';
-import NFTWorksSection from '../components/NFTWorksSection';
-import FourCriteriaHubGlobal from '../components/FourCriteriaHubGlobal';
-import NFTGrid from '../components/NFTGrid';
+import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import Menu from "../components/Menu";
+import InternalPagesHero from "../components/InternalPagesHero";
+import CTA from "../components/CTA";
+import Blog from "../components/Blog";
+import FAQ, { FAQStewardshipNFT } from "../components/FAQ";
+import Footer from "../components/Footer";
+import ImageSection from "../components/ImageSection";
+import StewardshipNFTBenefitsSection from "../components/StewardshipNFTBenefitsSection";
+import Highlight from "../components/Highlight";
+import NFTWorksSection from "../components/NFTWorksSection";
+import FourCriteriaHubGlobal from "../components/FourCriteriaHubGlobal";
+import NFTGrid from "../components/NFTGrid";
+import { NatureSpinner } from "@/ui/Loader";
+import { useStore } from "@/store";
 
 interface StewardshipNFTPageProps {
   onPageReady?: () => void;
   onHeroImageLoad?: () => void;
 }
 
-const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({ onPageReady, onHeroImageLoad }) => {
+const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({
+  onPageReady,
+  onHeroImageLoad,
+}) => {
   const { t } = useTranslation();
+
+  const { campaigns, campaignsLoading, getCampaigns } = useStore();
+
+  useEffect(() => {
+    getCampaigns();
+  }, [onPageReady]);
 
   useEffect(() => {
     if (onPageReady) onPageReady();
@@ -28,23 +39,35 @@ const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({ onPageReady, on
   return (
     <>
       {/* Skip to main content link for accessibility */}
-      <a href="#main-content" className="sr-only focus:not-sr-only absolute top-2 left-2 bg-white text-black p-2 z-50 rounded">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only absolute top-2 left-2 bg-white text-black p-2 z-50 rounded"
+      >
         Skip to main content
       </a>
       <div className="min-h-screen background-gradient-light">
         <Menu />
         <main id="main-content" role="main" tabIndex={-1}>
           <section aria-label="Stewardship NFT hero section">
-            <InternalPagesHero variant="stewardship" onHeroImageLoad={onHeroImageLoad} />
+            <InternalPagesHero
+              variant="stewardship"
+              onHeroImageLoad={onHeroImageLoad}
+            />
           </section>
           <section aria-label="Stewardship NFT introduction">
             <ImageSection
-              eyebrow={t('mainPage.stewardshipNFTPage.imageSection.eyebrow')}
+              eyebrow={t("mainPage.stewardshipNFTPage.imageSection.eyebrow")}
               heading={
-                <span dangerouslySetInnerHTML={{ __html: t('mainPage.stewardshipNFTPage.imageSection.heading') }} />
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: t(
+                      "mainPage.stewardshipNFTPage.imageSection.heading"
+                    ),
+                  }}
+                />
               }
               imageSrc="/assets/power-nft.webp"
-              imageAlt={t('mainPage.stewardshipNFTPage.imageSection.imageAlt')}
+              imageAlt={t("mainPage.stewardshipNFTPage.imageSection.imageAlt")}
             />
           </section>
           <section aria-label="Stewardship NFT benefits">
@@ -60,7 +83,17 @@ const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({ onPageReady, on
             <FourCriteriaHubGlobal />
           </section>
           <section aria-label="Available Stewardship NFTs">
-            <NFTGrid />
+            {campaignsLoading && <NatureSpinner />}
+
+            {!campaignsLoading &&
+              (campaigns.length === 0 ? (
+                // TODO: improve this message
+                <p className="text-lg text-gray-500">No campaigns available.</p>
+              ) : (
+                campaigns.map((campaign) => (
+                  <NFTGrid key={campaign.id} campaign={campaign} />
+                ))
+              ))}
           </section>
           <section aria-label="Blog posts">
             <Blog />
@@ -78,4 +111,4 @@ const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({ onPageReady, on
   );
 };
 
-export default StewardshipNFTPage; 
+export default StewardshipNFTPage;
