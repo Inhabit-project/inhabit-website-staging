@@ -29,8 +29,10 @@ const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({
   const { campaigns, campaignsLoading, getCampaigns } = useStore();
 
   useEffect(() => {
-    getCampaigns();
-  }, [onPageReady]);
+    if (campaigns.length === 0) {
+      getCampaigns();
+    }
+  }, []);
 
   useEffect(() => {
     if (onPageReady) onPageReady();

@@ -1,22 +1,35 @@
-import React, { useEffect } from 'react';
-import Menu from '../components/Menu';
-import InternalPagesHero from '../components/InternalPagesHero';
-import InfoCard, { InfoCardRightImage } from '../components/InfoCard';
-import FAQ, { FAQWhite } from '../components/FAQ';
-import CriteriaCardsSection from '../components/CriteriaCardsSection';
-import NFTGrid from '../components/NFTGrid';
-import NFTComparisonTable from '../components/NFTComparisonTable';
-import Footer from '../components/Footer';
-import { useTranslation } from 'react-i18next';
-import ImageSection from '../components/ImageSection';
+import React, { useEffect } from "react";
+import Menu from "../components/Menu";
+import InternalPagesHero from "../components/InternalPagesHero";
+import InfoCard, { InfoCardRightImage } from "../components/InfoCard";
+import FAQ, { FAQWhite } from "../components/FAQ";
+import CriteriaCardsSection from "../components/CriteriaCardsSection";
+import NFTGrid from "../components/NFTGrid";
+import NFTComparisonTable from "../components/NFTComparisonTable";
+import Footer from "../components/Footer";
+import { useTranslation } from "react-i18next";
+import ImageSection from "../components/ImageSection";
+import { NatureSpinner } from "@/ui/Loader";
+import { useStore } from "@/store";
 
 interface NuiyanzhiPageProps {
   onPageReady?: () => void;
   onHeroImageLoad?: () => void;
 }
 
-const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({ onPageReady, onHeroImageLoad }) => {
+const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({
+  onPageReady,
+  onHeroImageLoad,
+}) => {
   const { t } = useTranslation();
+
+  const { campaigns, campaignsLoading, getCampaigns } = useStore();
+
+  useEffect(() => {
+    if (campaigns.length === 0) {
+      getCampaigns();
+    }
+  }, []);
 
   useEffect(() => {
     if (onPageReady) onPageReady();
@@ -34,9 +47,13 @@ const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({ onPageReady, onHeroImageL
 
       {/* Image Section: Nuiyanzhi Vision */}
       <ImageSection
-        eyebrow={t('nuiyanzhiPage.imageSection.eyebrow')}
+        eyebrow={t("nuiyanzhiPage.imageSection.eyebrow")}
         heading={
-          <span dangerouslySetInnerHTML={{ __html: t('nuiyanzhiPage.imageSection.heading') }} />
+          <span
+            dangerouslySetInnerHTML={{
+              __html: t("nuiyanzhiPage.imageSection.heading"),
+            }}
+          />
         }
         imageSrc="/assets/1Hub/vision.webp"
         imageAlt="Nuiyanzhi Vision"
@@ -44,43 +61,59 @@ const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({ onPageReady, onHeroImageL
 
       {/* Section: Four goals to be a HUB */}
       <FAQWhite
-        title={t('nuiyanzhiPage.fourCriteria.title')}
-        description={t('nuiyanzhiPage.fourCriteria.description')}
-        faqItems={t('nuiyanzhiPage.fourCriteria.items', { returnObjects: true }) as any[]}
+        title={t("nuiyanzhiPage.fourCriteria.title")}
+        description={t("nuiyanzhiPage.fourCriteria.description")}
+        faqItems={
+          t("nuiyanzhiPage.fourCriteria.items", {
+            returnObjects: true,
+          }) as any[]
+        }
       />
 
       {/* Section: The Vision (InfoCard) */}
       <InfoCard
-        title={t('nuiyanzhiPage.vision.title')}
-        text={t('nuiyanzhiPage.vision.text')}
+        title={t("nuiyanzhiPage.vision.title")}
+        text={t("nuiyanzhiPage.vision.text")}
         imageSrc="/assets/1Hub/vision.webp"
-        imageAlt={t('nuiyanzhiPage.vision.imageAlt')}
+        imageAlt={t("nuiyanzhiPage.vision.imageAlt")}
       />
 
       {/* Section: The Guardians (InfoCardRightImage) */}
       <InfoCardRightImage
-        title={t('nuiyanzhiPage.guardians.title')}
-        text={t('nuiyanzhiPage.guardians.text')}
+        title={t("nuiyanzhiPage.guardians.title")}
+        text={t("nuiyanzhiPage.guardians.text")}
         imageSrc="/assets/1Hub/guardians.webp"
-        imageAlt={t('nuiyanzhiPage.guardians.imageAlt')}
+        imageAlt={t("nuiyanzhiPage.guardians.imageAlt")}
       />
 
       {/* Section: The Land (InfoCard) */}
       <InfoCard
-        title={t('nuiyanzhiPage.land.title')}
-        text={t('nuiyanzhiPage.land.text')}
+        title={t("nuiyanzhiPage.land.title")}
+        text={t("nuiyanzhiPage.land.text")}
         imageSrc="/assets/1Hub/land.webp"
         showPopupButton={true}
       />
 
-      <NFTGrid />
+      {campaignsLoading && <NatureSpinner />}
+
+      {!campaignsLoading &&
+        (campaigns.length === 0 ? (
+          // TODO: improve this message
+          <p className="text-lg text-gray-500">No campaigns available.</p>
+        ) : (
+          campaigns.map((campaign) => (
+            <NFTGrid key={campaign.id} campaign={campaign} />
+          ))
+        ))}
       {/* Section: FAQ */}
       <FAQ
-        faqItems={t('nuiyanzhiPage.faq.items', { returnObjects: true }) as any[]}
+        faqItems={
+          t("nuiyanzhiPage.faq.items", { returnObjects: true }) as any[]
+        }
       />
       <Footer />
     </>
   );
 };
 
-export default NuiyanzhiPage; 
+export default NuiyanzhiPage;
