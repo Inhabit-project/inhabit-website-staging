@@ -10,7 +10,8 @@ type Props = {
   collectionId: string;
 };
 
-export default function OtherCollections({ collectionId }: Props): JSX.Element {
+export default function OtherCollections(props: Props): JSX.Element {
+  const { collectionId } = props;
   const { t } = useTranslation();
   const { campaign, campaignLoading } = useStore();
 
@@ -120,16 +121,11 @@ export default function OtherCollections({ collectionId }: Props): JSX.Element {
               </div>
               <Link
                 to={`/membership/${collection.campaignId}/${collection.id}`}
-                state={{ campaign, collection }}
-                className="btn-primary-n w-full flex items-center justify-center group"
-                aria-label={t(
-                  "mainPage.nftGrid.checkoutNFT",
-                  "Checkout TITI NFT"
-                )}
+                state={{ campaign, collection, skipTransition: true }}
+                onMouseUp={(e) => e.currentTarget.blur()}
+                className="btn-primary-nfocus w-full flex items-center justify-center"
               >
-                <span className="btn-primary w-full flex items-center justify-center group">
-                  {t("mainPage.nftGrid.checkThisNFT")}
-                </span>
+                {t("mainPage.nftGrid.checkThisNFT")}
               </Link>
             </div>
           </div>

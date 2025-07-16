@@ -73,16 +73,19 @@ const App: React.FC = () => {
     }
   }, [isLoading]);
 
-  // Handle page transitions
   useEffect(() => {
     if (location !== pendingLocation) {
+      if ((location.state as any)?.skipTransition) {
+        setPendingLocation(location); // actualiza ruta sin overlay
+        return;
+      }
       setShowTransition(true);
-      setTransitionIn(false); // Start with cover
-      setPageReady(false); // Reset page ready on navigation
+      setTransitionIn(false);
+      setPageReady(false);
       setTimeout(() => {
         setPendingLocation(location);
-        setTransitionIn(true); // Reveal
-      }, 1200); // match animation duration (1.2s)
+        setTransitionIn(true);
+      }, 1200);
     }
   }, [location]);
 

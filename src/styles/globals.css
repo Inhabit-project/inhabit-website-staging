@@ -5,10 +5,12 @@
 /* Todo: translate de comments to english */
 @layer base {
   :root {
-    background-color: linear-gradient(90deg,
-    #deedcb 2.26%,
-    #f6ffea 50.64%,
-    #deedcb 99.01%);
+    background-color: linear-gradient(
+      90deg,
+      #deedcb 2.26%,
+      #f6ffea 50.64%,
+      #deedcb 99.01%
+    );
     /* Base sizes */
     --font-size-4xl: clamp(2.5rem, 4vw + 1.5rem, 6.875rem);
     /* 40px to 110px */
@@ -330,7 +332,6 @@
 }
 
 @layer components {
-
   /* Heading Styles 
   .heading-1 {
     font-family: "Montserrat", sans-serif;
@@ -470,6 +471,14 @@
     color: var(--color-secondary);
   }
 
+  .btn-primary-nfocus {
+    @apply btn-primary;
+  }
+  .btn-primary-nfocus:focus:not(:hover) {
+    background: var(--color-accent);
+    color: var(--color-light);
+  }
+
   .btn-primary svg {
     stroke: var(--color-light);
     fill: none;
@@ -485,7 +494,6 @@
     background: #bdbdbd;
     color: #f6ffea;
     cursor: not-allowed;
-
   }
 
   .btn-primary.inactive svg,
@@ -1167,7 +1175,6 @@
 }
 
 @keyframes blink {
-
   0%,
   100% {
     opacity: 0.7;
@@ -1257,5 +1264,3 @@ body,
 .loader-fade-in {
   @apply opacity-0 animate-loaderFadeIn;
 }
-
-
