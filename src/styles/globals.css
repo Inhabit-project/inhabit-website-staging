@@ -474,6 +474,7 @@
   .btn-primary-nfocus {
     @apply btn-primary;
   }
+
   .btn-primary-nfocus:focus:not(:hover) {
     background: var(--color-accent);
     color: var(--color-light);
@@ -1198,6 +1199,7 @@
   transition: none;
   will-change: transform;
   background: none;
+  z-index: 2147483647;
 }
 
 .cursor img {

@@ -192,7 +192,9 @@ const App: React.FC = () => {
     <LoadingContext.Provider value={isLoading}>
       <ScrollToTop />
       <div
-        className={`app-container ${isTransitioning ? "transitioning" : ""}`}
+        className={`cursor-default app-container ${
+          isTransitioning ? "transitioning" : ""
+        }`}
       >
         {isLoading && (
           <Loader
