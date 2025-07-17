@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { gsap, ScrollTrigger } from "../utils/gsap";
 import { LoadingContext } from "../App";
+import { useStore } from "@/store";
+import { Link } from "react-router-dom";
 
 const CTA: React.FC = () => {
   const { t } = useTranslation();
@@ -15,6 +17,10 @@ const CTA: React.FC = () => {
   const mainContentRef = useRef<HTMLDivElement>(null); // blur+image
   const textGroupRef = useRef<HTMLDivElement>(null); // title+buttons
   const imageContainerRef = useRef<HTMLDivElement>(null); // image only
+
+  // external hooks
+  const { lastCampaign } = useStore();
+  const firstCollection = lastCampaign?.collections[0];
 
   // Set initial states on mount
   useEffect(() => {
@@ -171,12 +177,16 @@ const CTA: React.FC = () => {
                     </div>
                   </button>
                   {/* Secondary Button (Green) */}
-                  <button
-                    onClick={() =>
-                      (window.location.href = "mailto:hello@inhabit.earth")
-                    }
+                  <Link
+                    to={`/membership/${firstCollection?.campaignId}/${firstCollection?.id}`}
+                    state={{
+                      lastCampaign,
+                      firstCollection,
+                      skipTransition: true,
+                    }}
+                    onMouseUp={(e) => e.currentTarget.blur()}
                     className="btn-secondary flex items-center h-[4.2rem] bg-[var(--color-green-soft)] hover:bg-[var(--color-accent)] text-secondary hover:text-light rounded-button backdrop-blur-sm transition-all duration-200 group no-underline"
-                    aria-label={t("mainPage.cta.becomeGuardian")}
+                    aria-label="Explore Nuiyanzhi Hub"
                   >
                     <div className="flex items-center gap-2 px-4 md:px-6">
                       <img
@@ -206,7 +216,7 @@ const CTA: React.FC = () => {
                         />
                       </svg>
                     </div>
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
