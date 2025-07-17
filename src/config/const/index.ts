@@ -9,43 +9,36 @@ import { celo, celoAlfajores } from "viem/chains";
 import { SiweMessage } from "siwe";
 import { Address, zeroAddress } from "viem";
 
-export const IS_PRODUCTION: string = ensureEnvVar(
-  import.meta.env.VITE_IS_PRODUCTION,
-  "VITE_IS_PRODUCTION"
-);
+export const ENV: string = ensureEnvVar(import.meta.env.VITE_ENV, "VITE_ENV");
 
-export const CHAIN = IS_PRODUCTION === "true" ? celo : celoAlfajores;
+export const CHAIN = ENV === "prod" ? celo : celoAlfajores;
 
 export const ALFAJORES_SCAN_URL = "https://alfajores.celoscan.io";
 
 export const CELO_SCAN_URL = "https://explorer.celo.org";
 
 export const SCAN_URL = (address: Address) =>
-  IS_PRODUCTION === "true"
+  ENV === "prod"
     ? `${CELO_SCAN_URL}/address/${address}`
     : `${ALFAJORES_SCAN_URL}/address/${address}`;
 
 export const HTTP_TRANSPORT =
-  IS_PRODUCTION === "true"
+  ENV === "prod"
     ? "https://forno.celo.org"
     : "https://alfajores-forno.celo-testnet.org";
 
 export const INHABIT_JSON =
-  IS_PRODUCTION === "true" ? InhabitCeloJson : InhabitAlfajoresJson;
+  ENV === "prod" ? InhabitCeloJson : InhabitAlfajoresJson;
 
-export const USDC_JSON =
-  IS_PRODUCTION === "true" ? usdcCeloJson : usdcAlfajoresJson;
+export const USDC_JSON = ENV === "prod" ? usdcCeloJson : usdcAlfajoresJson;
 
-export const USDT_JSON =
-  IS_PRODUCTION === "true" ? usdtCeloJson : usdtAlfajoresJson;
+export const USDT_JSON = ENV === "true" ? usdtCeloJson : usdtAlfajoresJson;
 
 // SiweMessage
 
-export const DOMAIN =
-  IS_PRODUCTION === "true" ? "https://inhabit.one" : "http://localhost:5174";
+export const DOMAIN = ensureEnvVar(import.meta.env.VITE_DOMAIN, "VITE_DOMAIN");
 
-export const URI =
-  IS_PRODUCTION === "true" ? "https://inhabit.one" : "http://localhost:5174";
+export const URI = DOMAIN;
 
 // TODO: implement i18n support for the statement
 export const SIWE_MESSAGE = new SiweMessage({
@@ -61,7 +54,7 @@ export const SIWE_MESSAGE = new SiweMessage({
 
 // KYC
 
-export const KYC_HARD_AMOUNT_USD: number = IS_PRODUCTION === "true" ? 1000 : 3;
+export const KYC_HARD_AMOUNT_USD: number = ENV === "prod" ? 1000 : 3;
 
 export const MUST_DO_KYC_HARD = (price: number): boolean => {
   return price >= KYC_HARD_AMOUNT_USD;

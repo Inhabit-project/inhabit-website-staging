@@ -6,7 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "@rainbow-me/rainbowkit/styles.css";
 import { ensureEnvVar } from "../utils/ensure-env-var.util";
-import { IS_PRODUCTION } from "./const";
+import { ENV } from "./const";
+import { JSX } from "react";
 
 export function RainbowKitProviderConfig({
   children,
@@ -23,7 +24,7 @@ export function RainbowKitProviderConfig({
   const config = getDefaultConfig({
     appName,
     projectId,
-    chains: [IS_PRODUCTION === "true" ? celo : celoAlfajores],
+    chains: [ENV === "prod" ? celo : celoAlfajores],
     ssr: true,
   });
 
