@@ -66,7 +66,7 @@ export class InhabitContract extends BaseContract {
   async getGroup(campaignId: number, referral: string) {
     try {
       const contract = this.getReadContract();
-      const dto = (await contract.read.getGroupByCampaignIdAndReferral([
+      const dto = (await contract.read.getGroup([
         BigInt(campaignId),
         keccak256(toBytes(referral)),
       ])) as GroupDto;
