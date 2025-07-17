@@ -19,7 +19,6 @@ type Props = {
   goNext: VoidFunction;
 };
 
-// TODO: clean form data on submit success
 export function Checkout(props: Props): JSX.Element {
   const schema = z
     .object({

@@ -31,11 +31,26 @@
     "service3": "Service 3"
   },
   "contact": {
-    "title": "Contact Us",
-    "name": "Name",
-    "email": "Email",
-    "message": "Message",
-    "send": "Send"
+    "title": "Contact us",
+    "successMessage": "Your message has been sent successfully!",
+    "form": {
+      "name": "Name*",
+      "email": "E-Mail*",
+      "message": "Message",
+      "namePlaceholder": "Enter your name",
+      "emailPlaceholder": "your@email.com",
+      "messagePlaceholder": "How can we help?",
+      "send": "SEND MESSAGE",
+      "sending": "Sending...",
+      "errors": {
+        "nameRequired": "Name is required.",
+        "emailRequired": "E-mail is required.",
+        "emailInvalid": "Please enter a valid e-mail address.",
+        "messageRequired": "Message is required."
+      },
+      "cooldown": "Please wait {{time}} before sending another message.",
+      "cooldownBtn": "Please wait..."
+    }
   },
   "aboutUsPage": {
     "eyebrow": "Builders, Visionaries, Regenerators.",
@@ -76,7 +91,7 @@
         "name": "Santiago Viana",
         "role": "Ecologist and Web3 developer, consecutive winner of the Funding the Commons hackathon in 2023 and 2024. Organizer and educator of open educational programs on blockchain in EVM environments, as well as ongoing courses at universities in Bogotá."
       },
-      
+
       {
         "name": "Gaia Pagano",
         "role": "Bachelor of Social Sciences, Master in Innovation and Development, Human Rights and Culture of Peace. Coordinator at Pontificia Universidad Javeriana, 12+ years in peace and reconciliation, intercultural relations, and dialogue projects with indigenous and Afro-descendant communities."
@@ -101,7 +116,6 @@
         "name": "Fernanda Herrera",
         "role": "Visual designer with 12 years of experience in the field of digital project development, working as UI and UX designer for websites and applications, many of these websites have been fully developed from the conceptualization phase of the design to the code development itself, usually using Html5, css3 and basic javascript or CMS like wordpress, webflow, etc. I have basic knowledge in frameworks such as vue, react, angular, python and ruby on rails, microintreactions and advanced web animations."
       }
-      
     ]
   },
   "hubsMain": {
@@ -887,7 +901,7 @@
       ]
     }
   },
-  
+
   "termsAndConditionsPage": {
     "title": "Terms of Use",
     "strong": "and Conditions",
@@ -1005,4 +1019,4 @@
       }
     ]
   }
-} 
+}

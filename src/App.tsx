@@ -26,7 +26,7 @@ import AguaDeLunaPage from "@/pages/AguaDeLunaPage";
 import FourOhFourPage from "@/pages/404";
 import TermsAndConditionsPage from "@/pages/TermsAndConditionsPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
-import ContactPage from "@/pages/ContactPage";
+import ContactPage from "@/pages/ContactUs";
 import ProjectsPage from "@/pages/ProjectsPage";
 import ArticlePage from "@/pages/ArticlePage";
 import Cursor from "./utils/cursor";

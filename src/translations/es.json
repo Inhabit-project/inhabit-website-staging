@@ -31,11 +31,26 @@
     "service3": "Servicio 3"
   },
   "contact": {
-    "title": "Contáctenos",
-    "name": "Nombre",
-    "email": "Correo electrónico",
-    "message": "Mensaje",
-    "send": "Enviar"
+    "title": "Contáctanos",
+    "successMessage": "¡Tu mensaje se envió correctamente!",
+    "form": {
+      "name": "Nombre*",
+      "email": "Correo electrónico*",
+      "message": "Mensaje",
+      "namePlaceholder": "Ingresa tu nombre",
+      "emailPlaceholder": "tu@email.com",
+      "messagePlaceholder": "¿En qué podemos ayudarte?",
+      "send": "ENVIAR MENSAJE",
+      "sending": "Enviando...",
+      "errors": {
+        "nameRequired": "El nombre es obligatorio.",
+        "emailRequired": "El correo electrónico es obligatorio.",
+        "emailInvalid": "Ingresa un correo electrónico válido.",
+        "messageRequired": "El mensaje es obligatorio."
+      },
+      "cooldown": "Debes esperar {{time}} antes de enviar otro mensaje.",
+      "cooldownBtn": "Espera por favor..."
+    }
   },
   "aboutUsPage": {
     "eyebrow": "Constructores, Visionarios, Regeneradores.",
@@ -72,7 +87,7 @@
         "name": "Santiago Viana",
         "role": "Ecólogo y desarrollador Web3, ganador consecutivo del hackathon Funding the Commons en 2023 y 2024. Organizador y educador de programas educativos abiertos sobre blockchain en entornos EVM, así como de cursos permanentes en universidades de Bogotá."
       },
-      
+
       {
         "name": "Gaia Pagano",
         "role": "Licenciada en Ciencias Sociales, Máster en Innovación y Desarrollo, Derechos Humanos y Cultura de Paz. Coordinadora en la Pontificia Universidad Javeriana, más de 12 años en proyectos de paz y reconciliación, relaciones interculturales y diálogo con comunidades indígenas y afrodescendientes."
@@ -567,7 +582,7 @@
         "name": "Santiago Viana",
         "role": "Ecólogo y desarrollador Web3, ganador consecutivo del hackathon Funding the Commons en 2023 y 2024. Organizador y educador de programas educativos abiertos sobre blockchain en entornos EVM, así como de cursos permanentes en universidades de Bogotá."
       },
-      
+
       {
         "name": "Gaia Pagano",
         "role": "Licenciada en Ciencias Sociales, Máster en Innovación y Desarrollo, Derechos Humanos y Cultura de Paz. Coordinadora en la Pontificia Universidad Javeriana, más de 12 años en proyectos de paz y reconciliación, relaciones interculturales y diálogo con comunidades indígenas y afrodescendientes."
