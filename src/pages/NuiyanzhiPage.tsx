@@ -1,35 +1,54 @@
-import React, { useEffect } from "react";
+import React, { JSX, useEffect, useRef } from "react";
 import Menu from "../components/Menu";
 import InternalPagesHero from "../components/InternalPagesHero";
 import InfoCard, { InfoCardRightImage } from "../components/InfoCard";
 import FAQ, { FAQWhite } from "../components/FAQ";
-import CriteriaCardsSection from "../components/CriteriaCardsSection";
 import NFTGrid from "../components/NFTGrid";
-import NFTComparisonTable from "../components/NFTComparisonTable";
 import Footer from "../components/Footer";
 import { useTranslation } from "react-i18next";
 import ImageSection from "../components/ImageSection";
 import { NatureSpinner } from "@/ui/Loader";
 import { useStore } from "@/store";
 
-interface NuiyanzhiPageProps {
+interface Props {
   onPageReady?: () => void;
   onHeroImageLoad?: () => void;
+  scrollToSection?: string | null;
 }
 
-const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({
-  onPageReady,
-  onHeroImageLoad,
-}) => {
+export default function NuiyanzhiPage(props: Props): JSX.Element {
   const { t } = useTranslation();
 
+  // props
+  const { onPageReady, onHeroImageLoad, scrollToSection } = props;
+
+  // external hooks
   const { campaigns, campaignsLoading, getCampaigns } = useStore();
+
+  // variables
+  const nftGridRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (campaigns.length === 0) {
       getCampaigns();
     }
   }, []);
+
+  useEffect(() => {
+    if (
+      scrollToSection === "nftGrid" &&
+      nftGridRef.current &&
+      !campaignsLoading &&
+      campaigns.length > 0
+    ) {
+      const offset = -100;
+      const y =
+        nftGridRef.current.getBoundingClientRect().top +
+        window.scrollY +
+        offset;
+      window.scrollTo({ top: y, behavior: "auto" });
+    }
+  }, [scrollToSection, campaignsLoading, campaigns]);
 
   useEffect(() => {
     if (onPageReady) onPageReady();
@@ -94,17 +113,18 @@ const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({
         showPopupButton={true}
       />
 
-      {campaignsLoading && <NatureSpinner />}
+      <section aria-label="Available NFTs" ref={nftGridRef}>
+        {campaignsLoading && <NatureSpinner />}
 
-      {!campaignsLoading &&
-        (campaigns.length === 0 ? (
-          // TODO: improve this message
-          <p className="text-lg text-gray-500">No campaigns available.</p>
-        ) : (
-          campaigns.map((campaign) => (
-            <NFTGrid key={campaign.id} campaign={campaign} />
-          ))
-        ))}
+        {!campaignsLoading &&
+          (campaigns.length === 0 ? (
+            <p className="text-lg text-gray-500">No campaigns available.</p>
+          ) : (
+            campaigns.map((campaign) => (
+              <NFTGrid key={campaign.id} campaign={campaign} />
+            ))
+          ))}
+      </section>
       {/* Section: FAQ */}
       <FAQ
         faqItems={
@@ -114,6 +134,4 @@ const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({
       <Footer />
     </>
   );
-};
-
-export default NuiyanzhiPage;
+}

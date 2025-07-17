@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import { JSX, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import Menu from "../components/Menu";
 import InternalPagesHero from "../components/InternalPagesHero";
 import CTA from "../components/CTA";
 import Blog from "../components/Blog";
-import FAQ, { FAQStewardshipNFT } from "../components/FAQ";
+import { FAQStewardshipNFT } from "../components/FAQ";
 import Footer from "../components/Footer";
 import ImageSection from "../components/ImageSection";
 import StewardshipNFTBenefitsSection from "../components/StewardshipNFTBenefitsSection";
@@ -15,24 +15,46 @@ import NFTGrid from "../components/NFTGrid";
 import { NatureSpinner } from "@/ui/Loader";
 import { useStore } from "@/store";
 
-interface StewardshipNFTPageProps {
+interface Props {
   onPageReady?: () => void;
   onHeroImageLoad?: () => void;
+  scrollToSection?: string | null;
 }
 
-const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({
-  onPageReady,
-  onHeroImageLoad,
-}) => {
+export default function StewardshipNFTPage(props: Props): JSX.Element {
   const { t } = useTranslation();
 
+  // props
+  const { onPageReady, onHeroImageLoad, scrollToSection } = props;
+
+  // external hooks
   const { campaigns, campaignsLoading, getCampaigns } = useStore();
 
+  // variables
+  const nftGridRef = useRef<HTMLElement>(null);
+
+  // effects
   useEffect(() => {
     if (campaigns.length === 0) {
       getCampaigns();
     }
   }, []);
+
+  useEffect(() => {
+    if (
+      scrollToSection === "nftGrid" &&
+      nftGridRef.current &&
+      !campaignsLoading &&
+      campaigns.length > 0
+    ) {
+      const offset = -100;
+      const y =
+        nftGridRef.current.getBoundingClientRect().top +
+        window.scrollY +
+        offset;
+      window.scrollTo({ top: y, behavior: "auto" });
+    }
+  }, [scrollToSection, campaignsLoading, campaigns]);
 
   useEffect(() => {
     if (onPageReady) onPageReady();
@@ -84,7 +106,7 @@ const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({
           <section aria-label="Stewardship NFT criteria">
             <FourCriteriaHubGlobal />
           </section>
-          <section aria-label="Available Stewardship NFTs">
+          <section aria-label="Available Stewardship NFTs" ref={nftGridRef}>
             {campaignsLoading && <NatureSpinner />}
 
             {!campaignsLoading &&
@@ -111,6 +133,4 @@ const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({
       </div>
     </>
   );
-};
-
-export default StewardshipNFTPage;
+}

@@ -8,7 +8,6 @@ import Loader from "@/components/Loader";
 import { scrollManager } from "@/utils/scrollManager";
 import PageTransition from "@/components/PageTransition";
 import { useLocation } from "react-router-dom";
-import { useScrollToTopOnNavigation } from "@/utils/scrollToTopOnNavigation";
 import ScrollToTop from "@/components/ScrollToTop";
 import { useNavigationType } from "react-router-dom";
 
@@ -53,9 +52,9 @@ const App: React.FC = () => {
   const shouldScrollToNFTGrid =
     navigationType === "POP" && prevPath.current.startsWith("/membership");
 
-  // useEffect(() => {
-  //   prevPath.current = location.pathname;
-  // }, [location]);
+  useEffect(() => {
+    prevPath.current = location.pathname;
+  }, [location]);
 
   // Only allow loader to finish when both hero image and timer are done
   useEffect(() => {
@@ -105,13 +104,25 @@ const App: React.FC = () => {
   // Scroll to top only after both transition and page are ready
   useEffect(() => {
     if (transitionIn && pageReady) {
+      console.log(
+        "[APP] transitionIn && pageReady – shouldScrollToNFTGrid:",
+        shouldScrollToNFTGrid
+      );
+
       setShowTransition(false);
+
       requestAnimationFrame(() => {
-        if (scrollManager && typeof scrollManager.scrollTo === "function") {
-          scrollManager.scrollTo(0, { immediate: true });
-        } else {
-          window.scrollTo({ top: 0, behavior: "auto" });
+        /*  ⬇️  NO subas si venimos de /membership */
+        if (!shouldScrollToNFTGrid) {
+          // ——— este bloque completo queda dentro —
+          if (scrollManager && typeof scrollManager.scrollTo === "function") {
+            scrollManager.scrollTo(0, { immediate: true });
+          } else {
+            window.scrollTo({ top: 0, behavior: "auto" });
+          }
         }
+
+        // refresca ScrollTrigger igual
         setTimeout(() => {
           import("./utils/gsap").then(({ ScrollTrigger }) => {
             ScrollTrigger.refresh();
@@ -119,7 +130,7 @@ const App: React.FC = () => {
         }, 100);
       });
     }
-  }, [transitionIn, pageReady]);
+  }, [transitionIn, pageReady, shouldScrollToNFTGrid]);
 
   const handleTransitionComplete = () => {
     // No-op: scroll now handled in useEffect above
@@ -203,7 +214,8 @@ const App: React.FC = () => {
 
   return (
     <LoadingContext.Provider value={isLoading}>
-      <ScrollToTop />
+      {!shouldScrollToNFTGrid && <ScrollToTop />}
+
       <div
         className={`cursor-default app-container ${
           isTransitioning ? "transitioning" : ""
@@ -254,6 +266,7 @@ const App: React.FC = () => {
               <StewardshipNFTPage
                 {...pageProps}
                 onHeroImageLoad={handleHeroImageLoad}
+                scrollToSection={shouldScrollToNFTGrid ? "nftGrid" : null}
               />
             }
           />
@@ -269,6 +282,7 @@ const App: React.FC = () => {
               <NuiyanzhiPage
                 {...pageProps}
                 onHeroImageLoad={handleHeroImageLoad}
+                scrollToSection={shouldScrollToNFTGrid ? "nftGrid" : null}
               />
             }
           />
