@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import confetti from "canvas-confetti";
+import { useApiContact } from "@/hooks/api/contact";
+import { ContactDto } from "@/services/dtos/contact.dto";
 
 const COOLDOWN_KEY = "contactFormCooldown"; // localStorage key
 const COOLDOWN_SEC = 180; // 3 min
@@ -46,6 +48,46 @@ export function SendMessage(props: Props): JSX.Element {
     reset,
   } = useForm<Form>({ resolver: zodResolver(schema), mode: "onChange" });
 
+  const { contact: contactHook } = useApiContact();
+  const { mutate: contact, isPending: isContacting } = contactHook;
+
+  // variables
+  const formDisabled = isSubmitting || isContacting || cooldown > 0;
+
+  // functions
+  const onContact = (data: Form) => {
+    const params: ContactDto = {
+      email: data.email,
+      name: data.name,
+      message: data.message,
+    };
+
+    contact(params, {
+      onSuccess: () => {
+        alert("✅ " + t("contact.successMessage"));
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
+        // inicia cool‑down
+        const expiresAt = Date.now() + COOLDOWN_SEC * 1000;
+        localStorage.setItem(COOLDOWN_KEY, expiresAt.toString());
+        setCooldown(COOLDOWN_SEC);
+
+        reset();
+      },
+      onError: (error) => {
+        console.error("❌", error);
+        alert(t("contact.errors.generic"));
+      },
+    });
+  };
+
+  const onError = (formErrors: Record<string, { message?: string }>) => {
+    const msgs = Object.values(formErrors)
+      .map((e) => e.message)
+      .filter(Boolean) as string[];
+    if (msgs.length) alert(msgs.join("\n"));
+  };
+
   // effects
   useEffect(() => {
     const saved = localStorage.getItem(COOLDOWN_KEY);
@@ -73,39 +115,6 @@ export function SendMessage(props: Props): JSX.Element {
     return () => clearInterval(id);
   }, [cooldown]);
 
-  // functions
-  const onSubmit = async (data: Form) => {
-    if (cooldown > 0) {
-      const mm = Math.floor(cooldown / 60)
-        .toString()
-        .padStart(1, "0");
-      const ss = (cooldown % 60).toString().padStart(2, "0");
-      alert(
-        t("contact.form.cooldown", { time: `${mm}:${ss}` }) // i18n key
-      );
-      return;
-    }
-
-    console.log("Form submitted:", data);
-
-    alert("✅ " + t("contact.successMessage"));
-    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-
-    // inicia cool‑down
-    const expiresAt = Date.now() + COOLDOWN_SEC * 1000;
-    localStorage.setItem(COOLDOWN_KEY, expiresAt.toString());
-    setCooldown(COOLDOWN_SEC);
-
-    reset();
-  };
-
-  const onError = (formErrors: Record<string, { message?: string }>) => {
-    const msgs = Object.values(formErrors)
-      .map((e) => e.message)
-      .filter(Boolean) as string[];
-    if (msgs.length) alert(msgs.join("\n"));
-  };
-
   return (
     <section
       ref={formRef}
@@ -115,9 +124,9 @@ export function SendMessage(props: Props): JSX.Element {
 
       <form
         className="flex flex-col gap-4"
-        onSubmit={handleSubmit(onSubmit, onError)}
+        onSubmit={handleSubmit(onContact, onError)}
       >
-        <fieldset disabled={isSubmitting || cooldown > 0} className="contents">
+        <fieldset disabled={formDisabled} className="contents">
           {/* Name */}
           <div>
             <label className="body-S block text-light font-semibold mb-1">
@@ -161,9 +170,9 @@ export function SendMessage(props: Props): JSX.Element {
           <button
             className="btn-secondary w-full mt-2"
             type="submit"
-            disabled={isSubmitting || cooldown > 0}
+            disabled={isSubmitting || isContacting || cooldown > 0}
           >
-            {isSubmitting
+            {isSubmitting || isContacting
               ? t("contact.form.sending")
               : cooldown > 0
               ? `${t("contact.form.cooldown", {
