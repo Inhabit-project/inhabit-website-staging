@@ -45,19 +45,10 @@ export default function OtherCollections(props: Props): JSX.Element {
           role="listitem"
         >
           <div className="absolute top-4 right-4 hover-scale-up">
-            <a
-              href={
-                typeof SCAN_URL === "function"
-                  ? SCAN_URL(collection.address || "") || ""
-                  : ""
-              }
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary-n w-full flex items-center justify-center group"
-              aria-label={t(
-                "mainPage.nftGrid.checkoutNFT",
-                "Checkout TITI NFT"
-              )}
+            <Link
+              to={`/membership/${collection.campaignId}/${collection.id}`}
+              state={{ campaign, collection, skipTransition: true }}
+              onMouseUp={(e) => e.currentTarget.blur()}
             >
               <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
                 <svg
@@ -84,7 +75,7 @@ export default function OtherCollections(props: Props): JSX.Element {
                   />
                 </svg>
               </div>
-            </a>
+            </Link>
           </div>
           <div
             className="absolute inset-0 rounded-[var(--radius-2xl)] opacity-80"
