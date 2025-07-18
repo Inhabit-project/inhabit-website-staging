@@ -308,6 +308,8 @@
         },
         "subscribing": "Subscribing...",
         "subscribe": "Subscribe",
+        "success": "Thank you for subscribing!",
+        "error": "Oops! Something went wrong. Please try again.",
         "join_newsletter": "Join newsletter"
       },
       "acceptPolicy": "I accept the privacy policy",

@@ -397,6 +397,8 @@
         },
         "subscribing": "Suscribiéndose...",
         "subscribe": "Subcríbase",
+        "success": "¡Gracias por suscribirte!",
+        "error": "Hubo un error. Por favor, inténtalo de nuevo más tarde.",
         "join_newsletter": "Suscribirse al boletín"
       },
       "acceptPolicy": "Acepto la política de privacidad",

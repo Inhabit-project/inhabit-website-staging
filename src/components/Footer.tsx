@@ -1,21 +1,47 @@
-import React, { useRef, useEffect, useContext, useState } from 'react';
+import React, { useRef, useEffect, useContext, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Formik } from "formik";
-import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
 import { subscribeToMailchimp } from "@/services/mailchimpService";
-import { handleNewsletterSubmit } from "@/utils/newsletter";
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { LoadingContext } from '../App';
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { LoadingContext } from "../App";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Footer: React.FC = () => {
   const { t } = useTranslation();
+
+  const schema = useMemo(
+    () =>
+      z.object({
+        email: z
+          .string()
+          .trim()
+          .email(t("mainPage.footer.newsletter.email.validations.invalid"))
+          .min(5, t("mainPage.footer.newsletter.email.validations.required")),
+        privacy: z
+          .boolean()
+          .refine(
+            (val) => val,
+            t("mainPage.footer.newsletter.privacy.validations.required")
+          ),
+      }),
+    [t]
+  );
+
+  type Form = z.infer<typeof schema>;
+
+  // hooks
   const isLoading = useContext(LoadingContext);
   const [canAnimate, setCanAnimate] = useState(false);
-  
-  // Refs for animations
+
+  // -------------------------
+  // Animation refs
+  // -------------------------
   const footerRef = useRef<HTMLElement>(null);
   const logoRef = useRef<HTMLImageElement>(null);
   const connectRef = useRef<HTMLDivElement>(null);
@@ -27,113 +53,118 @@ const Footer: React.FC = () => {
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
-  // Set initial states on mount
+  // external hooks
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<Form>({
+    resolver: zodResolver(schema),
+    mode: "onChange",
+    defaultValues: { email: "", privacy: false },
+  });
+
+  // -------------------------
+  // Submit handler
+  // -------------------------
+  const onSubscribe = async (data: Form) => {
+    try {
+      await subscribeToMailchimp(data.email, i18n.language);
+      reset();
+      alert(t("mainPage.footer.newsletter.success"));
+    } catch (err) {
+      console.error("Mailchimp subscription error:", err);
+      alert(t("mainPage.footer.newsletter.error"));
+    }
+  };
+
+  // effects
+  // -------------------------
+  // GSAP initial state
+  // -------------------------
   useEffect(() => {
-    gsap.set(logoRef.current, {
-      opacity: 0,
-      y: 50
-    });
-    gsap.set([connectRef.current, locationRef.current, newsletterRef.current, socialRef.current, menuRef.current], {
-      opacity: 0,
-      y: 50
-    });
-    gsap.set(copyrightRef.current, {
-      opacity: 0,
-      y: 20
-    });
+    gsap.set(logoRef.current, { opacity: 0, y: 50 });
+    gsap.set(
+      [
+        connectRef.current,
+        locationRef.current,
+        newsletterRef.current,
+        socialRef.current,
+        menuRef.current,
+      ],
+      { opacity: 0, y: 50 }
+    );
+    gsap.set(copyrightRef.current, { opacity: 0, y: 20 });
   }, []);
 
-  // Handle loading state change
+  // -------------------------
+  // Loading → animation gate
+  // -------------------------
   useEffect(() => {
     if (!isLoading) {
-      const timer = setTimeout(() => {
-        setCanAnimate(true);
-      }, 1500);
+      const timer = setTimeout(() => setCanAnimate(true), 1500);
       return () => clearTimeout(timer);
-    } else {
-      setCanAnimate(false);
     }
+    setCanAnimate(false);
   }, [isLoading]);
 
-  // Handle animations
+  // -------------------------
+  // Scroll‑triggered animation
+  // -------------------------
   useEffect(() => {
     if (!canAnimate || !footerRef.current) return;
 
-    let ctx = gsap.context(() => {
-      // Kill existing timeline and scroll trigger if they exist
-      if (timelineRef.current) {
-        timelineRef.current.kill();
-      }
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.kill();
-      }
+    const ctx = gsap.context(() => {
+      timelineRef.current?.kill();
+      scrollTriggerRef.current?.kill();
 
-      // Create new timeline
       timelineRef.current = gsap.timeline({
         paused: true,
-        defaults: { ease: 'power3.out' }
+        defaults: { ease: "power3.out" },
       });
 
       timelineRef.current
-        .to(logoRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8
-        })
-        .to([connectRef.current, locationRef.current], {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.1
-        }, "-=0.4")
-        .to(newsletterRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8
-        }, "-=0.4")
-        .to(socialRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8
-        }, "-=0.4")
-        .to(menuRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8
-        }, "-=0.6")
-        .to(copyrightRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.6
-        }, "-=0.4");
+        .to(logoRef.current, { opacity: 1, y: 0, duration: 0.8 })
+        .to(
+          [connectRef.current, locationRef.current],
+          { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 },
+          "-=0.4"
+        )
+        .to(newsletterRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.4")
+        .to(socialRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.4")
+        .to(menuRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.6")
+        .to(copyrightRef.current, { opacity: 1, y: 0, duration: 0.6 }, "-=0.4");
 
-      // Create new scroll trigger
       scrollTriggerRef.current = ScrollTrigger.create({
         trigger: footerRef.current,
-        start: 'top 75%',
-        end: 'center center',
-        toggleActions: 'restart none none none',
+        start: "top 75%",
+        end: "center center",
+        toggleActions: "restart none none none",
         animation: timelineRef.current,
-        id: `footer-${Date.now()}` // Unique ID to avoid conflicts
+        id: `footer-${Date.now()}`,
       });
-      // Refresh ScrollTrigger after timeline is set up
+
       ScrollTrigger.refresh();
     }, footerRef);
 
     return () => {
-      ctx.revert(); // This will clean up all animations created in this context
-      if (timelineRef.current) timelineRef.current.kill();
-      if (scrollTriggerRef.current) scrollTriggerRef.current.kill();
+      ctx.revert();
+      timelineRef.current?.kill();
+      scrollTriggerRef.current?.kill();
     };
   }, [canAnimate]);
 
   return (
-    <footer ref={footerRef} className="relative w-full min-h-screen bg-secondary no-snap">
+    <footer
+      ref={footerRef}
+      className="relative w-full min-h-screen bg-secondary no-snap"
+    >
       {/* Background Image */}
       <div
         className="absolute inset-0 w-full h-full"
         style={{
-          backgroundImage: 'url("/assets/FOOTER.webp")',
+          backgroundImage: 'url("/assets/mainPage.FOOTER.webp")',
           backgroundSize: "cover",
           backgroundPosition: "center",
           opacity: 1,
@@ -146,18 +177,22 @@ const Footer: React.FC = () => {
         <div className="flex-1 flex flex-col lg:flex-row px-6 lg:px-0">
           {/* Left Side - Logo */}
           <div className="w-full lg:w-[45%] pt-16 lg:pl-[clamp(1.5rem,5vw,6.25rem)]">
-            <img ref={logoRef} src="/assets/figma-images/logo-footer.svg" alt="INHABIT" className="h-[4rem]" />
+            <img
+              ref={logoRef}
+              src="/assets/figma-images/logo-footer.svg"
+              alt="INHABIT"
+              className="h-[4rem]"
+            />
           </div>
 
           {/* Right Side Content */}
           <div className="w-full lg:w-[55%] flex flex-col mt-16 lg:mt-0">
-            {/* Main Content Area */}
             <div className="flex-1 flex flex-col lg:flex-row lg:pr-[clamp(1.5rem,5vw,6.25rem)] gap-16 lg:gap-24">
-              {/* Combined Section: Connect, Location, Newsletter, Social */}
+              {/* Combined Section */}
               <div className="w-full lg:w-[45%] flex flex-col justify-between lg:py-16">
                 {/* Top Group */}
                 <div className="space-y-8">
-                  {/* Connect Section */}
+                  {/* Connect */}
                   <div ref={connectRef}>
                     <h3 className="eyebrow text-light mb-2">
                       {t("mainPage.footer.connect")}
@@ -170,7 +205,7 @@ const Footer: React.FC = () => {
                     </a>
                   </div>
 
-                  {/* Location Section */}
+                  {/* Location */}
                   <div ref={locationRef}>
                     <h3 className="eyebrow text-light mb-2">
                       {t("mainPage.footer.location")}
@@ -181,141 +216,65 @@ const Footer: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Middle Group */}
+                {/* Newsletter */}
                 <div ref={newsletterRef} className="my-16 lg:my-0">
-                  {/* Newsletter Section */}
-                  <div>
-                    <h3 className="eyebrow text-light mb-2">
-                      {t("mainPage.footer.newsletter.title")}
-                    </h3>
-                    <p className="base-text text-light mb-4">
-                      {t("mainPage.footer.newsletter.text")}
-                    </p>
-                    <Formik
-                      initialValues={{ email: "", privacy: false }}
-                      validationSchema={Yup.object({
-                        email: Yup.string()
-                          .email(
-                            t(
-                              "mainPage.footer.newsletter.email.validations.invalid"
-                            )
-                          )
-                          .required(
-                            t(
-                              "mainPage.footer.newsletter.email.validations.required"
-                            )
-                          ),
-                        privacy: Yup.boolean().oneOf(
-                          [true],
-                          t(
-                            "mainPage.footer.newsletter.privacy.validations.required"
-                          )
-                        ),
-                      })}
-                      onSubmit={(values, actions) =>
-                        handleNewsletterSubmit(
-                          values,
-                          actions,
-                          t,
-                          subscribeToMailchimp,
-                          i18n.language
-                        )
-                      }
-                    >
-                      {({
-                        values,
-                        errors,
-                        touched,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        isSubmitting,
-                        status,
-                      }) => (
-                        <form
-                          onSubmit={handleSubmit}
-                          className="flex flex-col gap-3"
-                        >
-                          <input
-                            type="email"
-                            name="email"
-                            placeholder={t(
-                              "mainPage.footer.newsletter.email.placeholder"
-                            )}
-                            className="input-main"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.email}
-                          />
-                          {errors.email && touched.email && (
-                            <div className="text-orange-400 text-xs">
-                              {errors.email}
-                            </div>
-                          )}
-                          <label className="flex items-center gap-2 cursor-pointer">
-                            <div className="relative w-[1.125rem] h-[1.125rem] border-[0.5px] border-[#F6FFEA] rounded bg-white/5 backdrop-blur-lg">
-                              <input
-                                type="checkbox"
-                                name="privacy"
-                                className="absolute opacity-0 w-full h-full cursor-pointer"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                checked={values.privacy}
-                              />
-                              <span
-                                className={`absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none ${
-                                  values.privacy ? "" : "hidden"
-                                }`}
-                              >
-                                <svg
-                                  width="14"
-                                  height="14"
-                                  viewBox="0 0 14 14"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    d="M3 7L6 10L11 4"
-                                    stroke="#F6FFEA"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  />
-                                </svg>
-                              </span>
-                            </div>
-                            <span className="base-text text-light text-xs ">
-                              {t("mainPage.footer.acceptPolicy")}
-                            </span>
-                          </label>
-                          {errors.privacy && touched.privacy && (
-                            <div className="text-orange-400 text-xs">
-                              {errors.privacy}
-                            </div>
-                          )}
-                          <button
-                            type="submit"
-                            className="btn-primary-sm mt-2 w-[12rem]"
-                            disabled={isSubmitting}
-                          >
-                            {isSubmitting
-                              ? t("mainPage.footer.newsletter.subscribing")
-                              : t("mainPage.footer.newsletter.subscribe")}
-                          </button>
-                          {status && (
-                            <div className="text-green-400 text-xs mt-2">
-                              {status}
-                            </div>
-                          )}
-                        </form>
+                  <h3 className="eyebrow text-light mb-2">
+                    {t("mainPage.footer.newsletter.title")}
+                  </h3>
+                  <p className="base-text text-light mb-4">
+                    {t("mainPage.footer.newsletter.text")}
+                  </p>
+
+                  <form
+                    className="flex flex-col gap-4"
+                    onSubmit={handleSubmit(onSubscribe)}
+                  >
+                    {/* Email */}
+                    <input
+                      type="email"
+                      placeholder={t(
+                        "mainPage.footer.newsletter.email.placeholder"
                       )}
-                    </Formik>
-                  </div>
+                      className="input-main"
+                      {...register("email")}
+                    />
+                    {errors.email && (
+                      <div className="text-orange-400 text-xs">
+                        {errors.email.message}
+                      </div>
+                    )}
+
+                    {/* Privacy */}
+                    <label className="flex gap-2 items-start">
+                      <input
+                        type="checkbox"
+                        className="mt-1"
+                        {...register("privacy")}
+                      />
+                      <span className="base-text text-light">
+                        {t("mainPage.footer.acceptPolicy")}
+                      </span>
+                    </label>
+                    {errors.privacy && (
+                      <div className="text-orange-400 text-xs">
+                        {errors.privacy.message}
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      className="btn-primary-sm mt-2 w-[12rem]"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting
+                        ? t("mainPage.mainPage.footer.newsletter.subscribing")
+                        : t("mainPage.footer.newsletter.subscribe")}
+                    </button>
+                  </form>
                 </div>
 
-                {/* Bottom Group */}
+                {/* Social Links */}
                 <div ref={socialRef}>
-                  {/* Social Links */}
                   <div className="flex gap-12">
                     <a
                       href="https://x.com/Inhabit_Hubs"
@@ -369,7 +328,7 @@ const Footer: React.FC = () => {
                 </div>
               </div>
 
-              {/* Menu Section */}
+              {/* Menu */}
               <div ref={menuRef} className="w-full lg:w-[45%] lg:py-16">
                 <h3 className="eyebrow text-light mb-2">
                   {t("mainPage.footer.menu")}
@@ -401,8 +360,11 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Copyright Section */}
-        <div ref={copyrightRef} className="h-[5.5rem] px-6 lg:pl-[clamp(1.5rem,5vw,6.25rem)] flex items-center">
+        {/* Copyright */}
+        <div
+          ref={copyrightRef}
+          className="h-[5.5rem] px-6 lg:pl-[clamp(1.5rem,5vw,6.25rem)] flex items-center"
+        >
           <p className="nav-text text-light text-xs">
             {t("mainPage.footer.copyright")}
           </p>
