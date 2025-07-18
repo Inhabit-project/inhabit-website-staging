@@ -1,14 +1,15 @@
 import React, { useRef, useEffect, useContext, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { subscribeToMailchimp } from "@/services/mailchimpService";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LoadingContext } from "../App";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useApiNewsletter } from "@/hooks/api/newsletter";
+import { SubscriptionDto } from "@/services/dtos/subscription.dto";
+import confetti from "canvas-confetti";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -39,9 +40,6 @@ const Footer: React.FC = () => {
   const isLoading = useContext(LoadingContext);
   const [canAnimate, setCanAnimate] = useState(false);
 
-  // -------------------------
-  // Animation refs
-  // -------------------------
   const footerRef = useRef<HTMLElement>(null);
   const logoRef = useRef<HTMLImageElement>(null);
   const connectRef = useRef<HTMLDivElement>(null);
@@ -65,24 +63,33 @@ const Footer: React.FC = () => {
     defaultValues: { email: "", privacy: false },
   });
 
-  // -------------------------
-  // Submit handler
-  // -------------------------
+  const { subscribe: subscribeHook } = useApiNewsletter();
+  const { mutate: subscribe, isPending: isSubscribing } = subscribeHook;
+
+  // variables
+  const formDisabled = isSubmitting || isSubscribing;
+
+  // functions
   const onSubscribe = async (data: Form) => {
-    try {
-      await subscribeToMailchimp(data.email, i18n.language);
-      reset();
-      alert(t("mainPage.footer.newsletter.success"));
-    } catch (err) {
-      console.error("Mailchimp subscription error:", err);
-      alert(t("mainPage.footer.newsletter.error"));
-    }
+    const params: SubscriptionDto = {
+      email: data.email,
+    };
+
+    subscribe(params, {
+      onSuccess: () => {
+        alert("✅ " + t("mainPage.footer.newsletter.success"));
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        reset();
+      },
+
+      onError: (error) => {
+        console.error("❌", error);
+        alert(t("mainPage.footer.newsletter.error"));
+      },
+    });
   };
 
   // effects
-  // -------------------------
-  // GSAP initial state
-  // -------------------------
   useEffect(() => {
     gsap.set(logoRef.current, { opacity: 0, y: 50 });
     gsap.set(
@@ -98,9 +105,6 @@ const Footer: React.FC = () => {
     gsap.set(copyrightRef.current, { opacity: 0, y: 20 });
   }, []);
 
-  // -------------------------
-  // Loading → animation gate
-  // -------------------------
   useEffect(() => {
     if (!isLoading) {
       const timer = setTimeout(() => setCanAnimate(true), 1500);
@@ -109,9 +113,6 @@ const Footer: React.FC = () => {
     setCanAnimate(false);
   }, [isLoading]);
 
-  // -------------------------
-  // Scroll‑triggered animation
-  // -------------------------
   useEffect(() => {
     if (!canAnimate || !footerRef.current) return;
 
@@ -229,47 +230,49 @@ const Footer: React.FC = () => {
                     className="flex flex-col gap-4"
                     onSubmit={handleSubmit(onSubscribe)}
                   >
-                    {/* Email */}
-                    <input
-                      type="email"
-                      placeholder={t(
-                        "mainPage.footer.newsletter.email.placeholder"
-                      )}
-                      className="input-main"
-                      {...register("email")}
-                    />
-                    {errors.email && (
-                      <div className="text-orange-400 text-xs">
-                        {errors.email.message}
-                      </div>
-                    )}
-
-                    {/* Privacy */}
-                    <label className="flex gap-2 items-start">
+                    <fieldset disabled={formDisabled} className="contents">
+                      {/* Email */}
                       <input
-                        type="checkbox"
-                        className="mt-1"
-                        {...register("privacy")}
+                        type="email"
+                        placeholder={t(
+                          "mainPage.footer.newsletter.email.placeholder"
+                        )}
+                        className="input-main"
+                        {...register("email")}
                       />
-                      <span className="base-text text-light">
-                        {t("mainPage.footer.acceptPolicy")}
-                      </span>
-                    </label>
-                    {errors.privacy && (
-                      <div className="text-orange-400 text-xs">
-                        {errors.privacy.message}
-                      </div>
-                    )}
+                      {errors.email && (
+                        <div className="text-orange-400 text-xs">
+                          {errors.email.message}
+                        </div>
+                      )}
 
-                    <button
-                      type="submit"
-                      className="btn-primary-sm mt-2 w-[12rem]"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting
-                        ? t("mainPage.mainPage.footer.newsletter.subscribing")
-                        : t("mainPage.footer.newsletter.subscribe")}
-                    </button>
+                      {/* Privacy */}
+                      <label className="flex gap-2 items-start">
+                        <input
+                          type="checkbox"
+                          className="mt-1"
+                          {...register("privacy")}
+                        />
+                        <span className="base-text text-light">
+                          {t("mainPage.footer.acceptPolicy")}
+                        </span>
+                      </label>
+                      {errors.privacy && (
+                        <div className="text-orange-400 text-xs">
+                          {errors.privacy.message}
+                        </div>
+                      )}
+
+                      <button
+                        type="submit"
+                        className="btn-primary-sm mt-2 w-[12rem]"
+                        disabled={isSubmitting || isSubscribing}
+                      >
+                        {isSubmitting || isSubscribing
+                          ? t("mainPage.footer.newsletter.subscribing")
+                          : t("mainPage.footer.newsletter.subscribe")}
+                      </button>
+                    </fieldset>
                   </form>
                 </div>
 
