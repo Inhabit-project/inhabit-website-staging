@@ -30,6 +30,7 @@ export function VoucherStep(props: Props): JSX.Element {
     props;
 
   // hooks
+  const [isProcessing, setIsProcessing] = useState(false);
   const [cooldown, setCooldown] = useState<number>(0);
 
   // external hooks
@@ -45,17 +46,17 @@ export function VoucherStep(props: Props): JSX.Element {
     balance: usdcBalance,
     allowance: usdcAllowance,
     refetch: refetchUsdc,
-    approve: { mutate: approveUsdc, isPending: isApprovingUsdc },
+    approve: { mutate: approveUsdc },
   } = useUsdc(price, walletClient);
 
   const {
     balance: usdtBalance,
     allowance: usdtAllowance,
     refetch: refetchUsdt,
-    approve: { mutate: approveUsdt, isPending: isApprovingUsdt },
+    approve: { mutate: approveUsdt },
   } = useUsdt(price, walletClient);
 
-  const { mutate: buyNFT, isPending: isBuyingNFT } = buyNFTHook;
+  const { mutate: buyNFT } = buyNFTHook;
   const { mutate: fetchNonce, isPending: isNoncePending } = useNonce();
   const { mutate: resendKycEmail, isPending: isResendingKyc } =
     useResendKycEmail();
@@ -63,20 +64,12 @@ export function VoucherStep(props: Props): JSX.Element {
   const { collection, isKycHardCompleted, inhabit, usdc, usdt } = useStore();
 
   // variables
-  const effectiveAllowance = useMemo(() => {
-    if (!selectedCoin) return 0;
-    return selectedCoin === COIN.USDC ? usdcAllowance : usdtAllowance;
-  }, [selectedCoin, usdcAllowance, usdtAllowance]);
-
   const selectedBalance = useMemo(() => {
     if (!selectedCoin) return 0;
     return selectedCoin === COIN.USDC ? usdcBalance : usdtBalance;
   }, [selectedCoin, usdcBalance, usdtBalance]);
 
   const hasSufficientBalance = selectedBalance >= price;
-  const hasAllowance = effectiveAllowance >= price;
-
-  const canMint = !!selectedCoin && hasSufficientBalance && hasAllowance;
 
   const coins = [
     {
@@ -156,61 +149,59 @@ export function VoucherStep(props: Props): JSX.Element {
     });
   };
 
-  const onApprove = async () => {
-    if (!address || !collection || !campaignId) return;
-
-    const coin = selectedCoin;
-    const approve = coin === COIN.USDC ? approveUsdc : approveUsdt;
-    const refetch = coin === COIN.USDC ? refetchUsdc : refetchUsdt;
-
-    const params = {
-      spender: inhabit.getAddress(),
-      amount: price,
-    };
-
-    if (approve) {
-      approve(params, {
-        onSuccess: async () => {
-          await refetch();
-          alert(`✅ ${coin} approved successfully!`);
-        },
-        onError: (error) => {
-          console.error("❌", error);
-          alert("Error approving token. Please try again.");
-        },
-      });
-    }
-  };
-
-  const onMint = async () => {
+  const handlePurchase = async () => {
     if (!address || !collection || !campaignId || !selectedCoin) return;
 
-    const coin = selectedCoin;
-    const refetch = coin === COIN.USDC ? refetchUsdc : refetchUsdt;
+    const isUSDC = selectedCoin === COIN.USDC;
+    const approve = isUSDC ? approveUsdc : approveUsdt;
+    const refetch = isUSDC ? refetchUsdc : refetchUsdt;
+    const tokenAddr = isUSDC ? usdc.getAddress() : usdt.getAddress();
 
-    const params = {
-      campaignId: Number(campaignId),
-      collectionAddress: collection.address,
-      referral: keccak256(toBytes(referral ?? "")),
-      token: coin === COIN.USDC ? usdc.getAddress() : usdt.getAddress(),
-    };
+    try {
+      setIsProcessing(true);
 
-    buyNFT(params, {
-      onSuccess: async () => {
-        await refetch();
-        alert("✅ Membership purchased successfully!");
+      await refetch();
+      const allowance = isUSDC ? usdcAllowance : usdtAllowance;
 
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
+      if (allowance < price) {
+        await new Promise<void>((resolve, reject) => {
+          approve(
+            { spender: inhabit.getAddress(), amount: price },
+            {
+              onSuccess: async () => {
+                await refetch();
+                resolve();
+              },
+              onError: reject,
+            }
+          );
         });
-      },
-      onError: (error) => {
-        console.error("❌", error);
-        alert("Error purchasing membership. Please try again.");
-      },
-    });
+      }
+
+      await new Promise<void>((resolve, reject) => {
+        buyNFT(
+          {
+            campaignId: Number(campaignId),
+            collectionAddress: collection.address,
+            referral: keccak256(toBytes(referral ?? "")),
+            token: tokenAddr,
+          },
+          {
+            onSuccess: async () => {
+              await refetch();
+              confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+              alert("✅ Membership purchased successfully!");
+              resolve();
+            },
+            onError: reject,
+          }
+        );
+      });
+    } catch (error) {
+      console.error("❌", error);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -323,31 +314,18 @@ export function VoucherStep(props: Props): JSX.Element {
       )}
 
       <div className="flex justify-center mt-3">
-        {!canMint ? (
-          <button
-            className="btn-primary"
-            onClick={onApprove}
-            disabled={
-              !hasSufficientBalance ||
-              !selectedCoin ||
-              (requiresHardKyc && !isKycHardCompleted) ||
-              isApprovingUsdc ||
-              isApprovingUsdt
-            }
-          >
-            {isApprovingUsdc || isApprovingUsdt
-              ? "Approving…"
-              : `Approve ${selectedCoin ?? ""}`}
-          </button>
-        ) : (
-          <button
-            className="btn-primary"
-            onClick={onMint}
-            disabled={(requiresHardKyc && !isKycHardCompleted) || isBuyingNFT}
-          >
-            {isBuyingNFT ? "Purchasing…" : "Purchase Membership"}
-          </button>
-        )}
+        <button
+          className="btn-primary"
+          onClick={handlePurchase}
+          disabled={
+            isProcessing ||
+            !selectedCoin ||
+            !hasSufficientBalance ||
+            (requiresHardKyc && !isKycHardCompleted)
+          }
+        >
+          {isProcessing ? "Processing…" : "Purchase Membership"}
+        </button>
       </div>
     </div>
   );
