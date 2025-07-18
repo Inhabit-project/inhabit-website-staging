@@ -83,8 +83,8 @@ const Footer: React.FC = () => {
       },
 
       onError: (error) => {
-        console.error("❌", error);
-        alert(t("mainPage.footer.newsletter.error"));
+        console.error("❌", error.message);
+        alert(t("mainPage.footer.newsletter.error", { error: error.message }));
       },
     });
   };
