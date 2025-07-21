@@ -1,4 +1,6 @@
 import React, { useRef, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 import Menu from '../components/Menu';
 import Hero from '../components/Hero';
 import Video from '../components/Video';
@@ -22,6 +24,7 @@ interface MainPageProps {
 }
 
 const MainPage: React.FC<MainPageProps> = ({ onPageReady, onHeroImageLoad }) => {
+  const { t } = useTranslation();
   const videoSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,6 +40,15 @@ const MainPage: React.FC<MainPageProps> = ({ onPageReady, onHeroImageLoad }) => 
 
   return (
     <>
+      <Helmet>
+        <title>{t('hero.title').replace(/<[^>]+>/g, '')} | INHABIT</title>
+        <meta name="description" content={t('hero.description')} />
+        <meta property="og:title" content={t('hero.title').replace(/<[^>]+>/g, '') + ' | INHABIT'} />
+        <meta property="og:description" content={t('hero.description')} />
+        <meta property="og:image" content="/assets/hero.webp" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       {/* Skip to main content link for accessibility */}
       <a href="#main-content" className="sr-only focus:not-sr-only absolute top-2 left-2 bg-white text-black p-2 z-50 rounded">Skip to main content</a>
       <Menu />

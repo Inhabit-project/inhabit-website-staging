@@ -12,6 +12,9 @@ export default defineConfig({
       port: 5173,
     },
   },
+  build: {
+    sourcemap: true,
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')

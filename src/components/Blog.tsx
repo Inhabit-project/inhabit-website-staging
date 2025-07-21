@@ -266,6 +266,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                                 src={post.image}
                                 alt={post.title}
                                 className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                                loading="lazy"
                               />
                             </div>
                             <div className="flex flex-col gap-2 flex-1">

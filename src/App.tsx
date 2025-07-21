@@ -1,8 +1,10 @@
-import React, { useState, createContext, useEffect } from "react";
+import React, { useState, createContext, useEffect, Suspense } from "react";
 
 import "@/i18n";
 import "@/utils/gsap";
 import "@fontsource/nunito-sans/400.css";
+import "@fontsource/abel/400.css";
+import "@fontsource/montserrat/400.css";
 
 import Loader from "@/components/Loader";
 import { scrollManager } from "@/utils/scrollManager";
@@ -13,21 +15,22 @@ import ScrollToTop from '@/components/ScrollToTop';
 
 import { Routes, Route } from "react-router-dom";
 
-import MainPage from "@/pages/MainPage";
-import HubsPage from "@/pages/HubsPage";
-import AboutUsPage from "@/pages/AboutUsPage";
-import StewardshipNFTPage from "@/pages/StewardshipNFTPage";
-import Checkout from "@/components/Checkout";
-import BlogPage from "@/pages/BlogPage";
-import NuiyanzhiPage from "@/pages/NuiyanzhiPage";
-import AguaDeLunaPage from "@/pages/AguaDeLunaPage";
-import TierraKilwaPage from "@/pages/tierrakilwaPage";
-import FourOhFourPage from "@/pages/404";
-import TermsAndConditionsPage from "@/pages/TermsAndConditionsPage";
-import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
-import ContactPage from "@/pages/ContactPage";
-import ProjectsPage from "@/pages/ProjectsPage";
-import ArticlePage from "@/pages/ArticlePage";
+// Lazy load pages for code splitting
+const MainPage = React.lazy(() => import("@/pages/MainPage"));
+const HubsPage = React.lazy(() => import("@/pages/HubsPage"));
+const AboutUsPage = React.lazy(() => import("@/pages/AboutUsPage"));
+const StewardshipNFTPage = React.lazy(() => import("@/pages/StewardshipNFTPage"));
+const Checkout = React.lazy(() => import("@/components/Checkout"));
+const BlogPage = React.lazy(() => import("@/pages/BlogPage"));
+const NuiyanzhiPage = React.lazy(() => import("@/pages/NuiyanzhiPage"));
+const AguaDeLunaPage = React.lazy(() => import("@/pages/AguaDeLunaPage"));
+const TierraKilwaPage = React.lazy(() => import("@/pages/tierrakilwaPage"));
+const FourOhFourPage = React.lazy(() => import("@/pages/404"));
+const TermsAndConditionsPage = React.lazy(() => import("@/pages/TermsAndConditionsPage"));
+const PrivacyPolicyPage = React.lazy(() => import("@/pages/PrivacyPolicyPage"));
+const ContactPage = React.lazy(() => import("@/pages/ContactPage"));
+const ProjectsPage = React.lazy(() => import("@/pages/ProjectsPage"));
+const ArticlePage = React.lazy(() => import("@/pages/ArticlePage"));
 import Cursor from './utils/cursor';
 
 // Create a context for the loading state
@@ -177,6 +180,15 @@ const App: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isLoading) {
+      // Ensure scroll is at the very top after loader disappears
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 10);
+    }
+  }, [isLoading]);
+
   return (
     <LoadingContext.Provider value={isLoading}>
       <ScrollToTop />
@@ -189,23 +201,25 @@ const App: React.FC = () => {
         {showTransition && (
           <PageTransition in={transitionIn} onComplete={handleTransitionComplete} />
         )}
-        <Routes location={pendingLocation}>
-          <Route path="/" element={<MainPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
-          <Route path="/hubs" element={<HubsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
-          <Route path="/about" element={<AboutUsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
-          <Route path="/stewardship-nft" element={<StewardshipNFTPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
-          <Route path="/checkout" element={<Checkout {...pageProps} />} />
-          <Route path="/blog" element={<BlogPage {...pageProps} />} />
-          <Route path="/hubs/nuiyanzhi" element={<NuiyanzhiPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
-          <Route path="/hubs/agua-de-luna" element={<AguaDeLunaPage {...pageProps} />} />
-          <Route path="/hubs/tierrakilwa" element={<TierraKilwaPage {...pageProps} />} />
-          <Route path="/terms" element={<TermsAndConditionsPage {...pageProps} />} />
-          <Route path="/privacy" element={<PrivacyPolicyPage {...pageProps} />} />
-          <Route path="/projects" element={<ProjectsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
-          <Route path="/contact" element={<ContactPage {...pageProps} />} />
-          <Route path="/blog/article/:id" element={<ArticlePage {...pageProps} />} />
-          <Route path="*" element={<FourOhFourPage {...pageProps} />} />
-        </Routes>
+        <Suspense fallback={<Loader />}>
+          <Routes location={pendingLocation}>
+            <Route path="/" element={<MainPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+            <Route path="/hubs" element={<HubsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+            <Route path="/about" element={<AboutUsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+            <Route path="/stewardship-nft" element={<StewardshipNFTPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+            <Route path="/checkout" element={<Checkout {...pageProps} />} />
+            <Route path="/blog" element={<BlogPage {...pageProps} />} />
+            <Route path="/hubs/nuiyanzhi" element={<NuiyanzhiPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+            <Route path="/hubs/agua-de-luna" element={<AguaDeLunaPage {...pageProps} />} />
+            <Route path="/hubs/tierrakilwa" element={<TierraKilwaPage {...pageProps} />} />
+            <Route path="/terms" element={<TermsAndConditionsPage {...pageProps} />} />
+            <Route path="/privacy" element={<PrivacyPolicyPage {...pageProps} />} />
+            <Route path="/projects" element={<ProjectsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />} />
+            <Route path="/contact" element={<ContactPage {...pageProps} />} />
+            <Route path="/blog/article/:id" element={<ArticlePage {...pageProps} />} />
+            <Route path="*" element={<FourOhFourPage {...pageProps} />} />
+          </Routes>
+        </Suspense>
       </div>
     </LoadingContext.Provider>
   );

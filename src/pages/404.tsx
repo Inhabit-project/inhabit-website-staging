@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
+import { Helmet } from 'react-helmet-async';
 
 const desktopLeafPositions = [
   { style: { top: '3%', left: '15%', width: '8rem', transform: 'rotate(-8deg)' } }, // top left
@@ -50,8 +51,23 @@ const FourOhFourPage: React.FC<FourOhFourPageProps> = ({ onPageReady }) => {
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+    let rect = container.getBoundingClientRect();
+    let rectNeedsUpdate = false;
+    let rafId: number | null = null;
+    const updateRect = () => {
+      rect = container.getBoundingClientRect();
+      rectNeedsUpdate = false;
+      rafId = null;
+    };
+    const scheduleRectUpdate = () => {
+      if (!rectNeedsUpdate) {
+        rectNeedsUpdate = true;
+        rafId = requestAnimationFrame(updateRect);
+      }
+    };
+    window.addEventListener('resize', scheduleRectUpdate);
+    container.addEventListener('mouseenter', scheduleRectUpdate);
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       const centerX = rect.width / 2;
@@ -81,6 +97,9 @@ const FourOhFourPage: React.FC<FourOhFourPageProps> = ({ onPageReady }) => {
     return () => {
       container.removeEventListener('mousemove', handleMouseMove);
       container.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('resize', scheduleRectUpdate);
+      container.removeEventListener('mouseenter', scheduleRectUpdate);
+      if (rafId !== null) cancelAnimationFrame(rafId);
     };
   }, [isMobile]);
 
@@ -92,6 +111,14 @@ const FourOhFourPage: React.FC<FourOhFourPageProps> = ({ onPageReady }) => {
 
   return (
     <div ref={containerRef} className="background-gradient-light min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden container">
+      <Helmet>
+        <title>404 Not Found | INHABIT</title>
+        <meta name="description" content="Page not found. This digital habitat is empty, but real-world impact awaits." />
+        <meta property="og:title" content="404 Not Found | INHABIT" />
+        <meta property="og:description" content="Page not found. This digital habitat is empty, but real-world impact awaits." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       {/* Top Left Title */}
       <div className="flex flex-col md:flex-row items-start justify-between gap-[13.3125rem] w-full">
             <h2 className="heading-2 text-secondary max-w-[40.9375rem]">

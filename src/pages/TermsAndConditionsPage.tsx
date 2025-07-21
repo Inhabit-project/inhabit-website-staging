@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Menu from '../components/Menu';
 import Footer from '../components/Footer';
+import { Helmet } from 'react-helmet-async';
 
 interface TermsAndConditionsPageProps {
   onPageReady?: () => void;
@@ -16,6 +17,14 @@ const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ onPageR
 
   return (
     <div className="min-h-screen background-gradient-light">
+      <Helmet>
+        <title>{t('termsAndConditionsPage.seoTitle') || 'Terms and Conditions | INHABIT'}</title>
+        <meta name="description" content={t('termsAndConditionsPage.seoDescription') || t('termsAndConditionsPage.title') || 'Read our terms and conditions.'} />
+        <meta property="og:title" content={t('termsAndConditionsPage.seoTitle') || 'Terms and Conditions | INHABIT'} />
+        <meta property="og:description" content={t('termsAndConditionsPage.seoDescription') || t('termsAndConditionsPage.title') || 'Read our terms and conditions.'} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       <Menu />
       <section className="w-full flex flex-col items-center justify-center py-32 background-gradient-light">
         <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">

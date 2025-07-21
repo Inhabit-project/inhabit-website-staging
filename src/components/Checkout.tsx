@@ -319,19 +319,19 @@ const Checkout: React.FC<CheckoutProps> = ({ membershipId, onPageReady }) => {
           <form className="flex flex-col gap-4">
             <div>
               <label className="body-S block text-light font-semibold mb-1">Name*</label>
-              <input type="text" className="input-main" placeholder="Enter your full name" />
+              <input type="text" className="input-main" placeholder="Enter your full name" autoComplete="name" />
             </div>
             <div>
               <label className="body-S block text-light font-semibold mb-1">E-Mail*</label>
-              <input type="email" className="input-main" placeholder="your@email.com" />
+              <input type="email" className="input-main" placeholder="your@email.com" autoComplete="email" />
             </div>
             <div>
               <label className="body-S block text-light font-semibold mb-1">Telephone</label>
-              <input type="tel" className="input-main" placeholder="1234567890" />
+              <input type="tel" className="input-main" placeholder="1234567890" autoComplete="tel" />
             </div>
             <div>
               <label className="body-S block text-light font-semibold mb-1">Telegram user</label>
-              <input type="text" className="input-main" placeholder="@pepio-perez" />
+              <input type="text" className="input-main" placeholder="@pepio-perez" autoComplete="username" />
             </div>
             <div className="flex flex-col gap-2 mt-2">
               <label className="flex items-start gap-2 text-xs text-light">

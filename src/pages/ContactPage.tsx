@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import Menu from '../components/Menu';
 import Footer from '../components/Footer';
 import { LoadingContext } from '../App';
+import { Helmet } from 'react-helmet-async';
 
 interface ContactPageProps {
   onPageReady?: () => void;
@@ -130,6 +131,14 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageReady }) => {
 
   return (
     <div ref={mainRef} className="min-h-screen background-gradient-light">
+      <Helmet>
+        <title>{t('contactPage.seoTitle') || 'Contact | INHABIT'}</title>
+        <meta name="description" content={t('contactPage.seoDescription') || t('contactPage.description')} />
+        <meta property="og:title" content={t('contactPage.seoTitle') || 'Contact | INHABIT'} />
+        <meta property="og:description" content={t('contactPage.seoDescription') || t('contactPage.description')} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       <Menu />
       <main className="w-full flex flex-col items-center justify-center py-20 md:py-32 pt-32 background-gradient-light" aria-labelledby="contact-title">
         <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)]">

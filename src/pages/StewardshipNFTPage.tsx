@@ -12,6 +12,7 @@ import Highlight from '../components/Highlight';
 import NFTWorksSection from '../components/NFTWorksSection';
 import FourCriteriaHubGlobal from '../components/FourCriteriaHubGlobal';
 import NFTGrid from '../components/NFTGrid';
+import { Helmet } from 'react-helmet-async';
 
 interface StewardshipNFTPageProps {
   onPageReady?: () => void;
@@ -27,6 +28,15 @@ const StewardshipNFTPage: React.FC<StewardshipNFTPageProps> = ({ onPageReady, on
 
   return (
     <>
+      <Helmet>
+        <title>{t('mainPage.stewardshipNFTPage.seoTitle') || 'Stewardship NFT | INHABIT'}</title>
+        <meta name="description" content={t('mainPage.stewardshipNFTPage.seoDescription') || t('mainPage.stewardshipNFTPage.imageSection.eyebrow')} />
+        <meta property="og:title" content={t('mainPage.stewardshipNFTPage.seoTitle') || 'Stewardship NFT | INHABIT'} />
+        <meta property="og:description" content={t('mainPage.stewardshipNFTPage.seoDescription') || t('mainPage.stewardshipNFTPage.imageSection.eyebrow')} />
+        <meta property="og:image" content="/assets/nft-hero.jpg" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       {/* Skip to main content link for accessibility */}
       <a href="#main-content" className="sr-only focus:not-sr-only absolute top-2 left-2 bg-white text-black p-2 z-50 rounded">
         Skip to main content

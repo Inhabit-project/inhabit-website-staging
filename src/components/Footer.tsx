@@ -246,6 +246,7 @@ const Footer: React.FC = () => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.email}
+                            autoComplete="email"
                           />
                           {errors.email && touched.email && (
                             <div className="text-orange-400 text-xs">

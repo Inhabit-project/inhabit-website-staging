@@ -73,6 +73,7 @@ export const fetchPosts = async (
     url.searchParams.append("_embed", "");
     url.searchParams.append("per_page", per_page.toString());
     url.searchParams.append("lang", currentLanguage);
+    url.searchParams.append("fields", "id,date,title,excerpt,_embedded");
 
     if (skipFeatured) {
       const offset = featuredPostsToSkip + (page - 1) * per_page;

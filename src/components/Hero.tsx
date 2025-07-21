@@ -219,7 +219,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
   }, [t, i18n.language, isLoading]);
 
   return (
-    <div className="relative w-full h-screen bg-secondary flex flex-col no-scroll-snap overflow-hidden">
+    <div className="relative w-full h-screen bg-secondary flex flex-col no-scroll-snap overflow-hidden pt-[5rem]">
       {/* Background Image with Overlay */}
       <div 
         ref={backgroundRef}
@@ -231,6 +231,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
           onLoad={onHeroImageLoad}
+          fetchpriority="high"
         />
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-secondary/30 to-transparent"></div>
@@ -240,12 +241,12 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
       <Menu />
 
       {/* Hero Content */}
-      <div ref={contentRef} className="relative mt-[7rem] w-full h-[82vh] sm:h-[90vh] flex flex-col justify-between">
+      <div ref={contentRef} className="relative w-full h-[calc(100vh-5rem)] flex flex-col justify-between">
         {/* Centered Title Container */}
         <div className="flex justify-center">
           <h1 
             ref={titleRef}
-            className="heading-1 text-center max-w-[92rem]"
+            className="heading-1 text-center max-w-[92rem] mt-4"
           />
         </div>
 

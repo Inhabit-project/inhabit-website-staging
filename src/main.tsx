@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import './styles/globals.css'
 import { scrollManager } from './utils/scrollManager'
 import './utils/gsap'
+import { HelmetProvider } from 'react-helmet-async';
 
 // Import fonts
 // @fontsource packages only include latin subset by default. No cyrillic or vietnamese fonts are included.
@@ -49,8 +50,10 @@ if (CSS.supports('scroll-snap-type: y mandatory')) {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </HelmetProvider>
   </React.StrictMode>,
 )

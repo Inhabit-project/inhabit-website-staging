@@ -9,6 +9,7 @@ import NFTComparisonTable from '../components/NFTComparisonTable';
 import Footer from '../components/Footer';
 import { useTranslation } from 'react-i18next';
 import ImageSection from '../components/ImageSection';
+import { Helmet } from 'react-helmet-async';
 
 interface NuiyanzhiPageProps {
   onPageReady?: () => void;
@@ -24,6 +25,15 @@ const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({ onPageReady, onHeroImageL
 
   return (
     <>
+      <Helmet>
+        <title>{t('nuiyanzhiPage.seoTitle') || 'Ñuiyanzhi Hub | INHABIT'}</title>
+        <meta name="description" content={t('nuiyanzhiPage.seoDescription') || t('nuiyanzhiPage.imageSection.eyebrow')} />
+        <meta property="og:title" content={t('nuiyanzhiPage.seoTitle') || 'Ñuiyanzhi Hub | INHABIT'} />
+        <meta property="og:description" content={t('nuiyanzhiPage.seoDescription') || t('nuiyanzhiPage.imageSection.eyebrow')} />
+        <meta property="og:image" content="/assets/1Hub/vision.webp" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       <Menu />
       {/* Internal Hero Section - custom for Nuiyanzhi */}
       <InternalPagesHero
@@ -55,6 +65,8 @@ const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({ onPageReady, onHeroImageL
         text={t('nuiyanzhiPage.vision.text')}
         imageSrc="/assets/1Hub/vision.webp"
         imageAlt={t('nuiyanzhiPage.vision.imageAlt')}
+        logoSrc="/assets/logo.svg"
+        logoAlt="INHABIT Logo"
       />
 
       {/* Section: The Guardians (InfoCardRightImage) */}
@@ -63,6 +75,8 @@ const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({ onPageReady, onHeroImageL
         text={t('nuiyanzhiPage.guardians.text')}
         imageSrc="/assets/1Hub/guardians.webp"
         imageAlt={t('nuiyanzhiPage.guardians.imageAlt')}
+        logoSrc="/assets/logo.svg"
+        logoAlt="INHABIT Logo"
       />
 
       {/* Section: The Land (InfoCard) */}
@@ -71,6 +85,8 @@ const NuiyanzhiPage: React.FC<NuiyanzhiPageProps> = ({ onPageReady, onHeroImageL
         text={t('nuiyanzhiPage.land.text')}
         imageSrc="/assets/1Hub/land.webp"
         showPopupButton={true}
+        logoSrc="/assets/logo.svg"
+        logoAlt="INHABIT Logo"
       />
 
       <NFTGrid />

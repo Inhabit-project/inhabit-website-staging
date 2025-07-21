@@ -65,12 +65,34 @@ const Marquee: React.FC<{ logos: Logo[] }> = ({ logos }) => {
   }, [isLoading]);
 
   useEffect(() => {
-    if (containerRef.current && cardRef.current) {
-      const containerWidth = containerRef.current.offsetWidth;
-      const cardWidth = cardRef.current.offsetWidth + 32; // 32px gap (2rem)
+    if (!containerRef.current || !cardRef.current) return;
+    let rafId: number | null = null;
+    let needsUpdate = false;
+    const calculateRepeat = () => {
+      const containerWidth = containerRef.current!.offsetWidth;
+      const cardWidth = cardRef.current!.offsetWidth + 32;
       const minCards = Math.ceil((containerWidth * 2) / cardWidth);
       setRepeatCount(Math.max(2, Math.ceil(minCards / logos.length)));
+      rafId = null;
+      needsUpdate = false;
+    };
+    const scheduleUpdate = () => {
+      if (!needsUpdate) {
+        needsUpdate = true;
+        rafId = requestAnimationFrame(calculateRepeat);
+      }
+    };
+    window.addEventListener('resize', scheduleUpdate);
+    // Initial calculation
+    calculateRepeat();
+    return () => {
+      window.removeEventListener('resize', scheduleUpdate);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
+  }, [logos.length]);
 
+  useEffect(() => {
+    if (containerRef.current && cardRef.current) {
       // Initial GSAP state
       gsap.set(cardRef.current, {
         opacity: 0,
