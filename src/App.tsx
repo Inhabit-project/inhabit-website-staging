@@ -30,10 +30,11 @@ const TermsAndConditionsPage = React.lazy(
   () => import("@/pages/TermsAndConditionsPage")
 );
 const PrivacyPolicyPage = React.lazy(() => import("@/pages/PrivacyPolicyPage"));
-const ContactPage = React.lazy(() => import("@/pages/ContactPage"));
 const ProjectsPage = React.lazy(() => import("@/pages/ProjectsPage"));
 const ArticlePage = React.lazy(() => import("@/pages/ArticlePage"));
 const Membership = React.lazy(() => import("@/pages/Membership"));
+const ContactUs = React.lazy(() => import("@/pages/ContactUs"));
+
 import Cursor from "./utils/cursor";
 
 // Create a context for the loading state
@@ -304,7 +305,7 @@ const App: React.FC = () => {
                 />
               }
             />
-            <Route path="/contact" element={<ContactPage {...pageProps} />} />
+            <Route path="/contact" element={<ContactUs {...pageProps} />} />
             <Route
               path="/blog/article/:id"
               element={<ArticlePage {...pageProps} />}
