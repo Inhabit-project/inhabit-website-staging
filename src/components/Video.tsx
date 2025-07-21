@@ -241,7 +241,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
           <div 
             className="w-full h-full flex items-center justify-center relative cursor-pointer group"
             style={{
-              backgroundImage: 'url("/assets/video-bg.jpg")',
+              backgroundImage: 'url("/assets/video-bg.webp")',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}

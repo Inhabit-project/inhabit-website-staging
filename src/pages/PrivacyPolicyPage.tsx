@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Menu from '../components/Menu';
 import Footer from '../components/Footer';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet-async';
 
 interface PrivacyPolicyPageProps {
   onPageReady?: () => void;
@@ -16,6 +17,14 @@ const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onPageReady }) =>
 
   return (
     <div className="min-h-screen background-gradient-light">
+      <Helmet>
+        <title>{t('privacyPolicy.seoTitle') || 'Privacy Policy | INHABIT'}</title>
+        <meta name="description" content={t('privacyPolicy.seoDescription') || t('privacyPolicy.intro') || 'Read our privacy policy.'} />
+        <meta property="og:title" content={t('privacyPolicy.seoTitle') || 'Privacy Policy | INHABIT'} />
+        <meta property="og:description" content={t('privacyPolicy.seoDescription') || t('privacyPolicy.intro') || 'Read our privacy policy.'} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       <Menu />
       <section className="w-full flex flex-col items-center justify-center py-32 background-gradient-light">
         <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col items-start gap-8">

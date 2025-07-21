@@ -16,6 +16,8 @@ import Footer from "../components/Footer";
 import { scrollManager } from "../utils/scrollManager";
 import { useStore } from "../store";
 import { NatureSpinner } from "../ui/Loader";
+import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   onPageReady?: () => void;
@@ -25,6 +27,8 @@ interface Props {
 
 function MainPage(props: Props) {
   const { onHeroImageLoad, onPageReady, scrollToSection } = props;
+  const { t } = useTranslation();
+
   const { campaigns, campaignsLoading, lastCampaign, getCampaigns } =
     useStore();
   const nftGridRef = useRef<HTMLElement>(null);
@@ -62,6 +66,18 @@ function MainPage(props: Props) {
 
   return (
     <>
+      <Helmet>
+        <title>{t("hero.title").replace(/<[^>]+>/g, "")} | INHABIT</title>
+        <meta name="description" content={t("hero.description")} />
+        <meta
+          property="og:title"
+          content={t("hero.title").replace(/<[^>]+>/g, "") + " | INHABIT"}
+        />
+        <meta property="og:description" content={t("hero.description")} />
+        <meta property="og:image" content="/assets/hero.webp" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       {/* Skip to main content link for accessibility */}
       <a
         href="#main-content"
@@ -97,8 +113,6 @@ function MainPage(props: Props) {
           <Photo />
         </section>
         <section ref={nftGridRef} aria-label="NFT Grid section">
-          {campaignsLoading && <NatureSpinner />}
-
           {!campaignsLoading &&
             (!lastCampaign ? (
               // TODO: improve this message

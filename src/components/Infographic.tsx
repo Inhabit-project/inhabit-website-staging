@@ -321,7 +321,7 @@ const Infographic: React.FC = () => {
           <div className="w-[43.75rem] ">
             <img
               ref={slide2ImgRef}
-              src="/assets/stewards-illustration.svg"
+              src="/assets/stewards-illustration.webp"
               alt="NFT Stewards Illustration"
               className="w-full h-full object-contain"
               loading="lazy"
@@ -346,7 +346,7 @@ const Infographic: React.FC = () => {
           <div className="w-[43.75rem] ">
             <img
               ref={slide3ImgRef}
-              src="/assets/nature-illustration.svg"
+              src="/assets/nature-illustration.webp"
               alt="Nature Illustration"
               className="w-full h-full object-contain"
             />
@@ -370,7 +370,7 @@ const Infographic: React.FC = () => {
           <div className="w-[43.75rem] ">
             <img
               ref={slide4ImgRef}
-              src="/assets/guardians-illustration.svg"
+              src="/assets/guardians-illustration.webp"
               alt="Guardians Illustration"
               className="w-full h-full object-contain"
             />

@@ -24,9 +24,31 @@ export const initVideoSectionCursor = (element: HTMLElement) => {
   cursor.textContent = 'Play Video';
   document.body.appendChild(cursor);
 
+  // Cache rect for performance
+  let rect = element.getBoundingClientRect();
+  let rectNeedsUpdate = false;
+  let rafId: number | null = null;
+
+  const updateRect = () => {
+    rect = element.getBoundingClientRect();
+    rectNeedsUpdate = false;
+    rafId = null;
+  };
+
+  // Throttle updateRect using requestAnimationFrame
+  const scheduleRectUpdate = () => {
+    if (!rectNeedsUpdate) {
+      rectNeedsUpdate = true;
+      rafId = requestAnimationFrame(updateRect);
+    }
+  };
+
+  window.addEventListener('resize', scheduleRectUpdate);
+  document.addEventListener('scroll', scheduleRectUpdate, { passive: true });
+  element.addEventListener('mouseenter', updateRect);
+
   // Check if mouse is within section boundaries
   const isMouseInSection = (mouseY: number) => {
-    const rect = element.getBoundingClientRect();
     return mouseY >= rect.top && mouseY <= rect.bottom;
   };
 
@@ -102,6 +124,9 @@ export const initVideoSectionCursor = (element: HTMLElement) => {
     element.removeEventListener('click', handleClick);
     document.removeEventListener('mousemove', updateCursorPosition);
     document.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('resize', scheduleRectUpdate);
+    document.removeEventListener('scroll', scheduleRectUpdate);
+    if (rafId !== null) cancelAnimationFrame(rafId);
     cursor.remove();
   };
 }; 

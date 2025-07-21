@@ -1,35 +1,40 @@
-import React, { useState, createContext, useEffect, useRef } from "react";
+import React, { useState, createContext, useEffect, Suspense } from "react";
 
 import "@/i18n";
 import "@/utils/gsap";
 import "@fontsource/nunito-sans/400.css";
+import "@fontsource/abel/400.css";
+import "@fontsource/montserrat/400.css";
 
 import Loader from "@/components/Loader";
-import { scrollManager } from "@/utils/scrollManager";
 import PageTransition from "@/components/PageTransition";
 import { useLocation } from "react-router-dom";
 import ScrollToTop from "@/components/ScrollToTop";
-import { useNavigationType } from "react-router-dom";
 
 import { Routes, Route } from "react-router-dom";
 
-import MainPage from "@/pages/MainPage";
-import HubsPage from "@/pages/HubsPage";
-import AboutUsPage from "@/pages/AboutUsPage";
-import StewardshipNFTPage from "@/pages/StewardshipNFTPage";
-import Checkout from "@/components/Checkout";
-import BlogPage from "@/pages/BlogPage";
-import NuiyanzhiPage from "@/pages/NuiyanzhiPage";
-import AguaDeLunaPage from "@/pages/AguaDeLunaPage";
-// import TierraKilwaPage from "@/pages/tierrakilwaPage";
-import FourOhFourPage from "@/pages/404";
-import TermsAndConditionsPage from "@/pages/TermsAndConditionsPage";
-import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
-import ContactPage from "@/pages/ContactUs";
-import ProjectsPage from "@/pages/ProjectsPage";
-import ArticlePage from "@/pages/ArticlePage";
+// Lazy load pages for code splitting
+const MainPage = React.lazy(() => import("@/pages/MainPage"));
+const HubsPage = React.lazy(() => import("@/pages/HubsPage"));
+const AboutUsPage = React.lazy(() => import("@/pages/AboutUsPage"));
+const StewardshipNFTPage = React.lazy(
+  () => import("@/pages/StewardshipNFTPage")
+);
+const Checkout = React.lazy(() => import("@/components/Checkout"));
+const BlogPage = React.lazy(() => import("@/pages/BlogPage"));
+const NuiyanzhiPage = React.lazy(() => import("@/pages/NuiyanzhiPage"));
+const AguaDeLunaPage = React.lazy(() => import("@/pages/AguaDeLunaPage"));
+const TierraKilwaPage = React.lazy(() => import("@/pages/TierraKilwaPage"));
+const FourOhFourPage = React.lazy(() => import("@/pages/404"));
+const TermsAndConditionsPage = React.lazy(
+  () => import("@/pages/TermsAndConditionsPage")
+);
+const PrivacyPolicyPage = React.lazy(() => import("@/pages/PrivacyPolicyPage"));
+const ContactPage = React.lazy(() => import("@/pages/ContactPage"));
+const ProjectsPage = React.lazy(() => import("@/pages/ProjectsPage"));
+const ArticlePage = React.lazy(() => import("@/pages/ArticlePage"));
+const Membership = React.lazy(() => import("@/pages/Membership"));
 import Cursor from "./utils/cursor";
-import Membership from "./pages/Membership";
 
 // Create a context for the loading state
 export const LoadingContext = createContext<boolean>(false);
@@ -45,16 +50,6 @@ const App: React.FC = () => {
   const [canFinishLoading, setCanFinishLoading] = useState(false);
   const location = useLocation();
   const [pendingLocation, setPendingLocation] = useState(location);
-  const navigationType = useNavigationType();
-
-  const prevPath = useRef(location.pathname);
-
-  const shouldScrollToNFTGrid =
-    navigationType === "POP" && prevPath.current.startsWith("/membership");
-
-  useEffect(() => {
-    prevPath.current = location.pathname;
-  }, [location]);
 
   // Only allow loader to finish when both hero image and timer are done
   useEffect(() => {
@@ -85,8 +80,6 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (location !== pendingLocation) {
-      prevPath.current = pendingLocation.pathname;
-
       if ((location.state as any)?.skipTransition) {
         setPendingLocation(location); // actualiza ruta sin overlay
         return;
@@ -104,24 +97,9 @@ const App: React.FC = () => {
   // Scroll to top only after both transition and page are ready
   useEffect(() => {
     if (transitionIn && pageReady) {
-      console.log(
-        "[APP] transitionIn && pageReady – shouldScrollToNFTGrid:",
-        shouldScrollToNFTGrid
-      );
-
       setShowTransition(false);
 
       requestAnimationFrame(() => {
-        /*  ⬇️  NO subas si venimos de /membership */
-        if (!shouldScrollToNFTGrid) {
-          // ——— este bloque completo queda dentro —
-          if (scrollManager && typeof scrollManager.scrollTo === "function") {
-            scrollManager.scrollTo(0, { immediate: true });
-          } else {
-            window.scrollTo({ top: 0, behavior: "auto" });
-          }
-        }
-
         // refresca ScrollTrigger igual
         setTimeout(() => {
           import("./utils/gsap").then(({ ScrollTrigger }) => {
@@ -130,7 +108,7 @@ const App: React.FC = () => {
         }, 100);
       });
     }
-  }, [transitionIn, pageReady, shouldScrollToNFTGrid]);
+  }, [transitionIn, pageReady]);
 
   const handleTransitionComplete = () => {
     // No-op: scroll now handled in useEffect above
@@ -212,9 +190,18 @@ const App: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isLoading) {
+      // Ensure scroll is at the very top after loader disappears
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 10);
+    }
+  }, [isLoading]);
+
   return (
     <LoadingContext.Provider value={isLoading}>
-      {!shouldScrollToNFTGrid && <ScrollToTop />}
+      <ScrollToTop />
 
       <div
         className={`cursor-default app-container ${
@@ -234,87 +221,97 @@ const App: React.FC = () => {
             onComplete={handleTransitionComplete}
           />
         )}
-        <Routes location={pendingLocation}>
-          <Route
-            path="/"
-            element={
-              <MainPage
-                {...pageProps}
-                onHeroImageLoad={handleHeroImageLoad}
-                scrollToSection={shouldScrollToNFTGrid ? "nftGrid" : null}
-              />
-            }
-          />
-          <Route
-            path="/hubs"
-            element={
-              <HubsPage {...pageProps} onHeroImageLoad={handleHeroImageLoad} />
-            }
-          />
-          <Route
-            path="/about"
-            element={
-              <AboutUsPage
-                {...pageProps}
-                onHeroImageLoad={handleHeroImageLoad}
-              />
-            }
-          />
-          <Route
-            path="/stewardship-nft"
-            element={
-              <StewardshipNFTPage
-                {...pageProps}
-                onHeroImageLoad={handleHeroImageLoad}
-                scrollToSection={shouldScrollToNFTGrid ? "nftGrid" : null}
-              />
-            }
-          />
-          <Route path="/checkout" element={<Checkout {...pageProps} />} />
-          <Route
-            path="/membership/:campaignId/:collectionId/:referral?"
-            element={<Membership />}
-          />
-          <Route path="/blog" element={<BlogPage {...pageProps} />} />
-          <Route
-            path="/hubs/nuiyanzhi"
-            element={
-              <NuiyanzhiPage
-                {...pageProps}
-                onHeroImageLoad={handleHeroImageLoad}
-                scrollToSection={shouldScrollToNFTGrid ? "nftGrid" : null}
-              />
-            }
-          />
-          <Route
-            path="/hubs/agua-de-luna"
-            element={<AguaDeLunaPage {...pageProps} />}
-          />
-          {/* <Route path="/hubs/tierrakilwa" element={<TierraKilwaPage {...pageProps} />} /> */}
-          <Route
-            path="/terms"
-            element={<TermsAndConditionsPage {...pageProps} />}
-          />
-          <Route
-            path="/privacy"
-            element={<PrivacyPolicyPage {...pageProps} />}
-          />
-          <Route
-            path="/projects"
-            element={
-              <ProjectsPage
-                {...pageProps}
-                onHeroImageLoad={handleHeroImageLoad}
-              />
-            }
-          />
-          <Route path="/contact" element={<ContactPage {...pageProps} />} />
-          <Route
-            path="/blog/article/:id"
-            element={<ArticlePage {...pageProps} />}
-          />
-          <Route path="*" element={<FourOhFourPage {...pageProps} />} />
-        </Routes>
+        <Suspense fallback={<Loader />}>
+          <Routes location={pendingLocation}>
+            <Route
+              path="/"
+              element={
+                <MainPage
+                  {...pageProps}
+                  onHeroImageLoad={handleHeroImageLoad}
+                />
+              }
+            />
+            <Route
+              path="/hubs"
+              element={
+                <HubsPage
+                  {...pageProps}
+                  onHeroImageLoad={handleHeroImageLoad}
+                />
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <AboutUsPage
+                  {...pageProps}
+                  onHeroImageLoad={handleHeroImageLoad}
+                />
+              }
+            />
+            <Route
+              path="/stewardship-nft"
+              element={
+                <StewardshipNFTPage
+                  {...pageProps}
+                  onHeroImageLoad={handleHeroImageLoad}
+                />
+              }
+            />
+            <Route path="/checkout" element={<Checkout {...pageProps} />} />
+            <Route path="/blog" element={<BlogPage {...pageProps} />} />
+            <Route
+              path="/hubs/nuiyanzhi"
+              element={
+                <NuiyanzhiPage
+                  {...pageProps}
+                  onHeroImageLoad={handleHeroImageLoad}
+                />
+              }
+            />
+            <Route
+              path="/hubs/agua-de-luna"
+              element={<AguaDeLunaPage {...pageProps} />}
+            />
+            <Route
+              path="/hubs/tierrakilwa"
+              element={<TierraKilwaPage {...pageProps} />}
+            />
+            <Route
+              path="/membership/:campaignId/:collectionId/:referral?"
+              element={
+                <Membership
+                  {...pageProps}
+                  onHeroImageLoad={handleHeroImageLoad}
+                />
+              }
+            />
+            <Route
+              path="/terms"
+              element={<TermsAndConditionsPage {...pageProps} />}
+            />
+            <Route
+              path="/privacy"
+              element={<PrivacyPolicyPage {...pageProps} />}
+            />
+            <Route
+              path="/projects"
+              element={
+                <ProjectsPage
+                  {...pageProps}
+                  onHeroImageLoad={handleHeroImageLoad}
+                />
+              }
+            />
+            <Route path="/contact" element={<ContactPage {...pageProps} />} />
+            <Route
+              path="/blog/article/:id"
+              element={<ArticlePage {...pageProps} />}
+            />
+            <Route path="*" element={<FourOhFourPage {...pageProps} />} />
+          </Routes>
+        </Suspense>
       </div>
     </LoadingContext.Provider>
   );

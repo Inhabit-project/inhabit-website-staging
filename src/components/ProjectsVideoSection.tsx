@@ -200,7 +200,7 @@ const ProjectsVideoSection: React.FC = () => {
           <div 
             className="w-full h-full flex items-center justify-center relative cursor-pointer"
             style={{
-              backgroundImage: 'url("/assets/video-bg-1.jpg")',
+              backgroundImage: 'url("/assets/video-bg-1.webp")',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}

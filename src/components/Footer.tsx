@@ -165,7 +165,7 @@ const Footer: React.FC = () => {
       <div
         className="absolute inset-0 w-full h-full"
         style={{
-          backgroundImage: 'url("/assets/mainPage.FOOTER.webp")',
+          backgroundImage: 'url("/assets/FOOTER.webp")',
           backgroundSize: "cover",
           backgroundPosition: "center",
           opacity: 1,

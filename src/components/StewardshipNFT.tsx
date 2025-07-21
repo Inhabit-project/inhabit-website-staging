@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, useContext } from 'react';
-import { useTranslation } from 'react-i18next';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { LoadingContext } from '../App';
+import React, { useRef, useEffect, useContext } from "react";
+import { useTranslation } from "react-i18next";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { LoadingContext } from "../App";
 
 const StewardshipNFT: React.FC = () => {
   const { t } = useTranslation();
@@ -19,13 +19,13 @@ const StewardshipNFT: React.FC = () => {
     // Set initial states
     gsap.set([titleRef.current, descriptionRef.current], {
       opacity: 0,
-      y: 50
+      y: 50,
     });
 
     gsap.set(imageRef.current, {
       opacity: 0,
       y: 100,
-      scale: 0.95
+      scale: 0.95,
     });
 
     // Create scroll-triggered animation
@@ -34,37 +34,45 @@ const StewardshipNFT: React.FC = () => {
         trigger: sectionRef.current,
         start: "top center",
         end: "center center",
-        toggleActions: "play none none reverse"
-      }
+        toggleActions: "play none none reverse",
+      },
     });
 
     tl.to(titleRef.current, {
       opacity: 1,
       y: 0,
       duration: 0.8,
-      ease: "power3.out"
+      ease: "power3.out",
     })
-    .to(descriptionRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      ease: "power3.out"
-    }, "-=0.6")
-    .to(imageRef.current, {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      duration: 1.2,
-      ease: "power3.out"
-    }, "-=0.7");
+      .to(
+        descriptionRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+        },
+        "-=0.6"
+      )
+      .to(
+        imageRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out",
+        },
+        "-=0.7"
+      );
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, [isLoading]);
 
   return (
-    <section 
+    <section
       ref={sectionRef}
       className="relative w-full background-gradient-dark flex flex-col items-center scroll-container"
     >
@@ -72,31 +80,30 @@ const StewardshipNFT: React.FC = () => {
         <div className="flex flex-col items-start gap-6">
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full">
-            <h2 
+            <h2
               ref={titleRef}
               className="heading-2 text-light max-w-[40.9375rem]"
             >
-              {t('mainPage.stewardshipNFT.title')}
+              {t("mainPage.stewardshipNFT.title")}
               <br />
-              <span dangerouslySetInnerHTML={{ __html: t('mainPage.stewardshipNFT.subtitle') }} />
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: t("mainPage.stewardshipNFT.subtitle"),
+                }}
+              />
             </h2>
-            <p 
-              ref={descriptionRef}
-              className="body-M text-light max-w-[35rem]"
-            >
-              {t('mainPage.stewardshipNFT.description')}
+            <p ref={descriptionRef} className="body-M text-light max-w-[35rem]">
+              {t("mainPage.stewardshipNFT.description")}
             </p>
           </div>
 
           {/* Image */}
-          <div 
-            ref={imageRef}
-            className="self-center relative overflow-hidden"
-          >
-            <img 
-              src="/assets/figma-images/stewardship-nft.webp" 
-              alt="Stewardship NFT illustration" 
+          <div ref={imageRef} className="self-center relative overflow-hidden">
+            <img
+              src="/assets/stewardship-nft.webp"
+              alt="Stewardship NFT illustration"
               className="w-full h-full object-cover"
+              {...{ fetchPriority: "high" }}
             />
           </div>
         </div>
@@ -105,4 +112,4 @@ const StewardshipNFT: React.FC = () => {
   );
 };
 
-export default StewardshipNFT; 
+export default StewardshipNFT;

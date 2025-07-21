@@ -4,6 +4,7 @@ import NewsletterCTA from "@/components/NewsletterCTA";
 import RelatedPost from "@/components/RelatedPost";
 import Footer from "@/components/Footer";
 import SingleBlog from "@/components/SingleBlog";
+import { Helmet } from 'react-helmet-async';
 
 interface ArticlePageProps {
   onPageReady?: () => void;
@@ -18,6 +19,14 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ onPageReady }) => {
         minHeight: "100vh",
       }}
     >
+      <Helmet>
+        <title>Article | INHABIT</title>
+        <meta name="description" content="Read this article on INHABIT." />
+        <meta property="og:title" content="Article | INHABIT" />
+        <meta property="og:description" content="Read this article on INHABIT." />
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       <Menu />
       <SingleBlog onPageReady={onPageReady} />
       {/* Newsletter CTA */}

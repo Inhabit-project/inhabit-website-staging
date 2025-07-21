@@ -366,6 +366,26 @@
         {
           "question": "¿Qué hace único y diferente al NFT de Inhabit frente a los NFTs convencionales?",
           "answer": "A diferencia de los NFTs puramente digitales, los NFTs de Custodia de Inhabit están arraigados en tierras reales y ecosistemas vivos. La tierra—y tu relación con ella—está protegida por un marco legal innovador que te otorga derechos y beneficios tangibles sobre un territorio físico y acceso al valor intrínseco que se regenera en el terreno. Más que un coleccionable digital en línea, cada NFT es un portal a un impacto y movimiento en el mundo real—diseñado para cultivar relaciones fuera de línea entre personas, lugares y los ecosistemas que ayudan a devolver a la vida. No se trata de poseer algo virtual; se trata de pertenecer a algo real: No es solo propiedad; es custodia."
+        },
+        {
+          "question": "¿Qué es exactamente un NFT de Custodia?",
+          "answer": "Imagina tener un contrato especial en tu billetera digital—algo así como un pasaporte o escritura—que demuestra que eres parte de algo real. No es solo una imagen o un token. Es una llave. Te otorga derechos y beneficios tangibles vinculados a una parcela específica de tierra, junto con acceso al valor intrínseco que se está regenerando en el terreno.<br /><br />El contrato está almacenado de forma segura y permanente en la blockchain, lo que significa que no se puede perder, alterar o falsificar. Cada NFT es único—como una obra de arte—y solo se emite un número limitado para cada terreno. Es un activo digital con valor real que puede ser transferido.<br /><br />Además de asegurar tus derechos en relación con la tierra, el NFT encapsula todo el marco legal que protege el terreno en sí. Refleja y protege tanto los Derechos de la Naturaleza como el papel de los custodios humanos, a través de un modelo innovador que redefine lo que significa la propiedad de la tierra—pasando del control al cuidado, de la posesión a la responsabilidad.<br /><br />Muchos creen que la custodia dará forma al futuro de las economías—y el NFT de Custodia de Inhabit es una de las primeras herramientas que hace tangible esta visión, vinculando la creación de valor con el cuidado, la regeneración y la responsabilidad compartida."
+        },
+        {
+          "question": "¿Qué derechos y beneficios recibo como titular de un NFT?",
+          "answer": "El NFT de Custodia te otorga una membresía de por vida y un vínculo vivo entre tú y un HUB biocultural.<br /><br /><ul><li>• Derechos legales como protector de un Hub</li><li>• Obras de arte exclusivas</li><li>• Alojamiento gratuito y talleres in situ</li><li>• Experiencias bioculturales inmersivas</li><li>• Participación en la gobernanza DAO</li><li>• Acceso a herramientas para monitorear el impacto real de tu contribución</li><li>• Contenidos educativos exclusivos</li><li>• Airdrops</li><li>...y mucho más</li></ul>"
+        },
+        {
+          "question": "¿Puedo transferir o vender mi NFT de Custodia?",
+          "answer": "Sí, puedes transferir o vender tu NFT. El nuevo titular heredará todos los derechos y beneficios de custodia después de completar la verificación KYC y recibir la aprobación de la fundación."
+        },
+        {
+          "question": "¿Cuándo podré acceder a los derechos y beneficios asociados con mi membresía?",
+          "answer": "Podrás acceder a todos tus derechos y beneficios de custodia una vez que la campaña alcance el \"monto mínimo\" necesario para comprar y restaurar el terreno. En ese momento, la tierra se tokeniza y tus beneficios se activan. Sin embargo, la obra de arte digital incluida con tu NFT está disponible inmediatamente después de tu compra."
+        },
+        {
+          "question": "¿Es el uso de blockchain ambientalmente sostenible para INHABIT?",
+          "answer": "Sí — INHABIT utiliza CELO, una blockchain carbono-negativa diseñada para proyectos respetuosos con el clima.<br /><br />Acuñar todos los NFTs necesarios para financiar un HUB de INHABIT produce menos CO₂ que preparar una sola taza de café.<br /><br />Cada NFT usa solo 0.00001 kWh y emite solo 5 mg de CO₂ — menos que una búsqueda en Google.<br /><br />En comparación:<ul><li>Ethereum (pre-fusión) = 15,000× más emisiones</li><li>Bitcoin = 100,000× más</li></ul>Además, CELO ejecuta un programa integrado de compensación de carbono: una parte de cada tarifa de transacción financia proyectos verificados que eliminan CO₂ de la atmósfera. Esto hace que CELO sea carbono-negativo, lo que significa que compensa más de lo que emite — por lo que incluso nuestros NFTs terminan siendo carbono-negativos, convirtiendo la blockchain en una herramienta para la regeneración climática."
         }
       ]
     },
@@ -590,8 +610,8 @@
         "role": "Licenciada en Ciencias Sociales, Máster en Innovación y Desarrollo, Derechos Humanos y Cultura de Paz. Coordinadora en la Pontificia Universidad Javeriana, más de 12 años en proyectos de paz y reconciliación, relaciones interculturales y diálogo con comunidades indígenas y afrodescendientes."
       },
       {
-        "name": "Juan Pablo Lievano",
-        "role": "Economista y Magíster en antropología con más de 13 años de experiencia en desarrollo rural sostenible, cambio climático, gestión de proyectos y evaluación financiera de modelos agroempresariales de pequeños agricultores. Fundador de dos reservas naturales en Colombia."
+        "name": "Juan Sebastián Sánchez Hernández",
+        "role": "Experto en comunicaciones digitales y marketing, nacido, criado y radicado en Bogotá, con más de 13 años de experiencia desarrollando estrategias de marca y contenido. Especialista en simplificar temas complejos como cambio climático, biodiversidad, blockchain y conservación comunitaria. Apasionado por humanizar la tecnología a través de historias y trabajar en la restauración de la relación de la humanidad con la naturaleza. Líder de Comunicaciones en INHABIT."
       },
       {
         "name": "Mohamd Ibrahim",
@@ -608,10 +628,6 @@
       {
         "name": "Fernanda Herrera",
         "role": "Diseñadora visual con 12 años de experiencia en desarrollo de proyectos digitales, trabajando como diseñadora UI y UX para sitios web y aplicaciones. Muchos de estos sitios han sido desarrollados completamente desde la conceptualización hasta el desarrollo del código, generalmente usando Html5, css3 y javascript básico o CMS como wordpress, webflow, etc. Tengo conocimientos básicos en frameworks como vue, react, angular, python y ruby on rails, microinteracciones y animaciones web avanzadas."
-      },
-      {
-        "name": "Juan Sebastián Sánchez Hernández",
-        "role": "Experto en comunicaciones digitales y marketing, nacido, criado y radicado en Bogotá, con más de 13 años de experiencia desarrollando estrategias de marca y contenido. Especialista en simplificar temas complejos como cambio climático, biodiversidad, blockchain y conservación comunitaria. Apasionado por humanizar la tecnología a través de historias y trabajar en la restauración de la relación de la humanidad con la naturaleza. Líder de Comunicaciones en INHABIT."
       }
     ],
     "logosSection": {
@@ -643,7 +659,12 @@
       "iframeAriaLabel": "Reproductor de video del proyecto"
     },
     "visitThisProject": "Visitar este proyecto",
-    "visitThisHub": "Visitar este hub"
+    "visitThisHub": "Visitar este hub",
+    "stewardshipNFT": {
+      "title": "Custodia",
+      "subtitle": "<strong>NFTs</strong>",
+      "description": "Tu llave digital para la custodia vitalicia de ecosistemas únicos. Cada NFT representa una conexión directa con un área de conservación específica, otorgándote derechos y acceso exclusivo a experiencias bioculturales."
+    }
   },
   "nuiyanzhiPage": {
     "fourCriteria": {

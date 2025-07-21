@@ -1,4 +1,4 @@
-import React, { JSX, useEffect, useRef } from "react";
+import { JSX, useEffect, useRef } from "react";
 import Menu from "../components/Menu";
 import InternalPagesHero from "../components/InternalPagesHero";
 import InfoCard, { InfoCardRightImage } from "../components/InfoCard";
@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import ImageSection from "../components/ImageSection";
 import { NatureSpinner } from "@/ui/Loader";
 import { useStore } from "@/store";
+import { Helmet } from "react-helmet-async";
 
 interface Props {
   onPageReady?: () => void;
@@ -56,6 +57,32 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
 
   return (
     <>
+      <Helmet>
+        <title>
+          {t("nuiyanzhiPage.seoTitle") || "Ñuiyanzhi Hub | INHABIT"}
+        </title>
+        <meta
+          name="description"
+          content={
+            t("nuiyanzhiPage.seoDescription") ||
+            t("nuiyanzhiPage.imageSection.eyebrow")
+          }
+        />
+        <meta
+          property="og:title"
+          content={t("nuiyanzhiPage.seoTitle") || "Ñuiyanzhi Hub | INHABIT"}
+        />
+        <meta
+          property="og:description"
+          content={
+            t("nuiyanzhiPage.seoDescription") ||
+            t("nuiyanzhiPage.imageSection.eyebrow")
+          }
+        />
+        <meta property="og:image" content="/assets/1Hub/vision.webp" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       <Menu />
       {/* Internal Hero Section - custom for Nuiyanzhi */}
       <InternalPagesHero
@@ -95,6 +122,8 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
         text={t("nuiyanzhiPage.vision.text")}
         imageSrc="/assets/1Hub/vision.webp"
         imageAlt={t("nuiyanzhiPage.vision.imageAlt")}
+        logoSrc="/assets/logo.svg"
+        logoAlt="INHABIT Logo"
       />
 
       {/* Section: The Guardians (InfoCardRightImage) */}
@@ -103,6 +132,8 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
         text={t("nuiyanzhiPage.guardians.text")}
         imageSrc="/assets/1Hub/guardians.webp"
         imageAlt={t("nuiyanzhiPage.guardians.imageAlt")}
+        logoSrc="/assets/logo.svg"
+        logoAlt="INHABIT Logo"
       />
 
       {/* Section: The Land (InfoCard) */}
@@ -111,6 +142,8 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
         text={t("nuiyanzhiPage.land.text")}
         imageSrc="/assets/1Hub/land.webp"
         showPopupButton={true}
+        logoSrc="/assets/logo.svg"
+        logoAlt="INHABIT Logo"
       />
 
       <section aria-label="Available NFTs" ref={nftGridRef}>

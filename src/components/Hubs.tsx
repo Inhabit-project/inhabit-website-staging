@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useTranslation } from 'react-i18next';
-import { LoadingContext } from '../App';
+import React, { useState, useRef, useEffect, useContext } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslation } from "react-i18next";
+import { LoadingContext } from "../App";
 
 const Hubs: React.FC = () => {
   const { t } = useTranslation();
@@ -40,18 +40,18 @@ const Hubs: React.FC = () => {
     // Set initial states
     gsap.set([titleRef.current, descriptionRef.current], {
       opacity: 0,
-      y: 50
+      y: 50,
     });
 
     gsap.set(mapWrapperRef.current, {
       opacity: 0,
       y: 100,
-      scale: 0.95
+      scale: 0.95,
     });
 
     gsap.set(markersRef.current, {
       opacity: 0,
-      scale: 0.5
+      scale: 0.5,
     });
 
     // Create scroll-triggered animation
@@ -60,39 +60,51 @@ const Hubs: React.FC = () => {
         trigger: sectionRef.current,
         start: "top center",
         end: "center center",
-        toggleActions: "play none none reverse"
-      }
+        toggleActions: "play none none reverse",
+      },
     });
 
     tl.to(titleRef.current, {
       opacity: 1,
       y: 0,
       duration: 0.8,
-      ease: "power3.out"
+      ease: "power3.out",
     })
-    .to(descriptionRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      ease: "power3.out"
-    }, "-=0.6")
-    .to(mapWrapperRef.current, {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      duration: 1.2,
-      ease: "power3.out"
-    }, "-=0.7")
-    .to(markersRef.current, {
-      opacity: 1,
-      scale: 1,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "back.out(1.7)"
-    }, "-=0.8");
+      .to(
+        descriptionRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+        },
+        "-=0.6"
+      )
+      .to(
+        mapWrapperRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out",
+        },
+        "-=0.7"
+      )
+      .to(
+        markersRef.current,
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "back.out(1.7)",
+        },
+        "-=0.8"
+      );
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, [isLoading]);
 
@@ -102,7 +114,7 @@ const Hubs: React.FC = () => {
       gsap.fromTo(
         cardRef.current,
         { opacity: 0, y: 40, scale: 0.95 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'power3.out' }
+        { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power3.out" }
       );
     }
   }, [selectedHub]);
@@ -122,15 +134,15 @@ const Hubs: React.FC = () => {
 
   useEffect(() => {
     if (selectedHub !== null && cardContentRef.current) {
-      const children = cardContentRef.current.querySelectorAll('.card-animate');
+      const children = cardContentRef.current.querySelectorAll(".card-animate");
       gsap.set(children, { opacity: 0, y: 20 });
       gsap.to(children, {
         opacity: 1,
         y: 0,
         duration: 0.6,
         stagger: 0.12,
-        ease: 'power2.out',
-        delay: 0.15
+        ease: "power2.out",
+        delay: 0.15,
       });
     }
   }, [selectedHub]);
@@ -138,26 +150,26 @@ const Hubs: React.FC = () => {
   // Use translation for hub cards
   const hubCards = [
     {
-      image: '/assets/hub-1.webp',
-      title: t('mainPage.hubs.cards.0.title'),
-      eyebrow: t('mainPage.hubs.cards.0.eyebrow'),
-      description: t('mainPage.hubs.cards.0.description'),
-      coordinates: '11° 15′ 49″ N; 73° 53′ 28″ W',
+      image: "/assets/hub-1.webp",
+      title: t("mainPage.hubs.cards.0.title"),
+      eyebrow: t("mainPage.hubs.cards.0.eyebrow"),
+      description: t("mainPage.hubs.cards.0.description"),
+      coordinates: "11° 15′ 49″ N; 73° 53′ 28″ W",
     },
     {
-      image: '/assets/hub-2.webp',
-      title: t('mainPage.hubs.cards.1.title'),
-      eyebrow: t('mainPage.hubs.cards.1.eyebrow'),
-      description: t('mainPage.hubs.cards.1.description'),
-      coordinates: '11° 11′ 15″ N; 73° 28′ 58″ W',
+      image: "/assets/hub-2.webp",
+      title: t("mainPage.hubs.cards.1.title"),
+      eyebrow: t("mainPage.hubs.cards.1.eyebrow"),
+      description: t("mainPage.hubs.cards.1.description"),
+      coordinates: "11° 11′ 15″ N; 73° 28′ 58″ W",
     },
     {
-      image: '/assets/hub-3.webp',
-      title: t('mainPage.hubs.cards.2.title'),
-      eyebrow: t('mainPage.hubs.cards.2.eyebrow'),
-      description: t('mainPage.hubs.cards.2.description'),
-      coordinates: '11° 14′ 48″ N; 73° 32′ 51″ W',
-    }
+      image: "/assets/hub-3.webp",
+      title: t("mainPage.hubs.cards.2.title"),
+      eyebrow: t("mainPage.hubs.cards.2.eyebrow"),
+      description: t("mainPage.hubs.cards.2.description"),
+      coordinates: "11° 14′ 48″ N; 73° 32′ 51″ W",
+    },
   ];
 
   return (
@@ -255,30 +267,30 @@ const Hubs: React.FC = () => {
       <section
         ref={sectionRef}
         className="hubs-section relative w-full flex flex-col items-center background-gradient-light min-h-screen max-h-screen overflow-hidden scroll-snap-section"
-        style={{ minHeight: '100vh', maxHeight: '100vh', overflow: 'hidden' }}
+        style={{ minHeight: "100vh", maxHeight: "100vh", overflow: "hidden" }}
       >
         {/* Content */}
         <div className="hubs-content relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
           <div className="flex flex-col items-start gap-12">
             {/* Header section */}
             <div className="flex flex-col md:flex-row items-start justify-between gap-8 w-full">
-              <h2 
+              <h2
                 ref={titleRef}
-                className="heading-2 text-secondary max-w-[40.9375rem]" 
-                dangerouslySetInnerHTML={{ __html: t('mainPage.hubs.title') }} 
+                className="heading-2 text-secondary max-w-[40.9375rem]"
+                dangerouslySetInnerHTML={{ __html: t("mainPage.hubs.title") }}
               />
-              <p 
+              <p
                 ref={descriptionRef}
                 className="body-M text-secondary max-w-[35rem]"
               >
-                {t('mainPage.hubs.description')}
+                {t("mainPage.hubs.description")}
               </p>
             </div>
 
             {/* Main terrain image */}
             <div className="relative w-full min-h-[60vh] md:min-h-[35rem] flex items-center justify-center md:block">
               {/* Wrapper for map and markers */}
-              <div 
+              <div
                 ref={mapWrapperRef}
                 className="relative w-11/12 max-w-lg md:w-full md:max-w-none md:absolute md:left-1/2 md:-translate-x-1/2 md:top-0"
               >
@@ -292,8 +304,10 @@ const Hubs: React.FC = () => {
                 {hubCards.map((hub, idx) => (
                   <button
                     key={idx}
-                    ref={el => markersRef.current[idx] = el}
-                    className={`hub-marker hub-marker-${idx + 1} flex flex-row items-start group focus:outline-none`}
+                    ref={(el) => (markersRef.current[idx] = el)}
+                    className={`hub-marker hub-marker-${
+                      idx + 1
+                    } flex flex-row items-start group focus:outline-none`}
                     onClick={() => setSelectedHub(idx)}
                     onMouseEnter={() => preloadImage(hub.image)}
                     onFocus={() => preloadImage(hub.image)}
@@ -307,13 +321,44 @@ const Hubs: React.FC = () => {
 
                     {/* Desktop marker with vertical line and text */}
                     <div className="hidden md:flex flex-row items-start">
-                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', height: '8rem', position: 'relative' }}>
-                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "start",
+                          height: "8rem",
+                          position: "relative",
+                        }}
+                      ></div>
                       {/* Text to the right of the marker */}
                       <div className="flex flex-col items-start">
-                        <span className="text-white marker-underline text-left text-base" style={{ fontFamily: 'Abel, sans-serif', fontWeight: 400 }}>{hub.title}</span>
-                        <span className="text-white marker-underline text-left text-base" style={{ fontFamily: 'Abel, sans-serif', fontWeight: 400 }}>{hub.coordinates.split(';')[0]}</span>
-                        <span className="text-white marker-underline text-left text-base" style={{ fontFamily: 'Abel, sans-serif', fontWeight: 400 }}>{hub.coordinates.split(';')[1]}</span>
+                        <span
+                          className="text-white marker-underline text-left text-base"
+                          style={{
+                            fontFamily: "Abel, sans-serif",
+                            fontWeight: 400,
+                          }}
+                        >
+                          {hub.title}
+                        </span>
+                        <span
+                          className="text-white marker-underline text-left text-base"
+                          style={{
+                            fontFamily: "Abel, sans-serif",
+                            fontWeight: 400,
+                          }}
+                        >
+                          {hub.coordinates.split(";")[0]}
+                        </span>
+                        <span
+                          className="text-white marker-underline text-left text-base"
+                          style={{
+                            fontFamily: "Abel, sans-serif",
+                            fontWeight: 400,
+                          }}
+                        >
+                          {hub.coordinates.split(";")[1]}
+                        </span>
                       </div>
                     </div>
                   </button>
@@ -324,16 +369,16 @@ const Hubs: React.FC = () => {
               {selectedHub === null && (
                 <div
                   style={{
-                    width: '30rem',
-                    height: '36rem',
-                    maxWidth: 'calc(100vw - 2rem)',
-                    maxHeight: 'calc(100vh - 2rem)',
-                    position: 'absolute',
-                    left: '50%',
+                    width: "30rem",
+                    height: "36rem",
+                    maxWidth: "calc(100vw - 2rem)",
+                    maxHeight: "calc(100vh - 2rem)",
+                    position: "absolute",
+                    left: "50%",
                     top: 0,
-                    transform: 'translateX(-50%)',
+                    transform: "translateX(-50%)",
                     zIndex: 20,
-                    pointerEvents: 'none',
+                    pointerEvents: "none",
                     opacity: 0,
                   }}
                   aria-hidden="true"
@@ -345,7 +390,7 @@ const Hubs: React.FC = () => {
                 <div
                   ref={cardRef}
                   className="hub-card-centered rounded-xl overflow-hidden"
-                  style={{ willChange: 'transform, opacity' }}
+                  style={{ willChange: "transform, opacity" }}
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
                 >
@@ -372,10 +417,21 @@ const Hubs: React.FC = () => {
                           className="w-10 h-10 rounded-full bg-white/30 backdrop-blur-[50px] border border-[#EFEFEF]/50 flex items-center justify-center group transition-all duration-300 hover:border-white hover:bg-white/50 text-white"
                           onClick={() => setSelectedHub(null)}
                           aria-label="Close hub card"
-                          style={{ position: 'absolute', top: 10, right: 10 }}
+                          style={{ position: "absolute", top: 10, right: 10 }}
                         >
-                          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 6L14 14M14 6L6 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M6 6L14 14M14 6L6 14"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                            />
                           </svg>
                         </button>
                       </div>
@@ -385,7 +441,9 @@ const Hubs: React.FC = () => {
 
                       {/* Text content */}
                       <div className="bg-white/10 backdrop-blur-[50px] rounded-2xl p-4 border border-white/5">
-                        <p className="text-white text-sm uppercase tracking-[-0.015em] mb-4 eyebrow card-animate">{hubCards[selectedHub].eyebrow}</p>
+                        <p className="text-white text-sm uppercase tracking-[-0.015em] mb-4 eyebrow card-animate">
+                          {hubCards[selectedHub].eyebrow}
+                        </p>
                         <h3 className="text-white text-[1.6rem] font-montserrat font-regular leading-[1.2] mb-2 card-animate">
                           {hubCards[selectedHub].title}
                         </h3>
@@ -405,4 +463,4 @@ const Hubs: React.FC = () => {
   );
 };
 
-export default Hubs; 
+export default Hubs;

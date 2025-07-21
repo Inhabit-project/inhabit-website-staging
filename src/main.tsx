@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import "./styles/globals.css";
 import { scrollManager } from "./utils/scrollManager";
-import "./utils/gsap";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "./styles/globals.css";
+import "./utils/gsap";
+import { HelmetProvider } from "react-helmet-async";
 
 // Import fonts
 // @fontsource packages only include latin subset by default. No cyrillic or vietnamese fonts are included.
@@ -53,12 +54,14 @@ const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RainbowKitProviderConfig>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </QueryClientProvider>
-    </RainbowKitProviderConfig>
+    <HelmetProvider>
+      <RainbowKitProviderConfig>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </QueryClientProvider>
+      </RainbowKitProviderConfig>
+    </HelmetProvider>
   </React.StrictMode>
 );

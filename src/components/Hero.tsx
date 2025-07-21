@@ -1,9 +1,9 @@
-import React, { useRef, useEffect, useContext } from 'react';
-import { useTranslation } from 'react-i18next';
-import Menu from './Menu';
-import { scrollManager } from '../utils/scrollManager';
-import gsap from 'gsap';
-import { LoadingContext } from '../App';
+import React, { useRef, useEffect, useContext } from "react";
+import { useTranslation } from "react-i18next";
+import Menu from "./Menu";
+import { scrollManager } from "../utils/scrollManager";
+import gsap from "gsap";
+import { LoadingContext } from "../App";
 
 interface HeroProps {
   scrollToRef?: React.RefObject<HTMLElement>;
@@ -42,22 +42,22 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
 
     // Reset initial states only if elements exist
     if (buttonRef.current) {
-      gsap.set([buttonRef.current], { 
+      gsap.set([buttonRef.current], {
         opacity: 0,
-        y: 50 
+        y: 50,
       });
     }
-    
+
     if (backgroundRef.current) {
-      gsap.set(backgroundRef.current, { 
-        opacity: 1 // Keep background container visible
+      gsap.set(backgroundRef.current, {
+        opacity: 1, // Keep background container visible
       });
     }
 
     if (backgroundImageRef.current) {
       gsap.set(backgroundImageRef.current, {
         opacity: 0,
-        scale: 1.1
+        scale: 1.1,
       });
     }
 
@@ -65,13 +65,13 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
       gsap.set(descriptionCardRef.current, {
         opacity: 0,
         y: 50,
-        scale: 0.95
+        scale: 0.95,
       });
     }
 
     if (descriptionRef.current) {
       gsap.set(descriptionRef.current, {
-        opacity: 0
+        opacity: 0,
       });
     }
   };
@@ -81,12 +81,12 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
     if (!titleRef.current) return;
 
     // Reset title content
-    titleRef.current.innerHTML = '';
+    titleRef.current.innerHTML = "";
 
     // Create a wrapper div to hold the animated spans
-    const wrapper = document.createElement('div');
-    wrapper.style.display = 'inline';
-    wrapper.innerHTML = t('hero.title');
+    const wrapper = document.createElement("div");
+    wrapper.style.display = "inline";
+    wrapper.innerHTML = t("hero.title");
     titleRef.current.appendChild(wrapper);
 
     // Function to wrap words in spans while preserving HTML
@@ -105,11 +105,11 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
             );
           }
 
-          const span = document.createElement('span');
+          const span = document.createElement("span");
           span.textContent = match[0];
-          span.style.opacity = '0';
-          span.style.transform = 'translateY(50px)';
-          span.style.display = 'inline-block';
+          span.style.opacity = "0";
+          span.style.transform = "translateY(50px)";
+          span.style.display = "inline-block";
           fragment.appendChild(span);
           titleWordsRef.current.push(span);
 
@@ -117,9 +117,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
         }
 
         if (lastIndex < text.length) {
-          fragment.appendChild(
-            document.createTextNode(text.slice(lastIndex))
-          );
+          fragment.appendChild(document.createTextNode(text.slice(lastIndex)));
         }
 
         node.parentNode?.replaceChild(fragment, node);
@@ -137,8 +135,8 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
 
     animationRef.current = gsap.timeline({
       defaults: {
-        ease: "power3.out"
-      }
+        ease: "power3.out",
+      },
     });
 
     animationRef.current
@@ -146,34 +144,50 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
         opacity: 1,
         scale: 1,
         duration: 2,
-        ease: "power2.out"
+        ease: "power2.out",
       })
-      .to(titleWordsRef.current, {
-        opacity: 1,
-        y: 0,
-        stagger: 0.1,
-        duration: 1.2,
-        ease: "back.out(1.7)"
-      }, "-=1.5")
-      .to(descriptionCardRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1,
-        ease: "back.out(1.2)"
-      }, "-=0.5")
-      .to(descriptionRef.current, {
-        opacity: 1,
-        duration: 0.8,
-        ease: "power2.out"
-      }, "-=0.3")
-      .to(buttonRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.8,
-        ease: "back.out(1.7)"
-      }, "-=0.3");
+      .to(
+        titleWordsRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.1,
+          duration: 1.2,
+          ease: "back.out(1.7)",
+        },
+        "-=1.5"
+      )
+      .to(
+        descriptionCardRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1,
+          ease: "back.out(1.2)",
+        },
+        "-=0.5"
+      )
+      .to(
+        descriptionRef.current,
+        {
+          opacity: 1,
+          duration: 0.8,
+          ease: "power2.out",
+        },
+        "-=0.3"
+      )
+      .to(
+        buttonRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "back.out(1.7)",
+        },
+        "-=0.3"
+      );
 
     // Add hover animation for the button
     if (buttonRef.current) {
@@ -181,7 +195,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
         gsap.to(buttonRef.current, {
           scale: 1.05,
           duration: 0.3,
-          ease: "power2.out"
+          ease: "power2.out",
         });
       };
 
@@ -189,18 +203,18 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
         gsap.to(buttonRef.current, {
           scale: 1,
           duration: 0.3,
-          ease: "power2.out"
+          ease: "power2.out",
         });
       };
 
-      buttonRef.current.addEventListener('mouseenter', enterAnimation);
-      buttonRef.current.addEventListener('mouseleave', leaveAnimation);
+      buttonRef.current.addEventListener("mouseenter", enterAnimation);
+      buttonRef.current.addEventListener("mouseleave", leaveAnimation);
 
       // Store cleanup function
       return () => {
         if (buttonRef.current) {
-          buttonRef.current.removeEventListener('mouseenter', enterAnimation);
-          buttonRef.current.removeEventListener('mouseleave', leaveAnimation);
+          buttonRef.current.removeEventListener("mouseenter", enterAnimation);
+          buttonRef.current.removeEventListener("mouseleave", leaveAnimation);
         }
       };
     }
@@ -219,18 +233,16 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
   }, [t, i18n.language, isLoading]);
 
   return (
-    <div className="relative w-full h-screen bg-secondary flex flex-col no-scroll-snap overflow-hidden">
+    <div className="relative w-full h-screen bg-secondary flex flex-col no-scroll-snap overflow-hidden pt-[5rem]">
       {/* Background Image with Overlay */}
-      <div 
-        ref={backgroundRef}
-        className="absolute inset-0 w-full h-full"
-      >
+      <div ref={backgroundRef} className="absolute inset-0 w-full h-full">
         <img
           ref={backgroundImageRef}
           src="/assets/hero.webp"
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
           onLoad={onHeroImageLoad}
+          fetchPriority="high"
         />
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-secondary/30 to-transparent"></div>
@@ -240,12 +252,15 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
       <Menu />
 
       {/* Hero Content */}
-      <div ref={contentRef} className="relative mt-[7rem] w-full h-[82vh] sm:h-[90vh] flex flex-col justify-between">
+      <div
+        ref={contentRef}
+        className="relative w-full h-[calc(100vh-5rem)] flex flex-col justify-between"
+      >
         {/* Centered Title Container */}
         <div className="flex justify-center">
-          <h1 
+          <h1
             ref={titleRef}
-            className="heading-1 text-center max-w-[92rem]"
+            className="heading-1 text-center max-w-[92rem] mt-4"
           />
         </div>
 
@@ -254,15 +269,12 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
           <div className="w-full max-w-container px-[clamp(1.5rem,5vw,6.25rem)]">
             {/* Description Card */}
             <div className="relative max-w-[28rem]">
-              <div 
+              <div
                 ref={descriptionCardRef}
                 className="bg-white/5 backdrop-blur-5xl p-8 rounded-xl border border-white/20"
               >
-                <p 
-                  ref={descriptionRef}
-                  className="body-M text-light"
-                >
-                  {t('hero.description')}
+                <p ref={descriptionRef} className="body-M text-light">
+                  {t("hero.description")}
                 </p>
               </div>
 
@@ -273,12 +285,29 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
                 onClick={handleScrollClick}
               >
                 <div className="flex items-center gap-2 px-6">
-                  <img src="/icons/mouse-icon.svg" alt="Mouse" className="w-4 h-4 hero-mouse-icon" />
-                  <span className="button-text text-sm tracking-[0.02em] uppercase">{t('hero.scrollButton')}</span>
+                  <img
+                    src="/icons/mouse-icon.svg"
+                    alt="Mouse"
+                    className="w-4 h-4 hero-mouse-icon"
+                  />
+                  <span className="button-text text-sm tracking-[0.02em] uppercase">
+                    {t("hero.scrollButton")}
+                  </span>
                 </div>
                 <div className="flex items-center px-4">
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="24" height="24">
-                    <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round"/>
+                  <svg
+                    className="w-6 h-6"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    width="24"
+                    height="24"
+                  >
+                    <path
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </div>
               </button>
@@ -290,4 +319,4 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
   );
 };
 
-export default Hero; 
+export default Hero;
