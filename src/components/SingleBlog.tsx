@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { fetchPostWithNavigation } from "@/services/blogService";
+import { fetchPostWithNavigation } from "@/services/wordpress";
 import { BlogPost, ProcessedPost } from "@/types/wordpress";
 import SubLoader from "@/components/SubLoader";
 

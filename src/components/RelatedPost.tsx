@@ -1,4 +1,3 @@
-import { fetchPosts } from "@/services/blogService";
 import { BlogPost } from "@/types/wordpress";
 import React, { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,6 +8,7 @@ import SubLoader from "@/components/SubLoader";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "@/utils/gsap";
+import { blogServices } from "@/services/wordpress/blog";
 
 const POSTS_PER_PAGE = 3;
 
@@ -25,6 +25,9 @@ const RelatedPost: React.FC = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [canAnimate, setCanAnimate] = useState(false);
+
+  // external hooks
+  const { fetchPosts } = blogServices();
 
   // Ensure cardRefs.current is always the right length and reset on posts change
   useEffect(() => {
@@ -114,19 +117,18 @@ const RelatedPost: React.FC = () => {
         y: 0,
         duration: 0.8,
         ease: "power3.out",
-      })
-        .to(
-          validCardRefs,
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: "power3.out",
-          },
-          "-=0.6"
-        );
+      }).to(
+        validCardRefs,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "power3.out",
+        },
+        "-=0.6"
+      );
     }, sectionRef);
     return () => {
       ctx && ctx.revert();
@@ -143,7 +145,7 @@ const RelatedPost: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      style={{ background: "var(--color-background-light)", }}
+      style={{ background: "var(--color-background-light)" }}
     >
       <div className="relative z-10 w-full container py-24 background-gradient-light">
         <h2
@@ -154,7 +156,9 @@ const RelatedPost: React.FC = () => {
           Related <span className="font-bold block">Articles</span>
         </h2>
         <div
-          className={`relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3${isLoading ? ' min-h-80' : ''}`}
+          className={`relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3${
+            isLoading ? " min-h-80" : ""
+          }`}
           style={{ gap: "30px", marginTop: 44 }}
         >
           <SubLoader isLoading={isLoading} />
@@ -167,7 +171,7 @@ const RelatedPost: React.FC = () => {
             posts.map((post, idx) => (
               <div
                 key={post.id}
-                ref={el => (cardRefs.current[idx] = el)}
+                ref={(el) => (cardRefs.current[idx] = el)}
                 className="relative"
                 style={{
                   borderRadius: "24px",

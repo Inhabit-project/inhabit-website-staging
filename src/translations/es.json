@@ -313,7 +313,23 @@
       "loading": "Cargando listado de entradas",
       "noPosts": "No hay entradas disponibles",
       "readTime_one": "{{count}} minuto de lectura",
-      "readTime_other": "{{count}} minutos de lectura"
+      "readTime_other": "{{count}} minutos de lectura",
+
+      "newsletterCTA": {
+        "stay_connected": "Mantente conectado",
+        "subtitle": "a una red global que restaura la tierra, la cultura y los sistemas.",
+        "description": "Recibe actualizaciones que realmente importan, dando forma a un futuro sostenible. Conviértete en un guardián hoy y deja un impacto duradero.",
+        "email": {
+          "label": "Correo electrónico",
+          "placeholder": "Ingresa tu correo electrónico",
+          "validations": {
+            "required": "El correo electrónico es obligatorio",
+            "invalid": "Dirección de correo electrónico no válida"
+          }
+        },
+        "success": "¡Gracias por suscribirte!",
+        "error": "Ocurrió un error. Por favor, intenta de nuevo."
+      }
     },
     "blogPosts": {
       "main": {
@@ -634,6 +650,7 @@
       "buildersTitle": "Nuestros <br /> <strong>Constructores</strong>",
       "partnersTitle": "Nuestros <br /> <strong>Socios</strong>"
     },
+
     "nftWorksSection": {
       "title": "Asi funciona el NFT<br /><strong>En dos pasos</strong>",
       "description": "Los metadatos cifrados del NFT contienen el marco legal, geolocalización de la tierra, registro de título, términos de membresía, obras de arte—garantizando protección permanente y cumplimiento de derechos de los participantes.",
