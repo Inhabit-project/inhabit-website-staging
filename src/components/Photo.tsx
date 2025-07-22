@@ -1,7 +1,6 @@
 import React, { useRef, useLayoutEffect, useState, useContext, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
 
 // Utility to set --vh CSS variable for mobile viewport height
@@ -77,40 +76,40 @@ const Photo: React.FC = () => {
   // Only animate text boxes when not loading and images are loaded
   useLayoutEffect(() => {
     if (isLoading || !imagesLoaded) return;
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Section 1 text box animation only
-    if (textBox1Ref.current && section1Ref.current) {
-      animation1Ref.current = gsap.timeline({
-        defaults: { ease: 'power3.out' },
-        scrollTrigger: {
-          trigger: section1Ref.current,
-          start: 'top center',
-          end: 'center center',
-          toggleActions: 'play none none reverse',
-        },
-      });
-      animation1Ref.current
-        .fromTo(textBox1Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
-    }
-    // Section 2 text box animation only
-    if (textBox2Ref.current && section2Ref.current) {
-      animation2Ref.current = gsap.timeline({
-        defaults: { ease: 'power3.out' },
-        scrollTrigger: {
-          trigger: section2Ref.current,
-          start: 'top center',
-          end: 'center center',
-          toggleActions: 'play none none reverse',
-        },
-      });
-      animation2Ref.current
-        .fromTo(textBox2Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
-    }
+    const ctx = gsap.context(() => {
+      // Section 1 text box animation only
+      if (textBox1Ref.current && section1Ref.current) {
+        animation1Ref.current = gsap.timeline({
+          defaults: { ease: 'power3.out' },
+          scrollTrigger: {
+            trigger: section1Ref.current,
+            start: 'top center',
+            end: 'center center',
+            toggleActions: 'play none none reverse',
+          },
+        });
+        animation1Ref.current
+          .fromTo(textBox1Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+      }
+      // Section 2 text box animation only
+      if (textBox2Ref.current && section2Ref.current) {
+        animation2Ref.current = gsap.timeline({
+          defaults: { ease: 'power3.out' },
+          scrollTrigger: {
+            trigger: section2Ref.current,
+            start: 'top center',
+            end: 'center center',
+            toggleActions: 'play none none reverse',
+          },
+        });
+        animation2Ref.current
+          .fromTo(textBox2Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+      }
+    });
     return () => {
       if (animation1Ref.current) { animation1Ref.current.kill(); animation1Ref.current = null; }
       if (animation2Ref.current) { animation2Ref.current.kill(); animation2Ref.current = null; }
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ctx.revert();
     };
   }, [isLoading, imagesLoaded]);
 

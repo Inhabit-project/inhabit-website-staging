@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useLayoutEffect, useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
@@ -65,40 +65,41 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
 
   useMenuScrollHide(setIsVisible, { getDisable: () => mobileOpen });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (mobileOpen) {
-      // Animate menu links and language buttons with nature-inspired stagger
       const menuItems = [
         ...mobileMenuLinksRef.current,
         ...mobileLangBtnRef.current,
       ].filter(Boolean);
       const downloadBtn = mobileDownloadBtnRef.current;
-      if (menuItems.length > 0) {
-        gsap.set(menuItems, { opacity: 0, y: 40, scale: 0.92, rotateZ: -3 });
-        gsap.to(menuItems, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          rotateZ: 0,
-          duration: 0.85,
-          ease: 'back.out(1.7)',
-          stagger: {
-            each: 0.11,
-            from: 'start',
-          },
-        });
-      }
-      // Animate the download button straight (no y or rotateZ), just scale and fade with bounce
-      if (downloadBtn) {
-        gsap.set(downloadBtn, { opacity: 0, scale: 0.85 });
-        gsap.to(downloadBtn, {
-          opacity: 1,
-          scale: 1,
-          duration: 1.1,
-          delay: 0.11 * menuItems.length, // after the last menu item
-          ease: 'elastic.out(1, 0.6)',
-        });
-      }
+      const ctx = gsap.context(() => {
+        if (menuItems.length > 0) {
+          gsap.set(menuItems, { opacity: 0, y: 40, scale: 0.92, rotateZ: -3 });
+          gsap.to(menuItems, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            rotateZ: 0,
+            duration: 0.85,
+            ease: 'back.out(1.7)',
+            stagger: {
+              each: 0.11,
+              from: 'start',
+            },
+          });
+        }
+        if (downloadBtn) {
+          gsap.set(downloadBtn, { opacity: 0, scale: 0.85 });
+          gsap.to(downloadBtn, {
+            opacity: 1,
+            scale: 1,
+            duration: 1.1,
+            delay: 0.11 * menuItems.length,
+            ease: 'elastic.out(1, 0.6)',
+          });
+        }
+      });
+      return () => ctx.revert();
     }
   }, [mobileOpen]);
 

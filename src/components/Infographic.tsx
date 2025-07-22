@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useContext, useState } from "react";
+import React, { useRef, useEffect, useContext, useState, useLayoutEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { gsap, ScrollTrigger } from "../utils/gsap";
@@ -70,7 +70,7 @@ const Infographic: React.FC = () => {
   const infographicTriggers = useRef<ScrollTrigger[]>([]);
 
   // Set initial states
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       gsap.set(
         [
@@ -120,7 +120,7 @@ const Infographic: React.FC = () => {
   }, [isLoading]);
 
   // Handle animations and robust cleanup
-  useEffect(() => {
+  useLayoutEffect(() => {
     let ctx: gsap.Context | undefined;
     // Clean up any previous triggers before creating new ones
     infographicTriggers.current.forEach((trigger) => {
@@ -253,18 +253,6 @@ const Infographic: React.FC = () => {
         if (trigger && typeof trigger.kill === "function") trigger.kill();
       });
       infographicTriggers.current = [];
-      // Also kill any orphaned triggers for safety
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (
-          trigger &&
-          trigger.vars &&
-          trigger.vars.trigger &&
-          rootRef.current &&
-          rootRef.current.contains(trigger.vars.trigger as Node)
-        ) {
-          trigger.kill();
-        }
-      });
     };
   }, [canAnimate, t]);
 
