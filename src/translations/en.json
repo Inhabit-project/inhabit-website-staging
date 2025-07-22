@@ -252,7 +252,23 @@
       "loading": "Loading list of posts",
       "noPosts": "No posts available",
       "readTime_one": "{{count}} min read",
-      "readTime_other": "{{count}} mins read"
+      "readTime_other": "{{count}} mins read",
+
+      "newsletterCTA": {
+        "stay_connected": "Stay connected",
+        "subtitle": "to a global network restoring land, culture, and systems.",
+        "description": "Get updates that actually matter, shaping a sustainable future. Become a steward today and make a lasting impact.",
+        "email": {
+          "label": "Email address",
+          "placeholder": "Enter your email",
+          "validations": {
+            "required": "Email is required",
+            "invalid": "Invalid email address"
+          }
+        },
+        "success": "Thank you for subscribing!",
+        "error": "An error occurred. Please try again."
+      }
     },
     "faq": {
       "title": "Frequently Asked<br /><strong>Questions</strong>",

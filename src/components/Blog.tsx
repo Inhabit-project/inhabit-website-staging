@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { fetchPosts } from "@/services/blogService";
 import { BlogPost, BlogProps as ImportedBlogProps } from "@/types/wordpress";
 import { truncateHtml } from "@/utils/html";
 import { Link, useLocation } from "react-router-dom";
-import { gsap, ScrollTrigger } from '../utils/gsap';
+import { gsap, ScrollTrigger } from "../utils/gsap";
 import SubLoader from "@/components/SubLoader";
+import { blogServices } from "@/services/wordpress/blog";
 
 interface BlogProps extends ImportedBlogProps {
   onReady?: () => void;
@@ -13,7 +13,7 @@ interface BlogProps extends ImportedBlogProps {
 
 const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const location = useLocation();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const isBlogPage = location.pathname === "/blog";
 
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -28,6 +28,9 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const mainPostRef = useRef<HTMLDivElement>(null);
   const smallPostsRef = useRef<HTMLDivElement>(null);
+
+  // external hooks
+  const { fetchPosts } = blogServices();
 
   const loadPosts = async () => {
     setIsLoading(true);
@@ -71,18 +74,18 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
     const ctx = gsap.context(() => {
       gsap.set([titleRef.current, descriptionRef.current], {
         opacity: 0,
-        y: 50
+        y: 50,
       });
 
       gsap.set(mainPostRef.current, {
         opacity: 0,
         y: 50,
-        scale: 0.95
+        scale: 0.95,
       });
 
       gsap.set(smallPostsRef.current, {
         opacity: 0,
-        y: 50
+        y: 50,
       });
     });
 
@@ -166,7 +169,10 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   }, [isLoading, posts.length, contentVisible, onReady]);
 
   return (
-    <section ref={sectionRef} className="background-gradient-light w-full min-h-screen">
+    <section
+      ref={sectionRef}
+      className="background-gradient-light w-full min-h-screen"
+    >
       <div className="relative z-10 w-full container py-24 background-gradient-light">
         <div className="flex flex-col items-start gap-12">
           {/* Header section */}
@@ -176,7 +182,9 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
               className="heading-2 text-secondary max-w-[40.9375rem]"
               style={{ color: "var(--color-secondary)" }}
             >
-              <span dangerouslySetInnerHTML={{ __html: t("mainPage.blog.title") }} />
+              <span
+                dangerouslySetInnerHTML={{ __html: t("mainPage.blog.title") }}
+              />
             </h2>
             <p
               ref={descriptionRef}
@@ -188,14 +196,14 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
           </div>
 
           {/* Blog content with fade-in */}
-          <div className={`relative${isLoading ? ' min-h-80' : ''}`}>
-          {isBlogPage && <SubLoader isLoading={isLoading} />}
+          <div className={`relative${isLoading ? " min-h-80" : ""}`}>
+            {isBlogPage && <SubLoader isLoading={isLoading} />}
             <SubLoader isLoading={isLoading} />
             {!isLoading && (
               <div
                 style={{
                   opacity: contentVisible ? 1 : 0,
-                  transition: "opacity 0.8s ease"
+                  transition: "opacity 0.8s ease",
                 }}
               >
                 {error && (
