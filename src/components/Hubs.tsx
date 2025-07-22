@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useState, useRef, useEffect, useLayoutEffect, useContext } from "react";
+import { gsap, ScrollTrigger } from "../utils/gsap";
 import { useTranslation } from "react-i18next";
 import { LoadingContext } from "../App";
 
@@ -34,78 +33,70 @@ const Hubs: React.FC = () => {
   }, [selectedHub]);
 
   // Initialize section animations
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isLoading) return;
-
-    // Set initial states
-    gsap.set([titleRef.current, descriptionRef.current], {
-      opacity: 0,
-      y: 50,
-    });
-
-    gsap.set(mapWrapperRef.current, {
-      opacity: 0,
-      y: 100,
-      scale: 0.95,
-    });
-
-    gsap.set(markersRef.current, {
-      opacity: 0,
-      scale: 0.5,
-    });
-
-    // Create scroll-triggered animation
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top center",
-        end: "center center",
-        toggleActions: "play none none reverse",
-      },
-    });
-
-    tl.to(titleRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out",
-    })
-      .to(
-        descriptionRef.current,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
+    const ctx = gsap.context(() => {
+      gsap.set([titleRef.current, descriptionRef.current], {
+        opacity: 0,
+        y: 50,
+      });
+      gsap.set(mapWrapperRef.current, {
+        opacity: 0,
+        y: 100,
+        scale: 0.95,
+      });
+      gsap.set(markersRef.current, {
+        opacity: 0,
+        scale: 0.5,
+      });
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top center",
+          end: "center center",
+          toggleActions: "play none none reverse",
         },
-        "-=0.6"
-      )
-      .to(
-        mapWrapperRef.current,
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.2,
-          ease: "power3.out",
-        },
-        "-=0.7"
-      )
-      .to(
-        markersRef.current,
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "back.out(1.7)",
-        },
-        "-=0.8"
-      );
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
+      });
+      tl.to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      })
+        .to(
+          descriptionRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+          },
+          "-=0.6"
+        )
+        .to(
+          mapWrapperRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 1.2,
+            ease: "power3.out",
+          },
+          "-=0.7"
+        )
+        .to(
+          markersRef.current,
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "back.out(1.7)",
+          },
+          "-=0.8"
+        );
+    });
+    return () => ctx.revert();
   }, [isLoading]);
 
   // Animate card in with GSAP

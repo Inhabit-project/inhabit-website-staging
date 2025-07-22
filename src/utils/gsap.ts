@@ -53,4 +53,16 @@ gsap.registerPlugin(
   // CustomWiggle
 );
 
+/**
+ * Globally refreshes all ScrollTriggers after a small delay to ensure DOM is ready.
+ * Use after loader disappears or when dynamic content changes.
+ */
+export function refreshScrollTriggers(delay = 50) {
+  if (typeof window !== 'undefined') {
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, delay);
+  }
+}
+
 export { gsap, ScrollTrigger }; 

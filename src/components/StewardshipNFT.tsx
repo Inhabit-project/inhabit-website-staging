@@ -1,7 +1,6 @@
-import React, { useRef, useEffect, useContext } from "react";
+import React, { useLayoutEffect, useRef, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "../utils/gsap";
 import { LoadingContext } from "../App";
 
 const StewardshipNFT: React.FC = () => {
@@ -13,61 +12,62 @@ const StewardshipNFT: React.FC = () => {
   const isLoading = useContext(LoadingContext);
 
   // Initialize section animations
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isLoading) return;
-
-    // Set initial states
-    gsap.set([titleRef.current, descriptionRef.current], {
-      opacity: 0,
-      y: 50,
-    });
-
-    gsap.set(imageRef.current, {
-      opacity: 0,
-      y: 100,
-      scale: 0.95,
-    });
-
-    // Create scroll-triggered animation
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top center",
-        end: "center center",
-        toggleActions: "play none none reverse",
-      },
-    });
-
-    tl.to(titleRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out",
-    })
-      .to(
-        descriptionRef.current,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
+    const section = sectionRef.current;
+    const title = titleRef.current;
+    const description = descriptionRef.current;
+    const image = imageRef.current;
+    if (!section || !title || !description || !image) return;
+    const ctx = gsap.context(() => {
+      gsap.set([title, description], {
+        opacity: 0,
+        y: 50,
+      });
+      gsap.set(image, {
+        opacity: 0,
+        y: 100,
+        scale: 0.95,
+      });
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top center",
+          end: "center center",
+          toggleActions: "play none none reverse",
         },
-        "-=0.6"
-      )
-      .to(
-        imageRef.current,
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.2,
-          ease: "power3.out",
-        },
-        "-=0.7"
-      );
-
+      });
+      tl.to(title, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      })
+        .to(
+          description,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+          },
+          "-=0.6"
+        )
+        .to(
+          image,
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 1.2,
+            ease: "power3.out",
+          },
+          "-=0.7"
+        );
+      ScrollTrigger.refresh();
+    }, section);
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      ctx.revert();
     };
   }, [isLoading]);
 

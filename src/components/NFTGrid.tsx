@@ -1,9 +1,9 @@
-import { useRef, JSX, useState, useEffect, useContext } from "react";
+import { useLayoutEffect, useRef, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ComparisonCards } from "./NFTComparison/ComparisonCards";
 import { Campaign } from "@/models/campaign.model";
-import gsap from "gsap";
+import { gsap, ScrollTrigger } from "../utils/gsap";
 import { LoadingContext } from "@/App";
 
 type Props = {
@@ -25,26 +25,28 @@ export default function NFTGrid(props: Props): JSX.Element {
   const tableRef = useRef<HTMLDivElement>(null);
 
   // Set initial states
-  useEffect(() => {
-    gsap.set([titleRef.current, descriptionRef.current], {
-      opacity: 0,
-      y: 50,
-    });
-
-    gsap.set(cardRefs.current, {
-      opacity: 0,
-      y: 50,
-      scale: 0.95,
-    });
-
-    gsap.set(tableRef.current, {
-      opacity: 0,
-      y: 30,
-    });
+  useLayoutEffect(() => {
+    if (!sectionRef.current) return;
+    const ctx = gsap.context(() => {
+      gsap.set([titleRef.current, descriptionRef.current], {
+        opacity: 0,
+        y: 50,
+      });
+      gsap.set(cardRefs.current, {
+        opacity: 0,
+        y: 50,
+        scale: 0.95,
+      });
+      gsap.set(tableRef.current, {
+        opacity: 0,
+        y: 30,
+      });
+    }, sectionRef);
+    return () => ctx.revert();
   }, []);
 
   // Handle loading state change
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isLoading) {
       const timer = setTimeout(() => {
         setCanAnimate(true);
@@ -57,66 +59,59 @@ export default function NFTGrid(props: Props): JSX.Element {
   }, [isLoading]);
 
   // Handle animations
-  useEffect(() => {
-    let ctx = gsap.context(() => {});
-
-    if (canAnimate) {
-      ctx = gsap.context(() => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top center",
-            end: "center center",
-            toggleActions: "play none none reverse",
-          },
-        });
-
-        // Title and description animations
-        tl.to(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-        })
-          .to(
-            descriptionRef.current,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power3.out",
-            },
-            "-=0.6"
-          )
-          // NFT cards stagger animation
-          .to(
-            cardRefs.current,
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.8,
-              stagger: 0.15,
-              ease: "power3.out",
-            },
-            "-=0.4"
-          )
-          // Table animation
-          .to(
-            tableRef.current,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power3.out",
-            },
-            "-=0.4"
-          );
+  useLayoutEffect(() => {
+    if (!canAnimate || !sectionRef.current) return;
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top center",
+          end: "center center",
+          toggleActions: "play none none reverse",
+        },
       });
-    }
-
+      tl.to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      })
+        .to(
+          descriptionRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+          },
+          "-=0.6"
+        )
+        .to(
+          cardRefs.current,
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power3.out",
+          },
+          "-=0.4"
+        )
+        .to(
+          tableRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+          },
+          "-=0.4"
+        );
+    }, sectionRef);
     return () => {
       ctx.revert();
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, [canAnimate]);
 
@@ -150,9 +145,10 @@ export default function NFTGrid(props: Props): JSX.Element {
           aria-label={t("mainPage.nftGrid.title")}
         >
           {/* NFT Card */}
-          {campaign.collections.map((collection) => (
+          {campaign.collections.map((collection, idx) => (
             <div
               key={collection.id}
+              ref={el => (cardRefs.current[idx] = el)}
               className="relative"
               style={{
                 background: "var(--color-bright-green)",

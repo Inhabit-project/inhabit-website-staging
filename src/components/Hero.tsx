@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, useContext } from "react";
+import React, { useRef, useLayoutEffect, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import Menu from "./Menu";
 import { scrollManager } from "../utils/scrollManager";
-import gsap from "gsap";
+import { gsap } from "../utils/gsap";
 import { LoadingContext } from "../App";
 
 interface HeroProps {
@@ -221,14 +221,17 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
   };
 
   // Handle initial setup and language changes
-  useEffect(() => {
+  useLayoutEffect(() => {
     resetAnimationState();
     setupTitleWords();
-    const cleanup = setupAnimations();
-
+    let cleanup;
+    const ctx = gsap.context(() => {
+      cleanup = setupAnimations();
+    });
     return () => {
       resetAnimationState();
       if (cleanup) cleanup();
+      ctx.revert();
     };
   }, [t, i18n.language, isLoading]);
 

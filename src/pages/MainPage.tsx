@@ -13,7 +13,6 @@ import CTA from "../components/CTA";
 import Blog from "../components/Blog";
 import FAQ from "../components/FAQ";
 import Footer from "../components/Footer";
-import { scrollManager } from "../utils/scrollManager";
 import { useStore } from "../store";
 import { NatureSpinner } from "../ui/Loader";
 import { Helmet } from "react-helmet-async";
@@ -36,15 +35,7 @@ function MainPage(props: Props) {
 
   useEffect(() => {
     getCampaigns();
-
-    if (scrollManager && typeof scrollManager.update === "function") {
-      setTimeout(() => {
-        scrollManager.update();
-        if (onPageReady) onPageReady();
-      }, 200);
-    } else {
-      if (onPageReady) onPageReady();
-    }
+    if (onPageReady) onPageReady();
   }, [onPageReady]);
 
   useEffect(() => {
