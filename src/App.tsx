@@ -7,8 +7,10 @@ import "@fontsource/abel/400.css";
 import "@fontsource/montserrat/400.css";
 
 import Loader from "@/components/Loader";
+import { scrollManager } from "@/utils/scrollManager";
 import PageTransition from "@/components/PageTransition";
 import { useLocation } from "react-router-dom";
+import { useScrollToTopOnNavigation } from "@/utils/scrollToTopOnNavigation";
 import ScrollToTop from "@/components/ScrollToTop";
 
 import { Routes, Route } from "react-router-dom";
@@ -32,11 +34,10 @@ const TermsAndConditionsPage = React.lazy(
 const PrivacyPolicyPage = React.lazy(() => import("@/pages/PrivacyPolicyPage"));
 const ProjectsPage = React.lazy(() => import("@/pages/ProjectsPage"));
 const ArticlePage = React.lazy(() => import("@/pages/ArticlePage"));
-const Membership = React.lazy(() => import("@/pages/Membership"));
 const ContactUs = React.lazy(() => import("@/pages/ContactUs"));
+const Membership = React.lazy(() => import("@/pages/Membership"));
 
 import Cursor from "./utils/cursor";
-import { refreshScrollTriggers } from "@/utils/gsap";
 
 // Create a context for the loading state
 export const LoadingContext = createContext<boolean>(false);
@@ -52,18 +53,6 @@ const App: React.FC = () => {
   const [canFinishLoading, setCanFinishLoading] = useState(false);
   const location = useLocation();
   const [pendingLocation, setPendingLocation] = useState(location);
-  const [isPageLoading, setIsPageLoading] = useState(false); // NEW: track lazy loading
-
-  // Restore missing handlers
-  const handleLoaderComplete = () => {
-    setIsLoading(false);
-  };
-  const handleTransitionComplete = () => {
-    // No-op: scroll now handled in useEffect above
-  };
-  const handleHeroImageLoad = () => {
-    setHeroImageLoaded(true);
-  };
 
   // Only allow loader to finish when both hero image and timer are done
   useEffect(() => {
@@ -88,36 +77,55 @@ const App: React.FC = () => {
         html.classList.remove("loading");
         document.body.classList.remove("loading");
         setIsTransitioning(false);
-        // Refresh all ScrollTriggers globally after loader disappears
-        refreshScrollTriggers(100);
       }, 500);
     }
   }, [isLoading]);
 
-  // Handle page transitions and lazy loading
+  // Handle page transitions
   useEffect(() => {
     if (location !== pendingLocation) {
       setShowTransition(true);
       setTransitionIn(false); // Start with cover
       setPageReady(false); // Reset page ready on navigation
-      setIsPageLoading(true); // NEW: start loading state for lazy load
       setTimeout(() => {
         setPendingLocation(location);
-        // Don't set transitionIn yet; wait for lazy load
-      }, 600); // shorter cover before lazy load
+        setTransitionIn(true); // Reveal
+      }, 1200); // match animation duration (1.2s)
     }
   }, [location]);
 
-  // When lazy-loaded page is ready, animate transition out
+  // Scroll to top only after both transition and page are ready
   useEffect(() => {
-    if (isPageLoading && pageReady) {
-      setTransitionIn(true); // Reveal
-      setTimeout(() => {
-        setShowTransition(false);
-        setIsPageLoading(false);
-      }, 1200); // match animation duration
+    if (transitionIn && pageReady) {
+      setShowTransition(false);
+      requestAnimationFrame(() => {
+        if (scrollManager && typeof scrollManager.scrollTo === "function") {
+          scrollManager.scrollTo(0, { immediate: true });
+        } else {
+          window.scrollTo({ top: 0, behavior: "auto" });
+        }
+        setTimeout(() => {
+          import("./utils/gsap").then(({ ScrollTrigger }) => {
+            ScrollTrigger.refresh();
+          });
+        }, 100);
+      });
     }
-  }, [isPageLoading, pageReady]);
+  }, [transitionIn, pageReady]);
+
+  const handleTransitionComplete = () => {
+    // No-op: scroll now handled in useEffect above
+  };
+
+  // Called when the hero image is loaded
+  const handleHeroImageLoad = () => {
+    setHeroImageLoaded(true);
+  };
+
+  // Called when Loader finishes its progress animation
+  const handleLoaderComplete = () => {
+    setIsLoading(false);
+  };
 
   // Helper to pass onPageReady to all pages
   const pageProps = { onPageReady: () => setPageReady(true) };
@@ -126,20 +134,27 @@ const App: React.FC = () => {
   useEffect(() => {
     // List of routes that do NOT use a hero image
     const noHeroRoutes = [
-      '/checkout',
-      '/blog',
-      '/hubs/agua-de-luna',
-      '/hubs/tierrakilwa',
-      '/terms',
-      '/privacy',
-      '/projects',
-      '/contact',
-      '/blog/article', // match base for dynamic article routes
+      "/membership",
+      "/checkout",
+      "/blog",
+      "/hubs/agua-de-luna",
+      "/hubs/tierrakilwa",
+      "/terms",
+      "/privacy",
+      "/projects",
+      "/contact",
+      "/blog/article", // match base for dynamic article routes
       // Add any other routes that don't use a hero image
     ];
 
     // If the current route matches any no-hero route, set heroImageLoaded to true
-    if (noHeroRoutes.some(route => location.pathname === route || location.pathname.startsWith(route + '/'))) {
+    if (
+      noHeroRoutes.some(
+        (route) =>
+          location.pathname === route ||
+          location.pathname.startsWith(route + "/")
+      )
+    ) {
       setHeroImageLoaded(true);
     }
   }, [location]);
@@ -165,9 +180,9 @@ const App: React.FC = () => {
     const handleBeforeUnload = () => {
       window.scrollTo(0, 0);
     };
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
 
@@ -188,15 +203,12 @@ const App: React.FC = () => {
   }, [isLoading]);
 
   return (
-    <LoadingContext.Provider value={isLoading && location.pathname === "/"}>
+    <LoadingContext.Provider value={isLoading}>
       <ScrollToTop />
-
       <div
-        className={`cursor-default app-container ${
-          isTransitioning ? "transitioning" : ""
-        }`}
+        className={`app-container ${isTransitioning ? "transitioning" : ""}`}
       >
-        {isLoading && location.pathname === "/" && (
+        {isLoading && (
           <Loader
             onLoadingComplete={
               canFinishLoading ? handleLoaderComplete : undefined
@@ -209,9 +221,7 @@ const App: React.FC = () => {
             onComplete={handleTransitionComplete}
           />
         )}
-        <Suspense
-          fallback={null}
-        >
+        <Suspense fallback={<Loader />}>
           <Routes location={pendingLocation}>
             <Route
               path="/"
@@ -269,15 +279,6 @@ const App: React.FC = () => {
               element={<TierraKilwaPage {...pageProps} />}
             />
             <Route
-              path="/membership/:campaignId/:collectionId/:referral?"
-              element={
-                <Membership
-                  {...pageProps}
-                  onHeroImageLoad={handleHeroImageLoad}
-                />
-              }
-            />
-            <Route
               path="/terms"
               element={<TermsAndConditionsPage {...pageProps} />}
             />
@@ -289,6 +290,15 @@ const App: React.FC = () => {
               path="/projects"
               element={
                 <ProjectsPage
+                  {...pageProps}
+                  onHeroImageLoad={handleHeroImageLoad}
+                />
+              }
+            />
+            <Route
+              path="/membership/:campaignId/:collectionId/:referral?"
+              element={
+                <Membership
                   {...pageProps}
                   onHeroImageLoad={handleHeroImageLoad}
                 />
