@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { fetchPostWithNavigation } from "@/services/wordpress";
 import { BlogPost, ProcessedPost } from "@/types/wordpress";
 import SubLoader from "@/components/SubLoader";
+import { blogServices } from "@/services/wordpress/blog";
 
 interface SingleBlogProps {
   onPageReady?: () => void;
@@ -12,6 +12,7 @@ interface SingleBlogProps {
 const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
   const { id } = useParams();
   const { t } = useTranslation();
+  const { fetchPostWithNavigation } = blogServices();
   const [post, setPost] = useState<ProcessedPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
