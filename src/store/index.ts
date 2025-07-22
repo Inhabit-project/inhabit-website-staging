@@ -189,7 +189,7 @@ export const useStore = create<Store>((set, get) => {
           isPollingKyc: false,
           isKycHardCompleted: true,
         });
-      }, 500);
+      }, 5000);
     },
   };
 });
