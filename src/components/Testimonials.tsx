@@ -1,7 +1,8 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useContext, useState } from 'react';
 import LogosSection from './LogosSection';
-import { useTranslation } from "react-i18next";
-import { gsap, ScrollTrigger } from "../utils/gsap";
+import { useTranslation } from 'react-i18next';
+import { gsap, ScrollTrigger } from '../utils/gsap';
+import { LoadingContext } from '../App';
 
 interface Testimonial {
   image: string;
@@ -17,6 +18,8 @@ interface Partner {
 
 const Testimonials: React.FC = () => {
   const { t } = useTranslation();
+  const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
 
   // Refs for animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -55,84 +58,99 @@ const Testimonials: React.FC = () => {
     { logo: '/assets/logos/partner-logo-5.png', name: 'Partner 5' }
   ];
 
-  // Set initial states and create scroll-based animations
+  // Set initial states on mount
   useEffect(() => {
-    if (!sectionRef.current) return;
+    gsap.set([titleRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 50
+    });
+    gsap.set(testimonialCardRef.current, {
+      opacity: 0,
+      y: 50,
+      scale: 0.95
+    });
+    gsap.set(testimonialImageRef.current, {
+      opacity: 0,
+      scale: 0.95
+    });
+    gsap.set(testimonialContentRef.current, {
+      opacity: 0,
+      y: 30
+    });
+  }, []);
 
-    const ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set([titleRef.current, descriptionRef.current], {
-        opacity: 0,
-        y: 50
-      });
-      gsap.set(testimonialCardRef.current, {
-        opacity: 0,
-        y: 50,
-        scale: 0.95
-      });
-      gsap.set(testimonialImageRef.current, {
-        opacity: 0,
-        scale: 0.95
-      });
-      gsap.set(testimonialContentRef.current, {
-        opacity: 0,
-        y: 30
-      });
+  // Handle loading state change
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
 
-      // Create scroll-triggered animation timeline
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "center center",
-          toggleActions: "restart none none none"
-        }
-      });
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading]);
 
-      // Title and description animations
-      tl.to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      })
-      .to(descriptionRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      }, "-=0.6")
-      // Testimonial card animation
-      .to(testimonialCardRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.8,
-        ease: "power3.out"
-      }, "-=0.4")
-      // Testimonial image animation
-      .to(testimonialImageRef.current, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-        ease: "power3.out"
-      }, "-=0.6")
-      // Testimonial content animation
-      .to(testimonialContentRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      }, "-=0.6");
-      
-      // Refresh ScrollTrigger after timeline is set up
-      ScrollTrigger.refresh();
-    }, sectionRef);
+  // Handle animations
+  useEffect(() => {
+    let ctx = gsap.context(() => {});
+
+    if (canAnimate) {
+      ctx = gsap.context(() => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top center",
+            end: "center center",
+            toggleActions: "restart none none none"
+          }
+        });
+
+        // Title and description animations
+        tl.to(titleRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        })
+        .to(descriptionRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        }, "-=0.6")
+        // Testimonial card animation
+        .to(testimonialCardRef.current, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "power3.out"
+        }, "-=0.4")
+        // Testimonial image animation
+        .to(testimonialImageRef.current, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: "power3.out"
+        }, "-=0.6")
+        // Testimonial content animation
+        .to(testimonialContentRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        }, "-=0.6");
+        // Refresh ScrollTrigger after timeline is set up
+        ScrollTrigger.refresh();
+      });
+    }
 
     return () => {
       ctx.revert();
     };
-  }, []);
+  }, [canAnimate]);
 
   return (
     <>

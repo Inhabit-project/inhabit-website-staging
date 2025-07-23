@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BlogPost, BlogProps as ImportedBlogProps } from "@/types/wordpress";
 import { truncateHtml } from "@/utils/html";
@@ -20,6 +20,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [contentVisible, setContentVisible] = useState(false);
+  const [readyToAnimate, setReadyToAnimate] = useState(false);
 
   // Refs for animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -53,9 +54,13 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
     loadPosts();
   }, [t]);
 
+  useEffect(() => {
+    // console.log('Blog component rendered, posts:', posts); // Debug: log posts state on update
+  }, [posts]);
+
   const [mainPost, ...smallPosts] = posts;
 
-  // Set initial states and create scroll-based animations
+  // Set initial states
   useEffect(() => {
     if (
       !titleRef.current ||
@@ -87,14 +92,25 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
     return () => ctx.revert();
   }, []);
 
-  // Create animations when posts are loaded (no timer delays)
+  // Wait for posts to load and refs to be set, then allow animation
   useEffect(() => {
     if (
-      !titleRef.current || 
-      !descriptionRef.current || 
-      isLoading || 
-      posts.length === 0
+      !isLoading &&
+      posts.length > 0 &&
+      titleRef.current &&
+      descriptionRef.current
     ) {
+      // Optional: add a small delay for effect
+      const timer = setTimeout(() => setReadyToAnimate(true), 400);
+      return () => clearTimeout(timer);
+    } else {
+      setReadyToAnimate(false);
+    }
+  }, [isLoading, posts.length]);
+
+  // Animate title and description only when readyToAnimate
+  useEffect(() => {
+    if (!titleRef.current || !descriptionRef.current || !readyToAnimate) {
       return;
     }
 
@@ -104,7 +120,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
     function triggerBlogAnimation() {
       ctx = gsap.context(() => {
         if (isBlogPage) {
-          // Animate immediately (no scroll trigger) for blog page
+          // Animate immediately (no scroll trigger)
           tl = gsap.timeline();
         } else {
           // Animate on scroll (homepage)
@@ -117,7 +133,6 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
             },
           });
         }
-        
         tl.to(titleRef.current, {
           opacity: 1,
           y: 0,
@@ -135,7 +150,6 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
             "-=0.6"
           )
           .add(() => setContentVisible(true)); // Show content after animation
-        
         // Refresh ScrollTrigger after timeline is set up
         ScrollTrigger.refresh();
       });
@@ -146,7 +160,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
     return () => {
       if (ctx) ctx.revert();
     };
-  }, [isLoading, posts.length, isBlogPage]);
+  }, [readyToAnimate]);
 
   useEffect(() => {
     if (!isLoading && posts.length > 0 && contentVisible && onReady) {
