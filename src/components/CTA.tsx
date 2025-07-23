@@ -1,14 +1,11 @@
-import React, { useRef, useEffect, useContext, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { gsap, ScrollTrigger } from "../utils/gsap";
-import { LoadingContext } from "../App";
 import { useStore } from "@/store";
 import { Link } from "react-router-dom";
 
 const CTA: React.FC = () => {
   const { t } = useTranslation();
-  const isLoading = useContext(LoadingContext);
-  const [canAnimate, setCanAnimate] = useState(false);
   const [ready, setReady] = useState(false); // for initial CSS class
 
   // Simplified refs
@@ -22,31 +19,18 @@ const CTA: React.FC = () => {
   const { lastCampaign } = useStore();
   const firstCollection = lastCampaign?.collections[0];
 
-  // Set initial states on mount
+  // Set initial states on mount and set up scroll-based animations
   useEffect(() => {
-    gsap.set(bgRef.current, { scale: 1.2 });
-    gsap.set(imageContainerRef.current, { opacity: 0, y: 40 });
-    gsap.set(mainContentRef.current, { opacity: 1 }); // keep container visible
-    gsap.set(textGroupRef.current, { opacity: 0, y: 20 });
-    setReady(true); // Remove initial CSS class after mount
-  }, []);
+    if (!sectionRef.current) return;
 
-  // Handle loading state change
-  useEffect(() => {
-    if (!isLoading) {
-      const timer = setTimeout(() => {
-        setCanAnimate(true);
-      }, 1500);
-      return () => clearTimeout(timer);
-    } else {
-      setCanAnimate(false);
-    }
-  }, [isLoading]);
-
-  // Simplified animation
-  useEffect(() => {
-    if (!canAnimate || !sectionRef.current) return;
     const ctx = gsap.context(() => {
+      // Set initial states
+      gsap.set(bgRef.current, { scale: 1.2 });
+      gsap.set(imageContainerRef.current, { opacity: 0, y: 40 });
+      gsap.set(mainContentRef.current, { opacity: 1 }); // keep container visible
+      gsap.set(textGroupRef.current, { opacity: 0, y: 20 });
+
+      // Create scroll-triggered animation timeline
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -55,6 +39,7 @@ const CTA: React.FC = () => {
           toggleActions: "restart none none none",
         },
       });
+
       tl.to(bgRef.current, {
         scale: 1,
         duration: 0.6,
@@ -80,15 +65,17 @@ const CTA: React.FC = () => {
           },
           "+=0.1" // after bg+image
         );
+
       // Refresh ScrollTrigger after timeline is set up
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 0);
+      ScrollTrigger.refresh();
     }, sectionRef);
+
+    setReady(true); // Remove initial CSS class after mount
+
     return () => {
       ctx.revert();
     };
-  }, [canAnimate]);
+  }, []);
 
   return (
     <section

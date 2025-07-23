@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useStore } from "../../../store";
 import { Collection } from "src/models/collection.model";
-import { NatureSpinner } from "../../../ui/Loader";
+import SubLoader from "../../../load/SubLoader";
 import { SCAN_URL } from "@/config/const";
 
 type Props = {
@@ -20,7 +20,7 @@ export default function OtherCollections(props: Props): JSX.Element {
   );
 
   if (campaignLoading) {
-    return <NatureSpinner />;
+    return <SubLoader isLoading={true} />;
   }
 
   if (!otherCollections || otherCollections.length === 0) {

@@ -14,7 +14,6 @@ import Blog from "../components/Blog";
 import FAQ from "../components/FAQ";
 import Footer from "../components/Footer";
 import { useStore } from "../store";
-import { NatureSpinner } from "../ui/Loader";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 

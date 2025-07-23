@@ -7,7 +7,7 @@ import NFTGrid from "../components/NFTGrid";
 import Footer from "../components/Footer";
 import { useTranslation } from "react-i18next";
 import ImageSection from "../components/ImageSection";
-import { NatureSpinner } from "@/ui/Loader";
+import SubLoader from "@/load/SubLoader";
 import { useStore } from "@/store";
 import { Helmet } from "react-helmet-async";
 
@@ -147,7 +147,7 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
       />
 
       <section aria-label="Available NFTs" ref={nftGridRef}>
-        {campaignsLoading && <NatureSpinner />}
+        <SubLoader isLoading={campaignsLoading} />
 
         {!campaignsLoading &&
           (campaigns.length === 0 ? (

@@ -4,7 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { initVideoSectionCursor } from '../utils/videoCursor';
 import { LoadingContext } from '../App';
-import SubLoader from './SubLoader';
+import SubLoader from '@/load/SubLoader';
 
 const ProjectsVideoSection: React.FC = () => {
   const { t } = useTranslation();

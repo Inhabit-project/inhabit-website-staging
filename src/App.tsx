@@ -6,9 +6,9 @@ import "@fontsource/nunito-sans/400.css";
 import "@fontsource/abel/400.css";
 import "@fontsource/montserrat/400.css";
 
-import Loader from "@/components/Loader";
+import Loader from "@/load/Loader";
 import { scrollManager } from "@/utils/scrollManager";
-import PageTransition from "@/components/PageTransition";
+import PageTransition from "@/load/PageTransition";
 import { useLocation } from "react-router-dom";
 import { useScrollToTopOnNavigation } from "@/utils/scrollToTopOnNavigation";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -45,20 +45,28 @@ export const LoadingContext = createContext<boolean>(false);
 const App: React.FC = () => {
   const location = useLocation();
   
-  // Only show loader on main page reload
+  // Only show loader on main page reload - NEVER for internal pages or navigation
   const isMainPageReload = () => {
+    // STRICT: Only main page path allowed
     if (location.pathname !== '/') return false;
     
-    // Check if this is a page reload using Performance API
+    // STRICT: Prevent loader on any navigation (even to main page)
+    // Only show on actual page reload/refresh
     const navigationEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
     if (navigationEntries.length > 0) {
-      return navigationEntries[0].type === 'reload';
+      const navType = navigationEntries[0].type;
+      // Only show loader for 'reload' or 'navigate' (first visit)
+      // but NOT for 'back_forward' (browser navigation)
+      return navType === 'reload' || (navType === 'navigate' && !document.referrer);
     }
     
-    // Fallback: assume it's a reload if we're on the main page and have no referrer from the same origin
+    // Fallback: only if we're on main page with no same-origin referrer
+    // This ensures it's a direct visit or reload, not internal navigation
     return !document.referrer || !document.referrer.includes(window.location.origin);
   };
   
+  // CRITICAL: This should ONLY be true for main page hero loading
+  // Never for InternalPagesHero or page navigation
   const shouldShowLoader = isMainPageReload();
   const [isLoading, setIsLoading] = useState(shouldShowLoader);
   const [isTransitioning, setIsTransitioning] = useState(shouldShowLoader);
@@ -238,11 +246,20 @@ const App: React.FC = () => {
       <div
         className={`app-container ${isTransitioning ? "transitioning" : ""}`}
       >
-        {isLoading && shouldShowLoader && (
+        {/* 
+          MAIN HERO LOADER ONLY:
+          This loader should ONLY appear for the main page hero component.
+          It should NEVER appear for:
+          - InternalPagesHero components
+          - Page navigation between routes
+          - Any other page loading states
+        */}
+        {isLoading && shouldShowLoader && location.pathname === '/' && (
           <Loader
             onLoadingComplete={
               canFinishLoading ? handleLoaderComplete : undefined
             }
+            isMainHeroLoader={true}
           />
         )}
         {showTransition && (

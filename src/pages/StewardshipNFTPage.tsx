@@ -12,7 +12,7 @@ import Highlight from "../components/Highlight";
 import NFTWorksSection from "../components/NFTWorksSection";
 import FourCriteriaHubGlobal from "../components/FourCriteriaHubGlobal";
 import NFTGrid from "../components/NFTGrid";
-import { NatureSpinner } from "@/ui/Loader";
+import SubLoader from "@/load/SubLoader";
 import { useStore } from "@/store";
 import { Helmet } from "react-helmet-async";
 
@@ -138,7 +138,7 @@ export default function StewardshipNFTPage(props: Props): JSX.Element {
             <FourCriteriaHubGlobal />
           </section>
           <section aria-label="Available Stewardship NFTs" ref={nftGridRef}>
-            {campaignsLoading && <NatureSpinner />}
+            <SubLoader isLoading={campaignsLoading} />
 
             {!campaignsLoading &&
               (campaigns.length === 0 ? (

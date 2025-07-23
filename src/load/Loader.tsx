@@ -2,18 +2,33 @@ import React, { useEffect, useState } from 'react';
 
 interface LoaderProps {
   onLoadingComplete?: () => void;
+  // Explicit prop to ensure this loader only works for main hero
+  isMainHeroLoader?: boolean;
 }
 
-const Loader: React.FC<LoaderProps> = ({ onLoadingComplete }) => {
+const Loader: React.FC<LoaderProps> = ({ onLoadingComplete, isMainHeroLoader = false }) => {
   const [progress, setProgress] = useState(0);
   const [show, setShow] = useState(false);
 
+  // Early return if this is not the main hero loader
+  // This prevents the loader from rendering for internal pages or navigation
   useEffect(() => {
-    // Trigger CSS animations after mount
+    if (!isMainHeroLoader) {
+      // If this is not for the main hero, immediately call completion
+      onLoadingComplete?.();
+      return;
+    }
+    
+    // Only trigger CSS animations for main hero loader
     setShow(true);
-  }, []);
+  }, [isMainHeroLoader, onLoadingComplete]);
 
   useEffect(() => {
+    // Only run progress animation for main hero loader
+    if (!isMainHeroLoader) {
+      return;
+    }
+
     const duration = 2000; // 2 seconds for the loading animation
     const interval = duration / 100; // 100 steps, one per percent
 
@@ -31,7 +46,12 @@ const Loader: React.FC<LoaderProps> = ({ onLoadingComplete }) => {
     }, interval);
 
     return () => clearInterval(timer);
-  }, [onLoadingComplete]);
+  }, [onLoadingComplete, isMainHeroLoader]);
+
+  // Don't render anything if this is not for the main hero
+  if (!isMainHeroLoader) {
+    return null;
+  }
 
   return (
     <div 

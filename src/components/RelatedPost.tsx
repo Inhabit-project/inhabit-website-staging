@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import Pagination from "./Pagination";
 import { Link } from "react-router-dom";
 import { truncateHtml } from "@/utils/html";
-import SubLoader from "@/components/SubLoader";
+import SubLoader from "@/load/SubLoader";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "@/utils/gsap";

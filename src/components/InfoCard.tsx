@@ -1,12 +1,11 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { LoadingContext } from '../App';
+import React, { useRef, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { gsap, ScrollTrigger } from "../utils/gsap";
 
 interface InfoCardProps {
   title: string;
   subtitle?: string;
-  logoSrc: string;
+  logoSrc?: string;
   logoAlt?: string;
   text: string;
   imageSrc: string;
@@ -17,8 +16,6 @@ interface InfoCardProps {
 
 const InfoCard: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logoAlt = '', text, imageSrc, imageAlt = '', className, showPopupButton = false }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const isLoading = useContext(LoadingContext);
-  const [canAnimate, setCanAnimate] = useState(false);
 
   // Animation refs
   const sectionRef = useRef<HTMLElement>(null);
@@ -28,46 +25,27 @@ const InfoCard: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logo
   const logoRef = useRef<HTMLImageElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
-  // Set initial states
+  // Set initial states and create scroll-based animations
   useEffect(() => {
-    if (sectionRef.current) {
-      const ctx = gsap.context(() => {
-        gsap.set(imageRef.current, {
-          opacity: 0,
-          x: -50,
-          scale: 0.95
-        });
-        gsap.set([titleGroupRef.current, logoRef.current], {
-          opacity: 0,
-          y: 30
-        });
-        gsap.set(textRef.current, {
-          opacity: 0,
-          y: 20
-        });
-      }, sectionRef);
-
-      return () => ctx.revert();
-    }
-  }, []);
-
-  // Handle loading state change
-  useEffect(() => {
-    if (!isLoading) {
-      const timer = setTimeout(() => {
-        setCanAnimate(true);
-      }, 1500);
-      return () => clearTimeout(timer);
-    } else {
-      setCanAnimate(false);
-    }
-  }, [isLoading]);
-
-  // Handle animations
-  useEffect(() => {
-    if (!canAnimate || !sectionRef.current) return;
+    if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
+      // Set initial states
+      gsap.set(imageRef.current, {
+        opacity: 0,
+        x: -50,
+        scale: 0.95
+      });
+      gsap.set([titleGroupRef.current, logoRef.current], {
+        opacity: 0,
+        y: 30
+      });
+      gsap.set(textRef.current, {
+        opacity: 0,
+        y: 20
+      });
+
+      // Create scroll-triggered animation
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -97,12 +75,15 @@ const InfoCard: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logo
         duration: 0.8,
         ease: "power3.out"
       }, "-=0.4");
+
+      // Refresh ScrollTrigger after timeline is set up
+      ScrollTrigger.refresh();
     }, sectionRef);
 
     return () => {
       ctx.revert();
     };
-  }, [canAnimate]);
+  }, []);
 
   return (
     <section 
@@ -211,9 +192,6 @@ export default InfoCard;
 
 // InfoCard with image on the right side
 export const InfoCardRightImage: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logoAlt = '', text, imageSrc, imageAlt = '', className }) => {
-  const isLoading = useContext(LoadingContext);
-  const [canAnimate, setCanAnimate] = useState(false);
-
   // Animation refs
   const sectionRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -222,46 +200,27 @@ export const InfoCardRightImage: React.FC<InfoCardProps> = ({ title, subtitle = 
   const logoRef = useRef<HTMLImageElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
-  // Set initial states
+  // Set initial states and create scroll-based animations
   useEffect(() => {
-    if (sectionRef.current) {
-      const ctx = gsap.context(() => {
-        gsap.set(imageRef.current, {
-          opacity: 0,
-          x: 50,
-          scale: 0.95
-        });
-        gsap.set([titleGroupRef.current, logoRef.current], {
-          opacity: 0,
-          y: 30
-        });
-        gsap.set(textRef.current, {
-          opacity: 0,
-          y: 20
-        });
-      }, sectionRef);
-
-      return () => ctx.revert();
-    }
-  }, []);
-
-  // Handle loading state change
-  useEffect(() => {
-    if (!isLoading) {
-      const timer = setTimeout(() => {
-        setCanAnimate(true);
-      }, 1500);
-      return () => clearTimeout(timer);
-    } else {
-      setCanAnimate(false);
-    }
-  }, [isLoading]);
-
-  // Handle animations
-  useEffect(() => {
-    if (!canAnimate || !sectionRef.current) return;
+    if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
+      // Set initial states
+      gsap.set(imageRef.current, {
+        opacity: 0,
+        x: 50,
+        scale: 0.95
+      });
+      gsap.set([titleGroupRef.current, logoRef.current], {
+        opacity: 0,
+        y: 30
+      });
+      gsap.set(textRef.current, {
+        opacity: 0,
+        y: 20
+      });
+
+      // Create scroll-triggered animation
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -291,12 +250,15 @@ export const InfoCardRightImage: React.FC<InfoCardProps> = ({ title, subtitle = 
         duration: 0.8,
         ease: "power3.out"
       }, "-=0.4");
+
+      // Refresh ScrollTrigger after timeline is set up
+      ScrollTrigger.refresh();
     }, sectionRef);
 
     return () => {
       ctx.revert();
     };
-  }, [canAnimate]);
+  }, []);
 
   return (
     <section 

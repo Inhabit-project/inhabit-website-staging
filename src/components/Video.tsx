@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { initVideoSectionCursor } from '../utils/videoCursor';
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
-import SubLoader from './SubLoader';
+import SubLoader from '@/load/SubLoader';
 
 interface VideoPlayerProps {
   videoUrl: string;

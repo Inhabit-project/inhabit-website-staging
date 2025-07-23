@@ -1195,11 +1195,11 @@
   width: 24px;
   height: 24px;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 2147483647;
   transition: none;
   will-change: transform;
   background: none;
-  z-index: 2147483647;
+  display: block;
 }
 
 .cursor img {
@@ -1236,14 +1236,7 @@
   }
 }
 
-html,
-body,
-*,
-*:hover,
-*:active,
-*:focus {
-  cursor: none !important;
-}
+
 
 .photo-parallax-bg {
   background-size: cover;

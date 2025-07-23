@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/SubLoader.css';
+import './SubLoader.css';
 
 interface SubLoaderProps {
   isLoading: boolean;
