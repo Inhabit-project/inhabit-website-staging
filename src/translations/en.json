@@ -233,7 +233,7 @@
     },
     "testimonials": {
       "title": "Meet our <br /> <strong>Allies</strong>",
-      "description": "From local stewards and bioregional experts to global organizations and innovation leaders, each ally contributes unique knowledge, tools, and heart to grow a network of biocultural hubS—together weaving a global corridor of biocultural diversity.",
+      "description": "From local stewards and bioregional experts to global organizations and innovation leaders, each ally contributes unique knowledge, tools, and heart to grow a network of biocultural hubs, together weaving a global corridor of biocultural diversity",
       "testimonial": {
         "name": "Louise Borreani",
         "quote": "“Inhabit is a powerful expression of how decentralized tools can support nature stewardship communities. It stands as one of the most concrete manifestations of the green crypto research we’ve been conducting at Ecofrontiers and it's so inspiring to see it come to life.” ",
@@ -247,7 +247,7 @@
       "becomeGuardian": "Become a Guardian"
     },
     "blog": {
-      "title": "Stay<br /><strong>informed</strong>",
+      "title": "Stay<br /><strong>Informed</strong>",
       "description": "Stay up to date with our latest news and insights on biodiversity, stewardship and ecological corridors",
       "loading": "Loading list of posts",
       "noPosts": "No posts available",

@@ -52,6 +52,9 @@ const Photo: React.FC = () => {
 
   // Track image loading
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  
+  // Add canAnimate state for Pattern 2 consistency
+  const [canAnimate, setCanAnimate] = useState(false);
 
   // Preload images before rendering
   usePreloadImages([
@@ -73,45 +76,74 @@ const Photo: React.FC = () => {
     };
   }, []);
 
-  // Only animate text boxes when not loading and images are loaded
+  // Handle loading state change with Pattern 2 delay
+  React.useEffect(() => {
+    if (!isLoading && imagesLoaded) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500); // Add 1500ms delay for consistency with other components
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading, imagesLoaded]);
+
+  // Only animate text boxes when canAnimate is true (Pattern 2)
   useLayoutEffect(() => {
-    if (isLoading || !imagesLoaded) return;
+    if (!canAnimate) return;
+
     const ctx = gsap.context(() => {
-      // Section 1 text box animation only
+      // Section 1 text box animation with better error handling
       if (textBox1Ref.current && section1Ref.current) {
-        animation1Ref.current = gsap.timeline({
-          defaults: { ease: 'power3.out' },
-          scrollTrigger: {
-            trigger: section1Ref.current,
-            start: 'top center',
-            end: 'center center',
-            toggleActions: 'play none none reverse',
-          },
-        });
-        animation1Ref.current
-          .fromTo(textBox1Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+        try {
+          animation1Ref.current = gsap.timeline({
+            defaults: { ease: 'power3.out' },
+            scrollTrigger: {
+              trigger: section1Ref.current,
+              start: 'top center',
+              end: 'center center',
+              toggleActions: 'play none none reverse',
+            },
+          });
+          animation1Ref.current
+            .fromTo(textBox1Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+        } catch (error) {
+          console.error('Photo section 1 animation failed:', error);
+        }
       }
-      // Section 2 text box animation only
+      
+      // Section 2 text box animation with better error handling
       if (textBox2Ref.current && section2Ref.current) {
-        animation2Ref.current = gsap.timeline({
-          defaults: { ease: 'power3.out' },
-          scrollTrigger: {
-            trigger: section2Ref.current,
-            start: 'top center',
-            end: 'center center',
-            toggleActions: 'play none none reverse',
-          },
-        });
-        animation2Ref.current
-          .fromTo(textBox2Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+        try {
+          animation2Ref.current = gsap.timeline({
+            defaults: { ease: 'power3.out' },
+            scrollTrigger: {
+              trigger: section2Ref.current,
+              start: 'top center',
+              end: 'center center',
+              toggleActions: 'play none none reverse',
+            },
+          });
+          animation2Ref.current
+            .fromTo(textBox2Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+        } catch (error) {
+          console.error('Photo section 2 animation failed:', error);
+        }
       }
     });
+    
     return () => {
-      if (animation1Ref.current) { animation1Ref.current.kill(); animation1Ref.current = null; }
-      if (animation2Ref.current) { animation2Ref.current.kill(); animation2Ref.current = null; }
+      if (animation1Ref.current) { 
+        animation1Ref.current.kill(); 
+        animation1Ref.current = null; 
+      }
+      if (animation2Ref.current) { 
+        animation2Ref.current.kill(); 
+        animation2Ref.current = null; 
+      }
       ctx.revert();
     };
-  }, [isLoading, imagesLoaded]);
+  }, [canAnimate]); // Changed dependency from [isLoading, imagesLoaded] to [canAnimate]
 
   // Aspect ratio for image containers (e.g., 3/2)
   const aspectRatio = '3/2';

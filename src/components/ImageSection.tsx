@@ -1,6 +1,7 @@
-import React, { useRef, useLayoutEffect, useContext } from 'react';
+import React, { useRef, useEffect, useContext, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
-import { gsap, ScrollTrigger } from '../utils/gsap';
 
 interface ImageSectionProps {
   eyebrow: string;
@@ -15,65 +16,93 @@ const ImageSection: React.FC<ImageSectionProps> = ({ eyebrow, heading, imageSrc,
   const headingRef = useRef<HTMLHeadingElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
+  const scrollTriggerRef = useRef<ScrollTrigger>();
+  const timelineRef = useRef<gsap.core.Timeline>();
 
-  // Initialize animations - using the exact working pattern from Video/Hubs/StewardshipNFT
-  useLayoutEffect(() => {
-    if (isLoading) return;
-    const section = sectionRef.current;
-    const eyebrow = eyebrowRef.current;
-    const heading = headingRef.current;
-    const image = imageRef.current;
-    if (!section || !eyebrow || !heading || !image) return;
-    
-    const ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set([eyebrow, heading], {
+  // Set initial states only once when component mounts
+  useEffect(() => {
+    if (sectionRef.current && eyebrowRef.current && headingRef.current && imageRef.current) {
+      gsap.set([eyebrowRef.current, headingRef.current], {
         opacity: 0,
         y: 50
       });
-      gsap.set(image, {
+      gsap.set(imageRef.current, {
         opacity: 0,
         y: 100,
         scale: 0.95
       });
+    }
+  }, []);
 
-      // Create scroll-triggered animation
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top center",
-          end: "center center",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      tl.to(eyebrow, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      })
-      .to(heading, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      }, "-=0.6")
-      .to(image, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1,
-        ease: "power3.out"
-      }, "-=0.4");
-
-      ScrollTrigger.refresh();
-    }, section);
+  // Handle loading state change with debounce
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    
+    if (!isLoading) {
+      timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+    } else {
+      setCanAnimate(false);
+    }
 
     return () => {
-      ctx.revert();
+      if (timer) clearTimeout(timer);
     };
   }, [isLoading]);
+
+  // Handle animations with better cleanup
+  useEffect(() => {
+    if (!canAnimate || !sectionRef.current) return;
+
+    // Create a new timeline
+    timelineRef.current = gsap.timeline({
+      paused: true,
+      defaults: { ease: 'power3.out' }
+    });
+
+    // Build the animation sequence
+    if (eyebrowRef.current && headingRef.current && imageRef.current) {
+      timelineRef.current
+        .to(eyebrowRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+        })
+        .to(headingRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+        }, '-=0.6')
+        .to(imageRef.current, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.2,
+        }, '-=0.7');
+    }
+
+    // Create ScrollTrigger for this specific section
+    scrollTriggerRef.current = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top center',
+      end: 'center center',
+      onEnter: () => timelineRef.current?.play(),
+      onLeaveBack: () => timelineRef.current?.reverse(),
+      toggleActions: 'play none none reverse',
+    });
+
+    // Cleanup function
+    return () => {
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+      }
+      if (timelineRef.current) {
+        timelineRef.current.kill();
+      }
+    };
+  }, [canAnimate]);
 
   return (
     <section ref={sectionRef} className="relative w-full background-gradient-dark flex flex-col items-center scroll-container">

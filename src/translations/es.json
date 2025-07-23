@@ -204,13 +204,13 @@
     },
     "stewardshipNFTPage": {
       "imageSection": {
-        "eyebrow": "El poder de nuestros NFTs",
+        "eyebrow": "El poder de nuestros NFT",
         "heading": "Poseer un <span class=\"highlighted-text\">NFT</span> te convierte en <span class=\"highlighted-text\">co-creador de un corredor global</span> que<br />puedes recorrer, proteger y <span class=\"highlighted-text\">regenerar su biodiversidad</span>.",
         "imageAlt": "Beneficios del NFT de Custodia"
       },
       "faq": {
         "title": "Preguntas<br /><strong>Frecuentes</strong>",
-        "description": "Encuentra respuestas a preguntas comunes sobre los NFTs de Custodia, derechos, beneficios y sostenibilidad.",
+        "description": "Encuentra respuestas a preguntas comunes sobre los NFT de Custodia, derechos, beneficios y sostenibilidad.",
         "items": [
           {
             "question": "¿Qué es exactamente un NFT de Custodia?",
@@ -230,7 +230,7 @@
           },
           {
             "question": "¿Es el uso de blockchain ambientalmente sostenible para INHABIT?",
-            "answer": "Sí — INHABIT utiliza CELO, una blockchain carbono-negativa diseñada para proyectos respetuosos con el clima.<br /><br />Acuñar todos los NFTs necesarios para financiar un HUB de INHABIT produce menos CO₂ que preparar una sola taza de café.<br /><br />Cada NFT usa solo 0.00001 kWh y emite solo 5 mg de CO₂ — menos que una búsqueda en Google.<br /><br />En comparación:<ul><li>Ethereum (pre-fusión) = 15,000× más emisiones</li><li>Bitcoin = 100,000× más</li></ul>Además, CELO ejecuta un programa integrado de compensación de carbono: una parte de cada tarifa de transacción financia proyectos verificados que eliminan CO₂ de la atmósfera. Esto hace que CELO sea carbono-negativo, lo que significa que compensa más de lo que emite — por lo que incluso nuestros NFTs terminan siendo carbono-negativos, convirtiendo la blockchain en una herramienta para la regeneración climática."
+            "answer": "Sí — INHABIT utiliza CELO, una blockchain carbono-negativa diseñada para proyectos respetuosos con el clima.<br /><br />Acuñar todos los NFT necesarios para financiar un HUB de INHABIT produce menos CO₂ que preparar una sola taza de café.<br /><br />Cada NFT usa solo 0.00001 kWh y emite solo 5 mg de CO₂ — menos que una búsqueda en Google.<br /><br />En comparación:<ul><li>Ethereum (pre-fusión) = 15,000× más emisiones</li><li>Bitcoin = 100,000× más</li></ul>Además, CELO ejecuta un programa integrado de compensación de carbono: una parte de cada tarifa de transacción financia proyectos verificados que eliminan CO₂ de la atmósfera. Esto hace que CELO sea carbono-negativo, lo que significa que compensa más de lo que emite — por lo que incluso nuestros NFT terminan siendo carbono-negativos, convirtiendo la blockchain en una herramienta para la regeneración climática."
           }
         ]
       },
@@ -269,26 +269,26 @@
       }
     },
     "highlight": {
-      "title": "¿QUÉ SON LOS NFTS?",
-      "description": "Los NFTs de custodia son <span class=\"text-orange highlighted-text\">contratos verificados en blockchain</span> que otorgan derechos fraccionarios <span class=\"text-orange highlighted-text\">para proteger ecosistemas</span> en <span class=\"text-orange highlighted-text\">parcelas</span> de tierra tokenizadas"
+      "title": "¿QUÉ SON LOS NFT DE CUSTODIA?",
+      "description": "Los NFT de custodia son <span class=\"text-orange highlighted-text\">contratos verificados en blockchain</span> que otorgan derechos fraccionarios <span class=\"text-orange highlighted-text\">para proteger ecosistemas</span> en <span class=\"text-orange highlighted-text\">parcelas</span> de tierra tokenizadas"
     },
     "photo": {
       "section1": "Al comprar un NFT te conviertes en guardián de por vida de un Hub específico, permitiéndote monitorear y participar en decisiones importantes que afectan estos ecosistemas, y obtener acceso exclusivo a experiencias bioculturales, eventos, talleres, visitar los hubs y explorar todo el Corredor.",
-      "section2": "Los fondos recaudados de estos NFTs se utilizan para adquirir tierras degradadas y transformarlas en Hubs bioculturales. Estas áreas están protegidas bajo el marco de tenencia de tierra INHABIT—un modelo pionero de reservas naturales que otorga derechos legales a la naturaleza, redefiniendo la protección y custodia de la tierra a un nuevo nivel."
+      "section2": "Los fondos recaudados de estos NFT se utilizan para adquirir tierras degradadas y transformarlas en Hubs bioculturales. Estas áreas están protegidas bajo el marco de tenencia de tierra INHABIT—un modelo pionero de reservas naturales que otorga derechos legales a la naturaleza, redefiniendo la protección y custodia de la tierra a un nuevo nivel."
     },
     "nftGrid": {
-      "title": "Nuestros innovadores <strong>NFTs</strong>",
-      "description": "Los NFTs de custodia son contratos verificados en blockchain que otorgan derechos fraccionarios para proteger ecosistemas en parcelas de tierra tokenizadas.",
+      "title": "Nuestros innovadores <strong>NFT</strong>",
+      "description": "Los NFT de custodia son contratos verificados en blockchain que otorgan derechos fraccionarios para proteger ecosistemas en parcelas de tierra tokenizadas.",
       "checkThisNFT": "VER ESTE NFT",
       "availableMembership": "Membresías disponibles"
     },
     "infographic": {
       "landTenureTitle": "Marco de Tenencia<br /><strong>de la Tierra</strong>",
       "landTenureDescription": "Un modelo innovador de reservas naturales que reconoce a la naturaleza como una entidad legal con derechos y otorga derechos y beneficios específicos a las personas que apoyan la protección y regeneración permanente de estos puntos claves de biodiversidad.",
-      "nftStewardsTitle": "Guardianes NFT",
-      "nftStewardsDescription": "Personas de cualquier parte del mundo pueden convertirse en protectores permanente de la naturaleza, con la capacidad de monitorear, salvaguardar y acceder a estos hubs prósperos, junto con numerosos beneficios al recorrer el Corredor.",
+      "NFTtewardsTitle": "Guardianes NFT",
+      "NFTtewardsDescription": "Personas de cualquier parte del mundo pueden convertirse en protectores permanente de la naturaleza, con la capacidad de monitorear, salvaguardar y acceder a estos hubs prósperos, junto con numerosos beneficios al recorrer el Corredor.",
       "natureTitle": "Naturaleza",
-      "natureDescription": "La naturaleza es considerada una entidad con derechos dentro de los límites de la tierra, de acuerdo con la Declaración de los Derechos de la Naturaleza (por ejemplo, el derecho a la autorregulación, restauración, protección, toma de decisiones...)",
+      "natureDescription": "La naturaleza es considerada una entidad con derechos dentro de los límites de la tierra, de acuerdo con la Declaración de los Derechos de la Naturaleza (por ejemplo, el derecho a la autorregulación, restauración, protección, toma de decisiones...).",
       "guardiansTitle": "Guardianes",
       "guardiansDescription": "Una familia de agentes de cambio, que recibe derechos de uso permanente y financiamiento para la restauración, asegurando la regeneración y conservación de la tierra, desarrollando un HUB biocultural innovador y expandiendo la protección del corredor."
     },
@@ -303,7 +303,7 @@
       "partnersTitle": "Nuestros <br /> <strong>Socios</strong>"
     },
     "cta": {
-      "title": "<span class=\"highlighted-text\">Únete</span> para formar un corredor global. <span class=\"highlighted-text\">Conviértete en guardián,</span> visita el corredor, y sé un <span class=\"highlighted-text\">catalizador de impacto!</span>",
+      "title": "<span class=\"highlighted-text\">Únete</span> para formar un corredor global. <span class=\"highlighted-text\">Conviértete en guardián,</span> visita el corredor, ¡y sé un <span class=\"highlighted-text\">catalizador de impacto!</span>",
       "discover": "Descubre Inhabit",
       "becomeGuardian": "Conviértete en Guardián"
     },
@@ -377,11 +377,11 @@
         },
         {
           "question": "¿Qué derechos y beneficios recibo como titular de un NFT?",
-          "answer": "El NFT de Custodia te otorga una membresía de por vida y un vínculo vivo entre tú y un HUB biocultural.<br /><br />Explora los derechos y beneficios generales incluidos con todos los NFTs de Custodia [AQUÍ] (*hyperlink).<br />Haz clic en NFTs específicos (*hyperlink) para descubrir sus ofertas únicas, que pueden incluir:<ul><li>• Derechos legales como protector de un Hub</li><li>• Obras de arte exclusivas</li><li>• Alojamiento gratuito y talleres presenciales</li><li>• Experiencias bioculturales inmersivas</li><li>• Participación en la gobernanza DAO</li><li>• Acceso a herramientas para monitorear el impacto real de tu contribución</li><li>• Contenidos educativos exclusivos</li><li>• Airdrops</li><li>• ...y mucho más</li></ul>"
+          "answer": "El NFT de Custodia te otorga una membresía de por vida y un vínculo vivo entre tú y un HUB biocultural.<br /><br />Explora los derechos y beneficios generales incluidos con todos los NFT de Custodia [AQUÍ] (*hyperlink).<br />Haz clic en NFT específicos (*hyperlink) para descubrir sus ofertas únicas, que pueden incluir:<ul><li>• Derechos legales como protector de un Hub</li><li>• Obras de arte exclusivas</li><li>• Alojamiento gratuito y talleres presenciales</li><li>• Experiencias bioculturales inmersivas</li><li>• Participación en la gobernanza DAO</li><li>• Acceso a herramientas para monitorear el impacto real de tu contribución</li><li>• Contenidos educativos exclusivos</li><li>• Airdrops</li><li>• ...y mucho más</li></ul>"
         },
         {
-          "question": "¿Qué hace único y diferente al NFT de Inhabit frente a los NFTs convencionales?",
-          "answer": "A diferencia de los NFTs puramente digitales, los NFTs de Custodia de Inhabit están arraigados en tierras reales y ecosistemas vivos. La tierra—y tu relación con ella—está protegida por un marco legal innovador que te otorga derechos y beneficios tangibles sobre un territorio físico y acceso al valor intrínseco que se regenera en el terreno. Más que un coleccionable digital en línea, cada NFT es un portal a un impacto y movimiento en el mundo real—diseñado para cultivar relaciones fuera de línea entre personas, lugares y los ecosistemas que ayudan a devolver a la vida. No se trata de poseer algo virtual; se trata de pertenecer a algo real: No es solo propiedad; es custodia."
+          "question": "¿Qué hace único y diferente al NFT de Inhabit frente a los NFT convencionales?",
+          "answer": "A diferencia de los NFT puramente digitales, los NFT de Custodia de Inhabit están arraigados en tierras reales y ecosistemas vivos. La tierra—y tu relación con ella—está protegida por un marco legal innovador que te otorga derechos y beneficios tangibles sobre un territorio físico y acceso al valor intrínseco que se regenera en el terreno. Más que un coleccionable digital en línea, cada NFT es un portal a un impacto y movimiento en el mundo real—diseñado para cultivar relaciones fuera de línea entre personas, lugares y los ecosistemas que ayudan a devolver a la vida. No se trata de poseer algo virtual; se trata de pertenecer a algo real: No es solo propiedad; es custodia."
         }
       ]
     },
@@ -659,7 +659,7 @@
     "visitThisHub": "Visitar este hub",
     "stewardshipNFT": {
       "title": "Custodia",
-      "subtitle": "<strong>NFTs</strong>",
+      "subtitle": "<strong>NFT</strong>",
       "description": "Tu llave digital para el cuidado permanente de ecosistemas únicos. Cada NFT representa una conexión directa con una zona de conservación específica, otorgándote derechos y acceso exclusivo a experiencias bioculturales."
     }
   },
@@ -912,7 +912,7 @@
   },
   "stewardshipNFTPage": {
     "imageSection": {
-      "eyebrow": "El poder de nuestros NFTs",
+      "eyebrow": "El poder de nuestros NFT",
       "heading": "Tener un <span class=\"highlighted-text\">NFT</span> te convierte en <span class=\"highlighted-text\">co-creador de un corredor global</span>, uno que puedes recorrer, salvaguardar y <span class=\"highlighted-text\">regenerar biodiversidad</span>.",
       "imageAlt": "Beneficios del NFT de Custodia"
     },
@@ -1037,7 +1037,7 @@
     "reachOutIf": "Contáctanos si:",
     "bullet1": "Quieres apoyar o co-crear un Hub Biocultural",
     "bullet2": "Representas un proyecto o comunidad regenerativa",
-    "bullet3": "Tienes preguntas sobre los NFTs de Custodia",
+    "bullet3": "Tienes preguntas sobre los NFT de Custodia",
     "bullet4": "Estás explorando alianzas, financiamiento o colaboración",
     "bullet5": "Solo quieres conectar y compartir tu visión",
     "seed": "Cada conversación es una semilla.",
@@ -1107,7 +1107,7 @@
       },
       "4": {
         "title": "Descargo de Responsabilidad sobre NFT y Activos Digitales",
-        "text": "Al interactuar con NFTs de INHABIT u otros elementos integrados en blockchain de la plataforma, usted reconoce y acepta que:",
+        "text": "Al interactuar con NFT de INHABIT u otros elementos integrados en blockchain de la plataforma, usted reconoce y acepta que:",
         "list": {
           "1": "INHABIT no almacena ni controla claves privadas, billeteras ni la infraestructura blockchain subyacente",
           "2": "INHABIT no es responsable de pérdidas por transacciones NFT fallidas, brechas de billetera o intercambios de terceros",
@@ -1187,7 +1187,7 @@
         },
         {
           "question": "¿Qué garantiza que la tierra esté protegida a perpetuidad?",
-          "answer": "El marco legal de INHABIT asegura la protección permanente de la tierra a través de un sistema en capas que integra los Derechos de la Naturaleza, gobernanza tokenizada, contratos inteligentes y custodia en el terreno:<br/><br/><ul><li><strong>1-Derechos de la Naturaleza:</strong> La tierra es legalmente reconocida como una entidad con derechos. Una vez tokenizada, no puede ser vendida ni explotada, asegurando una protección duradera.</li><li><strong>2-NFTs de Custodia:</strong> Cada NFT está vinculado a un contrato legal de membresía. Los titulares obtienen derechos de gobernanza para monitorear la tierra, intervenir si la naturaleza está en riesgo y ayudar a dar forma a las decisiones, utilizando narrativas geolocalizadas y KPIs para verificación en tiempo real.</li><li><strong>3-Guardianes en el Terreno:</strong> Los guardianes locales reciben derechos permanentes de uso de la tierra y aseguran el cuidado y protección ecológica diaria.</li><li><strong>4-Contratos Inteligentes:</strong> Los derechos y responsabilidades (incluidos los de la Naturaleza) se hacen cumplir a través de contratos transparentes e inmutables que codifican instrumentos legales y permiten la gobernanza digital y física.</li><li><strong>5-Supervisión Institucional:</strong> INHABIT SAS y la Fundación INHABIT supervisan el uso de fondos, el cumplimiento legal y la aplicación de derechos, con documentos encriptados en la cadena de bloques.</li></ul>"
+          "answer": "El marco legal de INHABIT asegura la protección permanente de la tierra a través de un sistema en capas que integra los Derechos de la Naturaleza, gobernanza tokenizada, contratos inteligentes y custodia en el terreno:<br/><br/><ul><li><strong>1-Derechos de la Naturaleza:</strong> La tierra es legalmente reconocida como una entidad con derechos. Una vez tokenizada, no puede ser vendida ni explotada, asegurando una protección duradera.</li><li><strong>2-NFT de Custodia:</strong> Cada NFT está vinculado a un contrato legal de membresía. Los titulares obtienen derechos de gobernanza para monitorear la tierra, intervenir si la naturaleza está en riesgo y ayudar a dar forma a las decisiones, utilizando narrativas geolocalizadas y KPIs para verificación en tiempo real.</li><li><strong>3-Guardianes en el Terreno:</strong> Los guardianes locales reciben derechos permanentes de uso de la tierra y aseguran el cuidado y protección ecológica diaria.</li><li><strong>4-Contratos Inteligentes:</strong> Los derechos y responsabilidades (incluidos los de la Naturaleza) se hacen cumplir a través de contratos transparentes e inmutables que codifican instrumentos legales y permiten la gobernanza digital y física.</li><li><strong>5-Supervisión Institucional:</strong> INHABIT SAS y la Fundación INHABIT supervisan el uso de fondos, el cumplimiento legal y la aplicación de derechos, con documentos encriptados en la cadena de bloques.</li></ul>"
         }
       ]
     }

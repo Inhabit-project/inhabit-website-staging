@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect, useContext } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
@@ -31,29 +31,29 @@ const FAQ: React.FC<FAQProps> = ({ faqItems, title, description }) => {
   const headerTitle = title || t('mainPage.faq.title');
   const headerDescription = description || t('mainPage.faq.description');
 
-  // Initialize animations - using the working pattern from Video/Hubs/StewardshipNFT
-  useLayoutEffect(() => {
-    if (isLoading) return;
-    if (!sectionRef.current || !titleRef.current || !descriptionRef.current) return;
-    
-    const ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set([titleRef.current, descriptionRef.current], {
-        opacity: 0,
-        y: 50
-      });
-      gsap.set(faqItemsArray.current, {
-        opacity: 0,
-        y: 30
-      });
+  // Set initial states on mount for FAQ
+  useEffect(() => {
+    gsap.set([titleRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 50
+    });
+    gsap.set(faqItemsArray.current, {
+      opacity: 0,
+      y: 30
+    });
+  }, []);
 
+  useEffect(() => {
+    if (isLoading) return;
+
+    let ctx = gsap.context(() => {
       // Create scroll-triggered animation
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top center",
           end: "center center",
-          toggleActions: "play none none reverse"
+          toggleActions: "restart none none none"
         }
       });
 
@@ -77,6 +77,7 @@ const FAQ: React.FC<FAQProps> = ({ faqItems, title, description }) => {
         ease: "power3.out"
       }, "-=0.4");
 
+      // Refresh ScrollTrigger after timeline is set up
       ScrollTrigger.refresh();
     }, sectionRef);
 

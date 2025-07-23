@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BlogPost, BlogProps as ImportedBlogProps } from "@/types/wordpress";
 import { truncateHtml } from "@/utils/html";
@@ -20,6 +20,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [contentVisible, setContentVisible] = useState(false);
+  const [readyToAnimate, setReadyToAnimate] = useState(false);
 
   // Refs for animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -53,73 +54,119 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
     loadPosts();
   }, [t]);
 
-  // Set initial states for animation
-  useLayoutEffect(() => {
-    if (!sectionRef.current) return;
-    
+  useEffect(() => {
+    // console.log('Blog component rendered, posts:', posts); // Debug: log posts state on update
+  }, [posts]);
+
+  const [mainPost, ...smallPosts] = posts;
+
+  // Set initial states
+  useEffect(() => {
+    if (
+      !titleRef.current ||
+      !descriptionRef.current ||
+      !mainPostRef.current ||
+      !smallPostsRef.current
+    ) {
+      return;
+    }
+
     const ctx = gsap.context(() => {
       gsap.set([titleRef.current, descriptionRef.current], {
         opacity: 0,
         y: 50,
       });
-    }, sectionRef);
+
+      gsap.set(mainPostRef.current, {
+        opacity: 0,
+        y: 50,
+        scale: 0.95,
+      });
+
+      gsap.set(smallPostsRef.current, {
+        opacity: 0,
+        y: 50,
+      });
+    });
 
     return () => ctx.revert();
   }, []);
 
-  // Initialize animations when posts are loaded - using working pattern adapted for Blog's needs
-  useLayoutEffect(() => {
-    if (isLoading || posts.length === 0 || !titleRef.current || !descriptionRef.current) return;
-    
-    const ctx = gsap.context(() => {
-      let tl: gsap.core.Timeline;
-      
-      if (isBlogPage) {
-        // Animate immediately (no scroll trigger)
-        tl = gsap.timeline();
-      } else {
-        // Animate on scroll (homepage)
-        tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top center",
-            end: "center center",
-            toggleActions: "play none none reverse",
-          },
-        });
-      }
-      
-      tl.to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out",
-      })
-        .to(
-          descriptionRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-          },
-          "-=0.6"
-        )
-        .add(() => setContentVisible(true)); // Show content after animation
+  // Wait for posts to load and refs to be set, then allow animation
+  useEffect(() => {
+    if (
+      !isLoading &&
+      posts.length > 0 &&
+      titleRef.current &&
+      descriptionRef.current
+    ) {
+      // Optional: add a small delay for effect
+      const timer = setTimeout(() => setReadyToAnimate(true), 400);
+      return () => clearTimeout(timer);
+    } else {
+      setReadyToAnimate(false);
+    }
+  }, [isLoading, posts.length]);
 
-      ScrollTrigger.refresh();
-    }, sectionRef);
+  // Animate title and description only when readyToAnimate
+  useEffect(() => {
+    if (!titleRef.current || !descriptionRef.current || !readyToAnimate) {
+      return;
+    }
 
-    return () => ctx.revert();
-  }, [isLoading, posts.length, isBlogPage]);
+    let tl: gsap.core.Timeline | null = null;
+    let ctx: gsap.Context | null = null;
+
+    function triggerBlogAnimation() {
+      ctx = gsap.context(() => {
+        if (isBlogPage) {
+          // Animate immediately (no scroll trigger)
+          tl = gsap.timeline();
+        } else {
+          // Animate on scroll (homepage)
+          tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top center",
+              end: "center center",
+              toggleActions: "play none none reverse",
+            },
+          });
+        }
+        tl.to(titleRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        })
+          .to(
+            descriptionRef.current,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power3.out",
+            },
+            "-=0.6"
+          )
+          .add(() => setContentVisible(true)); // Show content after animation
+        // Refresh ScrollTrigger after timeline is set up
+        ScrollTrigger.refresh();
+      });
+    }
+
+    triggerBlogAnimation();
+
+    return () => {
+      if (ctx) ctx.revert();
+    };
+  }, [readyToAnimate]);
 
   useEffect(() => {
     if (!isLoading && posts.length > 0 && contentVisible && onReady) {
       onReady();
     }
   }, [isLoading, posts.length, contentVisible, onReady]);
-
-  const [mainPost, ...smallPosts] = posts;
 
   return (
     <section

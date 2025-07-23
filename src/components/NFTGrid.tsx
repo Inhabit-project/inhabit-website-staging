@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useContext } from "react";
+import { useLayoutEffect, useRef, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ComparisonCards } from "./NFTComparison/ComparisonCards";
@@ -14,6 +14,7 @@ export default function NFTGrid(props: Props): JSX.Element {
   const { campaign } = props;
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
 
   // Refs for animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -23,13 +24,10 @@ export default function NFTGrid(props: Props): JSX.Element {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const tableRef = useRef<HTMLDivElement>(null);
 
-  // Initialize animations - using the exact working pattern from Video/Hubs/StewardshipNFT
+  // Set initial states
   useLayoutEffect(() => {
-    if (isLoading) return;
-    if (!sectionRef.current || !titleRef.current || !descriptionRef.current) return;
-    
+    if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
-      // Set initial states
       gsap.set([titleRef.current, descriptionRef.current], {
         opacity: 0,
         y: 50,
@@ -43,8 +41,27 @@ export default function NFTGrid(props: Props): JSX.Element {
         opacity: 0,
         y: 30,
       });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
 
-      // Create scroll-triggered animation
+  // Handle loading state change
+  useLayoutEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
+  }, [isLoading]);
+
+  // Handle animations
+  useLayoutEffect(() => {
+    if (!canAnimate || !sectionRef.current) return;
+    const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -53,7 +70,6 @@ export default function NFTGrid(props: Props): JSX.Element {
           toggleActions: "play none none reverse",
         },
       });
-      
       tl.to(titleRef.current, {
         opacity: 1,
         y: 0,
@@ -92,14 +108,12 @@ export default function NFTGrid(props: Props): JSX.Element {
           },
           "-=0.4"
         );
-
-      ScrollTrigger.refresh();
     }, sectionRef);
-    
     return () => {
       ctx.revert();
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
-  }, [isLoading]);
+  }, [canAnimate]);
 
   return (
     <section

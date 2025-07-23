@@ -13,14 +13,18 @@ const Highlight = () => {
   const isLoading = useContext(LoadingContext);
 
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoading) {
+      return;
+    }
 
     const svg = svgRef.current;
     const title = titleRef.current;
     const description = descriptionRef.current;
     const content = contentRef.current;
     
-    if (!svg || !title || !description || !content) return;
+    if (!svg || !title || !description || !content) {
+      return;
+    }
 
     let ctx = gsap.context(() => {
       // Set initial states
@@ -64,7 +68,7 @@ const Highlight = () => {
         duration: 0.8,
         ease: "power3.out"
       }, "-=0.5")
-      // Animate description
+      // Animate h3 directly
       .to(description, {
         opacity: 1,
         y: 0,
@@ -73,12 +77,15 @@ const Highlight = () => {
         ease: "power3.out"
       }, "-=0.4");
 
+      // Refresh ScrollTrigger after timeline is set up
       ScrollTrigger.refresh();
+
     }, content);
 
     return () => {
       ctx.revert();
     };
+
   }, [isLoading]);
 
   return (
