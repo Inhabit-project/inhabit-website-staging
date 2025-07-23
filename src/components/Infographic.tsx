@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useContext, useState, useLayoutEffect } from "react";
+import React, { useRef, useLayoutEffect, useContext } from "react";
 import { motion, useInView } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { gsap, ScrollTrigger } from "../utils/gsap";
@@ -50,7 +50,6 @@ const cards = [
 const Infographic: React.FC = () => {
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
-  const [canAnimate, setCanAnimate] = useState(false);
 
   // Slide refs
   const slide1TitleRef = useRef<HTMLHeadingElement>(null);
@@ -66,195 +65,194 @@ const Infographic: React.FC = () => {
   const slide4DescRef = useRef<HTMLParagraphElement>(null);
   const slide4ImgRef = useRef<HTMLImageElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
-  // Store triggers for cleanup
-  const infographicTriggers = useRef<ScrollTrigger[]>([]);
 
-  // Set initial states
+  // Initialize animations - matching exact working pattern from StewardshipNFT
   useLayoutEffect(() => {
+    if (isLoading) return;
+    
+    const root = rootRef.current;
+    if (!root) return;
+    
     const ctx = gsap.context(() => {
-      gsap.set(
-        [
-          slide1TitleRef.current,
-          slide1DescRef.current,
-          slide1ImgRef.current,
-          slide2TitleRef.current,
-          slide2DescRef.current,
-          slide2ImgRef.current,
-          slide3TitleRef.current,
-          slide3DescRef.current,
-          slide3ImgRef.current,
-          slide4TitleRef.current,
-          slide4DescRef.current,
-          slide4ImgRef.current,
-        ],
-        {
+      // Set initial states for all slides (only if elements exist)
+      const allElements = [
+        slide1TitleRef.current,
+        slide1DescRef.current,
+        slide1ImgRef.current,
+        slide2TitleRef.current,
+        slide2DescRef.current,
+        slide2ImgRef.current,
+        slide3TitleRef.current,
+        slide3DescRef.current,
+        slide3ImgRef.current,
+        slide4TitleRef.current,
+        slide4DescRef.current,
+        slide4ImgRef.current,
+      ].filter(Boolean); // Only include elements that exist
+
+      const allImages = [
+        slide1ImgRef.current,
+        slide2ImgRef.current,
+        slide3ImgRef.current,
+        slide4ImgRef.current,
+      ].filter(Boolean); // Only include images that exist
+
+      // Set initial states for existing elements
+      if (allElements.length > 0) {
+        gsap.set(allElements, {
           opacity: 0,
           y: 50,
-        }
-      );
-      gsap.set(
-        [
-          slide1ImgRef.current,
-          slide2ImgRef.current,
-          slide3ImgRef.current,
-          slide4ImgRef.current,
-        ],
-        {
+        });
+      }
+
+      if (allImages.length > 0) {
+        gsap.set(allImages, {
           scale: 0.95,
-        }
-      );
-    }, rootRef);
-    return () => ctx.revert();
-  }, []);
+        });
+      }
 
-  // Handle loading state change
-  useEffect(() => {
-    if (!isLoading) {
-      const timer = setTimeout(() => {
-        setCanAnimate(true);
-      }, 1500);
-      return () => clearTimeout(timer);
-    } else {
-      setCanAnimate(false);
-    }
-  }, [isLoading]);
+      // Create timeline for Slide 1 (only if elements exist)
+      const slide1Title = slide1TitleRef.current;
+      const slide1Desc = slide1DescRef.current;
+      const slide1Img = slide1ImgRef.current;
+      if (slide1Title && slide1Desc && slide1Img) {
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: slide1Title,
+              start: "top 85%",
+              end: "bottom 20%",
+              toggleActions: "play none none none",
+            },
+          })
+          .to(slide1Title, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+          })
+          .to(
+            slide1Desc,
+            { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+            "-=0.6"
+          )
+          .to(
+            slide1Img,
+            { opacity: 1, y: 0, scale: 1, duration: 1, ease: "power3.out" },
+            "-=0.4"
+          );
+      }
 
-  // Handle animations and robust cleanup
-  useLayoutEffect(() => {
-    let ctx: gsap.Context | undefined;
-    // Clean up any previous triggers before creating new ones
-    infographicTriggers.current.forEach((trigger) => {
-      if (trigger && typeof trigger.kill === "function") trigger.kill();
-    });
-    infographicTriggers.current = [];
-    if (canAnimate) {
-      ctx = gsap.context(() => {
-        // Create all timelines and triggers
-        // Slide 1
-        infographicTriggers.current.push(
-          gsap
-            .timeline({
-              scrollTrigger: {
-                trigger: slide1TitleRef.current,
-                start: "top 80%",
-                end: "center center",
-                toggleActions: "play none none reverse",
-              },
-            })
-            .to(slide1TitleRef.current, {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power3.out",
-            })
-            .to(
-              slide1DescRef.current,
-              { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-              "-=0.6"
-            )
-            .to(
-              slide1ImgRef.current,
-              { opacity: 1, y: 0, scale: 1, duration: 1, ease: "power3.out" },
-              "-=0.4"
-            ).scrollTrigger as ScrollTrigger
-        );
-        // Slide 2
-        infographicTriggers.current.push(
-          gsap
-            .timeline({
-              scrollTrigger: {
-                trigger: slide2TitleRef.current,
-                start: "top 80%",
-                end: "center center",
-                toggleActions: "play none none reverse",
-              },
-            })
-            .to(slide2TitleRef.current, {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power3.out",
-            })
-            .to(
-              slide2DescRef.current,
-              { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-              "-=0.6"
-            )
-            .to(
-              slide2ImgRef.current,
-              { opacity: 1, y: 0, scale: 1, duration: 1, ease: "power3.out" },
-              "-=0.4"
-            ).scrollTrigger as ScrollTrigger
-        );
-        // Slide 3
-        infographicTriggers.current.push(
-          gsap
-            .timeline({
-              scrollTrigger: {
-                trigger: slide3TitleRef.current,
-                start: "top 80%",
-                end: "center center",
-                toggleActions: "play none none reverse",
-              },
-            })
-            .to(slide3TitleRef.current, {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power3.out",
-            })
-            .to(
-              slide3DescRef.current,
-              { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-              "-=0.6"
-            )
-            .to(
-              slide3ImgRef.current,
-              { opacity: 1, y: 0, scale: 1, duration: 1, ease: "power3.out" },
-              "-=0.4"
-            ).scrollTrigger as ScrollTrigger
-        );
-        // Slide 4
-        infographicTriggers.current.push(
-          gsap
-            .timeline({
-              scrollTrigger: {
-                trigger: slide4TitleRef.current,
-                start: "top 80%",
-                end: "center center",
-                toggleActions: "play none none reverse",
-              },
-            })
-            .to(slide4TitleRef.current, {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power3.out",
-            })
-            .to(
-              slide4DescRef.current,
-              { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-              "-=0.6"
-            )
-            .to(
-              slide4ImgRef.current,
-              { opacity: 1, y: 0, scale: 1, duration: 1, ease: "power3.out" },
-              "-=0.4"
-            ).scrollTrigger as ScrollTrigger
-        );
-        // Refresh ScrollTrigger after all timelines are set up
-        ScrollTrigger.refresh();
-      }, rootRef);
-    }
+      // Create timeline for Slide 2 (only if elements exist)
+      const slide2Title = slide2TitleRef.current;
+      const slide2Desc = slide2DescRef.current;
+      const slide2Img = slide2ImgRef.current;
+      if (slide2Title && slide2Desc && slide2Img) {
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: slide2Title,
+              start: "top 85%",
+              end: "bottom 20%",
+              toggleActions: "play none none none",
+            },
+          })
+          .to(slide2Title, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+          })
+          .to(
+            slide2Desc,
+            { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+            "-=0.6"
+          )
+          .to(
+            slide2Img,
+            { opacity: 1, y: 0, scale: 1, duration: 1, ease: "power3.out" },
+            "-=0.4"
+          );
+      }
+
+      // Create timeline for Slide 3 (only if elements exist)
+      const slide3Title = slide3TitleRef.current;
+      const slide3Desc = slide3DescRef.current;
+      const slide3Img = slide3ImgRef.current;
+      if (slide3Title && slide3Desc && slide3Img) {
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: slide3Title,
+              start: "top 85%",
+              end: "bottom 20%",
+              toggleActions: "play none none none",
+            },
+          })
+          .to(slide3Title, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+          })
+          .to(
+            slide3Desc,
+            { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+            "-=0.6"
+          )
+          .to(
+            slide3Img,
+            { opacity: 1, y: 0, scale: 1, duration: 1, ease: "power3.out" },
+            "-=0.4"
+          );
+      }
+
+      // Create timeline for Slide 4 (only if elements exist)
+      const slide4Title = slide4TitleRef.current;
+      const slide4Desc = slide4DescRef.current;
+      const slide4Img = slide4ImgRef.current;
+      if (slide4Title && slide4Desc && slide4Img) {
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: slide4Title,
+              start: "top 85%",
+              end: "bottom 20%",
+              toggleActions: "play none none none",
+            },
+          })
+          .to(slide4Title, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+          })
+          .to(
+            slide4Desc,
+            { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+            "-=0.6"
+          )
+          .to(
+            slide4Img,
+            { opacity: 1, y: 0, scale: 1, duration: 1, ease: "power3.out" },
+            "-=0.4"
+          );
+      }
+
+      // Refresh ScrollTrigger after all timelines are set up
+      ScrollTrigger.refresh();
+    }, root);
+
     return () => {
-      if (ctx) ctx.revert();
-      // Robustly kill all ScrollTriggers created by this component
-      infographicTriggers.current.forEach((trigger) => {
-        if (trigger && typeof trigger.kill === "function") trigger.kill();
+      ctx.revert();
+      // Additional cleanup to ensure ScrollTriggers are properly removed
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.trigger && root.contains(trigger.trigger)) {
+          trigger.kill();
+        }
       });
-      infographicTriggers.current = [];
     };
-  }, [canAnimate, t]);
+  }, [isLoading]); // Removed 't' dependency to prevent unnecessary re-runs
 
   return (
     <section

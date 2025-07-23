@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useContext, useState } from "react";
+import React, { useRef, useLayoutEffect, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { gsap, ScrollTrigger } from "../utils/gsap";
 import { LoadingContext } from "../App";
@@ -8,8 +8,6 @@ import { Link } from "react-router-dom";
 const CTA: React.FC = () => {
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
-  const [canAnimate, setCanAnimate] = useState(false);
-  const [ready, setReady] = useState(false); // for initial CSS class
 
   // Simplified refs
   const sectionRef = useRef<HTMLElement>(null);
@@ -22,39 +20,28 @@ const CTA: React.FC = () => {
   const { lastCampaign } = useStore();
   const firstCollection = lastCampaign?.collections[0];
 
-  // Set initial states on mount
-  useEffect(() => {
-    gsap.set(bgRef.current, { scale: 1.2 });
-    gsap.set(imageContainerRef.current, { opacity: 0, y: 40 });
-    gsap.set(mainContentRef.current, { opacity: 1 }); // keep container visible
-    gsap.set(textGroupRef.current, { opacity: 0, y: 20 });
-    setReady(true); // Remove initial CSS class after mount
-  }, []);
-
-  // Handle loading state change
-  useEffect(() => {
-    if (!isLoading) {
-      const timer = setTimeout(() => {
-        setCanAnimate(true);
-      }, 1500);
-      return () => clearTimeout(timer);
-    } else {
-      setCanAnimate(false);
-    }
-  }, [isLoading]);
-
-  // Simplified animation
-  useEffect(() => {
-    if (!canAnimate || !sectionRef.current) return;
+  // Initialize animations - using the working pattern from Video/Hubs/StewardshipNFT
+  useLayoutEffect(() => {
+    if (isLoading) return;
+    if (!sectionRef.current) return;
+    
     const ctx = gsap.context(() => {
+      // Set initial states
+      gsap.set(bgRef.current, { scale: 1.2 });
+      gsap.set(imageContainerRef.current, { opacity: 0, y: 40 });
+      gsap.set(mainContentRef.current, { opacity: 1 }); // keep container visible
+      gsap.set(textGroupRef.current, { opacity: 0, y: 20 });
+
+      // Create scroll-triggered animation
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top center",
           end: "center center",
-          toggleActions: "restart none none none",
+          toggleActions: "play none none reverse",
         },
       });
+      
       tl.to(bgRef.current, {
         scale: 1,
         duration: 0.6,
@@ -80,15 +67,14 @@ const CTA: React.FC = () => {
           },
           "+=0.1" // after bg+image
         );
-      // Refresh ScrollTrigger after timeline is set up
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 0);
+
+      ScrollTrigger.refresh();
     }, sectionRef);
+
     return () => {
       ctx.revert();
     };
-  }, [canAnimate]);
+  }, [isLoading]);
 
   return (
     <section
@@ -112,9 +98,7 @@ const CTA: React.FC = () => {
       {/* Main Content (Blur+Image+Text) */}
       <div
         ref={mainContentRef}
-        className={`relative z-10 flex min-h-screen items-center justify-center px-[clamp(1rem,5vw,6.25rem)]${
-          !ready ? " cta-initial-hidden" : ""
-        }`}
+        className={`relative z-10 flex min-h-screen items-center justify-center px-[clamp(1rem,5vw,6.25rem)]`}
       >
         <div className="w-full max-w-[120rem] rounded-[20px] overflow-hidden">
           <div className="flex flex-col md:flex-row">
