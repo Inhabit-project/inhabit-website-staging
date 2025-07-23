@@ -140,7 +140,7 @@ export default function NFTGrid(props: Props): JSX.Element {
 
         {/* NFT Grid */}
         <div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
           role="list"
           aria-label={t("mainPage.nftGrid.title")}
         >
@@ -152,7 +152,7 @@ export default function NFTGrid(props: Props): JSX.Element {
               className="relative"
               style={{
                 background: "var(--color-bright-green)",
-                borderRadius: "var(--radius-2xl)",
+                borderRadius: "var(--radius-lg)",
                 padding: "2rem",
               }}
               role="listitem"
@@ -169,8 +169,8 @@ export default function NFTGrid(props: Props): JSX.Element {
                 >
                   <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
                     <svg
-                      width="35"
-                      height="35"
+                      width="24"
+                      height="24"
                       viewBox="0 0 35 35"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
