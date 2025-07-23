@@ -1,31 +1,8 @@
-import React, { useLayoutEffect, useRef, useContext } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import { ReactSVG } from 'react-svg';
 import { useTranslation } from 'react-i18next';
-import { gsap, ScrollTrigger, refreshScrollTriggers } from '../utils/gsap';
+import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
-
-const wrapWordsInHTMLString = (html: string) => {
-  // Create a temporary div to parse the HTML
-  const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = html;
-  // Walk all text nodes and wrap words
-  const walker = document.createTreeWalker(tempDiv, NodeFilter.SHOW_TEXT, null);
-  const textNodes: Node[] = [];
-  let node;
-  while ((node = walker.nextNode())) {
-    textNodes.push(node);
-  }
-  textNodes.forEach(textNode => {
-    const words = textNode.textContent?.split(/\s+/) || [];
-    const spans = words.map((word, i) =>
-      `<span class=\"word-wrap\"><span class=\"word\">${word}</span></span>${i < words.length - 1 ? ' ' : ''}`
-    ).join('');
-    const temp = document.createElement('span');
-    temp.innerHTML = spans;
-    textNode.parentNode?.replaceChild(temp, textNode);
-  });
-  return tempDiv.innerHTML;
-};
 
 const Highlight = () => {
   const { t } = useTranslation();
@@ -35,64 +12,134 @@ const Highlight = () => {
   const contentRef = useRef<HTMLDivElement>(null);
   const isLoading = useContext(LoadingContext);
 
-  // Preprocess the description HTML for word wrapping
-  const descriptionHTML = wrapWordsInHTMLString(t('mainPage.highlight.description'));
+  useEffect(() => {
+    console.log('🔄 Highlight useEffect - isLoading:', isLoading);
+    
+    if (isLoading) {
+      console.log('⏳ Still loading, skipping setup');
+      return;
+    }
 
-  useLayoutEffect(() => {
-    // Use a single dependency for robustness
-    if (isLoading) return;
-    // Delay setup until DOM is ready
-    let rafId = requestAnimationFrame(() => {
-      const svg = svgRef.current;
-      const title = titleRef.current;
-      const description = descriptionRef.current;
-      const content = contentRef.current;
-      if (!svg || !title || !description || !content) return;
-      let ctx = gsap.context(() => {
-        gsap.set(svg, { opacity: 0, scale: 0.8 });
-        gsap.set(title, { opacity: 0, y: 30 });
-        gsap.set(description.querySelectorAll('.word'), { opacity: 0, y: 30 });
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: content,
-            start: "top center",
-            end: "center center",
-            toggleActions: "play none none reverse",
-            onEnter: () => {},
-            onUpdate: (self) => {
-              // If already past the trigger, play immediately
-              if (self.progress === 1 && !tl.isActive()) {
-                tl.progress(1);
-              }
-            }
-          }
-        });
-        tl.to(svg, { opacity: 0.3, scale: 1, duration: 1, ease: "power3.out" })
-          .to(title, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.5")
-          .to(description.querySelectorAll('.word'), {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            stagger: 0.06,
-            ease: "power3.out"
-          }, "-=0.4");
-        refreshScrollTriggers(50);
-      }, content);
-      // Cleanup
-      return () => {
-        ctx.revert();
-        cancelAnimationFrame(rafId);
-      };
+    const svg = svgRef.current;
+    const title = titleRef.current;
+    const description = descriptionRef.current;
+    const content = contentRef.current;
+    
+    console.log('📋 Elements check:', { 
+      svg: !!svg, 
+      title: !!title, 
+      description: !!description, 
+      content: !!content 
     });
-    // Cleanup in case effect is re-run
+    
+    if (!svg || !title || !description || !content) {
+      console.log('❌ Missing elements');
+      return;
+    }
+
+    console.log('📝 Description HTML:', description.innerHTML);
+    console.log('📝 Description text:', description.textContent);
+
+    // TEST: First try animating the h3 as-is without word wrapping
+    console.log('🧪 Testing basic h3 animation without word wrapping');
+    
+    let ctx = gsap.context(() => {
+      // Set initial states
+      console.log('🎬 Setting initial states');
+      
+      gsap.set(svg, { 
+        opacity: 0, 
+        scale: 0.8 
+      });
+      
+      gsap.set(title, {
+        opacity: 0,
+        y: 30
+      });
+
+      // Test: animate the h3 element directly first
+      gsap.set(description, {
+        opacity: 0,
+        y: 30,
+        scale: 0.9
+      });
+
+      console.log('✅ Initial states set');
+
+      // Create the animation timeline
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: content,
+          start: "top center",
+          end: "center center",
+          toggleActions: "play none none reverse",
+          onEnter: () => console.log('🎯 ScrollTrigger ENTERED'),
+          onLeave: () => console.log('🎯 ScrollTrigger LEFT'),
+          onToggle: self => console.log('🎯 ScrollTrigger toggled:', self.isActive)
+        }
+      });
+
+      console.log('🎬 Creating timeline');
+
+      // Animate background SVG
+      tl.to(svg, {
+        opacity: 0.3,
+        scale: 1,
+        duration: 1,
+        ease: "power3.out",
+        onStart: () => console.log('🎬 SVG animation started'),
+        onComplete: () => console.log('✅ SVG animation completed')
+      })
+      // Animate title
+      .to(title, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        onStart: () => console.log('🎬 Title animation started'),
+        onComplete: () => console.log('✅ Title animation completed')
+      }, "-=0.5")
+      // Animate h3 directly (no word wrapping yet)
+      .to(description, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.8,
+        ease: "power3.out",
+        onStart: () => console.log('🎬 H3 animation started'),
+        onComplete: () => console.log('✅ H3 animation completed')
+      }, "-=0.4");
+
+      console.log('🎬 Timeline created');
+
+      // Check ScrollTrigger position immediately
+      setTimeout(() => {
+        const rect = content.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        console.log('📏 Content position:', {
+          top: rect.top,
+          center: rect.top + rect.height / 2,
+          windowCenter: windowHeight / 2,
+          shouldTrigger: rect.top < windowHeight / 2
+        });
+      }, 100);
+
+      // Refresh ScrollTrigger after timeline is set up
+      ScrollTrigger.refresh();
+      console.log('🔄 ScrollTrigger refreshed');
+
+    }, content);
+
     return () => {
-      cancelAnimationFrame(rafId);
+      console.log('🧹 Cleaning up');
+      ctx.revert();
     };
-  }, [isLoading, descriptionHTML]);
+
+  }, [isLoading]);
 
   return (
     <div className="relative w-full min-h-screen background-gradient-dark flex items-center justify-center overflow-hidden">
-      <div ref={svgRef} className="absolute inset-0 w-full h-full opacity-0 topographic-map" style={{ minWidth: '100vw', minHeight: '100vh' }}>
+      <div ref={svgRef} className="absolute opacity-0 topographic-map">
         <ReactSVG src="/assets/topographic-map.svg" />
       </div>
       <div 
@@ -109,7 +156,7 @@ const Highlight = () => {
           ref={descriptionRef}
           className="text-light"
           style={{ perspective: "1000px" }}
-          dangerouslySetInnerHTML={{ __html: descriptionHTML }} 
+          dangerouslySetInnerHTML={{ __html: t('mainPage.highlight.description') }} 
         />
       </div>
     </div>
