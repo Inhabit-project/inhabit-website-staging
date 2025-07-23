@@ -43,33 +43,61 @@ import Cursor from "./utils/cursor";
 export const LoadingContext = createContext<boolean>(false);
 
 const App: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isTransitioning, setIsTransitioning] = useState(true);
+  const location = useLocation();
+  
+  // Only show loader on main page reload
+  const isMainPageReload = () => {
+    if (location.pathname !== '/') return false;
+    
+    // Check if this is a page reload using Performance API
+    const navigationEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+    if (navigationEntries.length > 0) {
+      return navigationEntries[0].type === 'reload';
+    }
+    
+    // Fallback: assume it's a reload if we're on the main page and have no referrer from the same origin
+    return !document.referrer || !document.referrer.includes(window.location.origin);
+  };
+  
+  const shouldShowLoader = isMainPageReload();
+  const [isLoading, setIsLoading] = useState(shouldShowLoader);
+  const [isTransitioning, setIsTransitioning] = useState(shouldShowLoader);
   const [showTransition, setShowTransition] = useState(false);
   const [transitionIn, setTransitionIn] = useState(false);
   const [pageReady, setPageReady] = useState(false);
   const [heroImageLoaded, setHeroImageLoaded] = useState(false);
   const [minLoaderTimeElapsed, setMinLoaderTimeElapsed] = useState(false);
   const [canFinishLoading, setCanFinishLoading] = useState(false);
-  const location = useLocation();
   const [pendingLocation, setPendingLocation] = useState(location);
 
-  // Only allow loader to finish when both hero image and timer are done
+  // Only allow loader to finish when both hero image and timer are done (and if loader should be shown)
   useEffect(() => {
+    if (!shouldShowLoader) {
+      setCanFinishLoading(true);
+      setHeroImageLoaded(true);
+      setMinLoaderTimeElapsed(true);
+      return;
+    }
+    
     if (heroImageLoaded && minLoaderTimeElapsed) {
       setCanFinishLoading(true);
     }
-  }, [heroImageLoaded, minLoaderTimeElapsed]);
+  }, [heroImageLoaded, minLoaderTimeElapsed, shouldShowLoader]);
 
-  // Start minimum loader timer on mount
+  // Start minimum loader timer on mount (only if loader should be shown)
   useEffect(() => {
+    if (!shouldShowLoader) {
+      setMinLoaderTimeElapsed(true);
+      return;
+    }
+    
     const timer = setTimeout(() => setMinLoaderTimeElapsed(true), 1200);
     return () => clearTimeout(timer);
-  }, []);
+  }, [shouldShowLoader]);
 
   useEffect(() => {
     const html = document.documentElement;
-    if (isLoading) {
+    if (isLoading && shouldShowLoader) {
       html.classList.add("loading");
       document.body.classList.add("loading");
     } else {
@@ -79,7 +107,7 @@ const App: React.FC = () => {
         setIsTransitioning(false);
       }, 500);
     }
-  }, [isLoading]);
+  }, [isLoading, shouldShowLoader]);
 
   // Handle page transitions
   useEffect(() => {
@@ -161,6 +189,8 @@ const App: React.FC = () => {
 
   // Fallback: Always finish loading after 5 seconds (in case hero image never loads)
   useEffect(() => {
+    if (!shouldShowLoader) return;
+    
     if (!canFinishLoading) {
       const fallback = setTimeout(() => {
         setHeroImageLoaded(true);
@@ -168,7 +198,7 @@ const App: React.FC = () => {
       }, 5000);
       return () => clearTimeout(fallback);
     }
-  }, [canFinishLoading]);
+  }, [canFinishLoading, shouldShowLoader]);
 
   // Scroll to top on initial mount (page refresh)
   useEffect(() => {
@@ -194,13 +224,13 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && shouldShowLoader) {
       // Ensure scroll is at the very top after loader disappears
       setTimeout(() => {
         window.scrollTo(0, 0);
       }, 10);
     }
-  }, [isLoading]);
+  }, [isLoading, shouldShowLoader]);
 
   return (
     <LoadingContext.Provider value={isLoading}>
@@ -208,7 +238,7 @@ const App: React.FC = () => {
       <div
         className={`app-container ${isTransitioning ? "transitioning" : ""}`}
       >
-        {isLoading && (
+        {isLoading && shouldShowLoader && (
           <Loader
             onLoadingComplete={
               canFinishLoading ? handleLoaderComplete : undefined
@@ -221,7 +251,7 @@ const App: React.FC = () => {
             onComplete={handleTransitionComplete}
           />
         )}
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={null}>
           <Routes location={pendingLocation}>
             <Route
               path="/"

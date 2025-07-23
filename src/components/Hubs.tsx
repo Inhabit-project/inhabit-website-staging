@@ -233,24 +233,22 @@ const Hubs: React.FC = () => {
 
           /* Card centering for mobile/desktop */
           .hub-card-centered {
-            position: absolute;
+            position: fixed;
             left: 50%;
-            width: 100%;
-            max-width: calc(100vw - 2rem);
-            width: 30rem;
-            height: 36rem;
-            max-height: calc(100vh - 2rem);
-            transform: translateX(-50%);
-            top: 0;
-            z-index: 30;
-          }
-          @media (max-width: 768px) {
-            .hub-card-centered {
-              position: absolute;
-            left: 50%;
-            top: 15%;
+            top: 50%;
             transform: translate(-50%, -50%);
-            z-index: 30;
+            width: min(30rem, calc(100vw - 2rem));
+            height: min(36rem, calc(100vh - 4rem));
+            z-index: 50;
+            pointer-events: auto;
+          }
+          
+          /* Responsive adjustments */
+          @media (max-width: 640px) {
+            .hub-card-centered {
+              width: calc(100vw - 1rem);
+              height: min(32rem, calc(100vh - 2rem));
+              max-width: 28rem;
             }
           }
         `}
@@ -356,25 +354,7 @@ const Hubs: React.FC = () => {
                 ))}
               </div>
 
-              {/* Reserve card space to prevent layout shift */}
-              {selectedHub === null && (
-                <div
-                  style={{
-                    width: "30rem",
-                    height: "36rem",
-                    maxWidth: "calc(100vw - 2rem)",
-                    maxHeight: "calc(100vh - 2rem)",
-                    position: "absolute",
-                    left: "50%",
-                    top: 0,
-                    transform: "translateX(-50%)",
-                    zIndex: 20,
-                    pointerEvents: "none",
-                    opacity: 0,
-                  }}
-                  aria-hidden="true"
-                />
-              )}
+
 
               {/* Featured image card - only show if a marker is selected */}
               {selectedHub !== null && (
