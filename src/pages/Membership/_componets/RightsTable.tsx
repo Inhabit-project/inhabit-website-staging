@@ -1,5 +1,6 @@
 import { JSX } from "react";
 import { Right } from "src/models/right.model";
+import MobileRightsAccordion from "./MobileRightsAccordion";
 
 type Props = {
   rights: Right[];
@@ -74,7 +75,12 @@ export default function RightsTable(props: Props): JSX.Element {
   };
 
   return (
-    <div className="overflow-x-auto border border-green-soft bg-[#E2EDD3] shadow-md">
+    <>
+      {/* Mobile Accordion Version */}
+      <MobileRightsAccordion rights={rights} />
+      
+      {/* Desktop Table Version */}
+      <div className="hidden md:block overflow-x-auto border border-green-soft bg-[#E2EDD3] shadow-md">
       <table className="min-w-full text-left">
         <thead>
           <tr className="bg-[#E2EDD3] border-b border-green-soft">
@@ -139,6 +145,7 @@ export default function RightsTable(props: Props): JSX.Element {
           )}
         </tbody>
       </table>
-    </div>
+      </div>
+    </>
   );
 }
