@@ -180,7 +180,7 @@ const Footer: React.FC = () => {
           <div className="w-full lg:w-[45%] pt-16 lg:pl-[clamp(1.5rem,5vw,6.25rem)]">
             <img
               ref={logoRef}
-              src="/assets/figma-images/logo-footer.svg"
+              src="/assets/logo-footer.svg"
               alt="INHABIT"
               className="h-[4rem]"
               width="455"

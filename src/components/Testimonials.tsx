@@ -4,18 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
 
-interface Testimonial {
-  image: string;
-  role: string;
-  name: string;
-  quote: string;
-}
-
-interface Partner {
-  logo: string;
-  name: string;
-}
-
 const Testimonials: React.FC = () => {
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
@@ -28,35 +16,6 @@ const Testimonials: React.FC = () => {
   const testimonialCardRef = useRef<HTMLDivElement>(null);
   const testimonialImageRef = useRef<HTMLDivElement>(null);
   const testimonialContentRef = useRef<HTMLDivElement>(null);
-
-  const testimonials: Testimonial[] = [
-    {
-      image: "/assets/logos/testimonial-image.png",
-      role: "CEO ECONETWORK",
-      name: "ANNIE VASQUEZ",
-      quote: "\" Each HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times. \""
-    },
-    {
-      image: "/assets/logos/testimonial-image.png",
-      role: "CEO ECONETWORK",
-      name: "ANNIE VASQUEZ",
-      quote: "\" Each HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times. \""
-    },
-    {
-      image: "/assets/logos/testimonial-image.png",
-      role: "CEO ECONETWORK",
-      name: "ANNIE VASQUEZ",
-      quote: "\" Each HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times. \""
-    }
-  ];
-
-  const partners: Partner[] = [
-    { logo: '/assets/logos/partner-logo-1.png', name: 'Partner 1' },
-    { logo: '/assets/logos/partner-logo-2.png', name: 'Partner 2' },
-    { logo: '/assets/logos/partner-logo-3.svg', name: 'Partner 3' },
-    { logo: '/assets/logos/partner-logo-4.png', name: 'Partner 4' },
-    { logo: '/assets/logos/partner-logo-5.png', name: 'Partner 5' }
-  ];
 
   // Set initial states on mount
   useEffect(() => {

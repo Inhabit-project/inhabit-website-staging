@@ -244,7 +244,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
                 ref={mobileDownloadBtnRef}
               >
                 <div className="flex items-center gap-2">
-                  <svg className="w-6 h-6 transition-colors duration-200 group-hover:[&>path]:stroke-[var(--color-light)]" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" style={{stroke: 'var(--color-secondary)'}}>
+                  <svg className="w-6 h-6 transition-colors duration-200 group-hover:[&>path]:stroke-[var(--color-secondary)]" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" style={{stroke: 'var(--color-secondary)'}}>
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M14 2v6h6M12 18v-6M9 15l3 3 3-3" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
