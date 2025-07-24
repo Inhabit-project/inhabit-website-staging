@@ -118,12 +118,12 @@ export function ComparisonCards({ campaign }: Props): JSX.Element {
   return (
     <div className="space-y-8">
       {/* Mobile Accordion Version */}
-      <div>
+      <div className="block md:hidden">
         <MobileComparisonAccordion campaign={campaign} />
       </div>
       
       {/* Desktop Table Version */}
-      <div>
+      <div className="hidden md:block">
         <div className="overflow-x-auto pb-4">
           {/* Header row */}
           <div className="flex bg-[#1a2b14] text-white font-bold text-base border-b border-white/10 min-w-fit">

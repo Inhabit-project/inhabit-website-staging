@@ -1,7 +1,7 @@
 {
   "navigation": {
     "home": "INICIO",
-    "hubs": "HUBS",
+    "hubs": "FAROS",
     "stewardshipNFT": "NFT CUSTODIA",
     "aboutUs": "ACERCA DE NOSOTROS",
     "projects": "PROYECTOS",
@@ -10,7 +10,7 @@
   },
   "hero": {
     "title": "<strong>Únete</strong> para dar forma a un <strong>corredor global</strong> de <strong>biodiversidad</strong>",
-    "description": "INHABIT protege ecosistemas vitales e impulsa la innovación rural a través de hubs bioculturales liderados por la comunidad",
+    "description": "INHABIT protege ecosistemas vitales e impulsa la innovación rural a través de faros bioculturales liderados por la comunidad",
     "scrollButton": "DESPLÁZATE PARA VER EL VIDEO"
   },
   "menu": {
@@ -119,56 +119,56 @@
     "teamReadMore": "Leer más"
   },
   "hubsMain": {
-    "eyebrow": "¿Dónde están ubicados los hubs?",
-    "heading": "Los primeros <span class=\"highlighted-text\">tres HUBS</span> están ubicados en la<span class=\"highlighted-text\"> Sierra Nevada de Santa Marta, </span> considerada el <span class=\"highlighted-text\">Corazón del Mundo.</span>",
+    "eyebrow": "¿Dónde están ubicados los faros?",
+    "heading": "Los primeros <span class=\"highlighted-text\">tres FAROS</span> están ubicados en la<span class=\"highlighted-text\"> Sierra Nevada de Santa Marta, </span> considerada el <span class=\"highlighted-text\">Corazón del Mundo.</span>",
     "nuiyanzhi": {
       "label": "Centro de Conocimiento para la Restauración",
       "title": "ÑUIYANZHI",
       "description": "Desde 2021, la familia de Amelia, Juan y su hijo León viven y cuidan Ñuiyanzhi en asociación con los ancianos Kogi de la tribu Kaggaba, de la Sierra Nevada de Santa Marta.",
-      "visionHeading": "VISIÓN DEL HUB",
-      "visionText": "El Hub Ñuiyanzhi es un laboratorio viviente donde la restauración ecológica se encuentra con el conocimiento ancestral. Regenera suelos degradados por el sobrepastoreo, monocultivos y agroquímicos, creando un punto caliente de biodiversidad para especies en peligro de extinción. Como centro de formación, combina el aprendizaje práctico con la sabiduría indígena y académica. Los guardianes NFT obtienen acceso exclusivo a herramientas de restauración, experiencias inmersivas y vínculos directos con el conocimiento ecológico y espiritual Kogi."
+      "visionHeading": "VISIÓN DEL FARO",
+      "visionText": "El Faro Ñuiyanzhi es un laboratorio viviente donde la restauración ecológica se encuentra con el conocimiento ancestral. Regenera suelos degradados por el sobrepastoreo, monocultivos y agroquímicos, creando un punto caliente de biodiversidad para especies en peligro de extinción. Como centro de formación, combina el aprendizaje práctico con la sabiduría indígena y académica. Los guardianes NFT obtienen acceso exclusivo a herramientas de restauración, experiencias inmersivas y vínculos directos con el conocimiento ecológico y espiritual Kogi."
     },
     "aguaDeLuna": {
       "label": "Punto Caliente de Biodiversidad",
       "title": "Agua de Luna",
-      "description": "El hub Agua de Luna es un santuario para especies raras y un centro de investigación y educación, combinando la ciencia moderna con la sabiduría indígena.",
-      "visionHeading": "VISIÓN DEL HUB",
-      "visionText": "El Hub Agua de Luna está dedicado a preservar la selva tropical más grande del mundo, apoyando a las comunidades locales y fomentando la colaboración global para la conservación."
+      "description": "El faro Agua de Luna es un santuario para especies raras y un centro de investigación y educación, combinando la ciencia moderna con la sabiduría indígena.",
+      "visionHeading": "VISIÓN DEL FARO",
+      "visionText": "El Faro Agua de Luna está dedicado a preservar la selva tropical más grande del mundo, apoyando a las comunidades locales y fomentando la colaboración global para la conservación."
     },
     "TierraKilwa": {
       "label": "Innovación en el Desierto",
       "title": "Tierra Kilwa",
-      "description": "El hub Tierra Kilwa es pionero en vida sostenible en ambientes áridos, enfocándose en la conservación del agua y la energía renovable.",
-      "visionHeading": "VISIÓN DEL HUB",
-      "visionText": "El Hub Tierra Kilwa demuestra cómo la vida puede prosperar en condiciones extremas, inspirando nuevas soluciones para un clima cambiante."
+      "description": "El faro Tierra Kilwa es pionero en vida sostenible en ambientes áridos, enfocándose en la conservación del agua y la energía renovable.",
+      "visionHeading": "VISIÓN DEL FARO",
+      "visionText": "El Faro Tierra Kilwa demuestra cómo la vida puede prosperar en condiciones extremas, inspirando nuevas soluciones para un clima cambiante."
     }
   },
   "faq": {
     "title": "Preguntas Frecuentes",
-    "description": "Preguntas sobre el Hub Nuiyanzhi",
+    "description": "Preguntas sobre el Faro Nuiyanzhi",
     "items": [
       {
-        "question": "¿Qué hace único al Hub Nuiyanzhi?",
-        "answer": "El Hub Nuiyanzhi es un laboratorio viviente donde la restauración ecológica se encuentra con el conocimiento ancestral, combinando la sabiduría indígena con la ciencia moderna."
+        "question": "¿Qué hace único al Faro Nuiyanzhi?",
+        "answer": "El Faro Nuiyanzhi es un laboratorio viviente donde la restauración ecológica se encuentra con el conocimiento ancestral, combinando la sabiduría indígena con la ciencia moderna."
       },
       {
         "question": "¿Cómo puedo ser guardián de Nuiyanzhi?",
         "answer": "Puedes convertirte en guardián adquiriendo un NFT de Custodia para Nuiyanzhi y participando en nuestros programas de restauración y custodia."
       },
       {
-        "question": "¿Cuáles son los principales objetivos del Hub?",
+        "question": "¿Cuáles son los principales objetivos del Faro?",
         "answer": "Los principales objetivos son la restauración ecológica, el intercambio de conocimientos, la participación comunitaria y la gestión sostenible de la tierra."
       },
       {
-        "question": "¿Puedo visitar el Hub Nuiyanzhi?",
-        "answer": "Sí, los guardianes y custodios NFT tienen oportunidades exclusivas para visitar, aprender y participar en experiencias prácticas en el Hub."
+        "question": "¿Puedo visitar el Faro Nuiyanzhi?",
+        "answer": "Sí, los guardianes y custodios NFT tienen oportunidades exclusivas para visitar, aprender y participar en experiencias prácticas en el Faro."
       }
     ]
   },
   "mainPage": {
     "hero": {
       "title": "<strong>Únete a nosotros</strong> para dar forma a un <strong>corredor global</strong> de <strong>biodiversidad</strong>",
-      "description": "INHABIT protege ecosistemas vitales e impulsa la innovación rural a través de hubs bioculturales liderados por la comunidad",
+      "description": "INHABIT protege ecosistemas vitales e impulsa la innovación rural a través de faros bioculturales liderados por la comunidad",
       "scrollButton": "DESPLÁZATE PARA VER EL VIDEO"
     },
     "video": {
@@ -176,8 +176,8 @@
       "heading": "Pioneros de <span class=\"highlighted-text\">corredores globales</span> para <span class=\"highlighted-text\">proteger</span> ecosistemas vitales y fomentar la <span class=\"highlighted-text\">innovación biocultural</span>."
     },
     "hubs": {
-      "title": "Biocultural <br> <strong>Hubs</strong>",
-      "description": "Ubicados en diferentes bioregiones, los HUBS son importantes puntos calientes de biodiversidad y hubs de aprendizaje que preservan y comparten recursos ecológicos y conocimiento vivo para dar forma al corredor.",
+      "title": "Biocultural <br> <strong>Faros</strong>",
+      "description": "Ubicados en diferentes bioregiones, los FAROS son importantes puntos calientes de biodiversidad y faros de aprendizaje que preservan y comparten recursos ecológicos y conocimiento vivo para dar forma al corredor.",
       "cards": [
         {
           "title": "Ñuiyanzhi",
@@ -193,7 +193,7 @@
         },
         {
           "title": "Tierra Kilwa",
-          "subtitle": "Hub de Innovación",
+          "subtitle": "Faro de Innovación",
           "eyebrow": "Producción de alimentos, regeneración, creatividad y emprendimiento social",
           "description": "Un Terreno de Aprendizaje para Agentes de Cambio Regenerativo y Creativo por Luca Urbano y Chiara Trotto"
         }
@@ -218,7 +218,7 @@
           },
           {
             "question": "¿Qué derechos y beneficios recibo como titular de un NFT?",
-            "answer": "El NFT de Custodia te otorga una membresía de por vida y un vínculo vivo entre tú y un HUB biocultural.<br /><br /><ul><li>• Derechos legales como protector de un Hub</li><li>• Obras de arte exclusivas</li><li>• Alojamiento gratuito y talleres in situ</li><li>• Experiencias bioculturales inmersivas</li><li>• Participación en la gobernanza DAO</li><li>• Acceso a herramientas para monitorear el impacto real de tu contribución</li><li>• Contenidos educativos exclusivos</li><li>• Airdrops</li><li>...y mucho más</li></ul>"
+            "answer": "El NFT de Custodia te otorga una membresía de por vida y un vínculo vivo entre tú y un FARO biocultural.<br /><br /><ul><li>• Derechos legales como protector de un Faro</li><li>• Obras de arte exclusivas</li><li>• Alojamiento gratuito y talleres in situ</li><li>• Experiencias bioculturales inmersivas</li><li>• Participación en la gobernanza DAO</li><li>• Acceso a herramientas para monitorear el impacto real de tu contribución</li><li>• Contenidos educativos exclusivos</li><li>• Airdrops</li><li>...y mucho más</li></ul>"
           },
           {
             "question": "¿Puedo transferir o vender mi NFT de Custodia?",
@@ -230,7 +230,7 @@
           },
           {
             "question": "¿Es el uso de blockchain ambientalmente sostenible para INHABIT?",
-            "answer": "Sí — INHABIT utiliza CELO, una blockchain carbono-negativa diseñada para proyectos respetuosos con el clima.<br /><br />Acuñar todos los NFT necesarios para financiar un HUB de INHABIT produce menos CO₂ que preparar una sola taza de café.<br /><br />Cada NFT usa solo 0.00001 kWh y emite solo 5 mg de CO₂ — menos que una búsqueda en Google.<br /><br />En comparación:<ul><li>Ethereum (pre-fusión) = 15,000× más emisiones</li><li>Bitcoin = 100,000× más</li></ul>Además, CELO ejecuta un programa integrado de compensación de carbono: una parte de cada tarifa de transacción financia proyectos verificados que eliminan CO₂ de la atmósfera. Esto hace que CELO sea carbono-negativo, lo que significa que compensa más de lo que emite — por lo que incluso nuestros NFT terminan siendo carbono-negativos, convirtiendo la blockchain en una herramienta para la regeneración climática."
+                          "answer": "Sí — INHABIT utiliza CELO, una blockchain carbono-negativa diseñada para proyectos respetuosos con el clima.<br /><br />Acuñar todos los NFT necesarios para financiar un FARO de INHABIT produce menos CO₂ que preparar una sola taza de café.<br /><br />Cada NFT usa solo 0.00001 kWh y emite solo 5 mg de CO₂ — menos que una búsqueda en Google.<br /><br />En comparación:<ul><li>Ethereum (pre-fusión) = 15,000× más emisiones</li><li>Bitcoin = 100,000× más</li></ul>Además, CELO ejecuta un programa integrado de compensación de carbono: una parte de cada tarifa de transacción financia proyectos verificados que eliminan CO₂ de la atmósfera. Esto hace que CELO sea carbono-negativo, lo que significa que compensa más de lo que emite — por lo que incluso nuestros NFT terminan siendo carbono-negativos, convirtiendo la blockchain en una herramienta para la regeneración climática."
           }
         ]
       },
@@ -253,10 +253,10 @@
           },
           {
             "number": "03",
-            "label": "HUBS BIOCULTURALES PRÓSPEROS",
+            "label": "FAROS BIOCULTURALES PRÓSPEROS",
             "title": "Transformar",
             "subtitle": "La Sociedad",
-            "description": "Para financiar el desarrollo de hubs dedicados a campos únicos de conocimiento, fomentando la producción y difusión de sabiduría, y ampliando el acceso a conocimiento transformador para todos."
+            "description": "Para financiar el desarrollo de faros dedicados a campos únicos de conocimiento, fomentando la producción y difusión de sabiduría, y ampliando el acceso a conocimiento transformador para todos."
           },
           {
             "number": "04",
@@ -273,8 +273,8 @@
       "description": "Los NFT de custodia son <span class=\"text-orange highlighted-text\">contratos verificados en blockchain</span> que otorgan derechos fraccionarios <span class=\"text-orange highlighted-text\">para proteger ecosistemas</span> en <span class=\"text-orange highlighted-text\">parcelas</span> de tierra tokenizadas"
     },
     "photo": {
-      "section1": "Al comprar un NFT te conviertes en guardián de por vida de un Hub específico, permitiéndote monitorear y participar en decisiones importantes que afectan estos ecosistemas, y obtener acceso exclusivo a experiencias bioculturales, eventos, talleres, visitar los hubs y explorar todo el Corredor.",
-      "section2": "Los fondos recaudados de estos NFT se utilizan para adquirir tierras degradadas y transformarlas en Hubs bioculturales. Estas áreas están protegidas bajo el marco de tenencia de tierra INHABIT—un modelo pionero de reservas naturales que otorga derechos legales a la naturaleza, redefiniendo la protección y custodia de la tierra a un nuevo nivel."
+      "section1": "Al comprar un NFT te conviertes en guardián de por vida de un Faro específico, permitiéndote monitorear y participar en decisiones importantes que afectan estos ecosistemas, y obtener acceso exclusivo a experiencias bioculturales, eventos, talleres, visitar los faros y explorar todo el Corredor.",
+              "section2": "Los fondos recaudados de estos NFT se utilizan para adquirir tierras degradadas y transformarlas en Faros bioculturales. Estas áreas están protegidas bajo el marco de tenencia de tierra INHABIT—un modelo pionero de reservas naturales que otorga derechos legales a la naturaleza, redefiniendo la protección y custodia de la tierra a un nuevo nivel."
     },
     "nftGrid": {
       "title": "Nuestros innovadores <strong>NFT</strong>",
@@ -286,15 +286,15 @@
       "landTenureTitle": "Marco de Tenencia<br /><strong>de la Tierra</strong>",
       "landTenureDescription": "Un modelo innovador de reservas naturales que reconoce a la naturaleza como una entidad legal con derechos y otorga derechos y beneficios específicos a las personas que apoyan la protección y regeneración permanente de estos puntos claves de biodiversidad.",
       "NFTtewardsTitle": "Guardianes NFT",
-      "NFTtewardsDescription": "Personas de cualquier parte del mundo pueden convertirse en protectores permanente de la naturaleza, con la capacidad de monitorear, salvaguardar y acceder a estos hubs prósperos, junto con numerosos beneficios al recorrer el Corredor.",
+              "NFTtewardsDescription": "Personas de cualquier parte del mundo pueden convertirse en protectores permanente de la naturaleza, con la capacidad de monitorear, salvaguardar y acceder a estos faros prósperos, junto con numerosos beneficios al recorrer el Corredor.",
       "natureTitle": "Naturaleza",
       "natureDescription": "La naturaleza es considerada una entidad con derechos dentro de los límites de la tierra, de acuerdo con la Declaración de los Derechos de la Naturaleza (por ejemplo, el derecho a la autorregulación, restauración, protección, toma de decisiones...).",
       "guardiansTitle": "Guardianes",
-      "guardiansDescription": "Una familia de agentes de cambio, que recibe derechos de uso permanente y financiamiento para la restauración, asegurando la regeneración y conservación de la tierra, desarrollando un HUB biocultural innovador y expandiendo la protección del corredor."
+              "guardiansDescription": "Una familia de agentes de cambio, que recibe derechos de uso permanente y financiamiento para la restauración, asegurando la regeneración y conservación de la tierra, desarrollando un FARO biocultural innovador y expandiendo la protección del corredor."
     },
     "testimonials": {
       "title": "Conoce a nuestros <strong>Aliados</strong>",
-      "description": "Desde guardianes locales y expertos bio-regionales hasta organizaciones globales y líderes en innovación, cada aliado aporta conocimientos, herramientas y compromiso únicos para hacer crecer una red de HUBS bioculturales—tejiendo juntos un corredor global de diversidad biocultural.",
+              "description": "Desde guardianes locales y expertos bio-regionales hasta organizaciones globales y líderes en innovación, cada aliado aporta conocimientos, herramientas y compromiso únicos para hacer crecer una red de FAROS bioculturales—tejiendo juntos un corredor global de diversidad biocultural.",
       "testimonial": {
         "name": "Louise Borreani",
         "quote": "“Inhabit es una poderosa expresión de cómo las herramientas descentralizadas pueden apoyar a las comunidades que cuidan la naturaleza. Es una de las manifestaciones más concretas de la investigación sobre criptografía verde que hemos estado realizando en Ecofrontiers y es muy inspirador verla hacerse realidad.” ",
@@ -335,26 +335,26 @@
       "main": {
         "date": "20.05.2025",
         "title": "Puntos calientes de biodiversidad",
-        "content": "Cada HUB debe generar y albergar un vasto reservorio de biodiversidad y conocimiento vivo específico de un ecosistema único, esencial para afrontar los desafíos de nuestro tiempo. Estos 'hubs semilla vivientes' pueden ser utilizados por animales y humanos para transportar y dispersar semillas, expandiendo la biodiversidad a lo largo del Corredor.",
+        "content": "Cada FARO debe generar y albergar un vasto reservorio de biodiversidad y conocimiento vivo específico de un ecosistema único, esencial para afrontar los desafíos de nuestro tiempo. Estos 'faros semilla vivientes' pueden ser utilizados por animales y humanos para transportar y dispersar semillas, expandiendo la biodiversidad a lo largo del Corredor.",
         "image": "/assets/blog/blog-main.jpg"
       },
       "small": [
         {
           "date": "20.05.2025",
           "title": "Puntos calientes de biodiversidad",
-          "content": "Cada HUB debe generar y albergar un vasto reservorio de biodiversidad y conocimiento vivo específico de un ecosistema único, esencial para afrontar los desafíos de nuestro tiempo.",
+          "content": "Cada FARO debe generar y albergar un vasto reservorio de biodiversidad y conocimiento vivo específico de un ecosistema único, esencial para afrontar los desafíos de nuestro tiempo.",
           "image": "/assets/blog/blog-1.jpg"
         },
         {
           "date": "20.05.2025",
           "title": "Puntos calientes de biodiversidad",
-          "content": "Cada HUB debe generar y albergar un vasto reservorio de biodiversidad y conocimiento vivo específico de un ecosistema único, esencial para afrontar los desafíos de nuestro tiempo.",
+          "content": "Cada FARO debe generar y albergar un vasto reservorio de biodiversidad y conocimiento vivo específico de un ecosistema único, esencial para afrontar los desafíos de nuestro tiempo.",
           "image": "/assets/blog/blog-2.jpg"
         },
         {
           "date": "20.05.2025",
           "title": "Puntos calientes de biodiversidad",
-          "content": "Cada HUB debe generar y albergar un vasto reservorio de biodiversidad y conocimiento vivo específico de un ecosistema único, esencial para afrontar los desafíos de nuestro tiempo.",
+          "content": "Cada FARO debe generar y albergar un vasto reservorio de biodiversidad y conocimiento vivo específico de un ecosistema único, esencial para afrontar los desafíos de nuestro tiempo.",
           "image": "/assets/blog/blog-3.jpg"
         }
       ]
@@ -364,24 +364,20 @@
       "description": "Encuentra respuestas a preguntas comunes sobre nuestros programas de protección y custodia de ecosistemas.",
       "items": [
         {
-          "question": "¿El corredor INHABIT es un corredor físico real?",
-          "answer": "Sí — el Corredor INHABIT es una red real y en crecimiento de hubs bioculturales que se extienden por todo el mundo, cada uno un lugar físico. Liderados por agentes de cambio, estos hubs restauran ecosistemas, reviven el conocimiento ancestral y tienen la misión de crear un corredor continuo que conecte areas clave para restauración dentro de su bioregión. ¡Cada NFT representa un hub real y activo — crear uno forja una pieza real de un corredor que cruza la Tierra! Los corredores no son solo estructuras físicas, sino sistemas vivos—dinámicos, interdependientes y esenciales para la supervivencia de comunidades humanas y no humanas. Facilitan el intercambio de biodiversidad, semillas y conocimiento vivo a escala global. Como infraestructura crítica para las generaciones presentes y futuras, los corredores permiten que la biodiversidad prospere, se adapte y regenere."
+          "question": "¿El Corredor INHABIT es un corredor físico real?",
+          "answer": "Sí. El Corredor INHABIT es una red real y en crecimiento de faros bioculturales que se extienden por todo el mundo, cada uno en un lugar físico. Liderados por agentes de cambio, estos faros restauran ecosistemas, reviven el conocimiento ancestral y tienen la misión de crear un corredor continuo que conecte sitios clave de restauración dentro de su bioregión. ¡Cada NFT representa un faro real y activo; establecer uno forja una pieza real de un corredor que cruza la Tierra! Los corredores no son solo estructuras físicas, sino sistemas vivos, dinámicos, interdependientes y esenciales para la supervivencia de comunidades humanas y no humanas. Facilitan el intercambio de biodiversidad, semillas y conocimiento vivo a escala global. Como infraestructura crítica para las generaciones presentes y futuras, los corredores permiten que la biodiversidad prospere, se adapte y se regenere."
         },
         {
-          "question": "¿Qué es un hub biocultural?",
-                    "answer": "La regeneración verdadera y duradera necesita más que plantar árboles—requiere un cambio profundo en cómo valoramos y cuidamos la tierra. Los Hubs Bioculturales lideran esta transformación.\n\nLos HUBS son centros de regeneración y renovación cultural, diseñados para encender y cultivar el sentido de custodia necesario para restaurar nuestro planeta. Los HUBS protegen la biodiversidad, forman a la próxima generación de custodios de la tierra, y entrelazan la sabiduría ancestral con el conocimiento contemporáneo para impulsar un cambio profundo.\n\nSon espacios donde cualquiera puede aprender las prácticas más profundas de habitar y custodiar la naturaleza—lugares para explorar nuevas formas de relacionarse con la tierra, reconocer sus múltiples valores intrínsecos, y realizar el poder de nuestro rol en nutrirlos y multiplicarlos.\n\nCada Hub no solo restaura ecosistemas sino que también tiene la tarea de expandir un Corredor global mediante el aumento de áreas de conservación a través de la colaboración con hubs cercanos, proyectos y comunidades en su bioregión.\n\nLos HUBS son los bloques fundamentales del Corredor—una red mundial de islas de biodiversidad y puntos de referencia culturales. El Corredor busca inspirar un movimiento de custodia en todo el mundo."
-          },
-          {
-            "question": "¿Qué es exactamente un NFT de Custodia?",
-          "answer": "Imagina tener un contrato especial en tu billetera digital—como un pasaporte o escritura—que demuestra que eres parte de algo real. No es solo una imagen o un token. Es una llave. Te otorga derechos de por vida y beneficios tangibles vinculados a una parcela específica de tierra, junto con acceso al valor intrínseco que se regenera en el terreno.\nEl contrato se almacena de forma segura y permanente en la blockchain, lo que significa que no se puede perder, alterar ni falsificar. Cada NFT es único—como una obra de arte—y solo se emite un número limitado para cada tierra. Es un activo digital con valor real que puede transferirse.\nAdemás de asegurar tus derechos sobre la tierra, el NFT encapsula todo el marco legal que protege la tierra misma. Refleja y protege tanto los Derechos de la Naturaleza como el rol de los guardianes humanos, a través de un modelo innovador que redefine lo que significa la propiedad de la tierra—pasando del control al cuidado, de la posesión a la responsabilidad.\nMuchos creen que la custodia dará forma al futuro de las economías—y el NFT de Custodia de Inhabit es una de las primeras herramientas que hace tangible esa visión, vinculando la creación de valor con el cuidado, la regeneración y la responsabilidad compartida."
+          "question": "¿Qué hace único y diferente al NFT de INHABIT frente a los NFT convencionales?",
+          "answer": "A diferencia de los NFT puramente digitales, los NFT de custodia de INHABIT están arraigados en tierras reales y ecosistemas vivos. La tierra, y tu relación con ella, está protegida por un marco legal innovador que te otorga derechos y beneficios tangibles sobre un territorio físico y acceso al valor intrínseco que se regenera en el terreno. Más que un coleccionable digital, cada NFT es evidencia de impacto y un portal a un movimiento en el mundo real, diseñado para cultivar relaciones reales entre personas, lugares y los ecosistemas que soportan la vida. No es solo propiedad, es custodia. El NFT de custodia te otorga una membresía de por vida y un vínculo vivo entre tú y un faro biocultural. Explora los derechos y beneficios generales incluidos en todos los NFT de custodia aquí. Haz clic en NFT específicos para descubrir sus ofertas únicas, que pueden incluir:<br />Derechos legales como protector de un faro"
         },
         {
-          "question": "¿Qué derechos y beneficios recibo como titular de un NFT?",
-          "answer": "El NFT de Custodia te otorga una membresía de por vida y un vínculo vivo entre tú y un HUB biocultural.<br /><br />Explora los derechos y beneficios generales incluidos con todos los NFT de Custodia [AQUÍ] (*hyperlink).<br />Haz clic en NFT específicos (*hyperlink) para descubrir sus ofertas únicas, que pueden incluir:<ul><li>• Derechos legales como protector de un Hub</li><li>• Obras de arte exclusivas</li><li>• Alojamiento gratuito y talleres presenciales</li><li>• Experiencias bioculturales inmersivas</li><li>• Participación en la gobernanza DAO</li><li>• Acceso a herramientas para monitorear el impacto real de tu contribución</li><li>• Contenidos educativos exclusivos</li><li>• Airdrops</li><li>• ...y mucho más</li></ul>"
+          "question": "¿Qué hace que un faro sea un foco de biodiversidad?",
+          "answer": "Un foco de biodiversidad es un espacio con niveles excepcionalmente altos de diversidad biológica que además está bajo una amenaza significativa por la actividad humana. Los faros bioculturales funcionan como \"centros semilla vivientes\", espacios de importancia ecológica crítica, diseñados para salvaguardar y propagar la vida a lo largo del Corredor. Al igual que un jardín botánico regional, pero enraizado solo en los ecosistemas nativos, cada faro sirve como un nodo vital en una red más amplia, fomentando la conectividad ecológica en el tejido mayor del Corredor. Estos faros permiten que tanto personas como polinizadores actúen como portadores vivos de biodiversidad, dispersando naturalmente semillas, conocimiento y prácticas regenerativas a lo largo del paisaje. En el corazón de cada faro hay un corredor interno, un camino ecológico diseñado que: conecta paisajes fragmentados o degradados, proporciona refugio para especies en peligro, apoya el flujo de genes, especies y conocimiento cultural, y fortalece tanto la resiliencia local como la conectividad ecológica global."
         },
         {
-          "question": "¿Qué hace único y diferente al NFT de Inhabit frente a los NFT convencionales?",
-          "answer": "A diferencia de los NFT puramente digitales, los NFT de Custodia de Inhabit están arraigados en tierras reales y ecosistemas vivos. La tierra—y tu relación con ella—está protegida por un marco legal innovador que te otorga derechos y beneficios tangibles sobre un territorio físico y acceso al valor intrínseco que se regenera en el terreno. Más que un coleccionable digital en línea, cada NFT es un portal a un impacto y movimiento en el mundo real—diseñado para cultivar relaciones fuera de línea entre personas, lugares y los ecosistemas que ayudan a devolver a la vida. No se trata de poseer algo virtual; se trata de pertenecer a algo real: No es solo propiedad; es custodia."
+          "question": "¿Qué es exactamente un NFT de custodia?",
+          "answer": "Imagina tener un contrato especial en tu billetera digital (como un pasaporte o una escritura) que demuestra que eres parte de algo real. No es solo una imagen o un token, es una llave. Te otorga derechos de por vida y beneficios tangibles vinculados a una parcela específica de tierra, junto con acceso al valor intrínseco que se regenera en el terreno. El contrato se almacena de forma segura y permanente en la blockchain, lo que significa que no se puede perder, alterar ni falsificar. Cada NFT es único (como una obra de arte), y solo se emite un número limitado para cada tierra. Es un activo digital con valor real que puede transferirse. Además de asegurar tus derechos sobre la tierra, el NFT encapsula todo el marco legal que protege la tierra misma. Refleja y protege tanto los Derechos de la Naturaleza como el rol de los guardianes humanos, a través de un modelo innovador que redefine lo que significa la propiedad de la tierra, pasando del control al cuidado, de la posesión a la responsabilidad. Muchos creen que la custodia dará forma al futuro de las economías, y el NFT de custodia de INHABIT es una de las primeras herramientas que hace tangible esa visión, vinculando la creación de valor con el cuidado, la regeneración y la responsabilidad compartida."
         }
       ]
     },
@@ -427,17 +423,17 @@
         {
           "number": "001",
           "title": "Puntos calientes de biodiversidad",
-          "description": "Cada HUB debe generar y albergar un vasto reservorio de biodiversidad y conocimiento vivo específico de un ecosistema único, esencial para afrontar los desafíos de nuestro tiempo. Estos 'hubs semilla vivientes' albergan un 'corredor interno' dentro de la tierra, conectando paisajes fragmentados y sirviendo de refugio para especies en peligro."
+          "description": "Cada FARO debe generar y albergar un vasto reservorio de biodiversidad y conocimiento vivo específico de un ecosistema único, esencial para afrontar los desafíos de nuestro tiempo. Estos 'faros semilla vivientes' albergan un 'corredor interno' dentro de la tierra, conectando paisajes fragmentados y sirviendo de refugio para especies en peligro."
         },
         {
           "number": "002",
           "title": "Participación comunitaria",
-          "description": "Las comunidades locales son fundamentales para el éxito de cada HUB. Su conocimiento tradicional y participación activa aseguran la gestión y protección sostenible de estos ecosistemas vitales."
+          "description": "Las comunidades locales son fundamentales para el éxito de cada FARO. Su conocimiento tradicional y participación activa aseguran la gestión y protección sostenible de estos ecosistemas vitales."
         },
         {
           "number": "003",
           "title": "Investigación y educación",
-          "description": "Los HUBs funcionan como laboratorios vivientes para la investigación científica y la educación ambiental, fomentando la innovación y el intercambio de conocimientos para la restauración de ecosistemas."
+          "description": "Los FAROS funcionan como laboratorios vivientes para la investigación científica y la educación ambiental, fomentando la innovación y el intercambio de conocimientos para la restauración de ecosistemas."
         },
         {
           "number": "004",
@@ -477,8 +473,8 @@
       ]
     },
     "criteriaCardsSection": {
-      "title": "Cuatro Criterios <br /><strong>Para Ser un HUB</strong>",
-      "description": "El marco de INHABIT prevé que cada HUB desarrolle cuatro campos clave para convertirse en un HUB biocultural, desarrollando cada uno según su propia visión y singularidad."
+      "title": "Cuatro Criterios <br /><strong>Para Ser un FARO</strong>",
+              "description": "El marco de INHABIT prevé que cada FARO desarrolle cuatro campos clave para convertirse en un FARO biocultural, desarrollando cada uno según su propia visión y singularidad."
     },
     "FourCriteriaHubGlobal": {
       "cards": [
@@ -486,25 +482,25 @@
           "number": "01",
           "title": "Biodiversidad",
           "subtitle": "Puntos calientes",
-          "description": "Cada HUB debe generar y albergar un vasto reservorio de biodiversidad y conocimiento específico del ecosistema. Estos 'hubs semilla vivientes' permiten que animales y humanos dispersen semillas de forma natural, expandiendo la biodiversidad a lo largo del Corredor. Cada HUB debe albergar un 'corredor interno' que conecte paisajes fragmentados y refugie especies en peligro."
+          "description": "Cada FARO debe generar y albergar un vasto reservorio de biodiversidad y conocimiento específico del ecosistema. Estos 'faros semilla vivientes' permiten que animales y humanos dispersen semillas de forma natural, expandiendo la biodiversidad a lo largo del Corredor. Cada FARO debe albergar un 'corredor interno' que conecte paisajes fragmentados y refugie especies en peligro."
         },
         {
           "number": "02",
           "title": "Incubadoras de",
           "subtitle": "Guardianes de la tierra",
-          "description": "Cada HUB debe convertirse en un centro de aprendizaje para futuros guardianes de la tierra, brindando experiencia en diversos campos del conocimiento e innovación rural-social, y facilitando la asignación de recursos clave para establecer nuevos Hubs."
+          "description": "Cada FARO debe convertirse en un centro de aprendizaje para futuros guardianes de la tierra, brindando experiencia en diversos campos del conocimiento e innovación rural-social, y facilitando la asignación de recursos clave para establecer nuevos Faros."
         },
         {
           "number": "03",
-          "title": "HUBS de",
+          "title": "FAROS de",
           "subtitle": "Sabiduría",
-          "description": "Cada HUB es un centro de investigación dedicado a un campo único de conocimiento, produciendo y difundiendo información que integra investigación sistémica y académica con sabiduría ancestral."
+          "description": "Cada FARO es un centro de investigación dedicado a un campo único de conocimiento, produciendo y difundiendo información que integra investigación sistémica y académica con sabiduría ancestral."
         },
         {
           "number": "04",
           "title": "Trazador de",
           "subtitle": "Corredores",
-          "description": "Cada HUB tiene la tarea de extender el corredor, colaborando con otros hubs y trabajando conjuntamente en proyectos clave de restauración y comunidades dentro de su biorregión."
+          "description": "Cada FARO tiene la tarea de extender el corredor, colaborando con otros faros y trabajando conjuntamente en proyectos clave de restauración y comunidades dentro de su biorregión."
         }
       ]
     },
@@ -518,7 +514,7 @@
       "legalProtectorDesc": "Formas parte del sistema legal de garantía que reconoce a la Naturaleza como sujeto de derechos en una tierra específica relacionada con esta membresía, en línea con la Declaración de los Derechos de la Naturaleza y los principios bioculturales.",
       "governanceRights": "DERECHOS DE GOBERNANZA",
       "daoAccess": "Acceso a Inhabit DAO",
-      "daoAccessDesc": "Recibes derechos de gobernanza sobre asuntos específicos como garante de la tierra. Puedes opinar sobre cambios inesperados en el uso de la tierra, cambios en la gestión del Hub o cualquier evento imprevisto que pueda alterar la relación entre los actores y la tierra o amenazar los Derechos de la Naturaleza.",
+      "daoAccessDesc": "Recibes derechos de gobernanza sobre asuntos específicos como garante de la tierra. Puedes opinar sobre cambios inesperados en el uso de la tierra, cambios en la gestión del Faro o cualquier evento imprevisto que pueda alterar la relación entre los actores y la tierra o amenazar los Derechos de la Naturaleza.",
       "utilityRights": "DERECHOS DE USO",
       "freeAccommodation": "Alojamiento gratuito",
       "freeMeals": "Comidas gratuitas",
@@ -536,10 +532,10 @@
       "futureUpgradesDesc": "Como patrocinador inicial, tienes derecho a recibir futuras versiones del NFT de forma gratuita, que incluirán derechos y beneficios adicionales a medida que el proyecto evolucione en el NFT 2.0 (condicionado al desarrollo).",
       "artRights": "DERECHOS DE ARTE",
       "badgeArt": "Insignia de protector legal mediante obra exclusiva de <span class='text-orange-400 font-bold'>Jeisson Castillo</span>",
-      "badgeArtDesc": "Cada obra representa un Jardín Flotante Migratorio del ecosistema del HUB, con una especie nativa vital para ese hábitat y vinculada a niveles de cuidado en el pensamiento ancestral Kogui. La insignia artística simboliza tu conexión legal de custodia con una parcela específica, que puedes usar para recorrer y activar el corredor.",
+      "badgeArtDesc": "Cada obra representa un Jardín Flotante Migratorio del ecosistema del FARO, con una especie nativa vital para ese hábitat y vinculada a niveles de cuidado en el pensamiento ancestral Kogui. La insignia artística simboliza tu conexión legal de custodia con una parcela específica, que puedes usar para recorrer y activar el corredor.",
       "monitoringRights": "DERECHOS DE MONITOREO",
       "monitoringAccess": "Acceso a Monitoreo de Impacto vía <span class='text-orange-400 font-bold'>MAPA AQUÍ</span>",
-      "monitoringAccessDesc": "Sigue el progreso de la tierra que ayudas a proteger mediante mapeo de datos en tiempo real y narrativas de geolocalización. Observa la transformación de la tierra en un hub biocultural. Recibes datos e informes de impacto en tiempo real, geolocalización, mapeo visual e indicadores clave de desempeño (KPIs) sobre avances en áreas como plantación de árboles, aumento de biodiversidad e impacto en la comunidad local."
+      "monitoringAccessDesc": "Sigue el progreso de la tierra que ayudas a proteger mediante mapeo de datos en tiempo real y narrativas de geolocalización. Observa la transformación de la tierra en un faro biocultural. Recibes datos e informes de impacto en tiempo real, geolocalización, mapeo visual e indicadores clave de desempeño (KPIs) sobre avances en áreas como plantación de árboles, aumento de biodiversidad e impacto en la comunidad local."
     },
     "stewardshipNFTBenefits": {
       "title": "¿Qué obtienes?<br /><strong>Al comprar</strong>",
@@ -552,7 +548,7 @@
       "1": {
         "eyebrow": "DERECHOS DE ARTE",
         "title": "Insignia de protector legal",
-        "description": "Recibes una obra de arte única creada por un artista exclusivo. Cada pieza representa un Jardín Flotante Migratorio del ecosistema donde se ubica el HUB, con una especie nativa vital para ese hábitat.\n\nLa insignia artística representa tu conexión legal de custodia con una parcela específica, permitiéndote recorrer y activar el corredor."
+        "description": "Recibes una obra de arte única creada por un artista exclusivo. Cada pieza representa un Jardín Flotante Migratorio del ecosistema donde se ubica el FARO, con una especie nativa vital para ese hábitat.\n\nLa insignia artística representa tu conexión legal de custodia con una parcela específica, permitiéndote recorrer y activar el corredor."
       },
       "2": {
         "eyebrow": "DERECHOS DE CUSTODIA",
@@ -562,17 +558,17 @@
       "3": {
         "eyebrow": "DERECHOS DE IMPACTO",
         "title": "Monitoreo de Impacto",
-        "description": "Sigue el progreso de la tierra que ayudas a proteger mediante datos en tiempo real y narrativas de geolocalización.\n\nObserva su transformación en un hub biocultural con actualizaciones regulares, mapas visuales e informes de impacto. Consulta KPIs sobre plantación de árboles, aumento de biodiversidad e impacto en la comunidad—todo mostrando tu contribución a la regeneración en acción."
+        "description": "Sigue el progreso de la tierra que ayudas a proteger mediante datos en tiempo real y narrativas de geolocalización.\n\nObserva su transformación en un faro biocultural con actualizaciones regulares, mapas visuales e informes de impacto. Consulta KPIs sobre plantación de árboles, aumento de biodiversidad e impacto en la comunidad—todo mostrando tu contribución a la regeneración en acción."
       },
       "4": {
         "eyebrow": "DERECHOS DE GOBERNANZA",
         "title": "Acceso a Inhabit DAO",
-        "description": "Recibes derechos de gobernanza sobre asuntos específicos como garante de la tierra.\n\nPuedes opinar sobre cambios inesperados en el uso de la tierra, cambios en la gestión del Hub o cualquier evento imprevisto que pueda alterar la relación entre los actores y la tierra o amenazar los Derechos de la Naturaleza y la integridad de la misión biocultural."
+        "description": "Recibes derechos de gobernanza sobre asuntos específicos como garante de la tierra.\n\nPuedes opinar sobre cambios inesperados en el uso de la tierra, cambios en la gestión del Faro o cualquier evento imprevisto que pueda alterar la relación entre los actores y la tierra o amenazar los Derechos de la Naturaleza y la integridad de la misión biocultural."
       },
       "5": {
         "eyebrow": "DERECHOS DE USO",
         "title": "Acceso biocultural exclusivo",
-        "description": "Obtienes acceso a experiencias bioculturales, eventos y talleres dentro de los HUBS del corredor, profundizando tu conexión con la tierra y la biocultura de un territorio.\n\nLos beneficios incluyen estadías y comidas gratuitas o con descuento, acceso exclusivo a experiencias únicas y contenido educativo sobre reforestación, permacultura, bioconstrucción y más."
+        "description": "Obtienes acceso a experiencias bioculturales, eventos y talleres dentro de los FAROS del corredor, profundizando tu conexión con la tierra y la biocultura de un territorio.\n\nLos beneficios incluyen estadías y comidas gratuitas o con descuento, acceso exclusivo a experiencias únicas y contenido educativo sobre reforestación, permacultura, bioconstrucción y más."
       }
     },
     "team": [
