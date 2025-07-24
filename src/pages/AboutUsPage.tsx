@@ -11,6 +11,7 @@ import { InfoCardRightImage } from '../components/InfoCard';
 import MeetOurTeam from '../components/MeetOurTeam';
 import LogosSection from '../components/LogosSection';
 import { Helmet } from 'react-helmet-async';
+import SEOHead from "@/components/SEOHead";
 
 interface AboutUsPageProps {
   onPageReady?: () => void;
