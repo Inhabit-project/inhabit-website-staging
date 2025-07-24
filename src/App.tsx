@@ -2,9 +2,7 @@ import React, { useState, createContext, useEffect, Suspense } from "react";
 
 import "@/i18n";
 import "@/utils/gsap";
-import "@fontsource/nunito-sans/400.css";
-import "@fontsource/abel/400.css";
-import "@fontsource/montserrat/400.css";
+// Removed duplicate font imports - now handled in main.tsx with optimization
 
 import Loader from "@/load/Loader";
 import { scrollManager } from "@/utils/scrollManager";
@@ -36,8 +34,6 @@ const ProjectsPage = React.lazy(() => import("@/pages/ProjectsPage"));
 const ArticlePage = React.lazy(() => import("@/pages/ArticlePage"));
 const ContactUs = React.lazy(() => import("@/pages/ContactUs"));
 const Membership = React.lazy(() => import("@/pages/Membership"));
-
-import Cursor from "./utils/cursor";
 
 // Create a context for the loading state
 export const LoadingContext = createContext<boolean>(false);
@@ -221,13 +217,6 @@ const App: React.FC = () => {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
-
-  useEffect(() => {
-    const cursor = new Cursor();
-    return () => {
-      cursor.destroy();
     };
   }, []);
 

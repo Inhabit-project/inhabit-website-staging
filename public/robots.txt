@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Block staging/development URLs if needed
+# Disallow: /dev/
+# Disallow: /staging/
+
+# Important pages
+Allow: /
+Allow: /about
+Allow: /hubs
+Allow: /projects
+Allow: /stewardship-nft
+Allow: /blog
+Allow: /contact
+
+# Sitemap location
+Sitemap: https://inhabit.one/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1 

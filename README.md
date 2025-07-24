@@ -1,6 +1,6 @@
 # INHABIT Project
 
-A modern React application showcasing biodiversity corridors with an interactive 3D background, fluid typography, and smooth animations.
+A modern React application showcasing biodiversity corridors with an interactive 3D background, fluid typography, smooth animations, and comprehensive SEO optimization.
 
 ## Technologies Used
 
@@ -10,6 +10,35 @@ A modern React application showcasing biodiversity corridors with an interactive
 - GSAP for advanced animations
 - React Three Fiber for 3D graphics
 - Custom fluid typography system using CSS clamp
+- React Helmet Async for SEO meta tag management
+- Comprehensive SEO optimization with structured data
+
+## SEO Features
+
+### 🚀 Advanced SEO Implementation
+
+- **Comprehensive Meta Tags**: All pages include proper title, description, keywords, and robots meta tags
+- **Open Graph & Twitter Cards**: Full social media sharing optimization with proper images and descriptions
+- **Structured Data (JSON-LD)**: Schema.org markup for better search engine understanding
+- **Canonical URLs**: Proper canonical links to prevent duplicate content issues
+- **Multilingual SEO**: Hreflang tags for English and Spanish language support
+- **XML Sitemap**: Auto-generated sitemap with proper priorities and change frequencies
+- **Robots.txt**: Search engine crawling guidelines
+- **Web App Manifest**: PWA support with proper icons and theme colors
+- **Performance Optimized**: Font preloading and optimized loading strategies
+
+### 📱 Mobile & Accessibility
+
+- **Apple Touch Icons**: Proper iOS app icons and status bar styling
+- **Theme Colors**: Consistent brand colors across platforms
+- **Skip Links**: Accessibility navigation for screen readers
+- **Semantic HTML**: Proper heading structure and ARIA labels
+
+### 🌐 Multilingual Support
+
+- **Translation-Based SEO**: Dynamic SEO content from i18n translations
+- **Language-Specific URLs**: Proper URL structure for different languages
+- **Locale-Aware Open Graph**: Language-specific social media optimization
 
 ## Prerequisites
 

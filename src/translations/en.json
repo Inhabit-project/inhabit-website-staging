@@ -11,7 +11,10 @@
   "hero": {
     "title": "<strong>Join us</strong> in shaping a <strong>global corridor</strong> of <strong>biodiversity</strong>",
     "description": "INHABIT protects vital ecosystems and drives rural innovation through community-led biocultural hubs",
-    "scrollButton": "SCROLL TO WATCH THE VIDEO"
+    "scrollButton": "SCROLL TO WATCH THE VIDEO",
+    "seoTitle": "INHABIT - Global Corridor of Biodiversity | Sustainable Ecosystem Protection",
+    "seoDescription": "Join INHABIT in protecting vital ecosystems through community-led biocultural hubs. Discover sustainable NFT stewardship, biodiversity conservation, and rural innovation projects worldwide.",
+    "seoKeywords": "biodiversity conservation, ecosystem protection, sustainable NFT, biocultural hubs, rural innovation, regenerative agriculture, environmental stewardship, carbon credits"
   },
   "menu": {
     "downloadWhitePaper": "download white paper"
@@ -53,6 +56,9 @@
     }
   },
   "aboutUsPage": {
+    "seoTitle": "About INHABIT - Team & Mission | Biodiversity Conservation Leaders",
+    "seoDescription": "Meet the INHABIT team of entrepreneurs, farmers, and conservationists building regenerative biocultural hubs worldwide. Learn about our mission to protect ecosystems and drive rural innovation.",
+    "seoKeywords": "INHABIT team, biodiversity experts, conservation leaders, sustainable agriculture, rural development, environmental entrepreneurs",
     "eyebrow": "Builders, Visionaries, Regenerators.",
     "heading": "Together, <span class=\"highlighted-text\">we are building</span> the foundations of a <span class=\"highlighted-text\">regenerative future</span>, one hub, one corridor, one community, one story at a time.",
     "teamImageAlt": "INHABIT Team",
@@ -236,7 +242,7 @@
       "description": "From local stewards and bioregional experts to global organizations and innovation leaders, each ally contributes unique knowledge, tools, and heart to grow a network of biocultural hubs, together weaving a global corridor of biocultural diversity",
       "testimonial": {
         "name": "Louise Borreani",
-        "quote": "“Inhabit is a powerful expression of how decentralized tools can support nature stewardship communities. It stands as one of the most concrete manifestations of the green crypto research we’ve been conducting at Ecofrontiers and it's so inspiring to see it come to life.” ",
+        "quote": "“Inhabit is a powerful expression of how decentralized tools can support nature stewardship communities. It stands as one of the most concrete manifestations of the green crypto research we've been conducting at Ecofrontiers and it's so inspiring to see it come to life.” ",
         "role": "Co-founder, Ecofrontiers"
       },
       "partnersTitle": "Our <br /> <strong>Partners</strong>"
@@ -645,7 +651,10 @@
     "imageSection": {
       "eyebrow": "Discover Ñuiyanzhi",
       "heading": "A living <span style=\"color: var(--color-primary)\">laboratory</span> where <span style=\"color: var(--color-primary)\">ecological restoration</span>, ancestral <span style=\"color: var(--color-primary)\">knowledge</span>, and territorial stewardship <span style=\"color: var(--color-primary)\">converge</span>."
-    }
+    },
+    "seoTitle": "Ñuiyanzhi Hub - Colombian Biodiversity Conservation | INHABIT",
+    "seoDescription": "Discover the Ñuiyanzhi biocultural hub in Colombia. Learn about our conservation efforts, community-led biodiversity protection, and sustainable development initiatives in this vital ecosystem.",
+    "seoKeywords": "Ñuiyanzhi hub, Colombia conservation, Colombian biodiversity, biocultural conservation, community-led conservation, sustainable development Colombia"
   },
   "aguaDeLunaPage": {
     "title": "AguaDeLuna Hub Details Page"
@@ -794,7 +803,10 @@
     "annexNo1NotificationTemplate": "Notification Template for Obtaining Authorization from the Holder(s) for the Collection, Use, and Processing of Their Personal Data",
     "annexNo1Declaration": "Declaration and Authorization to Consult, Report, and Share Information",
     "annexNo1Authorization": "I expressly and irrevocably authorize INHABIT CO S.A.S., whom I represent or to whom I assign my rights, or whom it hires for the exercise of these rights, its obligations, or its contractual position in any capacity, in relation to the products or services of which I am the primary or joint owner, or as its representative, to consult, request, supply, report, process, obtain, collect, compile, conform, exchange, modify, use, analyze, study, retain, receive, and send my personal data...",
-    "annexNo1Note": "* Note: This form must be signed for validity and attention and submitted in the original form to INHABIT CO S.A.S., which, as the data controller, will process the claim within the terms established by law, starting on the day following the date of receipt."
+    "annexNo1Note": "* Note: This form must be signed for validity and attention and submitted in the original form to INHABIT CO S.A.S., which, as the data controller, will process the claim within the terms established by law, starting on the day following the date of receipt.",
+    "seoTitle": "Privacy Policy | INHABIT", 
+    "seoDescription": "Learn how INHABIT protects your privacy and handles your personal data. Read about our commitment to data security and user privacy protection.",
+    "seoKeywords": "INHABIT privacy policy, data protection, user privacy, information security, GDPR compliance"
   },
   "internalPagesHero": {
     "hubs": {
@@ -827,7 +839,10 @@
     "title": "Our Projects",
     "description": "Our projects span ecosystem restoration, biocultural innovation, and community empowerment.",
     "skipToMainContent": "Skip to main content",
-    "mainContent": "Main content of the Projects page"
+    "mainContent": "Main content of the Projects page",
+    "seoTitle": "Conservation Projects - Ecosystem Restoration & Protection | INHABIT", 
+    "seoDescription": "Discover INHABIT's conservation projects protecting vital ecosystems worldwide. Learn about our ecosystem restoration, biodiversity protection, and community-led environmental initiatives.",
+    "seoKeywords": "conservation projects, ecosystem restoration, biodiversity protection, environmental projects, sustainable conservation, community-led initiatives"
   },
   "contactPage": {
     "title": "Contact<br /><strong>Us</strong>",
@@ -853,7 +868,10 @@
       "kyc": "I understand that I'll need to complete a KYC Verification to eventually fully access the rights and benefits associated with my membership*",
       "terms": "I accept the terms and conditions of the Membership Agreement granting me rights and benefits related this Land and Project*",
       "send": "SEND MESSAGE"
-    }
+    },
+    "seoTitle": "Contact INHABIT - Get Involved in Biodiversity Conservation",
+    "seoDescription": "Contact INHABIT to learn how you can get involved in biodiversity conservation, support our biocultural hubs, or partner with us on sustainable environmental projects.",
+    "seoKeywords": "contact INHABIT, biodiversity conservation contact, environmental partnership, conservation collaboration, sustainable projects"
   },
   "projectsMain": {
     "overview": "Projects Overview",
@@ -917,7 +935,10 @@
           "answer": "INHABIT's legal framework ensures permanent land protection through a layered system that integrates the Rights of Nature, tokenized governance, smart contracts, and on-the-ground stewardship:<br/><br/><ul><li><strong>1-Rights of Nature:</strong> Land is legally recognized as a rights-bearing entity. Once tokenized, it cannot be sold or exploited, ensuring lasting protection.</li><li><strong>2-Stewardship NFTs:</strong> Each NFT links to a legal membership contract. Holders gain governance rights to monitor land, intervene if nature is at risk, and help shape decisions—using geolocated storytelling and KPIs for real-time verification.</li><li><strong>3-On-the-ground Stewards:</strong> Local stewards receive permanent land use rights and ensure daily ecological care and protection.</li><li><strong>4-Smart Contracts:</strong> Rights and responsibilities (including Nature's) are enforced through transparent, immutable contracts that encode legal instruments and allow digital and physical governance.</li><li><strong>5-Institutional Oversight:</strong> INHABIT SAS and the INHABIT Foundation oversee fund use, legal compliance, and rights enforcement, with documents encrypted on-chain.</li></ul>"
         }
       ]
-    }
+    },
+    "seoTitle": "Biocultural Hubs - Global Biodiversity Corridors | INHABIT",
+    "seoDescription": "Explore INHABIT's biocultural hubs creating global biodiversity corridors. Discover how our community-led projects protect ecosystems, support local communities, and drive sustainable innovation.",
+    "seoKeywords": "biocultural hubs, biodiversity corridors, ecosystem restoration, community conservation, sustainable development, environmental protection"
   },
 
   "termsAndConditionsPage": {
@@ -1006,7 +1027,10 @@
         "text": "INHABIT CO S.A.S.\nCali, Colombia\n📧 Email: hello@inhabit.one\n🌐 Website: www.inhabit.one\n📞 Phone: +57 315 7255514"
       }
     },
-    "footer": "By using this website or engaging with our digital assets, you agree to these Terms."
+    "footer": "By using this website or engaging with our digital assets, you agree to these Terms.",
+    "seoTitle": "Terms and Conditions | INHABIT",
+    "seoDescription": "Read INHABIT's terms and conditions for our platform, NFT stewardship program, and biocultural hub participation. Understand your rights and responsibilities.",
+    "seoKeywords": "INHABIT terms, conditions, NFT terms, stewardship agreement, platform terms"
   },
   "fundsUsedSection": {
     "title": "How are the funds used?",

@@ -7,7 +7,6 @@ import CTA from '../components/CTA';
 import Blog from '../components/Blog';
 import FAQ, { FAQHubs } from '../components/FAQ';
 import Footer from '../components/Footer';
-import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 
 interface HubsPageProps {
@@ -23,15 +22,12 @@ const HubsPage: React.FC<HubsPageProps> = ({ onPageReady, onHeroImageLoad }) => 
 
   return (
     <>
-      <Helmet>
-        <title>{t('hubsPage.seoTitle') || 'Hubs | INHABIT'}</title>
-        <meta name="description" content={t('hubsPage.seoDescription') || t('hubsPage.intro') || 'Explore our biocultural hubs.'} />
-        <meta property="og:title" content={t('hubsPage.seoTitle') || 'Hubs | INHABIT'} />
-        <meta property="og:description" content={t('hubsPage.seoDescription') || t('hubsPage.intro') || 'Explore our biocultural hubs.'} />
-        <meta property="og:image" content="/assets/hubs-hero.webp" />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Helmet>
+      <SEOHead 
+        pageType="hubsPage"
+        customData={{
+          image: "/assets/hubs-hero.webp"
+        }}
+      />
       {/* Skip to main content link for accessibility */}
       <a href="#main-content" className="sr-only focus:not-sr-only absolute top-2 left-2 bg-white text-black p-2 z-50 rounded">
         Skip to main content

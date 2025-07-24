@@ -23,56 +23,74 @@ export default {
       keyframes: {
         videoPulse: {
           '0%, 100%': {
-            transform: 'scale(1)',
+            transform: 'scale3d(1, 1, 1)',
             backgroundColor: 'rgba(255, 255, 255, 0.1)',
             borderColor: 'rgba(255, 255, 255, 1)',
           },
           '50%': {
-            transform: 'scale(1.1)',
+            transform: 'scale3d(1.1, 1.1, 1)',
             backgroundColor: 'rgba(255, 166, 0, 0.2)',
             borderColor: 'rgb(255, 166, 0)',
           },
         },
         dropIn: {
           '0%': {
-            transform: 'translateY(-100%)',
+            transform: 'translate3d(0, -100%, 0)',
             opacity: '0'
           },
           '100%': {
-            transform: 'translateY(0)',
+            transform: 'translate3d(0, 0, 0)',
             opacity: '1'
           }
         },
         scroll: {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(calc(-25%))' }
+          '0%': { transform: 'translate3d(0, 0, 0)' },
+          '100%': { transform: 'translate3d(calc(-25%), 0, 0)' }
         },
         loaderPulse: {
           '0%, 100%': {
-            opacity: 1,
-            transform: 'scale(1)',
+            opacity: '1',
+            transform: 'scale3d(1, 1, 1)',
           },
           '50%': {
-            opacity: 0.8,
-            transform: 'scale(0.98)',
+            opacity: '0.8',
+            transform: 'scale3d(0.98, 0.98, 1)',
+          },
+        },
+        loaderPulseMobile: {
+          '0%, 100%': {
+            opacity: '1',
+            transform: 'scale3d(1, 1, 1)',
+          },
+          '50%': {
+            opacity: '0.9',
+            transform: 'scale3d(0.99, 0.99, 1)',
           },
         },
         loaderRotate: {
           '0%': {
-            transform: 'rotate(0deg)',
+            transform: 'rotate3d(0, 0, 1, 0deg)',
           },
           '100%': {
-            transform: 'rotate(360deg)',
+            transform: 'rotate3d(0, 0, 1, 360deg)',
+          },
+        },
+        loaderRotateMobile: {
+          '0%': {
+            transform: 'rotate3d(0, 0, 1, 0deg)',
+          },
+          '100%': {
+            transform: 'rotate3d(0, 0, 1, 180deg)',
           },
         },
         loaderFadeIn: {
           '0%': {
-            opacity: 0,
-            transform: 'translateY(20px)',
+            opacity: '0',
+            transform: 'translate3d(0, 20px, 0)',
           },
           '100%': {
-            opacity: 1,
-            transform: 'translateY(0)',
+            opacity: '1',
+            transform: 'translate3d(0, 0, 0)',
           },
         }
       },
@@ -80,9 +98,11 @@ export default {
         videoPulse: 'videoPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         scroll: 'scroll 50s linear infinite',
         loaderPulse: 'loaderPulse 2s ease-in-out infinite',
+        loaderPulseMobile: 'loaderPulseMobile 3s ease-in-out infinite',
         loaderRotate: 'loaderRotate 20s linear infinite',
-        loaderFadeIn: 'loaderFadeIn 0.8s ease-out forwards',
-        dropIn: 'dropIn 0.8s ease-out forwards'
+        loaderRotateMobile: 'loaderRotateMobile 30s linear infinite',
+        loaderFadeIn: 'loaderFadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
+        dropIn: 'dropIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards'
       },
       container: {
         center: true,
@@ -98,9 +118,9 @@ export default {
         },
       },
       fontFamily: {
-        montserrat: ['Montserrat', 'sans-serif'],
-        nunito: ['Nunito Sans', 'sans-serif'],
-        abel: ['Abel', 'sans-serif'],
+        montserrat: ['Montserrat', 'Montserrat Fallback', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Arial', 'sans-serif'],
+        nunito: ['Nunito Sans', 'Nunito Sans Fallback', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Arial', 'sans-serif'],
+        abel: ['Abel', 'Abel Fallback', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Arial', 'sans-serif'],
       },
       letterSpacing: {
         'abel': '0.08rem',
@@ -148,4 +168,4 @@ export default {
     },
   },
   plugins: [],
-} 
+}; 

@@ -14,7 +14,7 @@ import FourCriteriaHubGlobal from "../components/FourCriteriaHubGlobal";
 import NFTGrid from "../components/NFTGrid";
 import SubLoader from "@/load/SubLoader";
 import { useStore } from "@/store";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
 
 interface Props {
   onPageReady?: () => void;
@@ -63,36 +63,12 @@ export default function StewardshipNFTPage(props: Props): JSX.Element {
 
   return (
     <>
-      <Helmet>
-        <title>
-          {t("mainPage.stewardshipNFTPage.seoTitle") ||
-            "Stewardship NFT | INHABIT"}
-        </title>
-        <meta
-          name="description"
-          content={
-            t("mainPage.stewardshipNFTPage.seoDescription") ||
-            t("mainPage.stewardshipNFTPage.imageSection.eyebrow")
-          }
-        />
-        <meta
-          property="og:title"
-          content={
-            t("mainPage.stewardshipNFTPage.seoTitle") ||
-            "Stewardship NFT | INHABIT"
-          }
-        />
-        <meta
-          property="og:description"
-          content={
-            t("mainPage.stewardshipNFTPage.seoDescription") ||
-            t("mainPage.stewardshipNFTPage.imageSection.eyebrow")
-          }
-        />
-        <meta property="og:image" content="/assets/nft-hero.jpg" />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Helmet>
+      <SEOHead 
+        pageType="mainPage.stewardshipNFTPage"
+        customData={{
+          image: "/assets/nft-hero.jpg"
+        }}
+      />
       {/* Skip to main content link for accessibility */}
       <a
         href="#main-content"

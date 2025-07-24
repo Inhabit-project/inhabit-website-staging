@@ -9,7 +9,7 @@ import Footer from '../components/Footer';
 import ProjectsVideoSection from '../components/ProjectsVideoSection';
 import ImageSection from '../components/ImageSection';
 import ProjectsMain from '../components/ProjectsMain';
-import { Helmet } from 'react-helmet-async';
+import SEOHead from "@/components/SEOHead";
 
 interface ProjectsPageProps {
   onPageReady?: () => void;
@@ -25,15 +25,12 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ onPageReady, onHeroImageLoa
 
   return (
     <>
-      <Helmet>
-        <title>{t('projectsPage.seoTitle') || 'Projects | INHABIT'}</title>
-        <meta name="description" content={t('projectsPage.seoDescription') || t('projectsPage.mainContent') || 'Discover our projects.'} />
-        <meta property="og:title" content={t('projectsPage.seoTitle') || 'Projects | INHABIT'} />
-        <meta property="og:description" content={t('projectsPage.seoDescription') || t('projectsPage.mainContent') || 'Discover our projects.'} />
-        <meta property="og:image" content="/assets/arte-selva.webp" />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Helmet>
+      <SEOHead 
+        pageType="projectsPage"
+        customData={{
+          image: "/assets/arte-selva.webp"
+        }}
+      />
       {/* Skip to main content link for accessibility */}
       <a 
         href="#main-content" 

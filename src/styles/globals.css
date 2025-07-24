@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font Display Optimization - Apply swap to all web fonts */
+@layer base {
+  /* Ensure all imported fonts use font-display: swap */
+  @font-face {
+    font-family: 'Montserrat';
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Nunito Sans';
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Abel';
+    font-display: swap;
+  }
+}
+
 /* Todo: translate de comments to english */
 @layer base {
   :root {
@@ -174,6 +193,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     height: 100%;
+    font-display: swap; /* Ensure swap for all fonts */
   }
 
   body {
@@ -195,6 +215,7 @@
     scrollbar-width: none;
     -ms-scroll-chaining: none;
     overscroll-behavior: none;
+    font-display: swap; /* Ensure swap for all fonts */
   }
 
   input,
@@ -242,16 +263,17 @@
     color: var(--color-orange);
   }
 
-  /* Heading Scale */
+  /* Heading Scale - Optimized with font stacks */
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", "Montserrat Fallback", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     font-weight: 500;
     color: var(--heading-color-light);
+    font-display: swap;
   }
 
   h1,
@@ -337,61 +359,67 @@
 }
 
 @layer components {
-  /* Body Text Styles */
+  /* Body Text Styles - Optimized with font stacks */
   .body-L {
-    font-family: "Nunito Sans", sans-serif;
+    font-family: "Nunito Sans", "Nunito Sans Fallback", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     font-size: var(--body-L);
     font-weight: 300;
     line-height: 1.5;
     color: var(--color-text);
+    font-display: swap;
   }
 
   .body-M {
-    font-family: "Nunito Sans", sans-serif;
+    font-family: "Nunito Sans", "Nunito Sans Fallback", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     font-size: var(--body-M);
     font-weight: 300;
     line-height: 1.2;
     color: var(--color-text);
+    font-display: swap;
   }
 
   .body-S {
-    font-family: "Nunito Sans", sans-serif;
+    font-family: "Nunito Sans", "Nunito Sans Fallback", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     font-size: var(--body-S);
     font-weight: 300;
     line-height: 1.5;
     color: var(--color-text);
+    font-display: swap;
   }
 
   /* Eyebrow Text */
   .eyebrow {
-    font-family: "Abel", sans-serif;
+    font-family: "Abel", "Abel Fallback", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     font-size: var(--eyebrow);
     font-weight: 400;
     line-height: 1.5;
     letter-spacing: 0.08rem;
     text-transform: uppercase;
     color: var(--color-text);
+    font-display: swap;
   }
 
   /* Navigation Text */
   .nav-text {
-    font-family: "Abel", sans-serif;
+    font-family: "Abel", "Abel Fallback", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     font-size: var(--font-size-xs);
     font-weight: 400;
     line-height: 1.5;
     letter-spacing: 0.08rem;
     text-transform: uppercase;
     color: var(--color-text);
+    font-display: swap;
   }
 
   /* Button Text */
   .button-text {
-    font-family: "Abel", sans-serif;
+    font-family: "Abel", "Abel Fallback", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     font-size: var(--font-size-xs);
     font-weight: 400;
     line-height: 1.5;
     letter-spacing: 0.08rem;
     text-transform: uppercase;
+    font-display: swap;
   }
 
   /* Responsive Gap Utility */
@@ -1210,4 +1238,77 @@
 /* Loader fade-in utility */
 .loader-fade-in {
   @apply opacity-0 animate-loaderFadeIn;
+}
+
+/* Loader Performance Optimizations */
+.animate-loaderRotate,
+.animate-loaderPulse {
+  will-change: transform;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+/* Mobile-specific loader optimizations */
+@media (max-width: 768px) {
+  .animate-loaderRotate {
+    animation: loaderRotateMobile 30s linear infinite;
+  }
+  
+  .animate-loaderPulse {
+    animation: loaderPulseMobile 3s ease-in-out infinite;
+  }
+  
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-loaderRotate {
+      animation: none;
+    }
+    
+    .animate-loaderPulse {
+      animation: loaderPulseMobile 6s ease-in-out infinite;
+    }
+  }
+}
+
+/* High-performance devices can handle more complex animations */
+@media (min-width: 769px) and (min-resolution: 2dppx) {
+  .animate-loaderRotate {
+    animation: loaderRotate 20s linear infinite;
+  }
+  
+  .animate-loaderPulse {
+    animation: loaderPulse 2s ease-in-out infinite;
+  }
+}
+
+/* Optimize for low-end mobile devices */
+@media (max-width: 480px) {
+  .animate-loaderRotate {
+    animation: loaderRotateMobile 40s linear infinite;
+  }
+  
+  .animate-loaderPulse {
+    animation: loaderPulseMobile 4s ease-in-out infinite;
+  }
+  
+  /* Further reduce animations on very small screens */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-loaderRotate {
+      animation: none;
+      transform: rotate3d(0, 0, 1, 0deg);
+    }
+    
+    .animate-loaderPulse {
+      animation: none;
+      transform: scale3d(1, 1, 1);
+    }
+  }
+}
+
+/* GPU acceleration for supported browsers */
+@supports (transform-style: preserve-3d) {
+  .animate-loaderRotate,
+  .animate-loaderPulse {
+    transform-style: preserve-3d;
+  }
 }

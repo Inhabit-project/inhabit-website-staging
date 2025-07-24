@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import ImageSection from "../components/ImageSection";
 import SubLoader from "@/load/SubLoader";
 import { useStore } from "@/store";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
 
 interface Props {
   onPageReady?: () => void;
@@ -57,32 +57,12 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
 
   return (
     <>
-      <Helmet>
-        <title>
-          {t("nuiyanzhiPage.seoTitle") || "Ñuiyanzhi Hub | INHABIT"}
-        </title>
-        <meta
-          name="description"
-          content={
-            t("nuiyanzhiPage.seoDescription") ||
-            t("nuiyanzhiPage.imageSection.eyebrow")
-          }
-        />
-        <meta
-          property="og:title"
-          content={t("nuiyanzhiPage.seoTitle") || "Ñuiyanzhi Hub | INHABIT"}
-        />
-        <meta
-          property="og:description"
-          content={
-            t("nuiyanzhiPage.seoDescription") ||
-            t("nuiyanzhiPage.imageSection.eyebrow")
-          }
-        />
-        <meta property="og:image" content="/assets/1Hub/vision.webp" />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Helmet>
+      <SEOHead 
+        pageType="nuiyanzhiPage"
+        customData={{
+          image: "/assets/1Hub/vision.webp"
+        }}
+      />
       <Menu />
       {/* Internal Hero Section - custom for Nuiyanzhi */}
       <InternalPagesHero

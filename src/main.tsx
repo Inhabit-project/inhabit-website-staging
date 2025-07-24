@@ -7,15 +7,40 @@ import "./styles/globals.css";
 import "./utils/gsap";
 import { HelmetProvider } from "react-helmet-async";
 
-// Import fonts
+// Font optimization utilities
+import { initializeFontOptimization } from "./utils/fontOptimization";
+
+// Optimized font imports with font-display: swap
 // @fontsource packages only include latin subset by default. No cyrillic or vietnamese fonts are included.
 import "@fontsource/montserrat/400.css"; // Regular
 import "@fontsource/montserrat/700.css"; // Bold
 import "@fontsource/nunito-sans/400.css"; // Regular
 import "@fontsource/nunito-sans/600.css"; // SemiBold
 import "@fontsource/abel/400.css"; // Regular
+
+// Add font-display: swap CSS override and optimization
+const fontDisplayStyle = document.createElement('style');
+fontDisplayStyle.textContent = `
+  @font-face {
+    font-family: 'Montserrat';
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Nunito Sans';
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Abel';
+    font-display: swap;
+  }
+`;
+document.head.appendChild(fontDisplayStyle);
+
 import { RainbowKitProviderConfig } from "./config/rainbow-kit.config";
 import { BrowserRouter } from "react-router";
+
+// Initialize font optimization
+initializeFontOptimization();
 
 // Initialize smooth scrolling
 scrollManager.init();

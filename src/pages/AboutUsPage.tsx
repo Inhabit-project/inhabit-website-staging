@@ -26,15 +26,12 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ onPageReady, onHeroImageLoad 
 
   return (
     <>
-      <Helmet>
-        <title>{t('aboutUsPage.seoTitle') || 'About Us | INHABIT'}</title>
-        <meta name="description" content={t('aboutUsPage.seoDescription') || t('aboutUsPage.heading') || 'Learn more about INHABIT.'} />
-        <meta property="og:title" content={t('aboutUsPage.seoTitle') || 'About Us | INHABIT'} />
-        <meta property="og:description" content={t('aboutUsPage.seoDescription') || t('aboutUsPage.heading') || 'Learn more about INHABIT.'} />
-        <meta property="og:image" content="/assets/about-us-hero.webp" />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Helmet>
+      <SEOHead 
+        pageType="aboutUsPage"
+        customData={{
+          image: "/assets/about-us-hero.webp"
+        }}
+      />
       {/* Skip to main content link for accessibility */}
       <a href="#main-content" className="sr-only focus:not-sr-only absolute top-2 left-2 bg-white text-black p-2 z-50 rounded">
         Skip to main content

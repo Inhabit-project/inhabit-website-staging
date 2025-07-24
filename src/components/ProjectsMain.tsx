@@ -10,7 +10,7 @@ const projects = [
   {
     key: 'project1',
     backgroundImage: '/assets/images/img1.webp',
-    mapImage: '/assets/images/img2.webp',
+    mapImage: '/assets/sewindua.webp',
     sliderImages: [
       '/assets/sendiwa-1.webp',
       '/assets/sendiwa-2.webp',

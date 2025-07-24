@@ -248,16 +248,15 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                             {truncateHtml(mainPost.content, 200)}
                           </p>
                           <Link
-                            to={{
-                              pathname: `/blog/article/${mainPost.id}`,
-                            }}
+                            to={{ pathname: `/blog/article/${mainPost.id}` }}
                           >
                             <button
                               className="mt-2 underline hover:opacity-80 focus:outline-none block self-start"
                               style={{ color: "var(--color-primary)" }}
                               onClick={() => {}}
+                              aria-label={`Read more about ${mainPost.title}`}
                             >
-                              Read more
+                              Read more about {mainPost.title}
                             </button>
                           </Link>
                         </div>
@@ -297,16 +296,15 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                                 {truncateHtml(post.content, 120)}
                               </p>
                               <Link
-                                to={{
-                                  pathname: `/blog/article/${post.id}`,
-                                }}
+                                to={{ pathname: `/blog/article/${post.id}` }}
                               >
                                 <button
                                   className="mt-2 underline hover:opacity-80 focus:outline-none block self-start"
                                   style={{ color: "var(--color-primary)" }}
                                   onClick={() => {}}
+                                  aria-label={`Read more about ${post.title}`}
                                 >
-                                  Read more
+                                  Read more about {post.title}
                                 </button>
                               </Link>
                             </div>

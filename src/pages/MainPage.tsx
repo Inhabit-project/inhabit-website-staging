@@ -14,8 +14,9 @@ import Blog from "../components/Blog";
 import FAQ from "../components/FAQ";
 import Footer from "../components/Footer";
 import { useStore } from "../store";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
 import { useTranslation } from "react-i18next";
+import Cursor from "../utils/cursor";
 
 interface Props {
   onPageReady?: () => void;
@@ -54,20 +55,21 @@ function MainPage(props: Props) {
     }
   }, [scrollToSection, campaignsLoading, campaigns]);
 
+  useEffect(() => {
+    const cursor = new Cursor();
+    return () => {
+      cursor.destroy();
+    };
+  }, []);
+
   return (
     <>
-      <Helmet>
-        <title>{t("hero.title").replace(/<[^>]+>/g, "")} | INHABIT</title>
-        <meta name="description" content={t("hero.description")} />
-        <meta
-          property="og:title"
-          content={t("hero.title").replace(/<[^>]+>/g, "") + " | INHABIT"}
-        />
-        <meta property="og:description" content={t("hero.description")} />
-        <meta property="og:image" content="/assets/hero.webp" />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Helmet>
+      <SEOHead 
+        pageType="hero"
+        customData={{
+          image: "/assets/hero.webp"
+        }}
+      />
       {/* Skip to main content link for accessibility */}
       <a
         href="#main-content"
