@@ -1,4 +1,3 @@
-// ScrollManager placeholder: Lenis removed
 class ScrollManager {
   init() {
     // Optionally, initialize smoother scroll here in the future
@@ -26,21 +25,10 @@ class ScrollManager {
     window.scrollTo({ top, behavior });
   }
 
-  destroy() {
-    // No-op: Lenis removed
-  }
-
-  stop() {
-    // No-op: Lenis removed
-  }
-
-  start() {
-    // No-op: Lenis removed
-  }
-
-  update() {
-    // No-op: Lenis removed
-  }
+  destroy() {}
+  stop() {}
+  start() {}
+  update() {}
 }
 
 export const scrollManager = new ScrollManager();
