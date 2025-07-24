@@ -173,7 +173,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
       ref={sectionRef}
       className="background-gradient-light w-full min-h-screen"
     >
-      <div className="relative z-10 w-full container py-24 background-gradient-light">
+      <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24 background-gradient-light">
         <div className="flex flex-col items-start gap-12">
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
@@ -246,6 +246,9 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                             style={{ color: "var(--color-secondary)" }}
                           >
                             {truncateHtml(mainPost.content, 200)}
+                            {mainPost.content && (
+                              <span className="sr-only" aria-hidden="true" dangerouslySetInnerHTML={{ __html: mainPost.content }} />
+                            )}
                           </p>
                           <Link
                             to={{ pathname: `/blog/article/${mainPost.id}` }}
@@ -256,7 +259,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                               onClick={() => {}}
                               aria-label={`Read more about ${mainPost.title}`}
                             >
-                              Read more about {mainPost.title}
+                              Read more
                             </button>
                           </Link>
                         </div>
@@ -294,6 +297,9 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                                 style={{ color: "var(--color-secondary)" }}
                               >
                                 {truncateHtml(post.content, 120)}
+                                {post.content && (
+                                  <span className="sr-only" aria-hidden="true" dangerouslySetInnerHTML={{ __html: post.content }} />
+                                )}
                               </p>
                               <Link
                                 to={{ pathname: `/blog/article/${post.id}` }}
@@ -304,7 +310,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                                   onClick={() => {}}
                                   aria-label={`Read more about ${post.title}`}
                                 >
-                                  Read more about {post.title}
+                                  Read more
                                 </button>
                               </Link>
                             </div>

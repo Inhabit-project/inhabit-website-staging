@@ -224,7 +224,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
   useLayoutEffect(() => {
     resetAnimationState();
     setupTitleWords();
-    let cleanup;
+    let cleanup: (() => void) | undefined;
     const ctx = gsap.context(() => {
       cleanup = setupAnimations();
     });
@@ -263,10 +263,10 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
         className="relative w-full h-[calc(100vh-5rem)] flex flex-col justify-between"
       >
         {/* Centered Title Container */}
-        <div className="flex justify-center">
+        <div className="w-full max-w-[92rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] flex justify-center">
           <h1
             ref={titleRef}
-            className="heading-1 text-center max-w-[92rem] mt-4"
+            className="heading-1 text-center mt-4"
           />
         </div>
 
