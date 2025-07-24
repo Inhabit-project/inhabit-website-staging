@@ -246,6 +246,7 @@ const Infographic: React.FC = () => {
               src="/assets/nature-illustration.webp" 
               alt="Nature Illustration"
               className="w-full h-full object-contain"
+              loading="lazy"
             />
           </div>
         </div>
@@ -265,6 +266,7 @@ const Infographic: React.FC = () => {
               src="/assets/guardians-illustration.webp" 
               alt="Guardians Illustration"
               className="w-full h-full object-contain"
+              loading="lazy"
             />
           </div>
         </div>

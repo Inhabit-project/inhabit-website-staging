@@ -132,7 +132,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
           {/* Logo */}
           <div className="flex items-center gap-4">
             <Link to="/" aria-label="INHABIT Home">
-              <img src="/assets/logo.svg" alt="INHABIT" className="h-[1.75rem]" />
+              <img src="/assets/logo.svg" alt="INHABIT" className="h-[1.75rem]" width="261" height="57" />
             </Link>
           </div>
 
@@ -198,7 +198,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
             {/* Logo at the top left */}
             <div className="absolute top-4 left-4 flex items-center">
               <Link to="/" aria-label="INHABIT Home" onClick={() => setMobileOpen(false)}>
-                <img src="/assets/logo.svg" alt="INHABIT" className="h-[1.75rem]" />
+                <img src="/assets/logo.svg" alt="INHABIT" className="h-[1.75rem]" width="261" height="57" />
               </Link>
             </div>
             {/* Close button at the top right */}

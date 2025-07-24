@@ -168,15 +168,15 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageReady }) => {
             <address className="not-italic space-y-4 text-base text-secondary mt-8">
               <ul className="space-y-4" role="list">
                 <li className="flex items-center gap-4">
-                  <img src="/assets/icons/envelope.svg" alt="" className="w-5 h-5" aria-hidden="true" />
+                  <img src="/assets/icons/envelope.svg" alt="" className="w-5 h-5" aria-hidden="true" loading="lazy" />
                   <a href="mailto:hello@inhabit.one" className="underline focus:outline-none focus:ring-2 focus:ring-primary" aria-label={t('contactPage.email')}>{t('contactPage.email')}</a>
                 </li>
                 <li className="flex items-center gap-4">
-                  <img src="/assets/icons/phone.svg" alt="" className="w-5 h-5" aria-hidden="true" />
+                  <img src="/assets/icons/phone.svg" alt="" className="w-5 h-5" aria-hidden="true" loading="lazy" />
                   <a href="tel:+15550000000" className="underline focus:outline-none focus:ring-2 focus:ring-primary" aria-label={t('contactPage.phone')}>{t('contactPage.phone')}</a>
                 </li>
                 <li className="flex items-start gap-4">
-                  <img src="/assets/icons/location.svg" alt="" className="w-5 h-5 mt-1" aria-hidden="true" />
+                  <img src="/assets/icons/location.svg" alt="" className="w-5 h-5 mt-1" aria-hidden="true" loading="lazy" />
                   <span dangerouslySetInnerHTML={{ __html: t('contactPage.location') }} />
                 </li>
               </ul>

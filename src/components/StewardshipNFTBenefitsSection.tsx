@@ -194,7 +194,7 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
               className="block sm:absolute sm:top-10 sm:right-10 sm:w-12 sm:h-12 w-10 h-10 mb-2 sm:mb-0 opacity-80 text-left self-end"
               style={{ position: 'static' }}
             >
-              <img src={b.icon} alt="" className="w-full h-full object-contain" aria-hidden="true" />
+              <img src={b.icon} alt="" className="w-full h-full object-contain" aria-hidden="true" loading="lazy" />
             </div>
             <span className="eyebrow">{b.eyebrow}</span>
             <h3 id={`benefit-${i}-title`} className="heading-4  mb-2">

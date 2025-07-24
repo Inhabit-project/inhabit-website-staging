@@ -183,6 +183,8 @@ const Footer: React.FC = () => {
               src="/assets/figma-images/logo-footer.svg"
               alt="INHABIT"
               className="h-[4rem]"
+              width="455"
+              height="150"
             />
           </div>
 

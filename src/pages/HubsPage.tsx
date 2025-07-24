@@ -7,6 +7,7 @@ import CTA from '../components/CTA';
 import Blog from '../components/Blog';
 import FAQ, { FAQHubs } from '../components/FAQ';
 import Footer from '../components/Footer';
+import SEOHead from "@/components/SEOHead";
 import { useTranslation } from 'react-i18next';
 
 interface HubsPageProps {

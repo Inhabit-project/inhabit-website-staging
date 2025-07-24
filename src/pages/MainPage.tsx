@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import Menu from "../components/Menu";
 import Hero from "../components/Hero";
 import Video from "../components/Video";
@@ -33,9 +33,18 @@ function MainPage(props: Props) {
   const nftGridRef = useRef<HTMLElement>(null);
   const videoSectionRef = useRef<HTMLElement>(null as unknown as HTMLElement);
 
+  // Track when loader is finished
+  const [loaderDone, setLoaderDone] = useState(false);
+
   useEffect(() => {
     getCampaigns();
-    if (onPageReady) onPageReady();
+    if (onPageReady) {
+      // Wrap onPageReady to also set loaderDone
+      onPageReady();
+      setLoaderDone(true);
+    } else {
+      setLoaderDone(true);
+    }
   }, [onPageReady]);
 
   useEffect(() => {
@@ -56,11 +65,12 @@ function MainPage(props: Props) {
   }, [scrollToSection, campaignsLoading, campaigns]);
 
   useEffect(() => {
+    if (!loaderDone) return;
     const cursor = new Cursor();
     return () => {
       cursor.destroy();
     };
-  }, []);
+  }, [loaderDone]);
 
   return (
     <>
