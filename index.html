@@ -133,7 +133,16 @@
       <link rel="stylesheet" href="__CSS__">
     </noscript>
     <!-- FIN_CSS_AUTOMATICO -->
-    <link rel="preload" as="image" href="/assets/hero-mobile.webp" fetchpriority="high">
+    <script>
+      if (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = '/assets/hero-mobile.webp';
+        link.setAttribute('fetchpriority', 'high');
+        document.head.appendChild(link);
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

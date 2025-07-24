@@ -128,11 +128,11 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
   return (
     <header className={menuClassName}>
       <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] h-full">
-        <div className="flex items-center justify-between h-full">
-          {/* Logo */}
-          <div className="flex items-center gap-4">
-            <Link to="/" aria-label="INHABIT Home">
-              <img src="/assets/logo.svg" alt="INHABIT" className="h-[1.75rem]" width="261" height="57" />
+        <div className="flex items-center justify-between h-full min-w-0">
+          {/* Logo - always left aligned */}
+          <div className="flex items-center gap-4 min-w-0">
+            <Link to="/" aria-label="INHABIT Home" className="flex items-center min-w-0">
+              <img src="/assets/logo.svg" alt="INHABIT" className="h-[1.75rem] w-auto block" width="261" height="57" style={{minWidth:0, maxWidth:'100%'}} />
             </Link>
           </div>
 
