@@ -247,7 +247,6 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
             alt=""
             className="absolute inset-0 w-full h-full object-cover"
             onLoad={onHeroImageLoad}
-            fetchPriority="high"
           />
         </picture>
         {/* Gradient Overlay */}

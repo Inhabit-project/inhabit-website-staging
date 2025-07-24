@@ -141,6 +141,7 @@ const Loader: React.FC<LoaderProps> = ({ onLoadingComplete, isMainHeroLoader = f
             }}
             onLoad={() => setImageLoaded(true)}
             onError={() => setImageError(true)}
+            fetchPriority="high"
           />
         ) : (
           // Fallback content if image fails to load
