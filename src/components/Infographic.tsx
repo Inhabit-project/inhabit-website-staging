@@ -219,7 +219,7 @@ const Infographic: React.FC = () => {
             {t('mainPage.infographic.nftStewardsDescription')}
           </p>
         </div>
-        <div className="w-full lg:w-3/5 flex self-center justify-end">
+        <div className="w-full lg:w-3/5 flex self-center justify-center lg:justify-end">
           <div className="w-[43.75rem] ">
             <img 
               ref={slide2ImgRef}
@@ -239,7 +239,7 @@ const Infographic: React.FC = () => {
             {t('mainPage.infographic.natureDescription')}
           </p>
         </div>
-        <div className="w-full lg:w-3/5 flex self-center justify-end">
+        <div className="w-full lg:w-3/5 flex self-center justify-center lg:justify-end">
           <div className="w-[43.75rem] ">
             <img 
               ref={slide3ImgRef}
@@ -259,7 +259,7 @@ const Infographic: React.FC = () => {
             {t('mainPage.infographic.guardiansDescription')}
           </p>
         </div>
-        <div className="w-full lg:w-3/5 flex self-center justify-end">
+        <div className="w-full lg:w-3/5 flex self-center justify-center lg:justify-end">
           <div className="w-[43.75rem] ">
             <img 
               ref={slide4ImgRef}

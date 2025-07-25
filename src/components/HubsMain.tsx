@@ -25,7 +25,7 @@ const content = {
       title: 'AGUA DE LUNA HUB',
       description: 'Since 2022, Celia and her daughter Myhla are living and stewarding Agua de Luna, weaving ancestral wisdom and rural transformation in harmony with the Sierra Nevada de Santa Marta.',
       visionHeading: 'HUB VISION',
-      visionText: 'Agua de Luna is a sacred space at the foothills of the Sierra Nevada de Santa Marta—a call to live fully, reconnect with nature, and rediscover our essential being. Designed for inner transformation, it offers conscious practices, rituals, and creative movement. Here, spirituality, nature, and community unite to inspire healing, service, and joy. A journey of self-discovery, harmony, and collective regeneration begins with every step. The land is infused with highly biodiverse cacao, enriching the space with its vitality and wisdom.'
+      visionText: 'Agua de Luna is a sacred space at the foothills of the Sierra Nevada de Santa Marta a call to live fully, reconnect with nature, and rediscover our essential being. Designed for inner transformation, it offers conscious practices, rituals, and creative movement. Here, spirituality, nature, and community unite to inspire healing, service, and joy. A journey of self-discovery, harmony, and collective regeneration begins with every step. The land is infused with highly biodiverse cacao, enriching the space with its vitality and wisdom.'
     },
     TierraKilwa: {
       label: 'Food production, Art and regenerative entrepreneurship',
@@ -50,7 +50,7 @@ const content = {
       title: 'AGUA DE LUNA HUB',
       description: 'Desde 2022, Celia y su hija Myhla viven y cuidan Agua de Luna, entrelazando la sabiduría ancestral y la transformación rural en armonía con la Sierra Nevada de Santa Marta.',
       visionHeading: 'VISIÓN DEL HUB',
-      visionText: 'Agua de Luna es un espacio sagrado al pie de la Sierra Nevada de Santa Marta—una invitación a vivir plenamente, reconectarse con la naturaleza y redescubrir nuestro ser esencial. Diseñado para la transformación interior, ofrece prácticas conscientes, rituales y movimiento creativo. Aquí, la espiritualidad, la naturaleza y la comunidad se unen para inspirar sanación, servicio y alegría. Un viaje de autodescubrimiento, armonía y regeneración colectiva comienza con cada paso. La tierra está impregnada de cacao altamente biodiverso, enriqueciendo el espacio con su vitalidad y sabiduría.'
+      visionText: 'Agua de Luna es un espacio sagrado al pie de la Sierra Nevada de Santa Marta una invitación a vivir plenamente, reconectarse con la naturaleza y redescubrir nuestro ser esencial. Diseñado para la transformación interior, ofrece prácticas conscientes, rituales y movimiento creativo. Aquí, la espiritualidad, la naturaleza y la comunidad se unen para inspirar sanación, servicio y alegría. Un viaje de autodescubrimiento, armonía y regeneración colectiva comienza con cada paso. La tierra está impregnada de cacao altamente biodiverso, enriqueciendo el espacio con su vitalidad y sabiduría.'
     },
     TierraKilwa: {
       label: 'Producción de alimentos, Arte y emprendimiento regenerativo',
