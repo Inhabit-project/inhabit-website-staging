@@ -29,14 +29,15 @@ export default function OtherCollections(props: Props): JSX.Element {
 
   return (
     <div
-      className="flex flex-row justify-center items-center space-x-3"
+      className="flex flex-row items-center space-x-3 overflow-x-auto flex-nowrap scrollbar-hide snap-x snap-mandatory pl-4 md:pl-0 md:justify-center md:overflow-visible md:flex-wrap md:snap-none"
+      style={{ WebkitOverflowScrolling: 'touch' }}
       role="list"
       aria-label={t("mainPage.nftGrid.title")}
     >
       {otherCollections?.map((collection: Collection, index: number) => (
         <div
           key={index}
-          className="relative"
+          className="relative min-w-[80vw] max-w-xs snap-center md:min-w-0 md:max-w-xs md:snap-none"
           style={{
             background: "var(--color-bright-green)",
             borderRadius: "var(--radius-2xl)",

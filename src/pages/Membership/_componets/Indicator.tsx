@@ -21,8 +21,8 @@ export function Indicator(props: Props): JSX.Element {
                   border: "1px solid var(--color-green-soft)",
                 }
               : {
-                  border: "1px solid var(--color-secondary)",
-                  color: "var(--color-secondary)",
+                  border: "1px solid var(--color-green-soft)",
+                  color: "var(--color-green-soft)",
                   opacity: 0.4,
                 }
           }
@@ -45,8 +45,8 @@ export function Indicator(props: Props): JSX.Element {
                   border: "1px solid var(--color-green-soft)",
                 }
               : {
-                  border: "1px solid var(--color-secondary)",
-                  color: "var(--color-secondary)",
+                  border: "1px solid var(--color-green-soft)",
+                  color: "var(--color-green-soft)",
                   opacity: 0.4,
                 }
           }

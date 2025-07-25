@@ -107,17 +107,26 @@ export default function Membership(props: Props): JSX.Element {
     <>
       <Menu />
       {collection && (
-        <div className="mt-8 w-full background-gradient-light flex flex-col lg:flex-row gap-8 px-4 py-24 lg:py-20 max-w-[1600px] mx-auto pb-24">
-          <div className="flex-1 flex flex-col gap-8">
-            <Info collection={collection} />
-            <RightsTable rights={collection.rights} />
+        <>
+          <div className="mt-8 w-full background-gradient-light flex flex-col lg:flex-row gap-8 px-4 py-24 lg:py-20 max-w-[1600px] mx-auto pb-24">
+            <div className="flex-1 flex flex-col gap-8">
+              <Info collection={collection} />
+              <RightsTable rights={collection.rights} />
+              {/* Show OtherCollections only on desktop */}
+              <div className="hidden lg:block">
+                <OtherCollections collectionId={collectionId!} />
+              </div>
+            </div>
+            <Stepper
+              price={collection.price}
+              membershipContract={collection.membershipContract}
+            />
+          </div>
+          {/* Show OtherCollections after the form on mobile only */}
+          <div className="block lg:hidden mt-8">
             <OtherCollections collectionId={collectionId!} />
           </div>
-          <Stepper
-            price={collection.price}
-            membershipContract={collection.membershipContract}
-          />
-        </div>
+        </>
       )}
     </>
   );
