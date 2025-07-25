@@ -101,7 +101,7 @@ const Infographic: React.FC = () => {
   // Handle animations and robust cleanup
   useEffect(() => {
     let ctx: gsap.Context | undefined;
-    // Clean up any previous triggers before creating new ones
+    // Clean up only infographic triggers
     infographicTriggers.current.forEach(trigger => {
       if (trigger && typeof trigger.kill === 'function') trigger.kill();
     });
@@ -175,17 +175,10 @@ const Infographic: React.FC = () => {
     }
     return () => {
       if (ctx) ctx.revert();
-      // Robustly kill all ScrollTriggers created by this component
       infographicTriggers.current.forEach(trigger => {
         if (trigger && typeof trigger.kill === 'function') trigger.kill();
       });
       infographicTriggers.current = [];
-      // Also kill any orphaned triggers for safety
-      ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger && trigger.vars && trigger.vars.trigger && rootRef.current && rootRef.current.contains(trigger.vars.trigger as Node)) {
-          trigger.kill();
-        }
-      });
     };
   }, [canAnimate, t]);
 

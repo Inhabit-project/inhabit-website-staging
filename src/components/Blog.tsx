@@ -20,7 +20,6 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [contentVisible, setContentVisible] = useState(false);
-  const [readyToAnimate, setReadyToAnimate] = useState(false);
 
   // Refs for animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -35,7 +34,6 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const loadPosts = async () => {
     setIsLoading(true);
     setError(null);
-
     try {
       const { posts } = await fetchPosts({
         per_page: 4,
@@ -92,81 +90,67 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
     return () => ctx.revert();
   }, []);
 
-  // Wait for posts to load and refs to be set, then allow animation
+  // Animate title and description as soon as refs are set
   useEffect(() => {
-    if (
-      !isLoading &&
-      posts.length > 0 &&
-      titleRef.current &&
-      descriptionRef.current
-    ) {
-      // Optional: add a small delay for effect
-      const timer = setTimeout(() => setReadyToAnimate(true), 400);
-      return () => clearTimeout(timer);
-    } else {
-      setReadyToAnimate(false);
-    }
-  }, [isLoading, posts.length]);
-
-  // Animate title and description only when readyToAnimate
-  useEffect(() => {
-    if (!titleRef.current || !descriptionRef.current || !readyToAnimate) {
+    if (!titleRef.current || !descriptionRef.current || !sectionRef.current) {
       return;
     }
-
     let tl: gsap.core.Timeline | null = null;
     let ctx: gsap.Context | null = null;
-
-    function triggerBlogAnimation() {
-      ctx = gsap.context(() => {
-        if (isBlogPage) {
-          // Animate immediately (no scroll trigger)
-          tl = gsap.timeline();
-        } else {
-          // Animate on scroll (homepage)
-          tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top center",
-              end: "center center",
-              toggleActions: "play none none reverse",
-            },
-          });
-        }
-        tl.to(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-        })
-          .to(
-            descriptionRef.current,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power3.out",
-            },
-            "-=0.6"
-          )
-          .add(() => setContentVisible(true)); // Show content after animation
-        // Refresh ScrollTrigger after timeline is set up
-        ScrollTrigger.refresh();
+    ctx = gsap.context(() => {
+      gsap.set([titleRef.current, descriptionRef.current], {
+        opacity: 0,
+        y: 50,
       });
-    }
-
-    triggerBlogAnimation();
-
+      // Animate
+      if (!isBlogPage) {
+        tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top center",
+            end: "center center",
+            toggleActions: "play none none reverse",
+          },
+        });
+      } else {
+        tl = gsap.timeline();
+      }
+      tl.to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      })
+        .to(
+          descriptionRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+          },
+          "-=0.6"
+        )
+        .add(() => {
+          // Only show content if posts are loaded
+          if (!isLoading) setContentVisible(true);
+        });
+      ScrollTrigger.refresh();
+    });
     return () => {
       if (ctx) ctx.revert();
     };
-  }, [readyToAnimate]);
+  }, [isBlogPage, isLoading]);
+  // Reset contentVisible if loading again
+  useEffect(() => {
+    if (isLoading) setContentVisible(false);
+  }, [isLoading]);
 
   useEffect(() => {
-    if (!isLoading && posts.length > 0 && contentVisible && onReady) {
+    if (!isLoading && posts.length > 0 && onReady) {
       onReady();
     }
-  }, [isLoading, posts.length, contentVisible, onReady]);
+  }, [isLoading, posts.length, onReady]);
 
   return (
     <section
