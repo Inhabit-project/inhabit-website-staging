@@ -287,6 +287,7 @@ const Hubs: React.FC = () => {
                   src="/assets/map.webp"
                   alt="Global biodiversity corridor map"
                   className="w-full h-full object-contain"
+                  loading="lazy"
                 />
 
                 {/* Location markers */}

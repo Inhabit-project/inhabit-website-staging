@@ -103,6 +103,7 @@ const StewardshipNFT: React.FC = () => {
               src="/assets/stewardship-nft.webp"
               alt="Stewardship NFT illustration"
               className="w-full h-full object-cover"
+              loading="lazy"
               {...{ fetchPriority: "low" }}
             />
           </div>

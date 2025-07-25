@@ -240,13 +240,14 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
       {/* Background Image with Overlay */}
       <div ref={backgroundRef} className="absolute inset-0 w-full h-full">
         <picture>
-          <source media="(max-width: 768px)" srcSet="/assets/hero-mobile.webp" />
+          <source media="(max-width: 768px)" srcSet="/assets/hero-mobile.webp" loading="eager"/>
           <img
             ref={backgroundImageRef}
             src="/assets/hero.webp"
             alt=""
             className="absolute inset-0 w-full h-full object-cover"
             onLoad={onHeroImageLoad}
+            loading="eager"
           />
         </picture>
         {/* Gradient Overlay */}

@@ -126,20 +126,20 @@
   },
   "hubsMain": {
     "eyebrow": "Where are the hubs located?",
-    "heading": "The first <span class=\"highlighted-text\">three HUBS</span> are located in the <span class=\"highlighted-text\">Sierra Nevada de Santa Marta,</span> considered the <span class=\"highlighted-text\">Heart of the World.</span>",
+    "heading": "The first <span class=\"highlighted-text\">three hubs</span> are located in the <span class=\"highlighted-text\">Sierra Nevada de Santa Marta,</span> considered the <span class=\"highlighted-text\">Heart of the World.</span>",
     "nuiyanzhi": {
       "label": "Knowledge Center for Restoration",
       "title": "ÑUIYANZHI",
       "description": "Since 2021, the family of Amelia, Juan, and their son León have lived and cared for Ñuiyanzhi in partnership with the Kogi elders of the Kaggaba tribe, from the Sierra Nevada de Santa Marta.",
       "visionHeading": "HUB VISION",
-      "visionText": "The Ñuiyanzhi Hub is a living laboratory where ecological restoration meets ancestral knowledge. It regenerates soils degraded by overgrazing, monocultures, and agrochemicals, creating a biodiversity hotspot for endangered species. As a training center, it combines hands-on learning with indigenous and academic wisdom. "
+      "visionText": "The Ñuiyanzhi hub is a living laboratory where ecological restoration meets ancestral knowledge. It regenerates soils degraded by overgrazing, monocultures, and agrochemicals, creating a biodiversity hotspot for endangered species. As a training center, it combines hands-on learning with indigenous and academic wisdom. "
     },
     "aguaDeLuna": {
       "label": "Biodiversity Hotspot",
       "title": "Agua de Luna",
-      "description": "The Agua de Luna hub is a sanctuary for rare species and a center for research and education, combining modern science with indigenous wisdom.",
+      "description": "The Agua de Luna is a sanctuary for rare species and a center for research and education, combining modern science with indigenous wisdom.",
       "visionHeading": "HUB VISION",
-      "visionText": "The Agua de Luna Hub is dedicated to preserving the world's largest rainforest, supporting local communities, and fostering global collaboration for conservation."
+      "visionText": "The Agua de Luna is dedicated to preserving the world's largest rainforest, supporting local communities, and fostering global collaboration for conservation."
     },
     "TierraKilwa": {
       "label": "Desert Innovation",
@@ -215,7 +215,7 @@
     },
     "highlight": {
       "title": "WHAT ARE NFTS?",
-      "description": "Stewardship NFTs are <span class=\"highlighted-text\">blockchain-verified contracts</span> that give fractional rights <span class=\"highlighted-text\">to protect ecosystems</span> on tokenized <span class=\"highlighted-text\">plots</span> of land"
+      "description": "Stewardship NFTs are <span class=\"highlighted-text\">blockchain verified contracts</span> that give fractional rights <span class=\"highlighted-text\">to protect ecosystems</span> on tokenized <span class=\"highlighted-text\">plots</span> of land"
     },
     "photo": {
       "section1": "By purchasing an NFT you become a lifelong guardian of a specific hub, allowing you to monitor and participate in important decisions affecting these ecosystems, and gain exclusive access to biocultural experiences, events, workshops, visit the hubs, and explore the entire Corridor.",
@@ -812,7 +812,7 @@
     "hubs": {
       "title": "biocultural",
       "strong": "Hubs",
-      "description": "HUBS are like 'Migratory Gardens'they exist in the real world but behave differently; they are 'spaces of transition', to experiment ways of relating to ourselves and nature. Places to learn the deepest practices for inhabiting and stewarding lands"
+      "description": "HUBS are like 'Migratory Gardens' they exist in the real world but behave differently. They are “spaces of transition” to experiment new ways of relating to ourselves and Nature. Places to learn the deepest practices for inhabiting and stewarding lands."
     },
     "stewardship": {
       "title": "Stewardship",
