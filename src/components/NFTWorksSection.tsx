@@ -202,7 +202,7 @@ const NFTWorksSection: React.FC = () => {
           <div className="flex-1 flex justify-center items-center">
             <img
               ref={step1ImageRef}
-              src="/assets/nft.png"
+              src="/assets/stewardship-nft.webp"
               alt="NFT Stewardship Illustration"
               className="w-full max-w-[100%] h-auto"
               loading="lazy"

@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback, useContext, useLayoutEffect } from 'react';
+
+import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { initVideoSectionCursor } from '../utils/videoCursor';
-import { gsap, ScrollTrigger } from '../utils/gsap';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
 import SubLoader from '@/load/SubLoader';
 
@@ -84,95 +86,107 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
   }, []);
 
   // Initialize animations
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isLoading) return;
-    const ctx = gsap.context(() => {
-      gsap.set([eyebrowRef.current, headingRef.current], {
-        opacity: 0,
-        y: 50
-      });
-      gsap.set(videoContainerRef.current, {
-        opacity: 0,
-        y: 100,
-        scale: 0.95
-      });
-      gsap.set(playButtonRef.current, {
-        opacity: 0,
-        scale: 0.5
-      });
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "center center",
-          toggleActions: "play none none reverse"
-        }
-      });
-      tl.to(eyebrowRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      })
-      .to(headingRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: "power3.out"
-      }, "-=0.6")
-      .to(videoContainerRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1.2,
-        ease: "power3.out"
-      }, "-=0.7")
-      .to(playButtonRef.current, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-        ease: "back.out(1.7)"
-      }, "-=0.5");
-      if (playButtonRef.current) {
-        playButtonRef.current.addEventListener('mouseenter', () => {
-          gsap.to(playButtonRef.current, {
-            scale: 1.1,
-            duration: 0.3,
-            ease: "power2.out"
-          });
-          gsap.to(playCircleRef.current, {
-            backgroundColor: "rgba(255, 166, 0, 0.2)",
-            borderColor: "rgb(255, 166, 0)",
-            duration: 0.3
-          });
-        });
-        playButtonRef.current.addEventListener('mouseleave', () => {
-          gsap.to(playButtonRef.current, {
-            scale: 1,
-            duration: 0.3,
-            ease: "power2.out"
-          });
-          gsap.to(playCircleRef.current, {
-            backgroundColor: "rgba(255, 255, 255, 0.1)",
-            borderColor: "rgb(255, 255, 255)",
-            duration: 0.3
-          });
-        });
-        if (window.innerWidth <= 768) {
-          gsap.to(playButtonRef.current, {
-            scale: 1.1,
-            duration: 0.3,
-            ease: "power2.out"
-          });
-          gsap.to(playCircleRef.current, {
-            backgroundColor: "rgba(255, 166, 0, 0.2)",
-            borderColor: "rgb(255, 166, 0)",
-            duration: 0.3
-          });
-        }
+
+    // Set initial states
+    gsap.set([eyebrowRef.current, headingRef.current], {
+      opacity: 0,
+      y: 50
+    });
+
+    gsap.set(videoContainerRef.current, {
+      opacity: 0,
+      y: 100,
+      scale: 0.95
+    });
+
+    gsap.set(playButtonRef.current, {
+      opacity: 0,
+      scale: 0.5
+    });
+
+    // Create scroll-triggered animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "play none none reverse"
       }
     });
-    return () => ctx.revert();
+
+    tl.to(eyebrowRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    })
+    .to(headingRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power3.out"
+    }, "-=0.6")
+    .to(videoContainerRef.current, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 1.2,
+      ease: "power3.out"
+    }, "-=0.7")
+    .to(playButtonRef.current, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.8,
+      ease: "back.out(1.7)"
+    }, "-=0.5");
+
+    // Add hover animation for the play button
+    if (playButtonRef.current) {
+      playButtonRef.current.addEventListener('mouseenter', () => {
+        gsap.to(playButtonRef.current, {
+          scale: 1.1,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        gsap.to(playCircleRef.current, {
+          backgroundColor: "rgba(255, 166, 0, 0.2)",
+          borderColor: "rgb(255, 166, 0)",
+          duration: 0.3
+        });
+      });
+
+      playButtonRef.current.addEventListener('mouseleave', () => {
+        gsap.to(playButtonRef.current, {
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        gsap.to(playCircleRef.current, {
+          backgroundColor: "rgba(255, 255, 255, 0.1)",
+          borderColor: "rgb(255, 255, 255)",
+          duration: 0.3
+        });
+      });
+      // Mobile: auto-animate play button
+      if (window.innerWidth <= 768) {
+        gsap.to(playButtonRef.current, {
+          scale: 1.1,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        gsap.to(playCircleRef.current, {
+          backgroundColor: "rgba(255, 166, 0, 0.2)",
+          borderColor: "rgb(255, 166, 0)",
+          duration: 0.3
+        });
+      }
+    }
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
   }, [isLoading]);
 
   // Open popup and start loading

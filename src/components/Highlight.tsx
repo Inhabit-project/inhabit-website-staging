@@ -54,28 +54,28 @@ const Highlight = () => {
         }
       });
 
-      // Animate background SVG
-      tl.to(svg, {
-        opacity: 0.3,
-        scale: 1,
-        duration: 1,
-        ease: "power3.out"
-      })
-      // Animate title
-      .to(title, {
+      // Animate eyebrow first
+      tl.to(title, {
         opacity: 1,
         y: 0,
-        duration: 0.8,
+        duration: 1.2,
         ease: "power3.out"
-      }, "-=0.5")
-      // Animate h3 directly
+      })
+      // Animate h3 second
       .to(description, {
         opacity: 1,
         y: 0,
         scale: 1,
-        duration: 0.8,
+        duration: 1.2,
         ease: "power3.out"
-      }, "-=0.4");
+      }, "-=0.6")
+      // Animate background SVG last
+      .to(svg, {
+        opacity: 0.3,
+        scale: 1,
+        duration: 1.5,
+        ease: "power3.out"
+      }, "-=0.8");
 
       // Refresh ScrollTrigger after timeline is set up
       ScrollTrigger.refresh();
@@ -99,13 +99,13 @@ const Highlight = () => {
       >
         <p 
           ref={titleRef}
-          className="eyebrow text-light mb-5"
+          className="eyebrow text-light mb-5 opacity-0"
         >
           {t('mainPage.highlight.title')}
         </p>
         <h3 
           ref={descriptionRef}
-          className="text-light"
+          className="text-light opacity-0"
           style={{ perspective: "1000px" }}
           dangerouslySetInnerHTML={{ __html: t('mainPage.highlight.description') }} 
         />

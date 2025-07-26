@@ -102,8 +102,6 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
         text={t("nuiyanzhiPage.vision.text")}
         imageSrc="/assets/1Hub/vision.webp"
         imageAlt={t("nuiyanzhiPage.vision.imageAlt")}
-        logoSrc="/assets/logo.svg"
-        logoAlt="INHABIT Logo"
       />
 
       {/* Section: The Guardians (InfoCardRightImage) */}
@@ -112,8 +110,6 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
         text={t("nuiyanzhiPage.guardians.text")}
         imageSrc="/assets/1Hub/guardians.webp"
         imageAlt={t("nuiyanzhiPage.guardians.imageAlt")}
-        logoSrc="/assets/logo.svg"
-        logoAlt="INHABIT Logo"
       />
 
       {/* Section: The Land (InfoCard) */}
@@ -122,8 +118,6 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
         text={t("nuiyanzhiPage.land.text")}
         imageSrc="/assets/1Hub/land.webp"
         showPopupButton={true}
-        logoSrc="/assets/logo.svg"
-        logoAlt="INHABIT Logo"
       />
 
       <section aria-label="Available NFTs" ref={nftGridRef}>

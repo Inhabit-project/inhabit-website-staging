@@ -119,7 +119,7 @@
     "teamReadMore": "Leer más"
   },
   "hubsMain": {
-    "eyebrow": "¿Dónde están ubicados los faros?",
+    "eyebrow": "¿Dónde están ubicados Los faros?",
     "heading": "Los primeros <span class=\"highlighted-text\">tres FAROS</span> están ubicados en la<span class=\"highlighted-text\"> Sierra Nevada de Santa Marta, </span> considerada el <span class=\"highlighted-text\">Corazón del Mundo.</span>",
     "nuiyanzhi": {
       "label": "Centro de Conocimiento para la Restauración",
@@ -177,7 +177,7 @@
     },
     "hubs": {
       "title": "Biocultural <br> <strong>Faros</strong>",
-      "description": "Ubicados en diferentes bioregiones, los FAROS son importantes puntos calientes de biodiversidad y faros de aprendizaje que preservan y comparten recursos ecológicos y conocimiento vivo para dar forma al corredor.",
+      "description": "Ubicados en diferentes bioregiones, Los faros son importantes puntos calientes de biodiversidad y faros de aprendizaje que preservan y comparten recursos ecológicos y conocimiento vivo para dar forma al corredor.",
       "cards": [
         {
           "title": "Ñuiyanzhi",
@@ -273,7 +273,7 @@
       "description": "Los NFT de custodia son <span class=\"text-orange highlighted-text\">contratos verificados en blockchain</span> que otorgan derechos fraccionarios <span class=\"text-orange highlighted-text\">para proteger ecosistemas</span> en <span class=\"text-orange highlighted-text\">parcelas</span> de tierra tokenizadas"
     },
     "photo": {
-      "section1": "Al comprar un NFT te conviertes en guardián de por vida de un Faro específico, permitiéndote monitorear y participar en decisiones importantes que afectan estos ecosistemas, y obtener acceso exclusivo a experiencias bioculturales, eventos, talleres, visitar los faros y explorar todo el Corredor.",
+      "section1": "Al comprar un NFT te conviertes en guardián de por vida de un Faro específico, permitiéndote monitorear y participar en decisiones importantes que afectan estos ecosistemas, y obtener acceso exclusivo a experiencias bioculturales, eventos, talleres, visitar Los faros y explorar todo el Corredor.",
               "section2": "Los fondos recaudados de estos NFT se utilizan para adquirir tierras degradadas y transformarlas en Faros bioculturales. Estas áreas están protegidas bajo el marco de tenencia de tierra INHABIT—un modelo pionero de reservas naturales que otorga derechos legales a la naturaleza, redefiniendo la protección y custodia de la tierra a un nuevo nivel."
     },
     "nftGrid": {
@@ -369,7 +369,7 @@
         },
         {
           "question": "¿Qué es un faro biocultural?",
-          "answer": "La regeneración verdadera y duradera requiere más que plantar árboles: requiere un cambio profundo en cómo valoramos y cuidamos la tierra. Los Faros Bioculturales lideran esta transformación.\n\nLos FAROS son centros de regeneración y renovación cultural, diseñados para encender y cultivar el sentido de custodia necesario para restaurar nuestro planeta. Los FAROS protegen la biodiversidad, forman a la próxima generación de guardianes de la tierra y entrelazan la sabiduría ancestral con el conocimiento contemporáneo para impulsar un cambio profundo.\n\nSon espacios donde cualquiera puede aprender las prácticas más profundas de habitar y custodiar la naturaleza: lugares para explorar nuevas formas de relacionarse con la tierra, reconocer sus muchos valores intrínsecos y darse cuenta del poder de nuestro papel en nutrirlos y multiplicarlos.\n\nCada Faro no solo restaura ecosistemas, sino que también tiene la tarea de expandir un Corredor global aumentando las áreas de conservación mediante la colaboración con faros, proyectos y comunidades cercanas en su bioregión.\n\nLos FAROS son los bloques de construcción del Corredor: una red mundial de islas de biodiversidad y hitos culturales. El Corredor quiere inspirar un movimiento de custodia en todo el mundo."
+          "answer": "La regeneración verdadera y duradera requiere más que plantar árboles: requiere un cambio profundo en cómo valoramos y cuidamos la tierra. Los faros Bioculturales lideran esta transformación.\n\nLos faros son centros de regeneración y renovación cultural, diseñados para encender y cultivar el sentido de custodia necesario para restaurar nuestro planeta. Los faros protegen la biodiversidad, forman a la próxima generación de guardianes de la tierra y entrelazan la sabiduría ancestral con el conocimiento contemporáneo para impulsar un cambio profundo.\n\nSon espacios donde cualquiera puede aprender las prácticas más profundas de habitar y custodiar la naturaleza: lugares para explorar nuevas formas de relacionarse con la tierra, reconocer sus muchos valores intrínsecos y darse cuenta del poder de nuestro papel en nutrirlos y multiplicarlos.\n\nCada Faro no solo restaura ecosistemas, sino que también tiene la tarea de expandir un Corredor global aumentando las áreas de conservación mediante la colaboración con faros, proyectos y comunidades cercanas en su bioregión.\n\nLos faros son los bloques de construcción del Corredor: una red mundial de islas de biodiversidad y hitos culturales. El Corredor quiere inspirar un movimiento de custodia en todo el mundo."
         },
         {
           "question": "¿Qué es exactamente un NFT de custodia?",
@@ -437,7 +437,7 @@
         {
           "number": "003",
           "title": "Investigación y educación",
-          "description": "Los FAROS funcionan como laboratorios vivientes para la investigación científica y la educación ambiental, fomentando la innovación y el intercambio de conocimientos para la restauración de ecosistemas."
+          "description": "Los faros funcionan como laboratorios vivientes para la investigación científica y la educación ambiental, fomentando la innovación y el intercambio de conocimientos para la restauración de ecosistemas."
         },
         {
           "number": "004",
@@ -572,7 +572,7 @@
       "5": {
         "eyebrow": "DERECHOS DE USO",
         "title": "Acceso biocultural exclusivo",
-        "description": "Obtienes acceso a experiencias bioculturales, eventos y talleres dentro de los FAROS del corredor, profundizando tu conexión con la tierra y la biocultura de un territorio.\n\nLos beneficios incluyen estadías y comidas gratuitas o con descuento, acceso exclusivo a experiencias únicas y contenido educativo sobre reforestación, permacultura, bioconstrucción y más."
+        "description": "Obtienes acceso a experiencias bioculturales, eventos y talleres dentro de Los faros del corredor, profundizando tu conexión con la tierra y la biocultura de un territorio.\n\nLos beneficios incluyen estadías y comidas gratuitas o con descuento, acceso exclusivo a experiencias únicas y contenido educativo sobre reforestación, permacultura, bioconstrucción y más."
       }
     },
     "team": [

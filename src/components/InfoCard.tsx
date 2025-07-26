@@ -6,7 +6,7 @@ import { LoadingContext } from '../App';
 interface InfoCardProps {
   title: string;
   subtitle?: string;
-  logoSrc: string;
+  logoSrc?: string;
   logoAlt?: string;
   text: string;
   imageSrc: string;
@@ -37,7 +37,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logo
           x: -50,
           scale: 0.95
         });
-        gsap.set([titleGroupRef.current, logoRef.current], {
+        gsap.set([titleGroupRef.current, ...(logoRef.current ? [logoRef.current] : [])], {
           opacity: 0,
           y: 30
         });
@@ -84,7 +84,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logo
         duration: 1,
         ease: "power3.out"
       })
-      .to([titleGroupRef.current, logoRef.current], {
+      .to([titleGroupRef.current, ...(logoRef.current ? [logoRef.current] : [])], {
         opacity: 1,
         y: 0,
         duration: 0.8,
@@ -153,13 +153,15 @@ const InfoCard: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logo
                 <span className="heading-2 text-light leading-tight mt-1">{subtitle}</span>
               )}
             </span>
-            <img 
-              ref={logoRef}
-              src={logoSrc} 
-              alt={logoAlt} 
-              className="h-[7rem] w-auto ml-4"
-              loading="lazy"
-            />
+            {logoSrc && (
+              <img 
+                ref={logoRef}
+                src={logoSrc} 
+                alt={logoAlt} 
+                className="h-[7rem] w-auto ml-4"
+                loading="lazy"
+              />
+            )}
           </div>
           <div ref={textRef} className="body-S opacity-90 max-w-prose">
             {text.split('\n').map((line, idx) => (
@@ -231,7 +233,7 @@ export const InfoCardRightImage: React.FC<InfoCardProps> = ({ title, subtitle = 
           x: 50,
           scale: 0.95
         });
-        gsap.set([titleGroupRef.current, logoRef.current], {
+        gsap.set([titleGroupRef.current, ...(logoRef.current ? [logoRef.current] : [])], {
           opacity: 0,
           y: 30
         });
@@ -278,7 +280,7 @@ export const InfoCardRightImage: React.FC<InfoCardProps> = ({ title, subtitle = 
         duration: 1,
         ease: "power3.out"
       })
-      .to([titleGroupRef.current, logoRef.current], {
+      .to([titleGroupRef.current, ...(logoRef.current ? [logoRef.current] : [])], {
         opacity: 1,
         y: 0,
         duration: 0.8,
@@ -346,13 +348,15 @@ export const InfoCardRightImage: React.FC<InfoCardProps> = ({ title, subtitle = 
                 <span className="heading-2 text-light leading-tight mt-1">{subtitle}</span>
               )}
             </span>
-            <img 
-              ref={logoRef}
-              src={logoSrc} 
-              alt={logoAlt} 
-              className="h-[7rem] w-auto ml-4"
-              loading="lazy"
-            />
+            {logoSrc && (
+              <img 
+                ref={logoRef}
+                src={logoSrc} 
+                alt={logoAlt} 
+                className="h-[7rem] w-auto ml-4"
+                loading="lazy"
+              />
+            )}
           </div>
           <div ref={textRef} className="body-S opacity-90 max-w-prose">
             {text.split('\n').map((line, idx) => (

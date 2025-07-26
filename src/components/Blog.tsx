@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { blogServices } from "@/services/wordpress/blog";
 import { BlogPost, BlogProps as ImportedBlogProps } from "@/types/wordpress";
 import { truncateHtml } from "@/utils/html";
 import { Link, useLocation } from "react-router-dom";
-import { gsap, ScrollTrigger } from "../utils/gsap";
+import { gsap, ScrollTrigger } from '../utils/gsap';
 import SubLoader from "@/load/SubLoader";
-import { blogServices } from "@/services/wordpress/blog";
 
 interface BlogProps extends ImportedBlogProps {
   onReady?: () => void;
@@ -13,13 +13,14 @@ interface BlogProps extends ImportedBlogProps {
 
 const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const location = useLocation();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isBlogPage = location.pathname === "/blog";
 
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [contentVisible, setContentVisible] = useState(false);
+  const [readyToAnimate, setReadyToAnimate] = useState(false);
 
   // Refs for animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -28,14 +29,13 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const mainPostRef = useRef<HTMLDivElement>(null);
   const smallPostsRef = useRef<HTMLDivElement>(null);
 
-  // external hooks
-  const { fetchPosts } = blogServices();
-
   const loadPosts = async () => {
     setIsLoading(true);
     setError(null);
+
     try {
-      const { posts } = await fetchPosts({
+      const blogService = blogServices();
+      const { posts } = await blogService.fetchPosts({
         per_page: 4,
         page: 1,
       });
@@ -72,92 +72,103 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
     const ctx = gsap.context(() => {
       gsap.set([titleRef.current, descriptionRef.current], {
         opacity: 0,
-        y: 50,
+        y: 50
       });
 
       gsap.set(mainPostRef.current, {
         opacity: 0,
         y: 50,
-        scale: 0.95,
+        scale: 0.95
       });
 
       gsap.set(smallPostsRef.current, {
         opacity: 0,
-        y: 50,
+        y: 50
       });
     });
 
     return () => ctx.revert();
   }, []);
 
-  // Animate title and description as soon as refs are set
+  // Wait for posts to load and refs to be set, then allow animation
   useEffect(() => {
-    if (!titleRef.current || !descriptionRef.current || !sectionRef.current) {
+    if (
+      !isLoading &&
+      posts.length > 0 &&
+      titleRef.current &&
+      descriptionRef.current
+    ) {
+      // Optional: add a small delay for effect
+      const timer = setTimeout(() => setReadyToAnimate(true), 400);
+      return () => clearTimeout(timer);
+    } else {
+      setReadyToAnimate(false);
+    }
+  }, [isLoading, posts.length]);
+
+  // Animate title and description only when readyToAnimate
+  useEffect(() => {
+    if (!titleRef.current || !descriptionRef.current || !readyToAnimate) {
       return;
     }
+
     let tl: gsap.core.Timeline | null = null;
     let ctx: gsap.Context | null = null;
-    ctx = gsap.context(() => {
-      gsap.set([titleRef.current, descriptionRef.current], {
-        opacity: 0,
-        y: 50,
+
+    function triggerBlogAnimation() {
+      ctx = gsap.context(() => {
+        if (isBlogPage) {
+          // Animate immediately (no scroll trigger)
+          tl = gsap.timeline();
+        } else {
+          // Animate on scroll (homepage)
+          tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top center",
+              end: "center center",
+              toggleActions: "play none none reverse",
+            },
+          });
+        }
+        tl.to(titleRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        })
+          .to(
+            descriptionRef.current,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power3.out",
+            },
+            "-=0.6"
+          )
+          .add(() => setContentVisible(true)); // Show content after animation
+        // Refresh ScrollTrigger after timeline is set up
+        ScrollTrigger.refresh();
       });
-      // Animate
-      if (!isBlogPage) {
-        tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top center",
-            end: "center center",
-            toggleActions: "play none none reverse",
-          },
-        });
-      } else {
-        tl = gsap.timeline();
-      }
-      tl.to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out",
-      })
-        .to(
-          descriptionRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-          },
-          "-=0.6"
-        )
-        .add(() => {
-          // Only show content if posts are loaded
-          if (!isLoading) setContentVisible(true);
-        });
-      ScrollTrigger.refresh();
-    });
+    }
+
+    triggerBlogAnimation();
+
     return () => {
       if (ctx) ctx.revert();
     };
-  }, [isBlogPage, isLoading]);
-  // Reset contentVisible if loading again
-  useEffect(() => {
-    if (isLoading) setContentVisible(false);
-  }, [isLoading]);
+  }, [readyToAnimate]);
 
   useEffect(() => {
-    if (!isLoading && posts.length > 0 && onReady) {
+    if (!isLoading && posts.length > 0 && contentVisible && onReady) {
       onReady();
     }
-  }, [isLoading, posts.length, onReady]);
+  }, [isLoading, posts.length, contentVisible, onReady]);
 
   return (
-    <section
-      ref={sectionRef}
-      className="background-gradient-light w-full min-h-screen"
-    >
-      <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24 background-gradient-light">
+    <section ref={sectionRef} className="background-gradient-light w-full min-h-screen">
+      <div className="relative z-10 w-full container py-24 background-gradient-light">
         <div className="flex flex-col items-start gap-12">
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
@@ -166,9 +177,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
               className="heading-2 text-secondary max-w-[40.9375rem]"
               style={{ color: "var(--color-secondary)" }}
             >
-              <span
-                dangerouslySetInnerHTML={{ __html: t("mainPage.blog.title") }}
-              />
+              <span dangerouslySetInnerHTML={{ __html: t("mainPage.blog.title") }} />
             </h2>
             <p
               ref={descriptionRef}
@@ -180,14 +189,14 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
           </div>
 
           {/* Blog content with fade-in */}
-          <div className={`relative${isLoading ? " min-h-80" : ""}`}>
-            {isBlogPage && <SubLoader isLoading={isLoading} />}
+          <div className={`relative${isLoading ? ' min-h-80' : ''}`}>
+          {isBlogPage && <SubLoader isLoading={isLoading} />}
             <SubLoader isLoading={isLoading} />
             {!isLoading && (
               <div
                 style={{
                   opacity: contentVisible ? 1 : 0,
-                  transition: "opacity 0.8s ease",
+                  transition: "opacity 0.8s ease"
                 }}
               >
                 {error && (
@@ -210,7 +219,6 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                             src={mainPost.image}
                             alt={mainPost.title}
                             className="absolute inset-0 w-full h-full object-cover rounded-xl"
-                            loading="lazy"
                           />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -231,18 +239,16 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                             style={{ color: "var(--color-secondary)" }}
                           >
                             {truncateHtml(mainPost.content, 200)}
-                            {mainPost.content && (
-                              <span className="sr-only" aria-hidden="true" dangerouslySetInnerHTML={{ __html: mainPost.content }} />
-                            )}
                           </p>
                           <Link
-                            to={{ pathname: `/blog/article/${mainPost.id}` }}
+                            to={{
+                              pathname: `/blog/article/${mainPost.id}`,
+                            }}
                           >
                             <button
                               className="mt-2 underline hover:opacity-80 focus:outline-none block self-start"
                               style={{ color: "var(--color-primary)" }}
                               onClick={() => {}}
-                              aria-label={`Read more about ${mainPost.title}`}
                             >
                               Read more
                             </button>
@@ -282,18 +288,16 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                                 style={{ color: "var(--color-secondary)" }}
                               >
                                 {truncateHtml(post.content, 120)}
-                                {post.content && (
-                                  <span className="sr-only" aria-hidden="true" dangerouslySetInnerHTML={{ __html: post.content }} />
-                                )}
                               </p>
                               <Link
-                                to={{ pathname: `/blog/article/${post.id}` }}
+                                to={{
+                                  pathname: `/blog/article/${post.id}`,
+                                }}
                               >
                                 <button
                                   className="mt-2 underline hover:opacity-80 focus:outline-none block self-start"
                                   style={{ color: "var(--color-primary)" }}
                                   onClick={() => {}}
-                                  aria-label={`Read more about ${post.title}`}
                                 >
                                   Read more
                                 </button>
