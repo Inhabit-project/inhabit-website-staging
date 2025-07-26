@@ -25,8 +25,16 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
     "id" | "title" | "content" | "date" | "image"
   > | null>(null);
 
-  const loadPost = async (postID: string) => {
+  const clearPostStates = () => {
+    setPost(null);
+    setPrevPost(null);
+    setNextPost(null);
+    setError(null);
     setLoading(true);
+  };
+
+  const loadPost = async (postID: string) => {
+    clearPostStates();
 
     try {
       const { current, next, previous } = await fetchPostWithNavigation(postID);
@@ -128,19 +136,6 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
             </span>
             <span>{post?.readTime}</span>
           </div>
-          {/* Cover Image */}
-          {/* <div className="mb-10">
-            <img
-              src={post?.featuredImage.sourceUrl}
-              alt={post?.title}
-              style={{
-                width: "100%",
-                borderRadius: 24,
-                objectFit: "cover",
-                maxHeight: 340,
-              }}
-            />
-          </div> */}
           {/** Post content */}
           <div
             className="body-S blog-content"

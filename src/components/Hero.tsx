@@ -266,7 +266,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
         <div className="w-full max-w-[92rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] flex justify-center">
           <h1
             ref={titleRef}
-            className="heading-1 text-center mt-4"
+            className="heading-1 text-center mt-4 text-light"
           />
         </div>
 
