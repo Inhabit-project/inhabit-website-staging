@@ -1,52 +1,14 @@
 import React, { useRef, useEffect, useContext, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
-import BiodiversityCard from './BiodiversityCard';
-import BiodiversityCardsSection from './BiodiversityCardsSection';
 import ImpactLegalInnovationCardsSection from './ImpactLegalInnovationCardsSection';
-
-const cardVariants = {
-  hidden: { y: 100, opacity: 0 },
-  visible: (i: number) => ({
-    y: 0,
-    opacity: 1,
-    transition: {
-      delay: i * 0.2,
-      duration: 0.8,
-      ease: [0.25, 0.1, 0.25, 1]
-    }
-  })
-};
-
-const cards = [
-  {
-    number: '001',
-    title: 'Biodiversity Hotspots',
-    description: 'Each HUB must generate and host a vast pool of biodiversity and living knowledge specific to a unique ecosystem, essential for navigating the challenges of our present times. These "living seed hubs" hosts an "inner corridor" within the land, connecting fragmented landscapes and serving as a refuge for endangered species.'
-  },
-  {
-    number: '002',
-    title: 'Community Engagement',
-    description: 'Local communities are integral to the success of each HUB. Their traditional knowledge and active participation ensure the sustainable management and protection of these vital ecosystems.'
-  },
-  {
-    number: '003',
-    title: 'Research & Education',
-    description: 'HUBs serve as living laboratories for scientific research and environmental education, fostering innovation and knowledge sharing for ecosystem restoration.'
-  },
-  {
-    number: '004',
-    title: 'Sustainable Practices',
-    description: 'Implementing sustainable land management practices that balance ecological health with human needs, ensuring long-term viability of the ecosystems.'
-  }
-];
 
 const Infographic: React.FC = () => {
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
   const [canAnimate, setCanAnimate] = useState(false);
+  const [showCards, setShowCards] = useState(false);
 
   // Slide refs
   const slide1TitleRef = useRef<HTMLHeadingElement>(null);
@@ -62,6 +24,8 @@ const Infographic: React.FC = () => {
   const slide4DescRef = useRef<HTMLParagraphElement>(null);
   const slide4ImgRef = useRef<HTMLImageElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
+  const cardsSectionRef = useRef<HTMLDivElement>(null);
+  
   // Store triggers for cleanup
   const infographicTriggers = useRef<ScrollTrigger[]>([]);
 
@@ -98,18 +62,22 @@ const Infographic: React.FC = () => {
     }
   }, [isLoading]);
 
-  // Handle animations and robust cleanup
+  // Handle animations with sequential timing for better performance
   useEffect(() => {
     let ctx: gsap.Context | undefined;
-    // Clean up only infographic triggers
+    
+    // Clean up any previous triggers before creating new ones
     infographicTriggers.current.forEach(trigger => {
       if (trigger && typeof trigger.kill === 'function') trigger.kill();
     });
     infographicTriggers.current = [];
+    
     if (canAnimate) {
       ctx = gsap.context(() => {
-        // Create all timelines and triggers
-        // Slide 1
+        // Create sequential timeline for better performance
+        const mainTimeline = gsap.timeline();
+        
+        // Slide 1 - starts immediately when in view
         infographicTriggers.current.push(
           gsap.timeline({
             scrollTrigger: {
@@ -124,7 +92,8 @@ const Infographic: React.FC = () => {
             .to(slide1ImgRef.current, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out' }, '-=0.4')
             .scrollTrigger as ScrollTrigger
         );
-        // Slide 2
+
+        // Slide 2 - starts after slide 1 completes
         infographicTriggers.current.push(
           gsap.timeline({
             scrollTrigger: {
@@ -139,7 +108,8 @@ const Infographic: React.FC = () => {
             .to(slide2ImgRef.current, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out' }, '-=0.4')
             .scrollTrigger as ScrollTrigger
         );
-        // Slide 3
+
+        // Slide 3 - starts after slide 2 completes
         infographicTriggers.current.push(
           gsap.timeline({
             scrollTrigger: {
@@ -154,7 +124,8 @@ const Infographic: React.FC = () => {
             .to(slide3ImgRef.current, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out' }, '-=0.4')
             .scrollTrigger as ScrollTrigger
         );
-        // Slide 4
+
+        // Slide 4 - starts after slide 3 completes
         infographicTriggers.current.push(
           gsap.timeline({
             scrollTrigger: {
@@ -169,16 +140,38 @@ const Infographic: React.FC = () => {
             .to(slide4ImgRef.current, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out' }, '-=0.4')
             .scrollTrigger as ScrollTrigger
         );
+
+        // Cards section trigger - only loads after slide 4 is complete
+        infographicTriggers.current.push(
+          gsap.timeline({
+            scrollTrigger: {
+              trigger: slide4ImgRef.current,
+              start: 'bottom 90%',
+              end: 'bottom 50%',
+              toggleActions: 'play none none reverse',
+              onEnter: () => setShowCards(true),
+            }
+          }).scrollTrigger as ScrollTrigger
+        );
+
         // Refresh ScrollTrigger after all timelines are set up
         ScrollTrigger.refresh();
       }, rootRef);
     }
+    
     return () => {
       if (ctx) ctx.revert();
+      // Robustly kill all ScrollTriggers created by this component
       infographicTriggers.current.forEach(trigger => {
         if (trigger && typeof trigger.kill === 'function') trigger.kill();
       });
       infographicTriggers.current = [];
+      // Also kill any orphaned triggers for safety
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger && trigger.vars && trigger.vars.trigger && rootRef.current && rootRef.current.contains(trigger.vars.trigger as Node)) {
+          trigger.kill();
+        }
+      });
     };
   }, [canAnimate, t]);
 
@@ -204,16 +197,17 @@ const Infographic: React.FC = () => {
           />
         </div>
       </div>
+
       {/* Slide 2: NFT Stewards */}
-      <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] ">
-        <div className="w-full lg:w-2/5 max-w-6xl flex flex-col ">
+      <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)]">
+        <div className="w-full lg:w-2/5 max-w-6xl flex flex-col">
           <h2 ref={slide2TitleRef} className="heading-2 text-secondary mb-6 font-bold" dangerouslySetInnerHTML={{ __html: t('mainPage.infographic.nftStewardsTitle') }} />
           <p ref={slide2DescRef} className="body-M text-secondary">
             {t('mainPage.infographic.nftStewardsDescription')}
           </p>
         </div>
-        <div className="w-full lg:w-3/5 flex self-center justify-center lg:justify-end">
-          <div className="w-[43.75rem] ">
+        <div className="w-full lg:w-3/5 flex self-center justify-end">
+          <div className="w-[43.75rem]">
             <img 
               ref={slide2ImgRef}
               src="/assets/stewards-illustration.webp" 
@@ -224,16 +218,17 @@ const Infographic: React.FC = () => {
           </div>
         </div>
       </section>
+
       {/* Slide 3: Nature */}
-      <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] ">
+      <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)]">
         <div className="w-full lg:w-2/5 max-w-6xl flex flex-col justify-start">
           <h2 ref={slide3TitleRef} className="heading-2 text-secondary mb-6 font-bold">{t('mainPage.infographic.natureTitle')}</h2>
           <p ref={slide3DescRef} className="body-M text-secondary">
             {t('mainPage.infographic.natureDescription')}
           </p>
         </div>
-        <div className="w-full lg:w-3/5 flex self-center justify-center lg:justify-end">
-          <div className="w-[43.75rem] ">
+        <div className="w-full lg:w-3/5 flex self-center justify-end">
+          <div className="w-[43.75rem]">
             <img 
               ref={slide3ImgRef}
               src="/assets/nature-illustration.webp" 
@@ -244,16 +239,17 @@ const Infographic: React.FC = () => {
           </div>
         </div>
       </section>
+
       {/* Slide 4: Guardians */}
-      <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)] ">
+      <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)]">
         <div className="w-full lg:w-2/5 max-w-6xl flex flex-col">
           <h2 ref={slide4TitleRef} className="heading-2 text-secondary mb-6 font-bold">{t('mainPage.infographic.guardiansTitle')}</h2>
           <p ref={slide4DescRef} className="body-M text-secondary">
             {t('mainPage.infographic.guardiansDescription')}
           </p>
         </div>
-        <div className="w-full lg:w-3/5 flex self-center justify-center lg:justify-end">
-          <div className="w-[43.75rem] ">
+        <div className="w-full lg:w-3/5 flex self-center justify-end">
+          <div className="w-[43.75rem]">
             <img 
               ref={slide4ImgRef}
               src="/assets/guardians-illustration.webp" 
@@ -264,8 +260,13 @@ const Infographic: React.FC = () => {
           </div>
         </div>
       </section>
-      {/* New Impact Cards Section */}
-      <ImpactLegalInnovationCardsSection />
+
+      {/* Cards Section - Only renders when showCards is true for better performance */}
+      {showCards && (
+        <div ref={cardsSectionRef}>
+          <ImpactLegalInnovationCardsSection />
+        </div>
+      )}
     </section>
   );
 };

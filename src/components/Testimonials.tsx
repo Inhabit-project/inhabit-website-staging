@@ -124,7 +124,7 @@ const Testimonials: React.FC = () => {
             <h2 
               ref={titleRef}
               id="testimonials-title"
-              className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-white"
+              className="heading-2 text-light max-w-[40.9375rem]"
             >
               <span dangerouslySetInnerHTML={{ __html: t('mainPage.testimonials.title') }} />
             </h2>

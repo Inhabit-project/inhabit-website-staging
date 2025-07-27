@@ -320,7 +320,7 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
                 <h2 
                   ref={alliesTitleRef}
                   id="allies-title"
-                  className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]"
+                  className="heading-2 text-light max-w-[40.9375rem]"
                 >
                   <span dangerouslySetInnerHTML={{ __html: t('mainPage.testimonials.partnersTitle') }} />
                 </h2>
@@ -336,7 +336,7 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
                 <h2 
                   ref={buildersTitleRef}
                   id="builders-title"
-                  className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]"
+                  className="heading-2 text-light max-w-[40.9375rem]"
                 >
                   <span dangerouslySetInnerHTML={{ __html: t('mainPage.logosSection.buildersTitle') }} />
                 </h2>
@@ -352,7 +352,7 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
                 <h2 
                   ref={partnersTitleRef}
                   id="partners-title"
-                  className="font-light text-4xl md:text-6xl lg:text-[5rem] leading-[1.1em] text-[#F6FFEA]"
+                  className="heading-2 text-light max-w-[40.9375rem]"
                 >
                   <span dangerouslySetInnerHTML={{ __html: t('mainPage.logosSection.partnersTitle') }} />
                 </h2>
