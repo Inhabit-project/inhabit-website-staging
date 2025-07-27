@@ -1,13 +1,14 @@
 import React, { useRef, useEffect, useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { gsap, ScrollTrigger } from "../utils/gsap";
-import { LoadingContext } from "../App";
+import { LoadingContext, PageAnimationContext } from "../App";
 import { useStore } from "@/store";
 import { Link } from "react-router-dom";
 
 const CTA: React.FC = () => {
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
+  const pageAnimationReady = useContext(PageAnimationContext);
   const [canAnimate, setCanAnimate] = useState(false);
   const [ready, setReady] = useState(false); // for initial CSS class
 
@@ -33,7 +34,8 @@ const CTA: React.FC = () => {
 
   // Handle loading state change
   useEffect(() => {
-    if (!isLoading) {
+    // Allow animations when page is ready for animations OR when loader is not active
+    if (pageAnimationReady || !isLoading) {
       const timer = setTimeout(() => {
         setCanAnimate(true);
       }, 1500);
@@ -41,7 +43,7 @@ const CTA: React.FC = () => {
     } else {
       setCanAnimate(false);
     }
-  }, [isLoading]);
+  }, [isLoading, pageAnimationReady]);
 
   // Simplified animation
   useEffect(() => {

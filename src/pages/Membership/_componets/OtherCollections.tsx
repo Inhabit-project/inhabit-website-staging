@@ -28,12 +28,17 @@ export default function OtherCollections(props: Props): JSX.Element {
   }
 
   return (
-    <div
-      className="flex flex-row items-center space-x-3 overflow-x-auto flex-nowrap scrollbar-hide snap-x snap-mandatory pl-4 md:pl-0 md:justify-center md:overflow-visible md:flex-wrap md:snap-none"
-      style={{ WebkitOverflowScrolling: 'touch' }}
-      role="list"
-      aria-label={t("mainPage.nftGrid.title")}
-    >
+    <div className="w-full max-w-[1600px] mx-auto">
+      <div className="flex flex-col gap-8">
+        <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
+          <span dangerouslySetInnerHTML={{ __html: t("mainPage.otherCollections.title") }} />
+        </h2>
+        <div
+          className="flex flex-row items-center space-x-3 overflow-x-auto flex-nowrap scrollbar-hide snap-x snap-mandatory pl-4 md:pl-0 md:justify-center md:overflow-visible md:flex-wrap md:snap-none"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+          role="list"
+          aria-label={t("mainPage.nftGrid.title")}
+        >
       {otherCollections?.map((collection: Collection, index: number) => (
         <div
           key={index}
@@ -123,6 +128,8 @@ export default function OtherCollections(props: Props): JSX.Element {
           </div>
         </div>
       ))}
+        </div>
+      </div>
     </div>
   );
 }

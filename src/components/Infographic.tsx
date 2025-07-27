@@ -2,13 +2,12 @@ import React, { useRef, useEffect, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
-import ImpactLegalInnovationCardsSection from './ImpactLegalInnovationCardsSection';
+import ImpactCard from './ImpactCard';
 
 const Infographic: React.FC = () => {
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
   const [canAnimate, setCanAnimate] = useState(false);
-  const [showCards, setShowCards] = useState(false);
 
   // Slide refs
   const slide1TitleRef = useRef<HTMLHeadingElement>(null);
@@ -24,26 +23,76 @@ const Infographic: React.FC = () => {
   const slide4DescRef = useRef<HTMLParagraphElement>(null);
   const slide4ImgRef = useRef<HTMLImageElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
-  const cardsSectionRef = useRef<HTMLDivElement>(null);
   
-  // Store triggers for cleanup
-  const infographicTriggers = useRef<ScrollTrigger[]>([]);
+  // Cards section refs
+  const cardsTitleRef = useRef<HTMLHeadingElement>(null);
+  const cardsDescRef = useRef<HTMLParagraphElement>(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  
+  // Store trigger for cleanup
+  const infographicTrigger = useRef<ScrollTrigger | null>(null);
+
+  const impactCards = [
+    {
+      label: t('mainPage.impactLegalInnovationCardsSection.cards.0.label'),
+      icon: '/assets/icons/Icon-1.svg',
+      title: t('mainPage.impactLegalInnovationCardsSection.cards.0.title'),
+      subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.0.subtitle'),
+      description: t('mainPage.impactLegalInnovationCardsSection.cards.0.description'),
+    },
+    {
+      label: t('mainPage.impactLegalInnovationCardsSection.cards.1.label'),
+      icon: '/assets/icons/Icon-2.svg',
+      title: t('mainPage.impactLegalInnovationCardsSection.cards.1.title'),
+      subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.1.subtitle'),
+      description: t('mainPage.impactLegalInnovationCardsSection.cards.1.description'),
+    },
+    {
+      label: t('mainPage.impactLegalInnovationCardsSection.cards.2.label'),
+      icon: '/assets/icons/Icon-3.svg',
+      title: t('mainPage.impactLegalInnovationCardsSection.cards.2.title'),
+      subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.2.subtitle'),
+      description: t('mainPage.impactLegalInnovationCardsSection.cards.2.description'),
+    },
+    {
+      label: t('mainPage.impactLegalInnovationCardsSection.cards.3.label'),
+      icon: '/assets/icons/Icon-4.svg',
+      title: t('mainPage.impactLegalInnovationCardsSection.cards.3.title'),
+      subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.3.subtitle'),
+      description: t('mainPage.impactLegalInnovationCardsSection.cards.3.description'),
+    },
+  ];
 
   // Set initial states
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.set([
+      // Set all elements to initial state
+      const allElements = [
         slide1TitleRef.current, slide1DescRef.current, slide1ImgRef.current,
         slide2TitleRef.current, slide2DescRef.current, slide2ImgRef.current,
         slide3TitleRef.current, slide3DescRef.current, slide3ImgRef.current,
-        slide4TitleRef.current, slide4DescRef.current, slide4ImgRef.current
-      ], {
+        slide4TitleRef.current, slide4DescRef.current, slide4ImgRef.current,
+        cardsTitleRef.current, cardsDescRef.current
+      ];
+      
+      gsap.set(allElements, {
         opacity: 0,
-        y: 50
+        y: 30
       });
-      gsap.set([
+      
+      // Set images to slightly scaled down
+      const allImages = [
         slide1ImgRef.current, slide2ImgRef.current, slide3ImgRef.current, slide4ImgRef.current
-      ], {
+      ];
+      
+      gsap.set(allImages, {
+        scale: 0.95
+      });
+
+      // Set cards to initial state
+      gsap.set(cardsRef.current, {
+        opacity: 0,
+        y: 30,
         scale: 0.95
       });
     }, rootRef);
@@ -55,123 +104,161 @@ const Infographic: React.FC = () => {
     if (!isLoading) {
       const timer = setTimeout(() => {
         setCanAnimate(true);
-      }, 1500);
+      }, 1000);
       return () => clearTimeout(timer);
     } else {
       setCanAnimate(false);
     }
   }, [isLoading]);
 
-  // Handle animations with sequential timing for better performance
+  // Handle animations with optimized ScrollTrigger
   useEffect(() => {
     let ctx: gsap.Context | undefined;
     
-    // Clean up any previous triggers before creating new ones
-    infographicTriggers.current.forEach(trigger => {
-      if (trigger && typeof trigger.kill === 'function') trigger.kill();
-    });
-    infographicTriggers.current = [];
+    // Clean up previous trigger
+    if (infographicTrigger.current) {
+      infographicTrigger.current.kill();
+      infographicTrigger.current = null;
+    }
     
     if (canAnimate) {
       ctx = gsap.context(() => {
-        // Create sequential timeline for better performance
-        const mainTimeline = gsap.timeline();
-        
-        // Slide 1 - starts immediately when in view
-        infographicTriggers.current.push(
-          gsap.timeline({
-            scrollTrigger: {
-              trigger: slide1TitleRef.current,
-              start: 'top 80%',
-              end: 'center center',
-              toggleActions: 'play none none reverse',
-            }
+        // Create a single timeline for all animations
+        const timeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: rootRef.current,
+            start: 'top 80%',
+            end: 'bottom 20%',
+            toggleActions: 'play none none reverse',
+          }
+        });
+
+        // Slide 1 animations
+        timeline
+          .to(slide1TitleRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.8, 
+            ease: 'power2.out' 
           })
-            .to(slide1TitleRef.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
-            .to(slide1DescRef.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6')
-            .to(slide1ImgRef.current, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out' }, '-=0.4')
-            .scrollTrigger as ScrollTrigger
-        );
+          .to(slide1DescRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.8, 
+            ease: 'power2.out' 
+          }, '-=0.6')
+          .to(slide1ImgRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            scale: 1, 
+            duration: 1, 
+            ease: 'power2.out' 
+          }, '-=0.4');
 
-        // Slide 2 - starts after slide 1 completes
-        infographicTriggers.current.push(
-          gsap.timeline({
-            scrollTrigger: {
-              trigger: slide2TitleRef.current,
-              start: 'top 80%',
-              end: 'center center',
-              toggleActions: 'play none none reverse',
-            }
-          })
-            .to(slide2TitleRef.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
-            .to(slide2DescRef.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6')
-            .to(slide2ImgRef.current, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out' }, '-=0.4')
-            .scrollTrigger as ScrollTrigger
-        );
+        // Slide 2 animations
+        timeline
+          .to(slide2TitleRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.8, 
+            ease: 'power2.out' 
+          }, '-=0.2')
+          .to(slide2DescRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.8, 
+            ease: 'power2.out' 
+          }, '-=0.6')
+          .to(slide2ImgRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            scale: 1, 
+            duration: 1, 
+            ease: 'power2.out' 
+          }, '-=0.4');
 
-        // Slide 3 - starts after slide 2 completes
-        infographicTriggers.current.push(
-          gsap.timeline({
-            scrollTrigger: {
-              trigger: slide3TitleRef.current,
-              start: 'top 80%',
-              end: 'center center',
-              toggleActions: 'play none none reverse',
-            }
-          })
-            .to(slide3TitleRef.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
-            .to(slide3DescRef.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6')
-            .to(slide3ImgRef.current, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out' }, '-=0.4')
-            .scrollTrigger as ScrollTrigger
-        );
+        // Slide 3 animations
+        timeline
+          .to(slide3TitleRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.8, 
+            ease: 'power2.out' 
+          }, '-=0.2')
+          .to(slide3DescRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.8, 
+            ease: 'power2.out' 
+          }, '-=0.6')
+          .to(slide3ImgRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            scale: 1, 
+            duration: 1, 
+            ease: 'power2.out' 
+          }, '-=0.4');
 
-        // Slide 4 - starts after slide 3 completes
-        infographicTriggers.current.push(
-          gsap.timeline({
-            scrollTrigger: {
-              trigger: slide4TitleRef.current,
-              start: 'top 80%',
-              end: 'center center',
-              toggleActions: 'play none none reverse',
-            }
-          })
-            .to(slide4TitleRef.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
-            .to(slide4DescRef.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6')
-            .to(slide4ImgRef.current, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out' }, '-=0.4')
-            .scrollTrigger as ScrollTrigger
-        );
+        // Slide 4 animations
+        timeline
+          .to(slide4TitleRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.8, 
+            ease: 'power2.out' 
+          }, '-=0.2')
+          .to(slide4DescRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.8, 
+            ease: 'power2.out' 
+          }, '-=0.6')
+          .to(slide4ImgRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            scale: 1, 
+            duration: 1, 
+            ease: 'power2.out' 
+          }, '-=0.4');
 
-        // Cards section trigger - only loads after slide 4 is complete
-        infographicTriggers.current.push(
-          gsap.timeline({
-            scrollTrigger: {
-              trigger: slide4ImgRef.current,
-              start: 'bottom 90%',
-              end: 'bottom 50%',
-              toggleActions: 'play none none reverse',
-              onEnter: () => setShowCards(true),
-            }
-          }).scrollTrigger as ScrollTrigger
-        );
+        // Cards section animations
+        timeline
+          .to(cardsTitleRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.8, 
+            ease: 'power2.out' 
+          }, '-=0.2')
+          .to(cardsDescRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.8, 
+            ease: 'power2.out' 
+          }, '-=0.6')
+          .to(cardsRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            scale: 1, 
+            duration: 0.8, 
+            stagger: {
+              each: 0.15,
+              from: "start"
+            },
+            ease: 'power2.out' 
+          }, '-=0.4');
 
-        // Refresh ScrollTrigger after all timelines are set up
-        ScrollTrigger.refresh();
+        // Store the trigger for cleanup
+        infographicTrigger.current = timeline.scrollTrigger as ScrollTrigger;
       }, rootRef);
     }
     
     return () => {
       if (ctx) ctx.revert();
-      // Robustly kill all ScrollTriggers created by this component
-      infographicTriggers.current.forEach(trigger => {
-        if (trigger && typeof trigger.kill === 'function') trigger.kill();
-      });
-      infographicTriggers.current = [];
-      // Also kill any orphaned triggers for safety
-      ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger && trigger.vars && trigger.vars.trigger && rootRef.current && rootRef.current.contains(trigger.vars.trigger as Node)) {
-          trigger.kill();
-        }
-      });
+      // Clean up trigger
+      if (infographicTrigger.current) {
+        infographicTrigger.current.kill();
+        infographicTrigger.current = null;
+      }
     };
   }, [canAnimate, t]);
 
@@ -261,12 +348,33 @@ const Infographic: React.FC = () => {
         </div>
       </section>
 
-      {/* Cards Section - Only renders when showCards is true for better performance */}
-      {showCards && (
-        <div ref={cardsSectionRef}>
-          <ImpactLegalInnovationCardsSection />
+      {/* Cards Section - Integrated directly to avoid conflicts */}
+      <section className="w-full flex flex-col items-center background-gradient-light py-24 px-[clamp(1.5rem,5vw,6.25rem)]">
+        <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full max-w-[120rem] mx-auto mb-[2.5rem]">
+          <h2 
+            ref={cardsTitleRef}
+            className="heading-2 text-secondary max-w-[40.9375rem]"
+          >
+            <span dangerouslySetInnerHTML={{ __html: t('mainPage.impactLegalInnovationCardsSection.title') }} />
+          </h2>
+          <p 
+            ref={cardsDescRef}
+            className="body-M text-secondary max-w-[35rem]"
+          >
+            {t('mainPage.impactLegalInnovationCardsSection.description')}
+          </p>
         </div>
-      )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[107.5rem] mx-auto">
+          {impactCards.map((card, idx) => (
+            <div
+              key={idx}
+              ref={el => cardsRef.current[idx] = el}
+            >
+              <ImpactCard {...card} />
+            </div>
+          ))}
+        </div>
+      </section>
     </section>
   );
 };

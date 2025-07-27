@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { initVideoSectionCursor } from '../utils/videoCursor';
 import { LoadingContext } from '../App';
 import SubLoader from '@/load/SubLoader';
 
@@ -20,6 +19,10 @@ const ProjectsVideoSection: React.FC = () => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const playButtonRef = useRef<HTMLButtonElement>(null);
   const playCircleRef = useRef<HTMLDivElement>(null);
+  
+  // Store references for cleanup
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const scrollTriggerRef = useRef<ScrollTrigger | undefined>(undefined);
 
   // Set initial states
   useEffect(() => {
@@ -52,19 +55,13 @@ const ProjectsVideoSection: React.FC = () => {
     }
   }, [isLoading]);
 
-  // Initialize video cursor for the entire section
+  // Initialize animations
   useEffect(() => {
-    if (!sectionRef.current) return;
-    const cleanup = initVideoSectionCursor(sectionRef.current);
-    return cleanup;
-  }, []);
-
-  // Handle animations
-  useEffect(() => {
-    if (!canAnimate || !sectionRef.current) return;
+    if (!canAnimate) return;
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
+      // Create scroll-triggered animation
+      timelineRef.current = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top center",
@@ -73,31 +70,46 @@ const ProjectsVideoSection: React.FC = () => {
         }
       });
 
-      tl.to(eyebrowRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      })
-      .to(headingRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      }, "-=0.6")
-      .to(videoContainerRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1.2,
-        ease: "power3.out"
-      }, "-=0.7")
-      .to(playButtonRef.current, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-        ease: "back.out(1.7)"
-      }, "-=0.5");
+      // Store the ScrollTrigger reference for cleanup
+      scrollTriggerRef.current = timelineRef.current.scrollTrigger;
+
+      timelineRef.current
+        .to(eyebrowRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        })
+        .to(headingRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out"
+        }, "-=0.6")
+        .to(videoContainerRef.current, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out"
+        }, "-=0.7")
+        .to(playButtonRef.current, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: "back.out(1.7)"
+        }, "-=0.5");
+
+      // Add attention-grabbing pulse animation to video container
+      if (videoContainerRef.current) {
+        gsap.to(videoContainerRef.current, {
+          boxShadow: "0 0 30px rgba(255, 166, 0, 0.3)",
+          duration: 2,
+          repeat: -1,
+          yoyo: true,
+          ease: "power2.inOut"
+        });
+      }
 
       // Add hover animation for the play button
       if (playButtonRef.current) {
@@ -144,7 +156,18 @@ const ProjectsVideoSection: React.FC = () => {
 
     return () => {
       ctx.revert();
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      
+      // Kill the specific ScrollTrigger
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        scrollTriggerRef.current = undefined;
+      }
+
+      // Kill the timeline
+      if (timelineRef.current) {
+        timelineRef.current.kill();
+        timelineRef.current = null;
+      }
     };
   }, [canAnimate]);
 
@@ -164,7 +187,7 @@ const ProjectsVideoSection: React.FC = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative w-full background-gradient-dark flex flex-col items-center custom-cursor-hide" 
+      className="relative w-full background-gradient-dark flex flex-col items-center" 
       aria-labelledby="projects-video-title"
     >
       {/* Background with decorative elements */}
@@ -194,7 +217,7 @@ const ProjectsVideoSection: React.FC = () => {
         {/* Video container */}
         <div 
           ref={videoContainerRef}
-          className="self-end w-full md:w-[45rem] h-[16rem] md:h-[22rem] rounded-xl overflow-hidden"
+          className="self-end w-full md:w-[45rem] h-[16rem] md:h-[22rem] rounded-xl overflow-hidden relative"
         >
           {/* Video placeholder with background image */}
           <div 
@@ -210,25 +233,42 @@ const ProjectsVideoSection: React.FC = () => {
             tabIndex={0}
             aria-label={t('mainPage.projectsVideo.playFeaturedVideo')}
           >
-            {/* Play button */}
-            <button 
-              ref={playButtonRef}
-              className="relative group"
-              aria-label={t('mainPage.projectsVideo.playVideo')}
-            >
-              {/* Outer circle with animation */}
-              <div 
-                ref={playCircleRef}
-                className="w-[50px] md:w-[66px] h-[50px] md:h-[66px] rounded-full backdrop-blur-[4.125px] border border-white flex items-center justify-center animate-videoPulse hover:bg-orange-500/20 transition-all duration-300"
-                aria-hidden="true"
-              >
-                {/* Play triangle */}
-                <div 
-                  className="w-0 h-0 border-t-[10px] md:border-t-[12px] border-t-transparent border-l-[16px] md:border-l-[20px] border-l-white border-b-[10px] md:border-b-[12px] border-b-transparent ml-1 group-hover:border-l-orange-500 transition-colors duration-300"
-                  aria-hidden="true"
-                />
+            {/* Play button with animated text - perfectly centered */}
+            <div className="relative flex items-center justify-center">
+              {/* Animated text around the circle */}
+              <div className="absolute w-[100px] h-[100px] md:w-[120px] md:h-[120px] animate-spin-slow">
+                <svg className="w-full h-full" viewBox="0 0 100 100">
+                  <defs>
+                    <path id="circle-path-projects" d="M 50 50 m -40 0 a 40 40 0 1 1 80 0 a 40 40 0 1 1 -80 0" />
+                  </defs>
+                  <text className="text-xs font-medium fill-white">
+                    <textPath href="#circle-path-projects" startOffset="0%">
+                      PLAY VIDEO • PLAY VIDEO • PLAY VIDEO • PLAY VIDEO •
+                    </textPath>
+                  </text>
+                </svg>
               </div>
-            </button>
+              
+              {/* Play button */}
+              <button 
+                ref={playButtonRef}
+                className="relative z-10 group"
+                aria-label={t('mainPage.projectsVideo.playVideo')}
+              >
+                {/* Outer circle with animation */}
+                <div 
+                  ref={playCircleRef}
+                  className="w-[40px] md:w-[50px] h-[40px] md:h-[50px] rounded-full backdrop-blur-[4.125px] border border-white flex items-center justify-center animate-videoPulse hover:bg-orange-500/20 transition-all duration-300"
+                  aria-hidden="true"
+                >
+                  {/* Play triangle */}
+                  <div 
+                    className="w-0 h-0 border-t-[8px] md:border-t-[10px] border-t-transparent border-l-[12px] md:border-l-[15px] border-l-white border-b-[8px] md:border-b-[10px] border-b-transparent ml-1 group-hover:border-l-orange-500 transition-colors duration-300"
+                    aria-hidden="true"
+                  />
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -263,7 +303,7 @@ const ProjectsVideoSection: React.FC = () => {
             <iframe
               width="100%"
               height="100%"
-              src="https://www.youtube.com/embed/vMyOS_ATgmA?autoplay=1"
+              src="https://www.youtube.com/embed/vMyOS_ATgmA?autoplay=1&mute=0&controls=1&rel=0&showinfo=0&modestbranding=1"
               title={t('mainPage.projectsVideo.iframeTitle')}
               frameBorder="0"
               allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"

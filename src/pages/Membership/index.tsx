@@ -112,18 +112,18 @@ export default function Membership(props: Props): JSX.Element {
             <div className="flex-1 flex flex-col gap-8">
               <Info collection={collection} />
               <RightsTable rights={collection.rights} />
-              {/* Show OtherCollections only on desktop */}
-              <div className="hidden lg:block">
-                <OtherCollections collectionId={collectionId!} />
-              </div>
             </div>
             <Stepper
               price={collection.price}
               membershipContract={collection.membershipContract}
             />
           </div>
-          {/* Show OtherCollections after the form on mobile only */}
-          <div className="block lg:hidden py-8 ">
+          {/* Show OtherCollections after the stepper on mobile only */}
+          <div className="block lg:hidden py-8 px-4">
+            <OtherCollections collectionId={collectionId!} />
+          </div>
+          {/* Show OtherCollections only on desktop */}
+          <div className="hidden lg:block px-4 lg:py-8">
             <OtherCollections collectionId={collectionId!} />
           </div>
         </>

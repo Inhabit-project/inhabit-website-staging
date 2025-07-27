@@ -23,6 +23,10 @@ export default function NFTGrid(props: Props): JSX.Element {
   const cardsContainerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const tableRef = useRef<HTMLDivElement>(null);
+  
+  // Store references for cleanup
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const scrollTriggerRef = useRef<ScrollTrigger | undefined>(undefined);
 
   // Set initial states
   useLayoutEffect(() => {
@@ -62,7 +66,7 @@ export default function NFTGrid(props: Props): JSX.Element {
   useLayoutEffect(() => {
     if (!canAnimate || !sectionRef.current) return;
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
+      timelineRef.current = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top center",
@@ -70,12 +74,17 @@ export default function NFTGrid(props: Props): JSX.Element {
           toggleActions: "play none none reverse",
         },
       });
-      tl.to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out",
-      })
+      
+      // Store the ScrollTrigger reference for cleanup
+      scrollTriggerRef.current = timelineRef.current.scrollTrigger;
+      
+      timelineRef.current
+        .to(titleRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        })
         .to(
           descriptionRef.current,
           {
@@ -111,7 +120,18 @@ export default function NFTGrid(props: Props): JSX.Element {
     }, sectionRef);
     return () => {
       ctx.revert();
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      
+      // Kill the specific ScrollTrigger
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        scrollTriggerRef.current = undefined;
+      }
+
+      // Kill the timeline
+      if (timelineRef.current) {
+        timelineRef.current.kill();
+        timelineRef.current = null;
+      }
     };
   }, [canAnimate]);
 

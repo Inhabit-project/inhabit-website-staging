@@ -38,6 +38,9 @@ const Membership = React.lazy(() => import("@/pages/Membership"));
 // Create a context for the loading state
 export const LoadingContext = createContext<boolean>(false);
 
+// Create a context for page animations that should work regardless of loader state
+export const PageAnimationContext = createContext<boolean>(false);
+
 const App: React.FC = () => {
   const location = useLocation();
   
@@ -231,124 +234,125 @@ const App: React.FC = () => {
 
   return (
     <LoadingContext.Provider value={isLoading}>
-      <ScrollToTop />
-      <div
-        className={`app-container ${isTransitioning ? "transitioning" : ""}`}
-      >
-        {/* 
-          MAIN HERO LOADER ONLY:
-          This loader should ONLY appear for the main page hero component.
-          It should NEVER appear for:
-          - InternalPagesHero components
-          - Page navigation between routes
-          - Any other page loading states
-        */}
-        {isLoading && shouldShowLoader && location.pathname === '/' && (
-          <Loader
-            onLoadingComplete={
-              canFinishLoading ? handleLoaderComplete : undefined
-            }
-            isMainHeroLoader={true}
-          />
-        )}
-        {showTransition && (
-          <PageTransition
-            in={transitionIn}
-            onComplete={handleTransitionComplete}
-          />
-        )}
-        <Suspense fallback={null}>
-          <Routes location={pendingLocation}>
-            <Route
-              path="/"
-              element={
-                <MainPage
-                  {...pageProps}
-                  onHeroImageLoad={handleHeroImageLoad}
-                />
-              }
+      <PageAnimationContext.Provider value={transitionIn}>
+        <ScrollToTop />
+        <div
+          className={`app-container ${isTransitioning ? "transitioning" : ""}`}
+        >
+          {/* 
+            MAIN HERO LOADER ONLY:
+            This loader should ONLY appear for the main page hero component.
+            It should NEVER appear for:
+            - InternalPagesHero components
+            - Page navigation between routes
+            - Any other page loading states
+          */}
+                     {isLoading && shouldShowLoader && location.pathname === '/' && (
+             <Loader
+               onLoadingComplete={
+                 canFinishLoading ? handleLoaderComplete : undefined
+               }
+             />
+           )}
+          {showTransition && (
+            <PageTransition
+              in={transitionIn}
+              onComplete={handleTransitionComplete}
             />
-            <Route
-              path="/hubs"
-              element={
-                <HubsPage
-                  {...pageProps}
-                  onHeroImageLoad={handleHeroImageLoad}
-                />
-              }
-            />
-            <Route
-              path="/about"
-              element={
-                <AboutUsPage
-                  {...pageProps}
-                  onHeroImageLoad={handleHeroImageLoad}
-                />
-              }
-            />
-            <Route
-              path="/stewardship-nft"
-              element={
-                <StewardshipNFTPage
-                  {...pageProps}
-                  onHeroImageLoad={handleHeroImageLoad}
-                />
-              }
-            />
-            <Route path="/checkout" element={<Checkout {...pageProps} />} />
-            <Route path="/blog" element={<BlogPage {...pageProps} />} />
-            <Route
-              path="/hubs/nuiyanzhi"
-              element={
-                <NuiyanzhiPage
-                  {...pageProps}
-                  onHeroImageLoad={handleHeroImageLoad}
-                />
-              }
-            />
-            <Route
-              path="/hubs/agua-de-luna"
-              element={<AguaDeLunaPage {...pageProps} />}
-            />
-            <Route
-              path="/hubs/tierrakilwa"
-              element={<TierraKilwaPage {...pageProps} />}
-            />
-            <Route
-              path="/terms"
-              element={<TermsAndConditionsPage {...pageProps} />}
-            />
-            <Route
-              path="/privacy"
-              element={<PrivacyPolicyPage {...pageProps} />}
-            />
-            <Route
-              path="/projects"
-              element={
-                <ProjectsPage
-                  {...pageProps}
-                  onHeroImageLoad={handleHeroImageLoad}
-                />
-              }
-            />
-            <Route
-              path="/membership/:campaignId/:collectionId/:referral?"
-              element={
-                <Membership
-                  {...pageProps}
-                  onHeroImageLoad={handleHeroImageLoad}
-                />
-              }
-            />
-            <Route path="/contact" element={<ContactUs {...pageProps} />} />
-            <Route
-              path="/blog/article/:id"
-              element={<ArticlePage {...pageProps} />}
-            />
-            <Route path="*" element={<FourOhFourPage {...pageProps} />} />
-          </Routes>
-        </Suspense>
-      </div>
+          )}
+          <Suspense fallback={null}>
+            <Routes location={pendingLocation}>
+              <Route
+                path="/"
+                element={
+                  <MainPage
+                    {...pageProps}
+                    onHeroImageLoad={handleHeroImageLoad}
+                  />
+                }
+              />
+              <Route
+                path="/hubs"
+                element={
+                  <HubsPage
+                    {...pageProps}
+                    onHeroImageLoad={handleHeroImageLoad}
+                  />
+                }
+              />
+              <Route
+                path="/about"
+                element={
+                  <AboutUsPage
+                    {...pageProps}
+                    onHeroImageLoad={handleHeroImageLoad}
+                  />
+                }
+              />
+              <Route
+                path="/stewardship-nft"
+                element={
+                  <StewardshipNFTPage
+                    {...pageProps}
+                    onHeroImageLoad={handleHeroImageLoad}
+                  />
+                }
+              />
+              <Route path="/checkout" element={<Checkout {...pageProps} />} />
+              <Route path="/blog" element={<BlogPage {...pageProps} />} />
+              <Route
+                path="/hubs/nuiyanzhi"
+                element={
+                  <NuiyanzhiPage
+                    {...pageProps}
+                    onHeroImageLoad={handleHeroImageLoad}
+                  />
+                }
+              />
+              <Route
+                path="/hubs/agua-de-luna"
+                element={<AguaDeLunaPage {...pageProps} />}
+              />
+              <Route
+                path="/hubs/tierrakilwa"
+                element={<TierraKilwaPage {...pageProps} />}
+              />
+              <Route
+                path="/terms"
+                element={<TermsAndConditionsPage {...pageProps} />}
+              />
+              <Route
+                path="/privacy"
+                element={<PrivacyPolicyPage {...pageProps} />}
+              />
+              <Route
+                path="/projects"
+                element={
+                  <ProjectsPage
+                    {...pageProps}
+                    onHeroImageLoad={handleHeroImageLoad}
+                  />
+                }
+              />
+              <Route
+                path="/membership/:campaignId/:collectionId/:referral?"
+                element={
+                  <Membership
+                    {...pageProps}
+                    onHeroImageLoad={handleHeroImageLoad}
+                  />
+                }
+              />
+              <Route path="/contact" element={<ContactUs {...pageProps} />} />
+              <Route
+                path="/blog/article/:id"
+                element={<ArticlePage {...pageProps} />}
+              />
+              <Route path="*" element={<FourOhFourPage {...pageProps} />} />
+            </Routes>
+          </Suspense>
+        </div>
+      </PageAnimationContext.Provider>
     </LoadingContext.Provider>
   );
 };

@@ -36,7 +36,7 @@ const content = {
     }
   },
   es: {
-    eyebrow: '¿Dónde están ubicados los hubs?',
+    eyebrow: '¿Dónde están ubicados  los faros?',
     heading: 'Los primeros <span class="highlighted-text">tres HUBS</span> están ubicados en la<span class="highlighted-text"> Sierra Nevada de Santa Marta, </span> considerada el <span class="highlighted-text">Corazón del Mundo.</span>',
     nuiyanzhi: {
       label: 'Centro de Conocimiento para la Restauración',
@@ -84,6 +84,10 @@ const Hubs: React.FC = () => {
   const buttonsRefs = useRef<(HTMLDivElement | null)[]>([]);
   const galleryButtonsRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const navButtonsRefs = useRef<(HTMLDivElement | null)[]>([]);
+  
+  // Store references for cleanup
+  const timelineRefs = useRef<gsap.core.Timeline[]>([]);
+  const scrollTriggerRefs = useRef<ScrollTrigger[]>([]);
 
   // Set initial states
   useEffect(() => {
@@ -150,6 +154,10 @@ const Hubs: React.FC = () => {
     if (!canAnimate || !mainRef.current || !sectionRef.current) return;
 
     const ctx = gsap.context(() => {
+      // Clear previous references
+      timelineRefs.current = [];
+      scrollTriggerRefs.current = [];
+      
       // Create a ScrollTrigger for each hub section
       hubsRefs.current.forEach((hub, index) => {
         if (!hub) return;
@@ -162,6 +170,12 @@ const Hubs: React.FC = () => {
             toggleActions: "play none none reverse"
           }
         });
+        
+        // Store references for cleanup
+        timelineRefs.current.push(tl);
+        if (tl.scrollTrigger) {
+          scrollTriggerRefs.current.push(tl.scrollTrigger);
+        }
 
         // Animate map first
         tl.to(mapsRefs.current[index], {
@@ -233,7 +247,22 @@ const Hubs: React.FC = () => {
 
     return () => {
       ctx.revert();
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      
+      // Kill all specific ScrollTriggers
+      scrollTriggerRefs.current.forEach(trigger => {
+        if (trigger) {
+          trigger.kill();
+        }
+      });
+      scrollTriggerRefs.current = [];
+
+      // Kill all timelines
+      timelineRefs.current.forEach(timeline => {
+        if (timeline) {
+          timeline.kill();
+        }
+      });
+      timelineRefs.current = [];
     };
   }, [canAnimate]);
 

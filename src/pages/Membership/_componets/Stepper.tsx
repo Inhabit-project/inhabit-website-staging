@@ -79,7 +79,7 @@ export default function Stepper(props: Props): JSX.Element {
   }, [price, address, hasSentKycHard, hasSentKycSoft, isKycHardCompleted]);
 
   return (
-    <div className="w-full max-w-lg background-gradient-dark backdrop-blur-lg rounded-3xl shadow-xl border border-green-soft p-8 flex flex-col gap-6 self-start sticky top-8">
+    <div className="w-full lg:max-w-lg lg:self-start lg:sticky lg:top-8 background-gradient-dark backdrop-blur-lg rounded-3xl shadow-xl border border-green-soft p-8 flex flex-col gap-6">
       <Indicator step={step} />
       <ConnectButton />
 

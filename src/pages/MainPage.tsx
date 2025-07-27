@@ -5,8 +5,8 @@ import Video from "../components/Video";
 import Hubs from "../components/Hubs";
 import StewardshipNFT from "../components/StewardshipNFT";
 import Highlight from "../components/Highlight";
-import Photo from "../components/Photo";
 import NFTGrid from "../components/NFTGrid";
+import Photo from "../components/Photo";
 import Infographic from "../components/Infographic";
 import Testimonials from "../components/Testimonials";
 import CTA from "../components/CTA";
@@ -111,9 +111,6 @@ function MainPage(props: Props) {
         <section aria-label="Highlight section">
           <Highlight />
         </section>
-        <section aria-label="Photo section">
-          <Photo />
-        </section>
         <section ref={nftGridRef} aria-label="NFT Grid section">
           {!campaignsLoading &&
             (!lastCampaign ? (
@@ -123,7 +120,9 @@ function MainPage(props: Props) {
               <NFTGrid key={lastCampaign.id} campaign={lastCampaign} />
             ))}
         </section>
-
+        <section aria-label="Photo section">
+          <Photo />
+        </section>
         <section aria-label="Infographic section">
           <Infographic />
         </section>

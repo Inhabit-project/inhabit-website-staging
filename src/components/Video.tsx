@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { initVideoSectionCursor } from '../utils/videoCursor';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
@@ -35,8 +34,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         const urlObj = new URL(videoUrl);
         videoId = urlObj.searchParams.get('v') || '';
       }
-      // Build embed URL
-      let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=${autoplay ? '1' : '0'}&start=${startTime}`;
+      // Build embed URL with enhanced parameters for better visibility
+      let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=${autoplay ? '1' : '0'}&start=${startTime}&mute=0&controls=1&rel=0&showinfo=0&modestbranding=1`;
       return embedUrl;
     }
     // Fallback: return the original URL
@@ -78,12 +77,11 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
 
-  // Initialize video cursor for the entire section
-  useEffect(() => {
-    if (!sectionRef.current) return;
-    const cleanup = initVideoSectionCursor(sectionRef.current);
-    return cleanup;
-  }, []);
+  // Store references for cleanup
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const scrollTriggerRef = useRef<ScrollTrigger | undefined>(undefined);
+  const eventListenersRef = useRef<{ element: HTMLElement; type: string; handler: EventListener }[]>([]);
+  const mobileAnimationRunRef = useRef(false);
 
   // Initialize animations
   useEffect(() => {
@@ -107,7 +105,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
     });
 
     // Create scroll-triggered animation
-    const tl = gsap.timeline({
+    timelineRef.current = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
         start: "top center",
@@ -116,35 +114,50 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
       }
     });
 
-    tl.to(eyebrowRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    })
-    .to(headingRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      ease: "power3.out"
-    }, "-=0.6")
-    .to(videoContainerRef.current, {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      duration: 1.2,
-      ease: "power3.out"
-    }, "-=0.7")
-    .to(playButtonRef.current, {
-      opacity: 1,
-      scale: 1,
-      duration: 0.8,
-      ease: "back.out(1.7)"
-    }, "-=0.5");
+    // Store the ScrollTrigger reference for cleanup
+    scrollTriggerRef.current = timelineRef.current.scrollTrigger;
+
+    timelineRef.current
+      .to(eyebrowRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      })
+      .to(headingRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power3.out"
+      }, "-=0.6")
+      .to(videoContainerRef.current, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.2,
+        ease: "power3.out"
+      }, "-=0.7")
+      .to(playButtonRef.current, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+        ease: "back.out(1.7)"
+      }, "-=0.5");
+
+    // Add attention-grabbing pulse animation to video container
+    if (videoContainerRef.current) {
+      gsap.to(videoContainerRef.current, {
+        boxShadow: "0 0 30px rgba(255, 166, 0, 0.3)",
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: "power2.inOut"
+      });
+    }
 
     // Add hover animation for the play button
     if (playButtonRef.current) {
-      playButtonRef.current.addEventListener('mouseenter', () => {
+      const handleMouseEnter = () => {
         gsap.to(playButtonRef.current, {
           scale: 1.1,
           duration: 0.3,
@@ -155,9 +168,9 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
           borderColor: "rgb(255, 166, 0)",
           duration: 0.3
         });
-      });
+      };
 
-      playButtonRef.current.addEventListener('mouseleave', () => {
+      const handleMouseLeave = () => {
         gsap.to(playButtonRef.current, {
           scale: 1,
           duration: 0.3,
@@ -168,9 +181,20 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
           borderColor: "rgb(255, 255, 255)",
           duration: 0.3
         });
-      });
-      // Mobile: auto-animate play button
-      if (window.innerWidth <= 768) {
+      };
+
+      // Add event listeners and store references for cleanup
+      playButtonRef.current.addEventListener('mouseenter', handleMouseEnter);
+      playButtonRef.current.addEventListener('mouseleave', handleMouseLeave);
+      
+      eventListenersRef.current.push(
+        { element: playButtonRef.current, type: 'mouseenter', handler: handleMouseEnter },
+        { element: playButtonRef.current, type: 'mouseleave', handler: handleMouseLeave }
+      );
+
+      // Mobile: auto-animate play button (only once)
+      if (window.innerWidth <= 768 && !mobileAnimationRunRef.current) {
+        mobileAnimationRunRef.current = true;
         gsap.to(playButtonRef.current, {
           scale: 1.1,
           duration: 0.3,
@@ -185,20 +209,35 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
     }
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      // Clean up event listeners
+      eventListenersRef.current.forEach(({ element, type, handler }) => {
+        element.removeEventListener(type, handler);
+      });
+      eventListenersRef.current = [];
+
+      // Kill the specific ScrollTrigger
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        scrollTriggerRef.current = undefined;
+      }
+
+      // Kill the timeline
+      if (timelineRef.current) {
+        timelineRef.current.kill();
+        timelineRef.current = null;
+      }
     };
   }, [isLoading]);
 
-  // Open popup and start loading
   const handleOpenPopup = () => {
     setIsPopupOpen(true);
     setIsVideoLoading(true);
   };
 
-  return ( 
+  return (
     <section 
       ref={sectionRef}
-      className="relative w-full background-gradient-dark flex flex-col items-center custom-cursor-hide" 
+      className="relative w-full background-gradient-dark flex flex-col items-center" 
       aria-labelledby="video-title"
     >
       {/* Background with decorative elements */}
@@ -236,7 +275,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
         {/* Video container */}
         <div 
           ref={videoContainerRef}
-          className="self-end w-full md:w-[45rem] h-[16rem] md:h-[22rem] rounded-xl overflow-hidden"
+          className="self-end w-full md:w-[45rem] h-[16rem] md:h-[22rem] rounded-xl overflow-hidden relative"
         >
           {/* Video placeholder with background image */}
           <div 
@@ -248,21 +287,38 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
             }}
             onClick={handleOpenPopup}
           >
-            {/* Play button */}
-            <button 
-              ref={playButtonRef}
-              className="relative"
-              aria-label="Play video"
-            >
-              {/* Outer circle with animation */}
-              <div 
-                ref={playCircleRef}
-                className="w-[50px] md:w-[66px] h-[50px] md:h-[66px] rounded-full backdrop-blur-[4.125px] border border-white flex items-center justify-center transition-all duration-300 animate-videoPulse"
-              >
-                {/* Play triangle */}
-                <div className="w-0 h-0 border-t-[10px] md:border-t-[12px] border-t-transparent border-l-[16px] md:border-l-[20px] border-l-white border-b-[10px] md:border-b-[12px] border-b-transparent ml-1 group-hover:border-l-orange-500 transition-colors duration-300" />
+            {/* Play button with animated text - perfectly centered */}
+            <div className="relative flex items-center justify-center">
+              {/* Animated text around the circle */}
+              <div className="absolute w-[100px] h-[100px] md:w-[120px] md:h-[120px] animate-spin-slow">
+                <svg className="w-full h-full" viewBox="0 0 100 100">
+                  <defs>
+                    <path id="circle-path" d="M 50 50 m -40 0 a 40 40 0 1 1 80 0 a 40 40 0 1 1 -80 0" />
+                  </defs>
+                  <text className="text-xs font-medium fill-white">
+                    <textPath href="#circle-path" startOffset="0%">
+                      PLAY VIDEO • PLAY VIDEO • PLAY VIDEO • PLAY VIDEO •
+                    </textPath>
+                  </text>
+                </svg>
               </div>
-            </button>
+              
+              {/* Play button */}
+              <button 
+                ref={playButtonRef}
+                className="relative z-10"
+                aria-label="Play video"
+              >
+                {/* Outer circle with animation */}
+                <div 
+                  ref={playCircleRef}
+                  className="w-[40px] md:w-[50px] h-[40px] md:h-[50px] rounded-full backdrop-blur-[4.125px] border border-white flex items-center justify-center transition-all duration-300 animate-videoPulse"
+                >
+                  {/* Play triangle */}
+                  <div className="w-0 h-0 border-t-[8px] md:border-t-[10px] border-t-transparent border-l-[12px] md:border-l-[15px] border-l-white border-b-[8px] md:border-b-[10px] border-b-transparent ml-1 group-hover:border-l-orange-500 transition-colors duration-300" />
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -227,6 +227,9 @@
       "checkThisNFT": "CHECK THIS NFT",
       "availableMembership": "Available memberships"
     },
+    "otherCollections": {
+      "title": "Other <strong>NFTs</strong>"
+    },
     "infographic": {
       "landTenureTitle": "Land Tenure<br /><strong>Framework</strong>",
       "landTenureDescription": "A groundbreaking model of natural reserves that recognises nature as a legal entity with rights, and provides specific rights and benefits to individuals who support the permanent protection and regeneration of these biodiversity hotspots.",

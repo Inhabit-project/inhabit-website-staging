@@ -2,11 +2,12 @@ import React, { useRef, useEffect, useContext, useState } from 'react';
 import LogosSection from './LogosSection';
 import { useTranslation } from 'react-i18next';
 import { gsap, ScrollTrigger } from '../utils/gsap';
-import { LoadingContext } from '../App';
+import { LoadingContext, PageAnimationContext } from '../App';
 
 const Testimonials: React.FC = () => {
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
+  const pageAnimationReady = useContext(PageAnimationContext);
   const [canAnimate, setCanAnimate] = useState(false);
 
   // Refs for animations
@@ -40,7 +41,8 @@ const Testimonials: React.FC = () => {
 
   // Handle loading state change
   useEffect(() => {
-    if (!isLoading) {
+    // Allow animations when page is ready for animations OR when loader is not active
+    if (pageAnimationReady || !isLoading) {
       const timer = setTimeout(() => {
         setCanAnimate(true);
       }, 1500);
@@ -49,7 +51,7 @@ const Testimonials: React.FC = () => {
     } else {
       setCanAnimate(false);
     }
-  }, [isLoading]);
+  }, [isLoading, pageAnimationReady]);
 
   // Handle animations
   useEffect(() => {
