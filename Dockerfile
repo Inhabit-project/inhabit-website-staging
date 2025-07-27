@@ -25,7 +25,7 @@ RUN bun run build
 
 FROM nginx:alpine
 
-RUN apk add --no-cache bash gettext
+RUN apk add --no-cache bash gettext nginx-mod-http-brotli
 
 RUN rm -f /etc/nginx/conf.d/default.conf
 
