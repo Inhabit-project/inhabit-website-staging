@@ -4,7 +4,6 @@ import { blogServices } from "@/services/wordpress/blog";
 import { BlogPost, BlogProps as ImportedBlogProps } from "@/types/wordpress";
 import { truncateHtml } from "@/utils/html";
 import { Link, useLocation } from "react-router-dom";
-import { gsap, ScrollTrigger } from '../utils/gsap';
 import SubLoader from "@/load/SubLoader";
 import { LoadingContext, PageAnimationContext } from '../App';
 
@@ -23,14 +22,6 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const [error, setError] = useState<string | null>(null);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
   const [contentVisible, setContentVisible] = useState(false);
-  const [readyToAnimate, setReadyToAnimate] = useState(false);
-
-  // Refs for animations
-  const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const descriptionRef = useRef<HTMLParagraphElement>(null);
-  const mainPostRef = useRef<HTMLDivElement>(null);
-  const smallPostsRef = useRef<HTMLDivElement>(null);
 
   const loadPosts = async () => {
     setIsLoadingPosts(true);
@@ -55,126 +46,21 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
     loadPosts();
   }, [t]);
 
-  useEffect(() => {
-    // console.log('Blog component rendered, posts:', posts); // Debug: log posts state on update
-  }, [posts]);
-
   const [mainPost, ...smallPosts] = posts;
-
-  // Set initial states
-  useEffect(() => {
-    if (
-      !titleRef.current ||
-      !descriptionRef.current ||
-      !mainPostRef.current ||
-      !smallPostsRef.current
-    ) {
-      return;
-    }
-
-    const ctx = gsap.context(() => {
-      gsap.set([titleRef.current, descriptionRef.current], {
-        opacity: 0,
-        y: 50
-      });
-
-      gsap.set(mainPostRef.current, {
-        opacity: 0,
-        y: 50,
-        scale: 0.95
-      });
-
-      gsap.set(smallPostsRef.current, {
-        opacity: 0,
-        y: 50
-      });
-    });
-
-    return () => ctx.revert();
-  }, []);
-
-  // Wait for posts to load and refs to be set, then allow animation
-  useEffect(() => {
-    if (
-      !isLoadingPosts &&
-      posts.length > 0 &&
-      titleRef.current &&
-      descriptionRef.current
-    ) {
-      // Optional: add a small delay for effect
-      const timer = setTimeout(() => setReadyToAnimate(true), 400);
-      return () => clearTimeout(timer);
-    } else {
-      setReadyToAnimate(false);
-    }
-  }, [isLoadingPosts, posts.length]);
-
-  // Animate title and description only when readyToAnimate
-  useEffect(() => {
-    if (!titleRef.current || !descriptionRef.current || !readyToAnimate) {
-      return;
-    }
-
-    let tl: gsap.core.Timeline | null = null;
-    let ctx: gsap.Context | null = null;
-
-    function triggerBlogAnimation() {
-      ctx = gsap.context(() => {
-        if (isBlogPage) {
-          // Animate immediately (no scroll trigger)
-          tl = gsap.timeline();
-        } else {
-          // Animate on scroll (homepage)
-          tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top center",
-              end: "center center",
-              toggleActions: "play none none reverse",
-            },
-          });
-        }
-        tl.to(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-        })
-          .to(
-            descriptionRef.current,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power3.out",
-            },
-            "-=0.6"
-          )
-          .add(() => setContentVisible(true)); // Show content after animation
-        // Refresh ScrollTrigger after timeline is set up
-        ScrollTrigger.refresh();
-      });
-    }
-
-    triggerBlogAnimation();
-
-    return () => {
-      if (ctx) ctx.revert();
-    };
-  }, [readyToAnimate]);
 
   // Handle loading state change for animations
   useEffect(() => {
-    // Allow animations when page is ready for animations OR when loader is not active
-    if (pageAnimationReady || !isLoading) {
-      const timer = setTimeout(() => {
-        if (readyToAnimate) {
-          setContentVisible(true);
-        }
-      }, 1500);
-      return () => clearTimeout(timer);
+    // Reset content visibility when loading starts
+    if (isLoadingPosts) {
+      setContentVisible(false);
+      return;
     }
-  }, [isLoading, pageAnimationReady, readyToAnimate]);
+
+    // Show content when posts are loaded
+    if (!isLoadingPosts && posts.length > 0) {
+      setContentVisible(true);
+    }
+  }, [isLoadingPosts, posts.length]);
 
   useEffect(() => {
     if (!isLoadingPosts && posts.length > 0 && contentVisible && onReady) {
@@ -183,20 +69,18 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   }, [isLoadingPosts, posts.length, contentVisible, onReady]);
 
   return (
-    <section ref={sectionRef} className="background-gradient-light w-full min-h-screen">
+    <section className="background-gradient-light w-full min-h-screen">
       <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24 background-gradient-light">
         <div className="flex flex-col items-start gap-12">
           {/* Header section */}
           <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
             <h2
-              ref={titleRef}
               className="heading-2 text-secondary max-w-[40.9375rem]"
               style={{ color: "var(--color-secondary)" }}
             >
               <span dangerouslySetInnerHTML={{ __html: t("mainPage.blog.title") }} />
             </h2>
             <p
-              ref={descriptionRef}
               className="body-M text-secondary max-w-[36rem]"
               style={{ color: "var(--color-secondary)" }}
             >
@@ -206,7 +90,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
 
           {/* Blog content with fade-in */}
           <div className={`relative${isLoadingPosts ? ' min-h-80' : ''}`}>
-            {isBlogPage && <SubLoader isLoading={isLoadingPosts} />}
+            <SubLoader isLoading={isLoadingPosts} />
             {!isLoadingPosts && (
               <div
                 style={{
@@ -227,7 +111,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                 {posts.length > 0 && mainPost && (
                   <div className="flex flex-col lg:flex-row gap-8">
                     {/* Main Blog Post */}
-                    <div ref={mainPostRef} className="lg:w-1/2">
+                    <div className="lg:w-1/2">
                       <div className="flex flex-col gap-5">
                         <div className="relative aspect-[16/9] w-full overflow-hidden">
                           <img
@@ -273,7 +157,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                     </div>
 
                     {/* Small Blog Posts */}
-                    <div ref={smallPostsRef} className="lg:w-1/2">
+                    <div className="lg:w-1/2">
                       <div className="flex flex-col gap-[1.125rem]">
                         {smallPosts.map((post) => (
                           <div key={post.id} className="flex gap-5">

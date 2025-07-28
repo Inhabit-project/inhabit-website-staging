@@ -1,16 +1,19 @@
-import React, { useRef, useEffect, useContext, useState } from "react";
+import React, { useRef, useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { gsap, ScrollTrigger } from "../utils/gsap";
 import { LoadingContext, PageAnimationContext } from "../App";
 import { useStore } from "@/store";
 import { Link } from "react-router-dom";
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 const CTA: React.FC = () => {
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
   const pageAnimationReady = useContext(PageAnimationContext);
   const [canAnimate, setCanAnimate] = useState(false);
-  const [ready, setReady] = useState(false); // for initial CSS class
 
   // Simplified refs
   const sectionRef = useRef<HTMLElement>(null);
@@ -23,17 +26,56 @@ const CTA: React.FC = () => {
   const { lastCampaign } = useStore();
   const firstCollection = lastCampaign?.collections[0];
 
-  // Set initial states on mount
-  useEffect(() => {
-    gsap.set(bgRef.current, { scale: 1.2 });
-    gsap.set(imageContainerRef.current, { opacity: 0, y: 40 });
-    gsap.set(mainContentRef.current, { opacity: 1 }); // keep container visible
+  // Set initial states and handle animations with useGSAP
+  useGSAP(() => {
+    // Set initial states
+    gsap.set(bgRef.current, { scale: 1.1 });
+    gsap.set(imageContainerRef.current, { opacity: 0, y: 30 });
     gsap.set(textGroupRef.current, { opacity: 0, y: 20 });
-    setReady(true); // Remove initial CSS class after mount
-  }, []);
+    gsap.set(mainContentRef.current, { opacity: 1 }); // Keep container visible
+
+    // Only create animations if we can animate
+    if (!canAnimate || !sectionRef.current) return;
+    
+    const timeline = gsap.timeline({
+      paused: true,
+      defaults: { ease: 'power3.out' }
+    });
+
+    // Animate background first (subtle scale)
+    timeline.to(bgRef.current, {
+      scale: 1,
+      duration: 1.5,
+      ease: 'power2.out'
+    }, 0.2) // Small delay to ensure smooth start
+    // Animate image container
+    .to(imageContainerRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1.0,
+      ease: 'power3.out'
+    }, "-=1.0") // Start after background animation begins
+    // Animate text group last
+    .to(textGroupRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1.0,
+      ease: 'power3.out'
+    }, "-=0.5"); // Start after image animation begins
+
+    // Create scroll trigger
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top 70%",
+      end: "bottom 30%",
+      toggleActions: "play none none reverse",
+      animation: timeline,
+      id: `cta-${Date.now()}`, // Unique ID to avoid conflicts
+    });
+  }, { scope: sectionRef, dependencies: [canAnimate] });
 
   // Handle loading state change
-  useEffect(() => {
+  React.useEffect(() => {
     // Allow animations when page is ready for animations OR when loader is not active
     if (pageAnimationReady || !isLoading) {
       const timer = setTimeout(() => {
@@ -44,53 +86,6 @@ const CTA: React.FC = () => {
       setCanAnimate(false);
     }
   }, [isLoading, pageAnimationReady]);
-
-  // Simplified animation
-  useEffect(() => {
-    if (!canAnimate || !sectionRef.current) return;
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "center center",
-          toggleActions: "restart none none none",
-        },
-      });
-      tl.to(bgRef.current, {
-        scale: 1,
-        duration: 0.6,
-        ease: "power2.out",
-      })
-        .to(
-          imageContainerRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "power2.out",
-          },
-          "<" // at the same time as bgRef
-        )
-        .to(
-          textGroupRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.4,
-            ease: "power2.out",
-          },
-          "+=0.1" // after bg+image
-        );
-      // Refresh ScrollTrigger after timeline is set up
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 0);
-    }, sectionRef);
-    return () => {
-      ctx.revert();
-    };
-  }, [canAnimate]);
 
   return (
     <section
@@ -114,9 +109,7 @@ const CTA: React.FC = () => {
       {/* Main Content (Blur+Image+Text) */}
       <div
         ref={mainContentRef}
-        className={`relative z-10 flex min-h-screen items-center justify-center px-[clamp(1rem,5vw,6.25rem)]${
-          !ready ? " cta-initial-hidden" : ""
-        }`}
+        className="relative z-10 flex min-h-screen items-center justify-center px-[clamp(1rem,5vw,6.25rem)]"
       >
         <div className="w-full max-w-[120rem] rounded-[20px] overflow-hidden">
           <div className="flex flex-col md:flex-row">

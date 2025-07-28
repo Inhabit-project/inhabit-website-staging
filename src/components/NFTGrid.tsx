@@ -1,10 +1,14 @@
-import { useLayoutEffect, useRef, useState, useContext } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ComparisonCards } from "./NFTComparison/ComparisonCards";
 import { Campaign } from "@/models/campaign.model";
 import { gsap, ScrollTrigger } from "../utils/gsap";
-import { LoadingContext } from "@/App";
+import { LoadingContext, PageAnimationContext } from "@/App";
+import { useGSAP } from "@gsap/react";
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 type Props = {
   campaign: Campaign;
@@ -14,6 +18,7 @@ export default function NFTGrid(props: Props): JSX.Element {
   const { campaign } = props;
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
+  const pageAnimationReady = useContext(PageAnimationContext);
   const [canAnimate, setCanAnimate] = useState(false);
 
   // Refs for animations
@@ -24,34 +29,10 @@ export default function NFTGrid(props: Props): JSX.Element {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const tableRef = useRef<HTMLDivElement>(null);
   
-  // Store references for cleanup
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
-  const scrollTriggerRef = useRef<ScrollTrigger | undefined>(undefined);
-
-  // Set initial states
-  useLayoutEffect(() => {
-    if (!sectionRef.current) return;
-    const ctx = gsap.context(() => {
-      gsap.set([titleRef.current, descriptionRef.current], {
-        opacity: 0,
-        y: 50,
-      });
-      gsap.set(cardRefs.current, {
-        opacity: 0,
-        y: 50,
-        scale: 0.95,
-      });
-      gsap.set(tableRef.current, {
-        opacity: 0,
-        y: 30,
-      });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
-
   // Handle loading state change
-  useLayoutEffect(() => {
-    if (!isLoading) {
+  useEffect(() => {
+    // Allow animations when page is ready for animations OR when loader is not active
+    if (pageAnimationReady || !isLoading) {
       const timer = setTimeout(() => {
         setCanAnimate(true);
       }, 1500);
@@ -60,80 +41,81 @@ export default function NFTGrid(props: Props): JSX.Element {
     } else {
       setCanAnimate(false);
     }
-  }, [isLoading]);
+  }, [isLoading, pageAnimationReady]);
 
-  // Handle animations
-  useLayoutEffect(() => {
-    if (!canAnimate || !sectionRef.current) return;
-    const ctx = gsap.context(() => {
-      timelineRef.current = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "center center",
-          toggleActions: "play none none reverse",
-        },
-      });
-      
-      // Store the ScrollTrigger reference for cleanup
-      scrollTriggerRef.current = timelineRef.current.scrollTrigger;
-      
-      timelineRef.current
-        .to(titleRef.current, {
+  // Set initial states and handle animations with useGSAP
+  useGSAP(() => {
+    if (!sectionRef.current) return;
+    
+    // Set initial states
+    gsap.set([titleRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 50,
+    });
+    gsap.set(cardRefs.current, {
+      opacity: 0,
+      y: 50,
+      scale: 0.95,
+    });
+    gsap.set(tableRef.current, {
+      opacity: 0,
+      y: 30,
+    });
+
+    // Only create animations if we can animate
+    if (!canAnimate) return;
+    
+    const timeline = gsap.timeline({
+      paused: true,
+      defaults: { ease: 'power3.out' }
+    });
+
+    timeline
+      .to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+      })
+      .to(
+        descriptionRef.current,
+        {
           opacity: 1,
           y: 0,
           duration: 0.8,
-          ease: "power3.out",
-        })
-        .to(
-          descriptionRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-          },
-          "-=0.6"
-        )
-        .to(
-          cardRefs.current,
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: "power3.out",
-          },
-          "-=0.4"
-        )
-        .to(
-          tableRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-          },
-          "-=0.4"
-        );
-    }, sectionRef);
-    return () => {
-      ctx.revert();
-      
-      // Kill the specific ScrollTrigger
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.kill();
-        scrollTriggerRef.current = undefined;
-      }
+        },
+        "-=0.6"
+      )
+      .to(
+        cardRefs.current,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.15,
+        },
+        "-=0.4"
+      )
+      .to(
+        tableRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+        },
+        "-=0.4"
+      );
 
-      // Kill the timeline
-      if (timelineRef.current) {
-        timelineRef.current.kill();
-        timelineRef.current = null;
-      }
-    };
-  }, [canAnimate]);
+    // Create scroll trigger
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top 80%",
+      end: "bottom 20%",
+      toggleActions: "play none none reverse",
+      animation: timeline,
+      id: `nft-grid-${Date.now()}`, // Unique ID to avoid conflicts
+    });
+  }, { scope: sectionRef, dependencies: [canAnimate] });
 
   return (
     <section

@@ -1,7 +1,11 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext, PageAnimationContext } from '../App';
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 interface FAQItem {
   question: string;
@@ -17,6 +21,7 @@ interface FAQProps {
 const FAQ: React.FC<FAQProps> = ({ faqItems, title, description }) => {
   const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [canAnimate, setCanAnimate] = useState(false);
   const isLoading = useContext(LoadingContext);
   const pageAnimationReady = useContext(PageAnimationContext);
 
@@ -32,8 +37,9 @@ const FAQ: React.FC<FAQProps> = ({ faqItems, title, description }) => {
   const headerTitle = title || t('mainPage.faq.title');
   const headerDescription = description || t('mainPage.faq.description');
 
-  // Set initial states on mount for FAQ
-  useEffect(() => {
+  // Set initial states and handle animations with useGSAP
+  useGSAP(() => {
+    // Set initial states
     gsap.set([titleRef.current, descriptionRef.current], {
       opacity: 0,
       y: 50
@@ -42,50 +48,56 @@ const FAQ: React.FC<FAQProps> = ({ faqItems, title, description }) => {
       opacity: 0,
       y: 30
     });
-  }, []);
 
-  useEffect(() => {
-    // Allow animations when page is ready for animations OR when loader is not active
-    if (!(pageAnimationReady || !isLoading)) return;
+    // Only create animations if we can animate
+    if (!canAnimate) return;
 
-    let ctx = gsap.context(() => {
-      // Create scroll-triggered animation
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "center center",
-          toggleActions: "restart none none none"
-        }
-      });
+    // Create scroll-triggered animation
+    const timeline = gsap.timeline({
+      paused: true,
+      defaults: { ease: 'power3.out' }
+    });
 
-      tl.to(titleRef.current, {
+    timeline
+      .to(titleRef.current, {
         opacity: 1,
         y: 0,
         duration: 0.8,
-        ease: "power3.out"
       })
       .to(descriptionRef.current, {
         opacity: 1,
         y: 0,
         duration: 0.8,
-        ease: "power3.out"
       }, "-=0.6")
       .to(faqItemsArray.current, {
         opacity: 1,
         y: 0,
         duration: 0.8,
         stagger: 0.1,
-        ease: "power3.out"
       }, "-=0.4");
 
-      // Refresh ScrollTrigger after timeline is set up
-      ScrollTrigger.refresh();
-    }, sectionRef);
+    // Create scroll trigger
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top 75%",
+      end: "bottom 25%",
+      toggleActions: "play none none reverse",
+      animation: timeline,
+      id: `faq-${Date.now()}`, // Unique ID to avoid conflicts
+    });
+  }, { scope: sectionRef, dependencies: [canAnimate] });
 
-    return () => {
-      ctx.revert();
-    };
+  // Handle loading state change
+  React.useEffect(() => {
+    // Allow animations when page is ready for animations OR when loader is not active
+    if (pageAnimationReady || !isLoading) {
+      const timer = setTimeout(() => {
+        setCanAnimate(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    } else {
+      setCanAnimate(false);
+    }
   }, [isLoading, pageAnimationReady]);
 
   const toggleAccordion = (index: number) => {
@@ -186,8 +198,9 @@ export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string 
   ];
   const items = faqItems || defaultFaqItems;
 
-  // Set initial states on mount for FAQWhite
-  useEffect(() => {
+  // Set initial states and handle animations with useGSAP
+  useGSAP(() => {
+    // Set initial states
     gsap.set(titleRef.current, {
       opacity: 0,
       y: 50
@@ -196,45 +209,37 @@ export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string 
       opacity: 0,
       y: 30
     });
-  }, []);
 
-  useEffect(() => {
-    // Allow animations when page is ready for animations OR when loader is not active
+    // Only create animations when page is ready for animations OR when loader is not active
     if (!(pageAnimationReady || !isLoading)) return;
 
-    let ctx = gsap.context(() => {
-      // Create scroll-triggered animation
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "center center",
-          toggleActions: "restart none none none"
-        }
-      });
+    // Create scroll-triggered animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "restart none none none"
+      }
+    });
 
-      tl.to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      })
-      .to(faqItemsArray.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: "power3.out"
-      }, "-=0.4");
+    tl.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    })
+    .to(faqItemsArray.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: "power3.out"
+    }, "-=0.4");
 
-      // Refresh ScrollTrigger after timeline is set up
-      ScrollTrigger.refresh();
-    }, sectionRef);
-
-    return () => {
-      ctx.revert();
-    };
-  }, [isLoading, pageAnimationReady]);
+    // Refresh ScrollTrigger to ensure it works on page refresh
+    ScrollTrigger.refresh();
+  }, { scope: sectionRef, dependencies: [isLoading, pageAnimationReady] });
 
   return (
     <section ref={sectionRef} className="relative w-full min-h-screen background-gradient-light scroll-container">
@@ -304,8 +309,8 @@ export const FAQHubs: React.FC = () => {
 
   const faqItems: FAQItem[] = (t('hubsPage.faq.items', { returnObjects: true }) as FAQItem[]);
 
-  // Set initial states on mount for FAQHubs
-  useEffect(() => {
+  // Set initial states with useGSAP
+  useGSAP(() => {
     gsap.set([titleRef.current, descriptionRef.current], {
       opacity: 0,
       y: 50
@@ -314,10 +319,10 @@ export const FAQHubs: React.FC = () => {
       opacity: 0,
       y: 30
     });
-  }, []);
+  }, { scope: sectionRef });
 
   // Handle loading state change
-  useEffect(() => {
+  React.useEffect(() => {
     // Allow animations when page is ready for animations OR when loader is not active
     if (pageAnimationReady || !isLoading) {
       const timer = setTimeout(() => {
@@ -329,48 +334,54 @@ export const FAQHubs: React.FC = () => {
     }
   }, [isLoading, pageAnimationReady]);
 
-  useEffect(() => {
+  // Set initial states and handle animations with useGSAP
+  useGSAP(() => {
+    // Set initial states
+    gsap.set([titleRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 50
+    });
+    gsap.set(faqItemsArray.current, {
+      opacity: 0,
+      y: 30
+    });
+
+    // Only create animations if we can animate
     if (!canAnimate) return;
 
-    let ctx = gsap.context(() => {
-      // Create scroll-triggered animation
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "center center",
-          toggleActions: "restart none none none"
-        }
-      });
+    // Create scroll-triggered animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "restart none none none"
+      }
+    });
 
-      tl.to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      })
-      .to(descriptionRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      }, "-=0.6")
-      .to(faqItemsArray.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: "power3.out"
-      }, "-=0.4");
+    tl.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    })
+    .to(descriptionRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    }, "-=0.6")
+    .to(faqItemsArray.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: "power3.out"
+    }, "-=0.4");
 
-      // Refresh ScrollTrigger after timeline is set up
-      ScrollTrigger.refresh();
-    }, sectionRef);
-
-    return () => {
-      ctx.revert();
-    };
-  }, [canAnimate]);
+    // Refresh ScrollTrigger to ensure it works on page refresh
+    ScrollTrigger.refresh();
+  }, { scope: sectionRef, dependencies: [canAnimate] });
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -450,13 +461,11 @@ export const FAQStewardshipNFT: React.FC = () => {
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const faqItemsRef = useRef<HTMLDivElement>(null);
   const faqItemsArray = useRef<HTMLDivElement[]>([]);
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
-  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   const faqItems: FAQItem[] = (t('mainPage.stewardshipNFTPage.faq.items', { returnObjects: true }) as FAQItem[]);
 
-  // Set initial states on mount for FAQStewardshipNFT
-  useEffect(() => {
+  // Set initial states with useGSAP
+  useGSAP(() => {
     gsap.set([titleRef.current, descriptionRef.current], {
       opacity: 0,
       y: 50
@@ -465,10 +474,10 @@ export const FAQStewardshipNFT: React.FC = () => {
       opacity: 0,
       y: 30
     });
-  }, []);
+  }, { scope: sectionRef });
 
   // Handle loading state change
-  useEffect(() => {
+  React.useEffect(() => {
     // Allow animations when page is ready for animations OR when loader is not active
     if (pageAnimationReady || !isLoading) {
       const timer = setTimeout(() => {
@@ -480,63 +489,58 @@ export const FAQStewardshipNFT: React.FC = () => {
     }
   }, [isLoading, pageAnimationReady]);
 
-  // Handle animations
-  useEffect(() => {
+  // Set initial states and handle animations with useGSAP
+  useGSAP(() => {
+    // Set initial states
+    gsap.set([titleRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 50
+    });
+    gsap.set(faqItemsArray.current, {
+      opacity: 0,
+      y: 30
+    });
+
+    // Only create animations if we can animate
     if (!canAnimate || !sectionRef.current) return;
 
-    let ctx = gsap.context(() => {
-      // Kill existing timeline and scroll trigger if they exist
-      if (timelineRef.current) {
-        timelineRef.current.kill();
-      }
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.kill();
-      }
+    // Create new timeline
+    const timeline = gsap.timeline({
+      paused: true,
+      defaults: { ease: 'power3.out' }
+    });
 
-      // Create new timeline
-      timelineRef.current = gsap.timeline({
-        paused: true,
-        defaults: { ease: 'power3.out' }
-      });
+    timeline
+      .to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8
+      })
+      .to(descriptionRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8
+      }, '-=0.6')
+      .to(faqItemsArray.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1
+      }, '-=0.4');
 
-      timelineRef.current
-        .to(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8
-        })
-        .to(descriptionRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8
-        }, '-=0.6')
-        .to(faqItemsArray.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.1
-        }, '-=0.4');
-
-      // Create new scroll trigger
-      scrollTriggerRef.current = ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: 'top 75%',
-        end: 'center center',
-        toggleActions: 'restart none none none',
-        animation: timelineRef.current,
-        id: `faq-stewardship-${Date.now()}` // Unique ID to avoid conflicts
-      });
-      // Refresh ScrollTrigger after timeline is set up
-      ScrollTrigger.refresh();
-    }, sectionRef);
-
-    return () => {
-      ctx.revert(); // This will clean up all animations created in this context
-      if (timelineRef.current) timelineRef.current.kill();
-      if (scrollTriggerRef.current) scrollTriggerRef.current.kill();
-      // Remove the global ScrollTrigger cleanup as it affects other components
-    };
-  }, [canAnimate]);
+    // Create new scroll trigger
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top 75%',
+      end: 'center center',
+      toggleActions: 'restart none none none',
+      animation: timeline,
+      id: `faq-stewardship-${Date.now()}` // Unique ID to avoid conflicts
+    });
+    
+    // Refresh ScrollTrigger to ensure it works on page refresh
+    ScrollTrigger.refresh();
+  }, { scope: sectionRef, dependencies: [canAnimate] });
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);

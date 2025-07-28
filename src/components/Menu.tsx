@@ -223,14 +223,20 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
             </nav>
             <div className="flex gap-4 mt-4">
               <LanguageButton
-                onClick={() => changeLanguage('en')}
+                onClick={() => {
+                  changeLanguage('en');
+                  setMobileOpen(false);
+                }}
                 className={i18n.language === 'en' ? 'active' : ''}
                 ref={el => (mobileLangBtnRef.current[0] = el)}
               >
                 EN
               </LanguageButton>
               <LanguageButton
-                onClick={() => changeLanguage('es')}
+                onClick={() => {
+                  changeLanguage('es');
+                  setMobileOpen(false);
+                }}
                 className={i18n.language === 'es' ? 'active' : ''}
                 ref={el => (mobileLangBtnRef.current[1] = el)}
               >
@@ -242,6 +248,7 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
                 className="btn-secondary transition-all duration-200 group mt-4"
                 style={{ paddingLeft: '2rem', paddingRight: '2rem' }}
                 ref={mobileDownloadBtnRef}
+                onClick={() => setMobileOpen(false)}
               >
                 <div className="flex items-center gap-2">
                   <svg className="w-6 h-6 transition-colors duration-200 group-hover:[&>path]:stroke-[var(--color-secondary)]" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" style={{stroke: 'var(--color-secondary)'}}>

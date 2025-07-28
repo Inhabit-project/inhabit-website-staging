@@ -1,7 +1,11 @@
-import React, { useState, useRef, useEffect, useLayoutEffect, useContext } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { gsap, ScrollTrigger } from "../utils/gsap";
 import { useTranslation } from "react-i18next";
 import { LoadingContext } from "../App";
+import { useGSAP } from "@gsap/react";
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 const Hubs: React.FC = () => {
   const { t } = useTranslation();
@@ -32,75 +36,79 @@ const Hubs: React.FC = () => {
     }
   }, [selectedHub]);
 
-  // Initialize section animations
-  useLayoutEffect(() => {
+  // Initialize section animations with useGSAP
+  useGSAP(() => {
     if (isLoading) return;
-    const ctx = gsap.context(() => {
-      gsap.set([titleRef.current, descriptionRef.current], {
-        opacity: 0,
-        y: 50,
-      });
-      gsap.set(mapWrapperRef.current, {
-        opacity: 0,
-        y: 100,
-        scale: 0.95,
-      });
-      gsap.set(markersRef.current, {
-        opacity: 0,
-        scale: 0.5,
-      });
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "center center",
-          toggleActions: "play none none reverse",
-        },
-      });
-      tl.to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out",
-      })
-        .to(
-          descriptionRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: "power3.out",
-          },
-          "-=0.6"
-        )
-        .to(
-          mapWrapperRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 1.2,
-            ease: "power3.out",
-          },
-          "-=0.7"
-        )
-        .to(
-          markersRef.current,
-          {
-            opacity: 1,
-            scale: 1,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: "back.out(1.7)",
-          },
-          "-=0.8"
-        );
+    
+    // Set initial states
+    gsap.set([titleRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 50,
     });
-    return () => ctx.revert();
-  }, [isLoading]);
+    gsap.set(mapWrapperRef.current, {
+      opacity: 0,
+      y: 100,
+      scale: 0.95,
+    });
+    gsap.set(markersRef.current, {
+      opacity: 0,
+      scale: 0.5,
+    });
+    
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "play none none reverse",
+      },
+    });
+    
+    tl.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out",
+    })
+      .to(
+        descriptionRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+        },
+        "-=0.6"
+      )
+      .to(
+        mapWrapperRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out",
+        },
+        "-=0.7"
+      )
+      .to(
+        markersRef.current,
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "back.out(1.7)",
+        },
+        "-=0.8"
+      );
 
-  // Animate card in with GSAP
-  useEffect(() => {
+    // Refresh ScrollTrigger to ensure it works on page refresh
+    ScrollTrigger.refresh();
+  }, { scope: sectionRef, dependencies: [isLoading] });
+
+  // Animate card in with useGSAP
+  useGSAP(() => {
     if (selectedHub !== null && cardRef.current) {
       gsap.fromTo(
         cardRef.current,
@@ -108,7 +116,7 @@ const Hubs: React.FC = () => {
         { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power3.out" }
       );
     }
-  }, [selectedHub]);
+  }, { dependencies: [selectedHub] });
 
   // Auto-hide after 3s if not hovered
   useEffect(() => {
@@ -123,7 +131,35 @@ const Hubs: React.FC = () => {
     };
   }, [selectedHub, isHovered]);
 
+  // Prevent scrolling when card is open
   useEffect(() => {
+    if (selectedHub !== null) {
+      document.body.style.overflow = 'hidden';
+      // Prevent scroll events from being queued
+      const preventScroll = (e: Event) => {
+        e.preventDefault();
+        e.stopPropagation();
+      };
+      document.addEventListener('scroll', preventScroll, { passive: false });
+      document.addEventListener('wheel', preventScroll, { passive: false });
+      document.addEventListener('touchmove', preventScroll, { passive: false });
+      
+      return () => {
+        document.body.style.overflow = '';
+        document.removeEventListener('scroll', preventScroll);
+        document.removeEventListener('wheel', preventScroll);
+        document.removeEventListener('touchmove', preventScroll);
+      };
+    } else {
+      document.body.style.overflow = '';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+  }, [selectedHub]);
+
+  // Animate card content with useGSAP
+  useGSAP(() => {
     if (selectedHub !== null && cardContentRef.current) {
       const children = cardContentRef.current.querySelectorAll(".card-animate");
       gsap.set(children, { opacity: 0, y: 20 });
@@ -136,7 +172,7 @@ const Hubs: React.FC = () => {
         delay: 0.15,
       });
     }
-  }, [selectedHub]);
+  }, { dependencies: [selectedHub] });
 
   // Use translation for hub cards
   const hubCards = [
@@ -246,9 +282,9 @@ const Hubs: React.FC = () => {
           /* Responsive adjustments */
           @media (max-width: 640px) {
             .hub-card-centered {
-              width: calc(100vw - 1rem);
+              width: calc(100vw - 0.5rem);
               height: min(32rem, calc(100vh - 2rem));
-              max-width: 28rem;
+              max-width: 32rem;
             }
           }
         `}
@@ -277,11 +313,11 @@ const Hubs: React.FC = () => {
             </div>
 
             {/* Main terrain image */}
-            <div className="relative w-full min-h-[60vh] md:min-h-[35rem] flex items-center justify-center md:block">
+            <div className="relative w-full  md:min-h-[35rem] flex items-center justify-center md:block">
               {/* Wrapper for map and markers */}
               <div
                 ref={mapWrapperRef}
-                className="relative w-11/12 max-w-lg md:w-full md:max-w-none md:absolute md:left-1/2 md:-translate-x-1/2 md:top-0"
+                className="relative md:w-full md:max-w-none md:absolute md:left-1/2 md:-translate-x-1/2 md:top-0"
               >
                 <img
                   src="/assets/map.webp"

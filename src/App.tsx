@@ -160,6 +160,12 @@ const App: React.FC = () => {
   // Called when Loader finishes its progress animation
   const handleLoaderComplete = () => {
     setIsLoading(false);
+    // Refresh ScrollTrigger after loader disappears
+    setTimeout(() => {
+      import("./utils/gsap").then(({ ScrollTrigger }) => {
+        ScrollTrigger.refresh();
+      });
+    }, 200);
   };
 
   // Helper to pass onPageReady to all pages

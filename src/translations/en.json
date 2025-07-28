@@ -146,7 +146,7 @@
       "title": "Tierra Kilwa",
       "description": "The Tierra Kilwa hub pioneers sustainable living in arid environments, focusing on water conservation and renewable energy.",
       "visionHeading": "HUB VISION",
-      "visionText": "The TierraKilwa Hub demonstrates how life can thrive in extreme conditions, inspiring new solutions for a changing climate."
+      "visionText": "The Tierra Kilwa Hub demonstrates how life can thrive in extreme conditions, inspiring new solutions for a changing climate."
     }
   },
   "faq": {
@@ -456,7 +456,7 @@
           },
           {
             "question": "Is using blockchain environmentally sustainable for INHABIT?",
-            "answer": "Yes  INHABIT uses CELO, a carbon-negative blockchain designed for climate-friendly projects.<br /><br />Minting all the NFTs needed to finance an INHABIT Hub produces less CO₂ than brewing a single cup of coffee.<br /><br />Each NFT uses just 0.00001 kWh and emits only 5 mg of CO₂  less than a Google search.<br /><br />In comparison:<ul><li>Ethereum (pre-merge) = 15,000× more emissions</li><li>Bitcoin = 100,000× more</li></ul>Plus, CELO runs a built-in carbon offset program: a portion of every transaction fee funds verified projects that remove CO₂ from the atmosphere. This makes CELO carbon-negative, meaning it offsets more than it emits  so even our NFTs end up being carbon-negative, turning blockchain into a tool for climate regeneration."
+            "answer": "Yes, INHABIT uses CELO, a carbon-negative blockchain designed for climate-friendly projects.<br /><br />Minting all the NFTs needed to finance an INHABIT Hub produces less CO₂ than brewing a single cup of coffee.<br /><br />Each NFT uses just 0.00001 kWh and emits only 5 mg of CO₂  less than a Google search.<br /><br />In comparison:<ul><li>Ethereum (pre-merge) = 15,000× more emissions</li><li>Bitcoin = 100,000× more</li></ul>Plus, CELO runs a built-in carbon offset program: a portion of every transaction fee funds verified projects that remove CO₂ from the atmosphere. This makes CELO carbon-negative, meaning it offsets more than it emits  so even our NFTs end up being carbon-negative, turning blockchain into a tool for climate regeneration."
           }
         ]
       },
@@ -500,7 +500,7 @@
       "0": {
         "eyebrow": "ASSET RIGHT",
         "title": "Life-long Membership",
-        "description": "You gain lifelong stewardship and utility rights over tokenized real-world lands.\n\nAs an early backer, you'll receive future NFT versions for free as it evolves over time, entitling you to increasing benefits and returns, with added rights and features offered by the Stewardship NFT 2.0subject to development"
+        "description": "You gain lifelong stewardship and utility rights over tokenized real-world lands.\n\nAs an early backer, you'll receive future NFT versions for free as it evolves over time, entitling you to increasing benefits and returns, with added rights and features offered by the Stewardship NFT 2.0 subject to development"
       },
       "1": {
         "eyebrow": "ART RIGHTS",
@@ -617,7 +617,7 @@
     },
     "guardians": {
       "title": "The Guardians",
-      "text": "Since 2021, Amelia (Right of Nature Lawyer), Juan (Bio-climatic Architect), and their son León (Nature Monitoring Enthusiast) have stewarded Ñuiyanzhi in collaboration with the Kogi elders of the Kaggaba tribe, traditional authorities of the Sierra Nevada de Santa Marta. With academic backgrounds and a decade of experience in regenerative rural development, they co-create sustainable solutions rooted in ancestral wisdom that are applied in this HUB.\n\nMore than a place, Ñuiyanzhi is a sanctuaryhome to a steward family, the Elders of the Sierra, and the birds, monkeys, bees, and plants that safeguard the waters. Ñuiyanzhi is a home for Lifean invitation to care for the Earth with tenderness, responsibility, and awareness",
+      "text": "Since 2021, Amelia (Right of Nature Lawyer), Juan (Bio-climatic Architect), and their son León (Nature Monitoring Enthusiast) have stewarded Ñuiyanzhi in collaboration with the Kogi elders of the Kaggaba tribe, traditional authorities of the Sierra Nevada de Santa Marta. With academic backgrounds and a decade of experience in regenerative rural development, they co-create sustainable solutions rooted in ancestral wisdom that are applied in this HUB.\n\nMore than a place, Ñuiyanzhi is a sanctuary home to a steward family, the Elders of the Sierra, and the birds, monkeys, bees, and plants that safeguard the waters. Ñuiyanzhi is a home for Life an invitation to care for the Earth with tenderness, responsibility, and awareness",
       "imageAlt": "Guardians"
     },
     "land": {
@@ -631,7 +631,7 @@
       "items": [
         {
           "question": "What is a biocultural hub?",
-          "answer": "True and lasting regeneration needs more than tree plantingit requires a deep shift in how we value and care for land. biocultural hubs lead this transformation.\n\nHUBS are centers of regeneration and cultural renewal, designed to ignite and cultivate the sense of stewardship needed to restore our planet. HUBS protect biodiversity, train the next generation of land stewards, and weave together ancestral wisdom with contemporary knowledge to drive deep change.\n\nThey are spaces where anyone can learn the deepest practices of inhabiting and stewarding natureplaces to explore new ways of relating to land, to recognize its many intrinsic values, and to realize the power of our role in nurturing and multiplying them.\n\nEach Hub not only restores ecosystems but is also tasked with expanding a global Corridor by increasing conservation areas through collaboration with nearby hubs, projects, and communities in its bioregion.\n\nHUBS are the building blocks of the Corridora worldwide network of biodiversity islands and cultural landmarks. The Corridor wants to inspire a movement of stewardship across the globe."
+          "answer": "True and lasting regeneration needs more than tree planting it requires a deep shift in how we value and care for land. biocultural hubs lead this transformation.\n\nHUBS are centers of regeneration and cultural renewal, designed to ignite and cultivate the sense of stewardship needed to restore our planet. HUBS protect biodiversity, train the next generation of land stewards, and weave together ancestral wisdom with contemporary knowledge to drive deep change.\n\nThey are spaces where anyone can learn the deepest practices of inhabiting and stewarding natureplaces to explore new ways of relating to land, to recognize its many intrinsic values, and to realize the power of our role in nurturing and multiplying them.\n\nEach Hub not only restores ecosystems but is also tasked with expanding a global Corridor by increasing conservation areas through collaboration with nearby hubs, projects, and communities in its bioregion.\n\nHUBS are the building blocks of the Corridora worldwide network of biodiversity islands and cultural landmarks. The Corridor wants to inspire a movement of stewardship across the globe."
         },
         {
           "question": "What makes a Hub a biodiversity hotspot?",
@@ -660,10 +660,10 @@
     "seoKeywords": "Ñuiyanzhi hub, Colombia conservation, Colombian biodiversity, biocultural conservation, community-led conservation, sustainable development Colombia"
   },
   "aguaDeLunaPage": {
-    "title": "AguaDeLuna Hub Details Page"
+    "title": "Agua de Luna Hub Details Page"
   },
   "TierraKilwaPage": {
-    "title": "TierraKilwa Hub Details Page"
+    "title": "Tierra Kilwa Hub Details Page"
   },
   "nftTable": {
     "minFundraise": "MINIMUM FUNDRAISE",
@@ -815,7 +815,7 @@
     "hubs": {
       "title": "biocultural",
       "strong": "Hubs",
-      "description": "HUBS are like 'Migratory Gardens' they exist in the real world but behave differently. They are “spaces of transition” to experiment new ways of relating to ourselves and Nature. Places to learn the deepest practices for inhabiting and stewarding lands."
+      "description": "HUBS are like 'Migratory Gardens' they exist in the real world but behave differently. They are \"spaces of transition\" to experiment new ways of relating to ourselves and Nature. Places to learn the deepest practices for inhabiting and stewarding lands."
     },
     "stewardship": {
       "title": "Stewardship",
@@ -947,7 +947,7 @@
   "termsAndConditionsPage": {
     "title": "Terms of Use",
     "strong": "and Conditions",
-    "subtitle": "These Terms of Use and Conditions (“Terms”) govern your access to and use of the INHABIT website, platform, and associated services operated by INHABIT CO S.A.S. (“INHABIT,” “we,” “our,” or “us”). By accessing www.inhabit.one or any related content, you agree to be bound by these Terms.",
+    "subtitle": "These Terms of Use and Conditions (\"Terms\") govern your access to and use of the INHABIT website, platform, and associated services operated by INHABIT CO S.A.S. (\"INHABIT,\" \"we,\" \"our,\" or \"us\"). By accessing www.inhabit.one or any related content, you agree to be bound by these Terms.",
     "sections": {
       "1": {
         "title": "Acceptance of Terms",

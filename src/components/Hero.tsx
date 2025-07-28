@@ -1,9 +1,13 @@
-import React, { useRef, useLayoutEffect, useContext } from "react";
+import React, { useRef, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import Menu from "./Menu";
 import { scrollManager } from "../utils/scrollManager";
 import { gsap } from "../utils/gsap";
 import { LoadingContext } from "../App";
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 interface HeroProps {
   scrollToRef?: React.RefObject<HTMLElement>;
@@ -221,26 +225,18 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
   };
 
   // Handle initial setup and language changes
-  useLayoutEffect(() => {
+  useGSAP(() => {
     resetAnimationState();
     setupTitleWords();
-    let cleanup: (() => void) | undefined;
-    const ctx = gsap.context(() => {
-      cleanup = setupAnimations();
-    });
-    return () => {
-      resetAnimationState();
-      if (cleanup) cleanup();
-      ctx.revert();
-    };
-  }, [t, i18n.language, isLoading]);
+    return setupAnimations();
+  }, { dependencies: [t, i18n.language, isLoading] });
 
   return (
     <div className="relative w-full h-screen bg-secondary flex flex-col no-scroll-snap overflow-hidden pt-[5rem]">
       {/* Background Image with Overlay */}
       <div ref={backgroundRef} className="absolute inset-0 w-full h-full">
         <picture>
-          <source media="(max-width: 768px)" srcSet="/assets/hero-mobile.webp" loading="eager"/>
+          <source media="(max-width: 768px)" srcSet="/assets/hero-mobile.webp"/>
           <img
             ref={backgroundImageRef}
             src="/assets/hero.webp"

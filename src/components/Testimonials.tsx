@@ -1,8 +1,12 @@
-import React, { useRef, useEffect, useContext, useState } from 'react';
+import React, { useRef, useContext, useState } from 'react';
 import LogosSection from './LogosSection';
 import { useTranslation } from 'react-i18next';
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext, PageAnimationContext } from '../App';
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 const Testimonials: React.FC = () => {
   const { t } = useTranslation();
@@ -18,8 +22,9 @@ const Testimonials: React.FC = () => {
   const testimonialImageRef = useRef<HTMLDivElement>(null);
   const testimonialContentRef = useRef<HTMLDivElement>(null);
 
-  // Set initial states on mount
-  useEffect(() => {
+  // Set initial states and handle animations with useGSAP
+  useGSAP(() => {
+    // Set initial states
     gsap.set([titleRef.current, descriptionRef.current], {
       opacity: 0,
       y: 50
@@ -37,10 +42,59 @@ const Testimonials: React.FC = () => {
       opacity: 0,
       y: 30
     });
-  }, []);
+
+    // Only create animations if we can animate
+    if (!canAnimate) return;
+
+    const timeline = gsap.timeline({
+      paused: true,
+      defaults: { ease: 'power3.out' }
+    });
+
+    timeline
+      .to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+      })
+      .to(descriptionRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+      }, "-=0.6")
+      // Testimonial card animation
+      .to(testimonialCardRef.current, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.8,
+      }, "-=0.4")
+      // Testimonial image animation
+      .to(testimonialImageRef.current, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+      }, "-=0.6")
+      // Testimonial content animation
+      .to(testimonialContentRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+      }, "-=0.6");
+
+    // Create scroll trigger
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top 80%",
+      end: "bottom 20%",
+      toggleActions: "restart none none none",
+      animation: timeline,
+      id: `testimonials-${Date.now()}`, // Unique ID to avoid conflicts
+    });
+  }, { scope: sectionRef, dependencies: [canAnimate] });
 
   // Handle loading state change
-  useEffect(() => {
+  React.useEffect(() => {
     // Allow animations when page is ready for animations OR when loader is not active
     if (pageAnimationReady || !isLoading) {
       const timer = setTimeout(() => {
@@ -52,66 +106,6 @@ const Testimonials: React.FC = () => {
       setCanAnimate(false);
     }
   }, [isLoading, pageAnimationReady]);
-
-  // Handle animations
-  useEffect(() => {
-    let ctx = gsap.context(() => {});
-
-    if (canAnimate) {
-      ctx = gsap.context(() => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top center",
-            end: "center center",
-            toggleActions: "restart none none none"
-          }
-        });
-
-        // Title and description animations
-        tl.to(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        })
-        .to(descriptionRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        }, "-=0.6")
-        // Testimonial card animation
-        .to(testimonialCardRef.current, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: "power3.out"
-        }, "-=0.4")
-        // Testimonial image animation
-        .to(testimonialImageRef.current, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          ease: "power3.out"
-        }, "-=0.6")
-        // Testimonial content animation
-        .to(testimonialContentRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        }, "-=0.6");
-        // Refresh ScrollTrigger after timeline is set up
-        ScrollTrigger.refresh();
-      });
-    }
-
-    return () => {
-      ctx.revert();
-    };
-  }, [canAnimate]);
 
   return (
     <>

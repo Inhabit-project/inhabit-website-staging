@@ -4,6 +4,10 @@ import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 const ICONS = [
   '/assets/icons/Icon-1.svg',
@@ -31,8 +35,8 @@ const FourCriteriaCardsSection: React.FC = () => {
     description: string;
   }>;
 
-  // Set initial states
-  useEffect(() => {
+  // Set initial states with useGSAP
+  useGSAP(() => {
     gsap.set([titleRef.current, descriptionRef.current], {
       opacity: 0,
       y: 50
@@ -42,7 +46,7 @@ const FourCriteriaCardsSection: React.FC = () => {
       opacity: 0,
       y: 50
     });
-  }, []);
+  }, { scope: sectionRef });
 
   // Handle loading state change
   useEffect(() => {
@@ -57,49 +61,41 @@ const FourCriteriaCardsSection: React.FC = () => {
     }
   }, [isLoading]);
 
-  // Handle animations
-  useEffect(() => {
-    let ctx = gsap.context(() => {});
+  // Handle animations with useGSAP
+  useGSAP(() => {
+    if (!canAnimate) return;
 
-    if (canAnimate) {
-      ctx = gsap.context(() => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top center",
-            end: "center center",
-            toggleActions: "play none none reverse"
-          }
-        });
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "play none none reverse"
+      }
+    });
 
-        // Title and description animations
-        tl.to(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        })
-        .to(descriptionRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        }, "-=0.6")
-        // Cards stagger animation
-        .to(cardsRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power3.out"
-        }, "-=0.4");
-      });
-    }
-
-    return () => {
-      ctx.revert();
-    };
-  }, [canAnimate]);
+    // Title and description animations
+    tl.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    })
+    .to(descriptionRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    }, "-=0.6")
+    // Cards stagger animation
+    .to(cardsRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power3.out"
+    }, "-=0.4");
+  }, { scope: sectionRef, dependencies: [canAnimate] });
 
   return (
     <section
@@ -130,7 +126,7 @@ const FourCriteriaCardsSection: React.FC = () => {
             key={idx}
             ref={el => cardsRef.current[idx] = el}
           >
-            <ImpactCard {...card} icon={ICONS[idx]} />
+            <ImpactCard {...card} icon={ICONS[idx]} label={card.title} />
           </div>
         ))}
       </div>

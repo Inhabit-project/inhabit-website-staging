@@ -1,8 +1,7 @@
 import React, { useRef, useEffect, useContext, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "../utils/gsap";
 import { LoadingContext } from "../App";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -10,8 +9,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useApiNewsletter } from "@/hooks/api/newsletter";
 import { SubscriptionDto } from "@/services/dtos/subscription.dto";
 import confetti from "canvas-confetti";
+import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(useGSAP);
 
 const Footer: React.FC = () => {
   const { t } = useTranslation();
@@ -48,8 +48,6 @@ const Footer: React.FC = () => {
   const socialRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const copyrightRef = useRef<HTMLDivElement>(null);
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
-  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   // external hooks
   const {
@@ -89,8 +87,8 @@ const Footer: React.FC = () => {
     });
   };
 
-  // effects
-  useEffect(() => {
+  // Set initial states with useGSAP
+  useGSAP(() => {
     gsap.set(logoRef.current, { opacity: 0, y: 50 });
     gsap.set(
       [
@@ -103,7 +101,7 @@ const Footer: React.FC = () => {
       { opacity: 0, y: 50 }
     );
     gsap.set(copyrightRef.current, { opacity: 0, y: 20 });
-  }, []);
+  }, { scope: footerRef });
 
   useEffect(() => {
     if (!isLoading) {
@@ -113,48 +111,36 @@ const Footer: React.FC = () => {
     setCanAnimate(false);
   }, [isLoading]);
 
-  useEffect(() => {
+  // Handle animations with useGSAP
+  useGSAP(() => {
     if (!canAnimate || !footerRef.current) return;
 
-    const ctx = gsap.context(() => {
-      timelineRef.current?.kill();
-      scrollTriggerRef.current?.kill();
+    const timeline = gsap.timeline({
+      paused: true,
+      defaults: { ease: "power3.out" },
+    });
 
-      timelineRef.current = gsap.timeline({
-        paused: true,
-        defaults: { ease: "power3.out" },
-      });
+    timeline
+      .to(logoRef.current, { opacity: 1, y: 0, duration: 0.8 })
+      .to(
+        [connectRef.current, locationRef.current],
+        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 },
+        "-=0.4"
+      )
+      .to(newsletterRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.4")
+      .to(socialRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.4")
+      .to(menuRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.6")
+      .to(copyrightRef.current, { opacity: 1, y: 0, duration: 0.6 }, "-=0.4");
 
-      timelineRef.current
-        .to(logoRef.current, { opacity: 1, y: 0, duration: 0.8 })
-        .to(
-          [connectRef.current, locationRef.current],
-          { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 },
-          "-=0.4"
-        )
-        .to(newsletterRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.4")
-        .to(socialRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.4")
-        .to(menuRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.6")
-        .to(copyrightRef.current, { opacity: 1, y: 0, duration: 0.6 }, "-=0.4");
-
-      scrollTriggerRef.current = ScrollTrigger.create({
-        trigger: footerRef.current,
-        start: "top 75%",
-        end: "center center",
-        toggleActions: "restart none none none",
-        animation: timelineRef.current,
-        id: `footer-${Date.now()}`,
-      });
-
-      ScrollTrigger.refresh();
-    }, footerRef);
-
-    return () => {
-      ctx.revert();
-      timelineRef.current?.kill();
-      scrollTriggerRef.current?.kill();
-    };
-  }, [canAnimate]);
+    ScrollTrigger.create({
+      trigger: footerRef.current,
+      start: "top 80%",
+      end: "bottom 20%",
+      toggleActions: "restart none none none",
+      animation: timeline,
+      id: `footer-${Date.now()}`,
+    });
+  }, { scope: footerRef, dependencies: [canAnimate] });
 
   return (
     <footer

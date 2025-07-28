@@ -27,7 +27,7 @@ const projects = [
       '/assets/arte-selva1.webp',
       '/assets/arte-selva2.webp',
       '/assets/arte-selva3.webp',
-      '/assets/arte-selva4.webp',
+      '/assets/Projects03.webp',
     ],
   },
 ];

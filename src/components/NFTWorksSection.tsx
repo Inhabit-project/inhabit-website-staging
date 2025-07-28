@@ -1,11 +1,11 @@
 import React, { useRef, useEffect, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
+import { useGSAP } from '@gsap/react';
 
-// Register ScrollTrigger plugin
-gsap.registerPlugin(ScrollTrigger);
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 const NFTWorksSection: React.FC = () => {
   const { t } = useTranslation();
@@ -25,38 +25,29 @@ const NFTWorksSection: React.FC = () => {
   const step1ContentRef = useRef<HTMLDivElement>(null);
   const step2ContentRef = useRef<HTMLDivElement>(null);
 
-  // Timeline refs for cleanup
-  const mainTlRef = useRef<gsap.core.Timeline | null>(null);
-  const step1TlRef = useRef<gsap.core.Timeline | null>(null);
-  const step2TlRef = useRef<gsap.core.Timeline | null>(null);
+  // Set initial states with useGSAP
+  useGSAP(() => {
+    gsap.set([titleRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 50
+    });
 
-  // Set initial states
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.set([titleRef.current, descriptionRef.current], {
-        opacity: 0,
-        y: 50
-      });
+    gsap.set([step1ImageRef.current, step2ImageRef.current], {
+      opacity: 0,
+      y: 50,
+      scale: 0.95
+    });
 
-      gsap.set([step1ImageRef.current, step2ImageRef.current], {
-        opacity: 0,
-        y: 50,
-        scale: 0.95
-      });
+    gsap.set([step1NumberRef.current, step2NumberRef.current], {
+      opacity: 0,
+      y: 30
+    });
 
-      gsap.set([step1NumberRef.current, step2NumberRef.current], {
-        opacity: 0,
-        y: 30
-      });
-
-      gsap.set([step1ContentRef.current, step2ContentRef.current], {
-        opacity: 0,
-        y: 30
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+    gsap.set([step1ContentRef.current, step2ContentRef.current], {
+      opacity: 0,
+      y: 30
+    });
+  }, { scope: sectionRef });
 
   // Handle loading state change
   useEffect(() => {
@@ -70,114 +61,93 @@ const NFTWorksSection: React.FC = () => {
     }
   }, [isLoading]);
 
-  // Handle animations
-  useEffect(() => {
+  // Handle animations with useGSAP
+  useGSAP(() => {
     if (!canAnimate || !sectionRef.current) return;
 
-    const ctx = gsap.context(() => {
-      // Kill existing timelines if they exist
-      if (mainTlRef.current) mainTlRef.current.kill();
-      if (step1TlRef.current) step1TlRef.current.kill();
-      if (step2TlRef.current) step2TlRef.current.kill();
+    // Title and description animation
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "play none none reverse",
+        id: `nft-works-main-${Date.now()}` // Unique ID to avoid conflicts
+      }
+    })
+    .to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    })
+    .to(descriptionRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    }, "-=0.6");
 
-      // Title and description animation
-      mainTlRef.current = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "center center",
-          toggleActions: "play none none reverse",
-          id: `nft-works-main-${Date.now()}` // Unique ID to avoid conflicts
-        }
-      });
+    // Step 1 animation
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: step1Ref.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "play none none reverse",
+        id: `nft-works-step1-${Date.now()}` // Unique ID to avoid conflicts
+      }
+    })
+    .to(step1ImageRef.current, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.8,
+      ease: "power3.out"
+    })
+    .to(step1NumberRef.current, {
+      opacity: 0.9,
+      y: 0,
+      duration: 0.6,
+      ease: "power3.out"
+    }, "-=0.4")
+    .to(step1ContentRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power3.out"
+    }, "-=0.4");
 
-      mainTlRef.current
-        .to(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        })
-        .to(descriptionRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        }, "-=0.6");
-
-      // Step 1 animation
-      step1TlRef.current = gsap.timeline({
-        scrollTrigger: {
-          trigger: step1Ref.current,
-          start: "top center",
-          end: "center center",
-          toggleActions: "play none none reverse",
-          id: `nft-works-step1-${Date.now()}` // Unique ID to avoid conflicts
-        }
-      });
-
-      step1TlRef.current
-        .to(step1ImageRef.current, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: "power3.out"
-        })
-        .to(step1NumberRef.current, {
-          opacity: 0.9,
-          y: 0,
-          duration: 0.6,
-          ease: "power3.out"
-        }, "-=0.4")
-        .to(step1ContentRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: "power3.out"
-        }, "-=0.4");
-
-      // Step 2 animation
-      step2TlRef.current = gsap.timeline({
-        scrollTrigger: {
-          trigger: step2Ref.current,
-          start: "top center",
-          end: "center center",
-          toggleActions: "play none none reverse",
-          id: `nft-works-step2-${Date.now()}` // Unique ID to avoid conflicts
-        }
-      });
-
-      step2TlRef.current
-        .to(step2ImageRef.current, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: "power3.out"
-        })
-        .to(step2NumberRef.current, {
-          opacity: 0.9,
-          y: 0,
-          duration: 0.6,
-          ease: "power3.out"
-        }, "-=0.4")
-        .to(step2ContentRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: "power3.out"
-        }, "-=0.4");
-    }, sectionRef); // Scope all animations to the section
-
-    return () => {
-      ctx.revert(); // This will clean up all animations created in this context
-      // Additionally kill timelines explicitly
-      if (mainTlRef.current) mainTlRef.current.kill();
-      if (step1TlRef.current) step1TlRef.current.kill();
-      if (step2TlRef.current) step2TlRef.current.kill();
-    };
-  }, [canAnimate]);
+    // Step 2 animation
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: step2Ref.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "play none none reverse",
+        id: `nft-works-step2-${Date.now()}` // Unique ID to avoid conflicts
+      }
+    })
+    .to(step2ImageRef.current, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.8,
+      ease: "power3.out"
+    })
+    .to(step2NumberRef.current, {
+      opacity: 0.9,
+      y: 0,
+      duration: 0.6,
+      ease: "power3.out"
+    }, "-=0.4")
+    .to(step2ContentRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power3.out"
+    }, "-=0.4");
+  }, { scope: sectionRef, dependencies: [canAnimate] });
 
   return (
     <section

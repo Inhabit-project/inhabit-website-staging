@@ -47,7 +47,7 @@ const ImpactCard: React.FC<ImpactCardProps> = ({ label, icon, title, subtitle, d
     <h3
       id={id}
       className="whitespace-pre-line"
-      style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, color: 'var(--color-secondary)', fontSize: '2.5rem', lineHeight: '1.1' }}
+      style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, color: 'var(--color-secondary)', lineHeight: '1.1' }}
     >
       {title}
       <br />

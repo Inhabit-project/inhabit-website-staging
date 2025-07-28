@@ -9,6 +9,10 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "@/utils/gsap";
 import { blogServices } from "@/services/wordpress/blog";
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 const POSTS_PER_PAGE = 3;
 
@@ -72,20 +76,20 @@ const RelatedPost: React.FC = () => {
     setCurrentPage(page);
   };
 
-  // Set initial states for animation
-  useEffect(() => {
+  // Set initial states for animation with useGSAP
+  useGSAP(() => {
     gsap.set(titleRef.current, { opacity: 0, y: 50 });
-  }, []);
+  }, { scope: sectionRef });
 
-  // Set initial state for cards only when posts are loaded and refs are attached
-  useEffect(() => {
+  // Set initial state for cards with useGSAP
+  useGSAP(() => {
     if (!isLoading && posts.length > 0) {
       const validCardRefs = cardRefs.current.filter(Boolean);
       if (validCardRefs.length === posts.length) {
         gsap.set(validCardRefs, { opacity: 0, y: 50, scale: 0.97 });
       }
     }
-  }, [isLoading, posts.length]);
+  }, { scope: sectionRef, dependencies: [isLoading, posts.length] });
 
   // Wait for posts to load, then allow animation
   useEffect(() => {
@@ -97,46 +101,40 @@ const RelatedPost: React.FC = () => {
     }
   }, [isLoading, posts.length]);
 
-  // Animate title and cards when ready
-  useEffect(() => {
+  // Animate title and cards with useGSAP
+  useGSAP(() => {
     if (!canAnimate) return;
-    let ctx: gsap.Context | null = null;
+    
     // Filter out null refs to avoid GSAP errors
     const validCardRefs = cardRefs.current.filter(Boolean);
-    ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          end: "center center",
-          toggleActions: "play none none reverse",
-        },
-      });
-      tl.to(titleRef.current, {
+    
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 80%",
+        end: "center center",
+        toggleActions: "play none none reverse",
+      },
+    });
+    
+    tl.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out",
+    }).to(
+      validCardRefs,
+      {
         opacity: 1,
         y: 0,
+        scale: 1,
         duration: 0.8,
+        stagger: 0.15,
         ease: "power3.out",
-      }).to(
-        validCardRefs,
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power3.out",
-        },
-        "-=0.6"
-      );
-    }, sectionRef);
-    return () => {
-      ctx && ctx.revert();
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.trigger === sectionRef.current) trigger.kill();
-      });
-    };
-  }, [canAnimate, posts.length]);
+      },
+      "-=0.6"
+    );
+  }, { scope: sectionRef, dependencies: [canAnimate, posts.length] });
 
   useEffect(() => {
     loadPosts(1);

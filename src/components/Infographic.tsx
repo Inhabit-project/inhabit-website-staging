@@ -1,8 +1,12 @@
-import React, { useRef, useEffect, useContext, useState } from 'react';
+import React, { useRef, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
 import ImpactCard from './ImpactCard';
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 const Infographic: React.FC = () => {
   const { t } = useTranslation();
@@ -28,9 +32,6 @@ const Infographic: React.FC = () => {
   const cardsTitleRef = useRef<HTMLHeadingElement>(null);
   const cardsDescRef = useRef<HTMLParagraphElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  
-  // Store trigger for cleanup
-  const infographicTrigger = useRef<ScrollTrigger | null>(null);
 
   const impactCards = [
     {
@@ -63,44 +64,8 @@ const Infographic: React.FC = () => {
     },
   ];
 
-  // Set initial states
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Set all elements to initial state
-      const allElements = [
-        slide1TitleRef.current, slide1DescRef.current, slide1ImgRef.current,
-        slide2TitleRef.current, slide2DescRef.current, slide2ImgRef.current,
-        slide3TitleRef.current, slide3DescRef.current, slide3ImgRef.current,
-        slide4TitleRef.current, slide4DescRef.current, slide4ImgRef.current,
-        cardsTitleRef.current, cardsDescRef.current
-      ];
-      
-      gsap.set(allElements, {
-        opacity: 0,
-        y: 30
-      });
-      
-      // Set images to slightly scaled down
-      const allImages = [
-        slide1ImgRef.current, slide2ImgRef.current, slide3ImgRef.current, slide4ImgRef.current
-      ];
-      
-      gsap.set(allImages, {
-        scale: 0.95
-      });
-
-      // Set cards to initial state
-      gsap.set(cardsRef.current, {
-        opacity: 0,
-        y: 30,
-        scale: 0.95
-      });
-    }, rootRef);
-    return () => ctx.revert();
-  }, []);
-
   // Handle loading state change
-  useEffect(() => {
+  React.useEffect(() => {
     if (!isLoading) {
       const timer = setTimeout(() => {
         setCanAnimate(true);
@@ -111,156 +76,165 @@ const Infographic: React.FC = () => {
     }
   }, [isLoading]);
 
-  // Handle animations with optimized ScrollTrigger
-  useEffect(() => {
-    let ctx: gsap.Context | undefined;
+  // Set initial states and handle animations with useGSAP
+  useGSAP(() => {
+    // Set all elements to initial state
+    const allElements = [
+      slide1TitleRef.current, slide1DescRef.current, slide1ImgRef.current,
+      slide2TitleRef.current, slide2DescRef.current, slide2ImgRef.current,
+      slide3TitleRef.current, slide3DescRef.current, slide3ImgRef.current,
+      slide4TitleRef.current, slide4DescRef.current, slide4ImgRef.current,
+      cardsTitleRef.current, cardsDescRef.current
+    ];
     
-    // Clean up previous trigger
-    if (infographicTrigger.current) {
-      infographicTrigger.current.kill();
-      infographicTrigger.current = null;
-    }
+    gsap.set(allElements, {
+      opacity: 0,
+      y: 30
+    });
     
-    if (canAnimate) {
-      ctx = gsap.context(() => {
-        // Create a single timeline for all animations
-        const timeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: rootRef.current,
-            start: 'top 80%',
-            end: 'bottom 20%',
-            toggleActions: 'play none none reverse',
-          }
-        });
-
-        // Slide 1 animations
-        timeline
-          .to(slide1TitleRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            duration: 0.8, 
-            ease: 'power2.out' 
-          })
-          .to(slide1DescRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            duration: 0.8, 
-            ease: 'power2.out' 
-          }, '-=0.6')
-          .to(slide1ImgRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            scale: 1, 
-            duration: 1, 
-            ease: 'power2.out' 
-          }, '-=0.4');
-
-        // Slide 2 animations
-        timeline
-          .to(slide2TitleRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            duration: 0.8, 
-            ease: 'power2.out' 
-          }, '-=0.2')
-          .to(slide2DescRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            duration: 0.8, 
-            ease: 'power2.out' 
-          }, '-=0.6')
-          .to(slide2ImgRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            scale: 1, 
-            duration: 1, 
-            ease: 'power2.out' 
-          }, '-=0.4');
-
-        // Slide 3 animations
-        timeline
-          .to(slide3TitleRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            duration: 0.8, 
-            ease: 'power2.out' 
-          }, '-=0.2')
-          .to(slide3DescRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            duration: 0.8, 
-            ease: 'power2.out' 
-          }, '-=0.6')
-          .to(slide3ImgRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            scale: 1, 
-            duration: 1, 
-            ease: 'power2.out' 
-          }, '-=0.4');
-
-        // Slide 4 animations
-        timeline
-          .to(slide4TitleRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            duration: 0.8, 
-            ease: 'power2.out' 
-          }, '-=0.2')
-          .to(slide4DescRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            duration: 0.8, 
-            ease: 'power2.out' 
-          }, '-=0.6')
-          .to(slide4ImgRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            scale: 1, 
-            duration: 1, 
-            ease: 'power2.out' 
-          }, '-=0.4');
-
-        // Cards section animations
-        timeline
-          .to(cardsTitleRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            duration: 0.8, 
-            ease: 'power2.out' 
-          }, '-=0.2')
-          .to(cardsDescRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            duration: 0.8, 
-            ease: 'power2.out' 
-          }, '-=0.6')
-          .to(cardsRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            scale: 1, 
-            duration: 0.8, 
-            stagger: {
-              each: 0.15,
-              from: "start"
-            },
-            ease: 'power2.out' 
-          }, '-=0.4');
-
-        // Store the trigger for cleanup
-        infographicTrigger.current = timeline.scrollTrigger as ScrollTrigger;
-      }, rootRef);
-    }
+    // Set images to slightly scaled down
+    const allImages = [
+      slide1ImgRef.current, slide2ImgRef.current, slide3ImgRef.current, slide4ImgRef.current
+    ];
     
-    return () => {
-      if (ctx) ctx.revert();
-      // Clean up trigger
-      if (infographicTrigger.current) {
-        infographicTrigger.current.kill();
-        infographicTrigger.current = null;
+    gsap.set(allImages, {
+      scale: 0.95
+    });
+
+    // Set cards to initial state
+    gsap.set(cardsRef.current, {
+      opacity: 0,
+      y: 30,
+      scale: 0.95
+    });
+
+    // Only create animations if we can animate
+    if (!canAnimate) return;
+    
+    // Create a single timeline for all animations
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: rootRef.current,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        toggleActions: 'play none none reverse',
       }
-    };
-  }, [canAnimate, t]);
+    });
+
+    // Slide 1 animations
+    timeline
+      .to(slide1TitleRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8, 
+        ease: 'power2.out' 
+      })
+      .to(slide1DescRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8, 
+        ease: 'power2.out' 
+      }, '-=0.6')
+      .to(slide1ImgRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1, 
+        duration: 1, 
+        ease: 'power2.out' 
+      }, '-=0.4');
+
+    // Slide 2 animations
+    timeline
+      .to(slide2TitleRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8, 
+        ease: 'power2.out' 
+      }, '-=0.2')
+      .to(slide2DescRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8, 
+        ease: 'power2.out' 
+      }, '-=0.6')
+      .to(slide2ImgRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1, 
+        duration: 1, 
+        ease: 'power2.out' 
+      }, '-=0.4');
+
+    // Slide 3 animations
+    timeline
+      .to(slide3TitleRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8, 
+        ease: 'power2.out' 
+      }, '-=0.2')
+      .to(slide3DescRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8, 
+        ease: 'power2.out' 
+      }, '-=0.6')
+      .to(slide3ImgRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1, 
+        duration: 1, 
+        ease: 'power2.out' 
+      }, '-=0.4');
+
+    // Slide 4 animations
+    timeline
+      .to(slide4TitleRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8, 
+        ease: 'power2.out' 
+      }, '-=0.2')
+      .to(slide4DescRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8, 
+        ease: 'power2.out' 
+      }, '-=0.6')
+      .to(slide4ImgRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1, 
+        duration: 1, 
+        ease: 'power2.out' 
+      }, '-=0.4');
+
+    // Cards section animations
+    timeline
+      .to(cardsTitleRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8, 
+        ease: 'power2.out' 
+      }, '-=0.2')
+      .to(cardsDescRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8, 
+        ease: 'power2.out' 
+      }, '-=0.6')
+      .to(cardsRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1, 
+        duration: 0.8, 
+        stagger: {
+          each: 0.15,
+          from: "start"
+        },
+        ease: 'power2.out' 
+      }, '-=0.4');
+  }, { scope: rootRef, dependencies: [canAnimate, t] });
 
   return (
     <section ref={rootRef} className="relative w-full flex flex-col items-center background-gradient-light">

@@ -5,6 +5,10 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
 import SubLoader from '@/load/SubLoader';
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 interface VideoPlayerProps {
   videoUrl: string;
@@ -77,14 +81,10 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
 
-  // Store references for cleanup
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
-  const scrollTriggerRef = useRef<ScrollTrigger | undefined>(undefined);
-  const eventListenersRef = useRef<{ element: HTMLElement; type: string; handler: EventListener }[]>([]);
   const mobileAnimationRunRef = useRef(false);
 
-  // Initialize animations
-  useEffect(() => {
+  // Initialize animations with useGSAP
+  useGSAP(() => {
     if (isLoading) return;
 
     // Set initial states
@@ -105,7 +105,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
     });
 
     // Create scroll-triggered animation
-    timelineRef.current = gsap.timeline({
+    const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
         start: "top center",
@@ -114,10 +114,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
       }
     });
 
-    // Store the ScrollTrigger reference for cleanup
-    scrollTriggerRef.current = timelineRef.current.scrollTrigger;
-
-    timelineRef.current
+    timeline
       .to(eyebrowRef.current, {
         opacity: 1,
         y: 0,
@@ -154,80 +151,65 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
         ease: "power2.inOut"
       });
     }
+  }, { scope: sectionRef, dependencies: [isLoading] });
 
-    // Add hover animation for the play button
-    if (playButtonRef.current) {
-      const handleMouseEnter = () => {
-        gsap.to(playButtonRef.current, {
-          scale: 1.1,
-          duration: 0.3,
-          ease: "power2.out"
-        });
-        gsap.to(playCircleRef.current, {
-          backgroundColor: "rgba(255, 166, 0, 0.2)",
-          borderColor: "rgb(255, 166, 0)",
-          duration: 0.3
-        });
-      };
+  // Handle hover animations and mobile animations separately
+  useEffect(() => {
+    if (!playButtonRef.current || !playCircleRef.current) return;
 
-      const handleMouseLeave = () => {
-        gsap.to(playButtonRef.current, {
-          scale: 1,
-          duration: 0.3,
-          ease: "power2.out"
-        });
-        gsap.to(playCircleRef.current, {
-          backgroundColor: "rgba(255, 255, 255, 0.1)",
-          borderColor: "rgb(255, 255, 255)",
-          duration: 0.3
-        });
-      };
+    const handleMouseEnter = () => {
+      gsap.to(playButtonRef.current, {
+        scale: 1.1,
+        duration: 0.3,
+        ease: "power2.out"
+      });
+      gsap.to(playCircleRef.current, {
+        backgroundColor: "rgba(255, 166, 0, 0.2)",
+        borderColor: "rgb(255, 166, 0)",
+        duration: 0.3
+      });
+    };
 
-      // Add event listeners and store references for cleanup
-      playButtonRef.current.addEventListener('mouseenter', handleMouseEnter);
-      playButtonRef.current.addEventListener('mouseleave', handleMouseLeave);
-      
-      eventListenersRef.current.push(
-        { element: playButtonRef.current, type: 'mouseenter', handler: handleMouseEnter },
-        { element: playButtonRef.current, type: 'mouseleave', handler: handleMouseLeave }
-      );
+    const handleMouseLeave = () => {
+      gsap.to(playButtonRef.current, {
+        scale: 1,
+        duration: 0.3,
+        ease: "power2.out"
+      });
+      gsap.to(playCircleRef.current, {
+        backgroundColor: "rgba(255, 255, 255, 0.1)",
+        borderColor: "rgb(255, 255, 255)",
+        duration: 0.3
+      });
+    };
 
-      // Mobile: auto-animate play button (only once)
-      if (window.innerWidth <= 768 && !mobileAnimationRunRef.current) {
-        mobileAnimationRunRef.current = true;
-        gsap.to(playButtonRef.current, {
-          scale: 1.1,
-          duration: 0.3,
-          ease: "power2.out"
-        });
-        gsap.to(playCircleRef.current, {
-          backgroundColor: "rgba(255, 166, 0, 0.2)",
-          borderColor: "rgb(255, 166, 0)",
-          duration: 0.3
-        });
-      }
+    // Add event listeners
+    playButtonRef.current.addEventListener('mouseenter', handleMouseEnter);
+    playButtonRef.current.addEventListener('mouseleave', handleMouseLeave);
+
+    // Mobile: auto-animate play button (only once)
+    if (window.innerWidth <= 768 && !mobileAnimationRunRef.current) {
+      mobileAnimationRunRef.current = true;
+      gsap.to(playButtonRef.current, {
+        scale: 1.1,
+        duration: 0.3,
+        ease: "power2.out"
+      });
+      gsap.to(playCircleRef.current, {
+        backgroundColor: "rgba(255, 166, 0, 0.2)",
+        borderColor: "rgb(255, 166, 0)",
+        duration: 0.3
+      });
     }
 
+    // Cleanup function
     return () => {
-      // Clean up event listeners
-      eventListenersRef.current.forEach(({ element, type, handler }) => {
-        element.removeEventListener(type, handler);
-      });
-      eventListenersRef.current = [];
-
-      // Kill the specific ScrollTrigger
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.kill();
-        scrollTriggerRef.current = undefined;
-      }
-
-      // Kill the timeline
-      if (timelineRef.current) {
-        timelineRef.current.kill();
-        timelineRef.current = null;
+      if (playButtonRef.current) {
+        playButtonRef.current.removeEventListener('mouseenter', handleMouseEnter);
+        playButtonRef.current.removeEventListener('mouseleave', handleMouseLeave);
       }
     };
-  }, [isLoading]);
+  }, []); // Empty dependency array since we only want to set up listeners once
 
   const handleOpenPopup = () => {
     setIsPopupOpen(true);

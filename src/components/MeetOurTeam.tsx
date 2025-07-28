@@ -1,8 +1,12 @@
-import React, { useState, useRef, useLayoutEffect, useContext, useEffect } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 const teamMembers = [
   {
@@ -107,7 +111,6 @@ const MeetOurTeam: React.FC = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
-  const animationRef = useRef<gsap.Context | null>(null);
 
   // Fetch the team array with returnObjects: true for i18next array support
   const teamArray = t('aboutUsPage.team', { returnObjects: true }) as { name: string; role: string }[];
@@ -116,7 +119,7 @@ const MeetOurTeam: React.FC = () => {
   const fallbackName = fallbackNameKeys.map((key) => t(key));
   const fallbackRole = fallbackRoleKeys.map((key) => t(key));
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setHeights(
       teamMembers.map((_, idx) =>
         descRefs.current[idx]?.scrollHeight || 0
@@ -124,24 +127,20 @@ const MeetOurTeam: React.FC = () => {
     );
   }, [expanded]);
 
-  // Set initial states for animation
-  useEffect(() => {
+  // Set initial states for animation with useGSAP
+  useGSAP(() => {
     if (sectionRef.current) {
-      const ctx = gsap.context(() => {
-        gsap.set([titleRef.current, subtitleRef.current], {
-          opacity: 0,
-          y: 50
-        });
-        gsap.set(cardRefs.current, {
-          opacity: 0,
-          y: 50,
-          scale: 0.95
-        });
-      }, sectionRef);
-
-      return () => ctx.revert();
+      gsap.set([titleRef.current, subtitleRef.current], {
+        opacity: 0,
+        y: 50
+      });
+      gsap.set(cardRefs.current, {
+        opacity: 0,
+        y: 50,
+        scale: 0.95
+      });
     }
-  }, []);
+  }, { scope: sectionRef });
 
   // Handle loading state change
   useEffect(() => {
@@ -158,70 +157,50 @@ const MeetOurTeam: React.FC = () => {
     };
   }, [isLoading]);
 
-  // Animate on scroll when ready
-  useEffect(() => {
+  // Animate on scroll when ready with useGSAP
+  useGSAP(() => {
     if (!canAnimate || !sectionRef.current) return;
 
-    // Register ScrollTrigger plugin within the context
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Create a new context for this component's animations
-    animationRef.current = gsap.context(() => {
-      const scrollTrigger = {
-        trigger: sectionRef.current,
-        start: 'top center',
-        end: 'center center',
-        toggleActions: 'play none none reverse',
-        // Add markers only in development
-        // markers: process.env.NODE_ENV === 'development',
-      };
-
-      const tl = gsap.timeline({ scrollTrigger });
-
-      // Title animation
-      tl.to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-      });
-
-      // Subtitle animation
-      tl.to(subtitleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-      }, '-=0.6');
-
-      // Cards animation with stagger
-      tl.to(cardRefs.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.8,
-        stagger: {
-          amount: 0.8,
-          ease: 'power3.out',
-        },
-      }, '-=0.4');
-
-    }, sectionRef); // Scope to section
-
-    // Cleanup function
-    return () => {
-      if (animationRef.current) {
-        // Kill all ScrollTriggers created in this context
-        ScrollTrigger.getAll().forEach(st => {
-          if (st.vars.trigger === sectionRef.current) {
-            st.kill();
-          }
-        });
-        // Revert the context
-        animationRef.current.revert();
-      }
+    const scrollTrigger = {
+      trigger: sectionRef.current,
+      start: 'top center',
+      end: 'center center',
+      toggleActions: 'play none none reverse',
+      // Add markers only in development
+      // markers: process.env.NODE_ENV === 'development',
     };
-  }, [canAnimate]);
+
+    const tl = gsap.timeline({ scrollTrigger });
+
+    // Title animation
+    tl.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: 'power3.out',
+    });
+
+    // Subtitle animation
+    tl.to(subtitleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: 'power3.out',
+    }, '-=0.6');
+
+    // Cards animation with stagger
+    tl.to(cardRefs.current, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.8,
+      stagger: {
+        amount: 0.8,
+        ease: 'power3.out',
+      },
+    }, '-=0.4');
+
+  }, { scope: sectionRef, dependencies: [canAnimate] });
 
   return (
     <section 

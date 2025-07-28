@@ -1,8 +1,12 @@
-import React, { useEffect, useRef, useContext } from 'react';
+import React, { useRef, useContext } from 'react';
 import { ReactSVG } from 'react-svg';
 import { useTranslation } from 'react-i18next';
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 const Highlight = () => {
   const { t } = useTranslation();
@@ -12,7 +16,7 @@ const Highlight = () => {
   const contentRef = useRef<HTMLDivElement>(null);
   const isLoading = useContext(LoadingContext);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (isLoading) {
       return;
     }
@@ -26,67 +30,60 @@ const Highlight = () => {
       return;
     }
 
-    let ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set(svg, { 
-        opacity: 0, 
-        scale: 0.8 
-      });
-      
-      gsap.set(title, {
-        opacity: 0,
-        y: 30
-      });
+    // Set initial states
+    gsap.set(svg, { 
+      opacity: 0, 
+      scale: 0.8 
+    });
+    
+    gsap.set(title, {
+      opacity: 0,
+      y: 30
+    });
 
-      gsap.set(description, {
-        opacity: 0,
-        y: 30,
-        scale: 0.9
-      });
+    gsap.set(description, {
+      opacity: 0,
+      y: 30,
+      scale: 0.9
+    });
 
-      // Create the animation timeline
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: content,
-          start: "top center",
-          end: "center center",
-          toggleActions: "play none none reverse"
-        }
-      });
+    // Create the animation timeline
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: content,
+        start: "top center",
+        end: "center center",
+        toggleActions: "play none none reverse"
+      }
+    });
 
-      // Animate eyebrow first
-      tl.to(title, {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: "power3.out"
-      })
-      // Animate h3 second
-      .to(description, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1.2,
-        ease: "power3.out"
-      }, "-=0.6")
-      // Animate background SVG last
-      .to(svg, {
-        opacity: 0.3,
-        scale: 1,
-        duration: 1.5,
-        ease: "power3.out"
-      }, "-=0.8");
+    // Animate eyebrow first
+    tl.to(title, {
+      opacity: 1,
+      y: 0,
+      duration: 1.2,
+      ease: "power3.out"
+    })
+    // Animate h3 second
+    .to(description, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 1.2,
+      ease: "power3.out"
+    }, "-=0.6")
+    // Animate background SVG last
+    .to(svg, {
+      opacity: 0.3,
+      scale: 1,
+      duration: 1.5,
+      ease: "power3.out"
+    }, "-=0.8");
 
-      // Refresh ScrollTrigger after timeline is set up
-      ScrollTrigger.refresh();
+    // Refresh ScrollTrigger after timeline is set up
+    ScrollTrigger.refresh();
 
-    }, content);
-
-    return () => {
-      ctx.revert();
-    };
-
-  }, [isLoading]);
+  }, { scope: contentRef, dependencies: [isLoading] });
 
   return (
     <div className="relative w-full min-h-screen background-gradient-dark flex items-center justify-center overflow-hidden">

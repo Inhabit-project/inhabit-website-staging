@@ -3,6 +3,10 @@ import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 const StewardshipNFTBenefitsSection: React.FC = () => {
   const { t } = useTranslation();
@@ -14,8 +18,6 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
-  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   const benefits = [
     {
@@ -56,18 +58,14 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
     },
   ];
 
-  // Set initial states
-  useEffect(() => {
+  // Set initial states with useGSAP
+  useGSAP(() => {
     if (sectionRef.current) {
-      const ctx = gsap.context(() => {
-        gsap.set(titleRef.current, { opacity: 0, y: 50 });
-        gsap.set(descriptionRef.current, { opacity: 0, y: 50 });
-        gsap.set(cardRefs.current, { opacity: 0, y: 50, scale: 0.95 });
-      }, sectionRef);
-
-      return () => ctx.revert();
+      gsap.set(titleRef.current, { opacity: 0, y: 50 });
+      gsap.set(descriptionRef.current, { opacity: 0, y: 50 });
+      gsap.set(cardRefs.current, { opacity: 0, y: 50, scale: 0.95 });
     }
-  }, []);
+  }, { scope: sectionRef });
 
   // Handle loading state change
   useEffect(() => {
@@ -79,73 +77,52 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
     }
   }, [isLoading]);
 
-  // Handle animations
-  useEffect(() => {
+  // Handle animations with useGSAP
+  useGSAP(() => {
     if (!canAnimate || !sectionRef.current) return;
 
-    const ctx = gsap.context(() => {
-      // Kill existing timeline and scroll trigger if they exist
-      if (timelineRef.current) {
-        timelineRef.current.kill();
-      }
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.kill();
-      }
+    const timeline = gsap.timeline({
+      paused: true,
+      defaults: { ease: 'power3.out' }
+    });
 
-      // Create new timeline
-      timelineRef.current = gsap.timeline({
-        paused: true,
-        defaults: { ease: 'power3.out' }
-      });
-
-      timelineRef.current
-        .to(titleRef.current, {
+    timeline
+      .to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+      })
+      .to(
+        descriptionRef.current,
+        {
           opacity: 1,
           y: 0,
           duration: 0.8,
-        })
-        .to(
-          descriptionRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-          },
-          '-=0.6'
-        )
-        .to(
-          cardRefs.current,
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            stagger: 0.15,
-          },
-          '-=0.4'
-        );
+        },
+        '-=0.6'
+      )
+      .to(
+        cardRefs.current,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.15,
+        },
+        '-=0.4'
+      );
 
-      // Create new scroll trigger
-      scrollTriggerRef.current = ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: 'top 75%',
-        end: 'center center',
-        toggleActions: 'play none none reverse',
-        animation: timelineRef.current,
-        id: `stewardship-benefits-${Date.now()}`, // Unique ID to avoid conflicts
-      });
-    }, sectionRef);
-
-    return () => {
-      ctx.revert();
-      if (timelineRef.current) {
-        timelineRef.current.kill();
-      }
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.kill();
-      }
-    };
-  }, [canAnimate, t]);
+    // Create scroll trigger
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top 75%',
+      end: 'center center',
+      toggleActions: 'play none none reverse',
+      animation: timeline,
+      id: `stewardship-benefits-${Date.now()}`, // Unique ID to avoid conflicts
+    });
+  }, { scope: sectionRef, dependencies: [canAnimate, t] });
 
   return (
     <div

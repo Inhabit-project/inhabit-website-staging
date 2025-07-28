@@ -1,7 +1,11 @@
-import React, { useRef, useLayoutEffect, useState, useContext, useCallback } from 'react';
+import React, { useRef, useState, useContext, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 // Utility to set --vh CSS variable for mobile viewport height
 function useMobileVh() {
@@ -46,8 +50,6 @@ const Photo: React.FC = () => {
   const image2ContainerRef = useRef<HTMLDivElement>(null);
   const textBox1Ref = useRef<HTMLDivElement>(null);
   const textBox2Ref = useRef<HTMLDivElement>(null);
-  const animation1Ref = useRef<gsap.core.Timeline | null>(null);
-  const animation2Ref = useRef<gsap.core.Timeline | null>(null);
   const isLoading = useContext(LoadingContext);
 
   // Track image loading
@@ -88,62 +90,46 @@ const Photo: React.FC = () => {
     }
   }, [isLoading, imagesLoaded]);
 
-  // Only animate text boxes when canAnimate is true (Pattern 2)
-  useLayoutEffect(() => {
+  // Animate text boxes with useGSAP
+  useGSAP(() => {
     if (!canAnimate) return;
 
-    const ctx = gsap.context(() => {
-      // Section 1 text box animation with better error handling
-      if (textBox1Ref.current && section1Ref.current) {
-        try {
-          animation1Ref.current = gsap.timeline({
-            defaults: { ease: 'power3.out' },
-            scrollTrigger: {
-              trigger: section1Ref.current,
-              start: 'top center',
-              end: 'center center',
-              toggleActions: 'play none none reverse',
-            },
-          });
-          animation1Ref.current
-            .fromTo(textBox1Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
-        } catch (error) {
-          console.error('Photo section 1 animation failed:', error);
-        }
+    // Section 1 text box animation with better error handling
+    if (textBox1Ref.current && section1Ref.current) {
+      try {
+        gsap.timeline({
+          defaults: { ease: 'power3.out' },
+          scrollTrigger: {
+            trigger: section1Ref.current,
+            start: 'top center',
+            end: 'center center',
+            toggleActions: 'play none none reverse',
+          },
+        })
+        .fromTo(textBox1Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+      } catch (error) {
+        console.error('Photo section 1 animation failed:', error);
       }
-      
-      // Section 2 text box animation with better error handling
-      if (textBox2Ref.current && section2Ref.current) {
-        try {
-          animation2Ref.current = gsap.timeline({
-            defaults: { ease: 'power3.out' },
-            scrollTrigger: {
-              trigger: section2Ref.current,
-              start: 'top center',
-              end: 'center center',
-              toggleActions: 'play none none reverse',
-            },
-          });
-          animation2Ref.current
-            .fromTo(textBox2Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
-        } catch (error) {
-          console.error('Photo section 2 animation failed:', error);
-        }
-      }
-    });
+    }
     
-    return () => {
-      if (animation1Ref.current) { 
-        animation1Ref.current.kill(); 
-        animation1Ref.current = null; 
+    // Section 2 text box animation with better error handling
+    if (textBox2Ref.current && section2Ref.current) {
+      try {
+        gsap.timeline({
+          defaults: { ease: 'power3.out' },
+          scrollTrigger: {
+            trigger: section2Ref.current,
+            start: 'top center',
+            end: 'center center',
+            toggleActions: 'play none none reverse',
+          },
+        })
+        .fromTo(textBox2Ref.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+      } catch (error) {
+        console.error('Photo section 2 animation failed:', error);
       }
-      if (animation2Ref.current) { 
-        animation2Ref.current.kill(); 
-        animation2Ref.current = null; 
-      }
-      ctx.revert();
-    };
-  }, [canAnimate]); // Changed dependency from [isLoading, imagesLoaded] to [canAnimate]
+    }
+  }, { dependencies: [canAnimate] });
 
   // Aspect ratio for image containers (e.g., 3/2)
   const aspectRatio = '3/2';

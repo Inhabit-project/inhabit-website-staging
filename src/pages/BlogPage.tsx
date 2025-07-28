@@ -13,7 +13,7 @@ interface BlogPageProps {
 
 const BlogPage: React.FC<BlogPageProps> = ({ onPageReady }) => {
   const { t } = useTranslation();
-  // Remove useEffect that calls onPageReady immediately
+  
   return (
     <div className="min-h-screen background-gradient-light">
       <SEOHead pageType="mainPage.blog" />
