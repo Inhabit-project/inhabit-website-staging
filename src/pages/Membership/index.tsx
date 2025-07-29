@@ -9,7 +9,10 @@ import { Info } from "./_componets/Info";
 import OtherCollections from "./_componets/OtherCollections";
 import Stepper from "./_componets/Stepper";
 
-type Props = { onHeroImageLoad?: VoidFunction };
+type Props = { 
+  onHeroImageLoad?: VoidFunction;
+  onPageReady?: VoidFunction;
+};
 
 export default function Membership(props: Props): JSX.Element {
   // props
@@ -26,6 +29,7 @@ export default function Membership(props: Props): JSX.Element {
   const state = useLocation().state as {
     collection?: Collection;
     campaign?: Campaign;
+    skipTransition?: boolean;
   };
 
   const {
@@ -38,8 +42,12 @@ export default function Membership(props: Props): JSX.Element {
 
   // effects
   useEffect(() => {
-    if (Number.isNaN(campaignId) || Number.isNaN(collectionId))
+    console.log("Membership page mounted with campaignId:", campaignId, "collectionId:", collectionId);
+    
+    if (Number.isNaN(campaignId) || Number.isNaN(collectionId)) {
+      console.error("Invalid campaignId or collectionId, navigating to 404");
       navigate("/404");
+    }
   }, [campaignId, collectionId]);
 
   useEffect(() => {
@@ -66,36 +74,56 @@ export default function Membership(props: Props): JSX.Element {
     const loadCampaign = async () => {
       if (!isReferralValid) return;
 
-      if (state?.collection && state?.campaign) {
-        setCollection(state.collection);
-        setCollectionStore(state.collection);
-        setCampaign(state.campaign);
-        return;
-      }
+      try {
+        console.log("loadCampaign called with state:", state);
+        console.log("loadCampaign called with campaignId:", campaignId);
+        console.log("loadCampaign called with collectionId:", collectionId);
 
-      const loadedCampaign = await getCampaign(Number(campaignId));
+        if (state?.collection && state?.campaign) {
+          console.log("Using state data for campaign and collection");
+          console.log("State campaign:", state.campaign);
+          console.log("State collection:", state.collection);
+          setCollection(state.collection);
+          setCollectionStore(state.collection);
+          setCampaign(state.campaign);
+          return;
+        }
 
-      if (!loadedCampaign) {
+        console.log("Loading campaign data for campaignId:", campaignId);
+        const loadedCampaign = await getCampaign(Number(campaignId));
+
+        if (!loadedCampaign) {
+          console.error("Campaign not found, navigating to 404");
+          navigate("/404");
+          return;
+        }
+
+        console.log("Loaded campaign:", loadedCampaign);
+        console.log("Looking for collection with id:", collectionId);
+
+        const found = loadedCampaign.collections.find(
+          (c) => c.id === Number(collectionId)
+        );
+
+        if (!found) {
+          console.error("Collection not found, navigating to 404");
+          navigate("/404");
+          return;
+        }
+
+        console.log("Found collection:", found);
+        console.log("Setting collection and campaign data");
+        setCollection(found);
+        setCollectionStore(found);
+        setCampaign(loadedCampaign);
+      } catch (error) {
+        console.error("Error loading campaign data:", error);
         navigate("/404");
-        return;
       }
-
-      const found = loadedCampaign.collections.find(
-        (c) => c.id === Number(collectionId)
-      );
-
-      if (!found) {
-        navigate("/404");
-        return;
-      }
-
-      setCollection(found);
-      setCollectionStore(found);
-      setCampaign(loadedCampaign);
     };
 
     loadCampaign();
-  }, [isReferralValid, state]);
+  }, [isReferralValid, state, campaignId, collectionId]);
 
   useEffect(() => {
     if (!campaignLoading && collection && onHeroImageLoad) {
@@ -103,10 +131,47 @@ export default function Membership(props: Props): JSX.Element {
     }
   }, [campaignLoading, collection, onHeroImageLoad]);
 
+  // Call onPageReady when data is loaded
+  useEffect(() => {
+    if (!campaignLoading && collection) {
+      // Small delay to ensure everything is rendered
+      const timer = setTimeout(() => {
+        if (props.onPageReady) {
+          props.onPageReady();
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [campaignLoading, collection, props.onPageReady]);
+
+  // Fallback: if page doesn't load within 10 seconds, show error
+  useEffect(() => {
+    const fallbackTimer = setTimeout(() => {
+      if (campaignLoading) {
+        console.error("Campaign loading timeout - page may be frozen");
+      }
+    }, 10000);
+    return () => clearTimeout(fallbackTimer);
+  }, [campaignLoading]);
+
+  // Cleanup effect to ensure proper state reset
+  useEffect(() => {
+    return () => {
+      console.log("Membership page unmounting");
+    };
+  }, []);
+
   return (
     <>
       <Menu />
-      {collection && (
+      {campaignLoading ? (
+        <div className="mt-8 w-full background-gradient-light flex items-center justify-center min-h-[50vh]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-secondary mx-auto mb-4"></div>
+            <p className="text-secondary">Loading collection data...</p>
+          </div>
+        </div>
+      ) : collection ? (
         <>
           <div className="mt-8 w-full background-gradient-light flex flex-col lg:flex-row gap-8 px-4 lg:py-20 max-w-[1600px] mx-auto ">
             <div className="flex-1 flex flex-col gap-8">
@@ -127,6 +192,12 @@ export default function Membership(props: Props): JSX.Element {
             <OtherCollections collectionId={collectionId!} />
           </div>
         </>
+      ) : (
+        <div className="mt-8 w-full background-gradient-light flex items-center justify-center min-h-[50vh]">
+          <div className="text-center">
+            <p className="text-secondary">No collection data available</p>
+          </div>
+        </div>
       )}
     </>
   );

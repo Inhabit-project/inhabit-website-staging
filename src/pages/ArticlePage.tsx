@@ -11,7 +11,6 @@ interface ArticlePageProps {
 }
 
 const ArticlePage: React.FC<ArticlePageProps> = ({ onPageReady }) => {
-  // Remove useEffect that calls onPageReady immediately
   return (
     <div
       style={{

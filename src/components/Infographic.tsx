@@ -118,6 +118,7 @@ const Infographic: React.FC = () => {
         start: 'top 80%',
         end: 'bottom 20%',
         toggleActions: 'play none none reverse',
+        id: `infographic-${Date.now()}`, // Unique ID to avoid conflicts
       }
     });
 
@@ -234,6 +235,9 @@ const Infographic: React.FC = () => {
         },
         ease: 'power2.out' 
       }, '-=0.4');
+
+    // Refresh ScrollTrigger to ensure it works properly
+    ScrollTrigger.refresh();
   }, { scope: rootRef, dependencies: [canAnimate, t] });
 
   return (

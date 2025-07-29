@@ -2,7 +2,7 @@ import React, { useRef, useContext, useState } from 'react';
 import LogosSection from './LogosSection';
 import { useTranslation } from 'react-i18next';
 import { gsap, ScrollTrigger } from '../utils/gsap';
-import { LoadingContext, PageAnimationContext } from '../App';
+import { LoadingContext } from '../App';
 import { useGSAP } from '@gsap/react';
 
 // Register the hook to avoid React version discrepancies
@@ -11,7 +11,6 @@ gsap.registerPlugin(useGSAP);
 const Testimonials: React.FC = () => {
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
-  const pageAnimationReady = useContext(PageAnimationContext);
   const [canAnimate, setCanAnimate] = useState(false);
 
   // Refs for animations
@@ -91,12 +90,15 @@ const Testimonials: React.FC = () => {
       animation: timeline,
       id: `testimonials-${Date.now()}`, // Unique ID to avoid conflicts
     });
+
+    // Refresh ScrollTrigger to ensure it works properly
+    ScrollTrigger.refresh();
   }, { scope: sectionRef, dependencies: [canAnimate] });
 
   // Handle loading state change
   React.useEffect(() => {
     // Allow animations when page is ready for animations OR when loader is not active
-    if (pageAnimationReady || !isLoading) {
+    if (!isLoading) {
       const timer = setTimeout(() => {
         setCanAnimate(true);
       }, 1500);
@@ -105,7 +107,7 @@ const Testimonials: React.FC = () => {
     } else {
       setCanAnimate(false);
     }
-  }, [isLoading, pageAnimationReady]);
+  }, [isLoading]);
 
   return (
     <>

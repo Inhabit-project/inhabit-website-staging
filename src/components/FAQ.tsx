@@ -1,7 +1,7 @@
 import React, { useState, useRef, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gsap, ScrollTrigger } from '../utils/gsap';
-import { LoadingContext, PageAnimationContext } from '../App';
+import { LoadingContext } from '../App';
 import { useGSAP } from '@gsap/react';
 
 // Register the hook to avoid React version discrepancies
@@ -23,7 +23,6 @@ const FAQ: React.FC<FAQProps> = ({ faqItems, title, description }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [canAnimate, setCanAnimate] = useState(false);
   const isLoading = useContext(LoadingContext);
-  const pageAnimationReady = useContext(PageAnimationContext);
 
   // Refs for animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -85,12 +84,15 @@ const FAQ: React.FC<FAQProps> = ({ faqItems, title, description }) => {
       animation: timeline,
       id: `faq-${Date.now()}`, // Unique ID to avoid conflicts
     });
+
+    // Refresh ScrollTrigger to ensure it works properly
+    ScrollTrigger.refresh();
   }, { scope: sectionRef, dependencies: [canAnimate] });
 
   // Handle loading state change
   React.useEffect(() => {
     // Allow animations when page is ready for animations OR when loader is not active
-    if (pageAnimationReady || !isLoading) {
+    if (!isLoading) {
       const timer = setTimeout(() => {
         setCanAnimate(true);
       }, 1500);
@@ -98,7 +100,7 @@ const FAQ: React.FC<FAQProps> = ({ faqItems, title, description }) => {
     } else {
       setCanAnimate(false);
     }
-  }, [isLoading, pageAnimationReady]);
+  }, [isLoading]);
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -170,7 +172,6 @@ export default FAQ;
 export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string }[]; title?: string; description?: string }> = ({ faqItems, title, description }) => {
   const [openIndex, setOpenIndex] = React.useState<number | null>(null);
   const isLoading = useContext(LoadingContext);
-  const pageAnimationReady = useContext(PageAnimationContext);
 
   // Refs for animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -210,8 +211,8 @@ export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string 
       y: 30
     });
 
-    // Only create animations when page is ready for animations OR when loader is not active
-    if (!(pageAnimationReady || !isLoading)) return;
+    // Only create animations when loader is not active
+    if (isLoading) return;
 
     // Create scroll-triggered animation
     const tl = gsap.timeline({
@@ -239,7 +240,7 @@ export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string 
 
     // Refresh ScrollTrigger to ensure it works on page refresh
     ScrollTrigger.refresh();
-  }, { scope: sectionRef, dependencies: [isLoading, pageAnimationReady] });
+  }, { scope: sectionRef, dependencies: [isLoading] });
 
   return (
     <section ref={sectionRef} className="relative w-full min-h-screen background-gradient-light scroll-container">
@@ -297,7 +298,6 @@ export const FAQHubs: React.FC = () => {
   const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const isLoading = useContext(LoadingContext);
-  const pageAnimationReady = useContext(PageAnimationContext);
   const [canAnimate, setCanAnimate] = useState(false);
 
   // Refs for animations
@@ -324,7 +324,7 @@ export const FAQHubs: React.FC = () => {
   // Handle loading state change
   React.useEffect(() => {
     // Allow animations when page is ready for animations OR when loader is not active
-    if (pageAnimationReady || !isLoading) {
+    if (!isLoading) {
       const timer = setTimeout(() => {
         setCanAnimate(true);
       }, 1500);
@@ -332,7 +332,7 @@ export const FAQHubs: React.FC = () => {
     } else {
       setCanAnimate(false);
     }
-  }, [isLoading, pageAnimationReady]);
+  }, [isLoading]);
 
   // Set initial states and handle animations with useGSAP
   useGSAP(() => {
@@ -452,7 +452,6 @@ export const FAQStewardshipNFT: React.FC = () => {
   const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const isLoading = useContext(LoadingContext);
-  const pageAnimationReady = useContext(PageAnimationContext);
   const [canAnimate, setCanAnimate] = useState(false);
 
   // Refs for animations
@@ -479,7 +478,7 @@ export const FAQStewardshipNFT: React.FC = () => {
   // Handle loading state change
   React.useEffect(() => {
     // Allow animations when page is ready for animations OR when loader is not active
-    if (pageAnimationReady || !isLoading) {
+    if (!isLoading) {
       const timer = setTimeout(() => {
         setCanAnimate(true);
       }, 1500);
@@ -487,7 +486,7 @@ export const FAQStewardshipNFT: React.FC = () => {
     } else {
       setCanAnimate(false);
     }
-  }, [isLoading, pageAnimationReady]);
+  }, [isLoading]);
 
   // Set initial states and handle animations with useGSAP
   useGSAP(() => {

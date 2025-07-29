@@ -107,7 +107,7 @@
         "role": "Digital communications and marketing expert born, raised and based in Bogotá with over 13 years of experience delivering brand and content strategies. Skilled at simplifying complex topics like climate change, biodiversity, blockchain and community-based conservation. Passionate about humanising technology through stories and working on restoring humanity's relationship with nature. Communications Lead at INHABIT."
       },
       {
-        "name": "Mohamd Ibrahim",
+        "name": "Mohamad Ibrahim",
         "role": "Network and satellite communications engineer, ICT expert for over 20 years. He grew up in Congo (D.R.) where he founded several Internet service providers, earth stations and data centres that brought reliable, redundant, secure and affordable connectivity to Africa. Expert in Cybersecurity, hosting, System Administration, Network routing and optimization, blockchain engineering and Artificial Intelligence. "
       },
       {
@@ -260,6 +260,7 @@
       "description": "Stay up to date with our latest news and insights on biodiversity, stewardship and ecological corridors",
       "loading": "Loading list of posts",
       "noPosts": "No posts available",
+      "error": "We couldn't display the post at this time. Please try again later.",
       "readTime_one": "{{count}} min read",
       "readTime_other": "{{count}} mins read",
 

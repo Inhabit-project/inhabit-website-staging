@@ -176,12 +176,12 @@ export function blogServices() {
     const currentLanguage = i18n.language;
 
     try {
-      const response = await fetch(
-        `${host}/wp-json/wp/v2/posts?_embed&include[]=${postId}&lang=${currentLanguage}`
-      );
+      const url = `${host}/wp-json/wp/v2/posts?_embed&include[]=${postId}&lang=${currentLanguage}`;
+      
+      const response = await fetch(url);
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
       }
 
       const posts: WordPressPost[] = await response.json();
@@ -268,7 +268,7 @@ export function blogServices() {
       const current = await fetchPost(postId);
 
       if (current == null) {
-        throw new Error("Post not found");
+        throw new Error(`Post with ID ${postId} not found`);
       }
 
       const [next, previous] = await Promise.all([

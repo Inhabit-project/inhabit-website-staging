@@ -1,7 +1,7 @@
 import React, { useRef, useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { gsap, ScrollTrigger } from "../utils/gsap";
-import { LoadingContext, PageAnimationContext } from "../App";
+import { LoadingContext } from "../App";
 import { useStore } from "@/store";
 import { Link } from "react-router-dom";
 import { useGSAP } from '@gsap/react';
@@ -12,7 +12,6 @@ gsap.registerPlugin(useGSAP);
 const CTA: React.FC = () => {
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
-  const pageAnimationReady = useContext(PageAnimationContext);
   const [canAnimate, setCanAnimate] = useState(false);
 
   // Simplified refs
@@ -72,12 +71,15 @@ const CTA: React.FC = () => {
       animation: timeline,
       id: `cta-${Date.now()}`, // Unique ID to avoid conflicts
     });
+
+    // Refresh ScrollTrigger to ensure it works properly
+    ScrollTrigger.refresh();
   }, { scope: sectionRef, dependencies: [canAnimate] });
 
   // Handle loading state change
   React.useEffect(() => {
     // Allow animations when page is ready for animations OR when loader is not active
-    if (pageAnimationReady || !isLoading) {
+    if (!isLoading) {
       const timer = setTimeout(() => {
         setCanAnimate(true);
       }, 1500);
@@ -85,7 +87,7 @@ const CTA: React.FC = () => {
     } else {
       setCanAnimate(false);
     }
-  }, [isLoading, pageAnimationReady]);
+  }, [isLoading]);
 
   return (
     <section

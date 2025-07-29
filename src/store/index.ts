@@ -73,10 +73,16 @@ export const useStore = create<Store>((set, get) => {
     usdt,
 
     getCampaign: async (campaignId: number) => {
-      set({ campaignLoading: true });
-      const campaign = await get().inhabit.getCampaign(campaignId);
-      set({ campaign, campaignLoading: false });
-      return campaign;
+      try {
+        set({ campaignLoading: true });
+        const campaign = await get().inhabit.getCampaign(campaignId);
+        set({ campaign, campaignLoading: false });
+        return campaign;
+      } catch (error) {
+        console.error("Error in getCampaign:", error);
+        set({ campaignLoading: false });
+        return null;
+      }
     },
 
     getCampaignCollections: async (campaignId: number) => {

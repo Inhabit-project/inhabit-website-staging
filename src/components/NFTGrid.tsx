@@ -1,11 +1,12 @@
-import { useRef, useState, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useRef, useState, useContext, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { ComparisonCards } from "./NFTComparison/ComparisonCards";
 import { Campaign } from "@/models/campaign.model";
 import { gsap, ScrollTrigger } from "../utils/gsap";
 import { LoadingContext, PageAnimationContext } from "@/App";
 import { useGSAP } from "@gsap/react";
+import { useStore } from "@/store";
+import CollectionCard from "./CollectionCard";
 
 // Register the hook to avoid React version discrepancies
 gsap.registerPlugin(useGSAP);
@@ -20,6 +21,7 @@ export default function NFTGrid(props: Props): JSX.Element {
   const isLoading = useContext(LoadingContext);
   const pageAnimationReady = useContext(PageAnimationContext);
   const [canAnimate, setCanAnimate] = useState(false);
+  const { campaignsLoading } = useStore();
 
   // Refs for animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -43,9 +45,25 @@ export default function NFTGrid(props: Props): JSX.Element {
     }
   }, [isLoading, pageAnimationReady]);
 
-  // Set initial states and handle animations with useGSAP
-  useGSAP(() => {
-    if (!sectionRef.current) return;
+  // Reset card refs when campaign changes
+  useEffect(() => {
+    cardRefs.current = [];
+  }, [campaign]);
+
+  // Separate function to setup animation
+  const setupAnimation = useCallback(() => {
+    if (!canAnimate || !sectionRef.current) return;
+    
+    // Check if all required DOM elements are ready
+    if (!titleRef.current || !descriptionRef.current || !tableRef.current) {
+      return;
+    }
+    
+    // Check if card refs are populated (they should match the number of collections)
+    const validCardRefs = cardRefs.current.filter(Boolean);
+    if (validCardRefs.length !== campaign.collections.length) {
+      return;
+    }
     
     // Set initial states
     gsap.set([titleRef.current, descriptionRef.current], {
@@ -61,61 +79,136 @@ export default function NFTGrid(props: Props): JSX.Element {
       opacity: 0,
       y: 30,
     });
-
-    // Only create animations if we can animate
-    if (!canAnimate) return;
     
-    const timeline = gsap.timeline({
-      paused: true,
-      defaults: { ease: 'power3.out' }
-    });
+    // Add a small delay to ensure everything is properly rendered
+    setTimeout(() => {
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top center",
+          end: "center center",
+          toggleActions: "play none none reverse",
+        },
+      });
 
-    timeline
-      .to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-      })
-      .to(
-        descriptionRef.current,
-        {
+      timeline
+        .to(titleRef.current, {
           opacity: 1,
           y: 0,
           duration: 0.8,
-        },
-        "-=0.6"
-      )
-      .to(
-        cardRefs.current,
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          stagger: 0.15,
-        },
-        "-=0.4"
-      )
-      .to(
-        tableRef.current,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-        },
-        "-=0.4"
-      );
+          ease: "power3.out",
+        })
+        .to(
+          descriptionRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+          },
+          "-=0.6"
+        )
+        .to(
+          cardRefs.current,
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power3.out",
+          },
+          "-=0.4"
+        )
+        .to(
+          tableRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+          },
+          "-=0.4"
+        );
 
-    // Create scroll trigger
-    ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top 80%",
-      end: "bottom 20%",
-      toggleActions: "play none none reverse",
-      animation: timeline,
-      id: `nft-grid-${Date.now()}`, // Unique ID to avoid conflicts
-    });
-  }, { scope: sectionRef, dependencies: [canAnimate] });
+      // Refresh ScrollTrigger to ensure it works on page refresh
+      ScrollTrigger.refresh();
+    }, 200); // Small delay to ensure DOM is fully rendered
+  }, [canAnimate, campaign]);
+
+  // Handle animation setup when dependencies change
+  useEffect(() => {
+    if (canAnimate && campaign && campaign.collections && campaign.collections.length > 0 && !campaignsLoading) {
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        setupAnimation();
+      }, 100);
+    }
+  }, [canAnimate, campaign, campaignsLoading, setupAnimation]);
+
+  // Set initial states and handle animations with useGSAP
+  useGSAP(() => {
+    if (!sectionRef.current) return;
+    
+    // Check if campaign data is ready and not loading
+    if (!campaign || !campaign.collections || campaign.collections.length === 0 || campaignsLoading) {
+      return;
+    }
+    
+    // Check if all required DOM elements are ready
+    if (!titleRef.current || !descriptionRef.current || !tableRef.current) {
+      return;
+    }
+    
+    // Check if card refs are populated (they should match the number of collections)
+    const validCardRefs = cardRefs.current.filter(Boolean);
+    if (validCardRefs.length !== campaign.collections.length) {
+      return;
+    }
+    
+    // Check if all collection images are loaded
+    const imageElements = validCardRefs.map(ref => ref?.querySelector('img')).filter(Boolean);
+    const allImagesLoaded = imageElements.every(img => (img as HTMLImageElement).complete);
+    
+    if (!allImagesLoaded) {
+      // Wait for all images to load
+      Promise.all(
+        imageElements.map(img => {
+          return new Promise<void>((resolve) => {
+            if ((img as HTMLImageElement).complete) {
+              resolve();
+            } else {
+              (img as HTMLImageElement).onload = () => resolve();
+              (img as HTMLImageElement).onerror = () => resolve(); // Continue even if image fails
+            }
+          });
+        })
+      ).then(() => {
+        // Retry animation setup after images are loaded
+        setTimeout(() => {
+          setupAnimation();
+        }, 100);
+      });
+      return;
+    }
+    
+    setupAnimation();
+  }, { scope: sectionRef, dependencies: [canAnimate, campaign, campaign.collections, campaignsLoading] });
+
+  // Early return if campaign data is not ready
+  if (!campaign || !campaign.collections || campaign.collections.length === 0 || campaignsLoading) {
+    return (
+      <section
+        ref={sectionRef}
+        className="relative w-full background-gradient-dark mt-0 scroll-container"
+        aria-labelledby="nft-grid-title"
+      >
+        <div className="max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
+          <p className="text-lg text-gray-500">Loading NFT data...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
@@ -151,165 +244,12 @@ export default function NFTGrid(props: Props): JSX.Element {
             <div
               key={collection.id}
               ref={el => (cardRefs.current[idx] = el)}
-              className="relative"
-              style={{
-                background: "var(--color-bright-green)",
-                borderRadius: "var(--radius-lg)",
-                padding: "2rem",
-              }}
-              role="listitem"
             >
-              <div className="absolute top-4 right-4 hover-scale-up">
-                <Link
-                  to={`/membership/${collection.campaignId}/${collection.id}`}
-                  state={{ campaign, collection }}
-                  className="block"
-                  aria-label={t(
-                    "mainPage.nftGrid.checkoutNFT",
-                    "Checkout TITI NFT"
-                  )}
-                >
-                  <div className="bg-white/20 backdrop-blur-2xl rounded-[var(--radius-3xl)] p-1 border">
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 35 35"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M10.5039 24.543L24.4709 10.576"
-                        stroke="#F6FFEA"
-                        strokeWidth="2.01125"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M10.5039 10.576L24.4709 10.576L24.4709 24.543"
-                        stroke="#F6FFEA"
-                        strokeWidth="2.01125"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                </Link>
-              </div>
-              <div
-                className="absolute inset-0 rounded-[var(--radius-2xl)] opacity-80"
-                aria-hidden="true"
+              <CollectionCard
+                collection={collection}
+                campaign={campaign}
+                variant="grid"
               />
-              <div className="relative flex flex-col items-end gap-4">
-                <div className="w-full flex flex-col gap-4">
-                  <h3 className="text-[2rem] font-montserrat text-center text-white">
-                    {collection.symbol}
-                  </h3>
-                  <div className="relative w-full flex justify-center">
-                    <div
-                      className="aspect-[3/3] rounded-[var(--radius-md)] overflow-hidden border border-white/15 flex items-center justify-center"
-                      style={{ width: "90%", height: "90%" }}
-                    >
-                      <img
-                        src={collection.image}
-                        alt={collection.symbol}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-4">
-                      <p className="text-[3rem] leading-none font-abel text-center text-white tracking-[-2px]">
-                        {`$ ${collection.price} USD`}
-                      </p>
-                      {/* TODO: Ask about score */}
-                      {/* <div
-                              className="flex justify-center items-center gap-3"
-                              role="img"
-                              aria-label={t(
-                                "mainPage.nftGrid.rating",
-                                "NFT Rating: 1 out of 4 stars"
-                              )}
-                            >
-                              <svg
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                aria-hidden="true"
-                              >
-                                <path
-                                  d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-                                  stroke="#DBEAB2"
-                                  strokeWidth="0.45"
-                                />
-                              </svg>
-                              <svg
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                aria-hidden="true"
-                              >
-                                <path
-                                  d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-                                  stroke="#B6B6B6"
-                                  strokeWidth="0.45"
-                                />
-                              </svg>
-                              <svg
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                aria-hidden="true"
-                              >
-                                <path
-                                  d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-                                  stroke="#B6B6B6"
-                                  strokeWidth="0.45"
-                                />
-                              </svg>
-                              <svg
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                aria-hidden="true"
-                              >
-                                <path
-                                  d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-                                  stroke="#B6B6B6"
-                                  strokeWidth="0.45"
-                                />
-                              </svg>
-                            </div> */}
-                    </div>
-                    <p className="text-[1rem] text-center text-green-soft tracking-[-2.5%]">
-                      {collection.availableSupply}{" "}
-                      {t("mainPage.nftGrid.availableMembership")}
-                    </p>
-                  </div>
-                  <Link
-                    to={`/membership/${collection.campaignId}/${collection.id}`}
-                    state={{ campaign, collection }}
-                    className="btn-primary w-full flex items-center justify-center group"
-                    aria-label={t(
-                      "mainPage.nftGrid.checkoutNFT",
-                      "Checkout TITI NFT"
-                    )}
-                  >
-                    <span className="button-text group-hover:text-secondary transition-colors duration-300">
-                      {t("mainPage.nftGrid.checkThisNFT")}
-                    </span>
-                  </Link>
-                </div>
-              </div>
             </div>
           ))}
         </div>

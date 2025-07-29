@@ -61,7 +61,7 @@ const Highlight = () => {
     tl.to(title, {
       opacity: 1,
       y: 0,
-      duration: 1.2,
+      duration: 0.8,
       ease: "power3.out"
     })
     // Animate h3 second
@@ -69,16 +69,16 @@ const Highlight = () => {
       opacity: 1,
       y: 0,
       scale: 1,
-      duration: 1.2,
+      duration: 0.8,
       ease: "power3.out"
-    }, "-=0.6")
+    }, "-=0.4")
     // Animate background SVG last
     .to(svg, {
       opacity: 0.3,
       scale: 1,
-      duration: 1.5,
+      duration: 1.0,
       ease: "power3.out"
-    }, "-=0.8");
+    }, "-=0.6");
 
     // Refresh ScrollTrigger after timeline is set up
     ScrollTrigger.refresh();

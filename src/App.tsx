@@ -119,6 +119,25 @@ const App: React.FC = () => {
   // Handle page transitions
   useEffect(() => {
     if (location !== pendingLocation) {
+      console.log("Location changed to:", location.pathname);
+      console.log("Location state:", location.state);
+      
+      // Check if skipTransition is set in the location state
+      const shouldSkipTransition = (location.state as any)?.skipTransition === true;
+      
+      if (shouldSkipTransition) {
+        console.log("Skipping transition for:", location.pathname);
+        // Skip transition entirely
+        setPendingLocation(location);
+        setPageReady(false);
+        // Mark page as ready after a short delay to allow data to load
+        setTimeout(() => {
+          setPageReady(true);
+        }, 100);
+        return;
+      }
+      
+      console.log("Starting transition for:", location.pathname);
       setShowTransition(true);
       setTransitionIn(false); // Start with cover
       setPageReady(false); // Reset page ready on navigation
@@ -131,7 +150,10 @@ const App: React.FC = () => {
 
   // Scroll to top only after both transition and page are ready
   useEffect(() => {
+    console.log("Transition state - transitionIn:", transitionIn, "pageReady:", pageReady);
+    
     if (transitionIn && pageReady) {
+      console.log("Completing page transition");
       setShowTransition(false);
       requestAnimationFrame(() => {
         if (scrollManager && typeof scrollManager.scrollTo === "function") {
@@ -169,7 +191,12 @@ const App: React.FC = () => {
   };
 
   // Helper to pass onPageReady to all pages
-  const pageProps = { onPageReady: () => setPageReady(true) };
+  const pageProps = { 
+    onPageReady: () => {
+      console.log("Page ready callback called");
+      setPageReady(true);
+    }
+  };
 
   // Add this useEffect after your other useEffects
   useEffect(() => {

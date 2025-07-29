@@ -1,9 +1,9 @@
 {
   "navigation": {
     "home": "INICIO",
-    "hubs": "FAROS",
+    "faros": "FAROS",
     "stewardshipNFT": "NFT CUSTODIA",
-    "aboutUs": "ACERCA DE NOSOTROS",
+    "aboutUs": "NOSOTROS",
     "projects": "PROYECTOS",
     "blog": "BLOG",
     "contact": "CONTACTO"
@@ -54,7 +54,7 @@
   },
   "aboutUsPage": {
     "eyebrow": "Constructores, Visionarios, Regeneradores.",
-    "heading": "Juntos, <span class=\"highlighted-text\">estamos construyendo</span> las bases de un<span class=\"highlighted-text\"> futuro regenerativo</span>, un hub, un corredor, una comunidad, una historia a la vez.",
+    "heading": "Juntos, <span class=\"highlighted-text\">estamos construyendo</span> las bases de un<span class=\"highlighted-text\"> futuro regenerativo</span>, un faro, un corredor, una comunidad, una historia a la vez.",
     "teamImageAlt": "Equipo INHABIT",
     "sasTitle": "INHABIT",
     "sasSubtitle": "S.A.S",
@@ -73,7 +73,7 @@
       },
       {
         "name": "Dror Noi",
-        "role": "Emprendedor social y diseñador de permacultura apasionado por las culturas/agriculturas descentralizadas y regenerativas. Creció en Israel, fundó el primer centro de Innovación Social en TLV. Cofundador de Yumajai y socio en Inside-hub. Administra una finca de permacultura en Colombia."
+        "role": "Emprendedor social y diseñador de permacultura apasionado por las culturas/agriculturas descentralizadas y regenerativas. Creció en Israel, fundó el primer centro de Innovación Social en TLV. Cofundador de Yumajai y socio en Inside-faro. Administra una finca de permacultura en Colombia."
       },
       {
         "name": "Talya Weinberg",
@@ -97,8 +97,8 @@
         "role": "Experto en comunicaciones digitales y marketing, nacido, criado y radicado en Bogotá, con más de 13 años de experiencia desarrollando estrategias de marca y contenido. Especialista en simplificar temas complejos como cambio climático, biodiversidad, blockchain y conservación comunitaria. Apasionado por humanizar la tecnología a través de historias y trabajar en la restauración de la relación de la humanidad con la naturaleza. Líder de Comunicaciones en INHABIT."
       },
       {
-        "name": "Mohamd Ibrahim",
-        "role": "Ingeniero en redes y comunicaciones satelitales, experto en TIC con más de 20 años de experiencia. Creció en Congo (R.D.), donde fundó varios proveedores de servicios de Internet, estaciones terrestres y hubs de datos que llevaron conectividad confiable, redundante, segura y asequible a África. Experto en ciberseguridad, hosting, administración de sistemas, enrutamiento y optimización de redes, ingeniería blockchain e inteligencia artificial."
+        "name": "Mohamad Ibrahim",
+        "role": "Ingeniero en redes y comunicaciones satelitales, experto en TIC con más de 20 años de experiencia. Creció en Congo (R.D.), donde fundó varios proveedores de servicios de Internet, estaciones terrestres y faros de datos que llevaron conectividad confiable, redundante, segura y asequible a África. Experto en ciberseguridad, hosting, administración de sistemas, enrutamiento y optimización de redes, ingeniería blockchain e inteligencia artificial."
       },
       {
         "name": "Celia Mercado",
@@ -114,11 +114,11 @@
       }
     ],
     "teamTitle": "Conoce a nuestro <strong><br />Equipo</strong>",
-    "teamSubtitle": "Somos emprendedores, agricultores, artistas y facilitadores con propósito, Expertos en derecho, restauración, tecnología y desarrollo rural, unidos para reinventar las formas de habitar la Tierra",
+    "teamSubtitle": "Somos emprendedores, agricultores, artistas y facilitadores con propósito. Expertos en derecho, restauración, tecnología y desarrollo rural, unidos para reinventar las formas de habitar la Tierra",
     "teamShowLess": "Ver menos",
     "teamReadMore": "Leer más"
   },
-  "hubsMain": {
+  "farosMain": {
     "eyebrow": "¿Dónde están ubicados Los faros?",
     "heading": "Los primeros <span class=\"highlighted-text\">tres FAROS</span> están ubicados en la<span class=\"highlighted-text\"> Sierra Nevada de Santa Marta, </span> considerada el <span class=\"highlighted-text\">Corazón del Mundo.</span>",
     "nuiyanzhi": {
@@ -126,7 +126,7 @@
       "title": "ÑUIYANZHI",
       "description": "Desde 2021, la familia de Amelia, Juan y su hijo León viven y cuidan Ñuiyanzhi en asociación con los ancianos Kogi de la tribu Kaggaba, de la Sierra Nevada de Santa Marta.",
       "visionHeading": "VISIÓN DEL FARO",
-      "visionText": "El Faro Ñuiyanzhi es un laboratorio viviente donde la restauración ecológica se encuentra con el conocimiento ancestral. Regenera suelos degradados por el sobrepastoreo, monocultivos y agroquímicos, creando un punto caliente de biodiversidad para especies en peligro de extinción. Como centro de formación, combina el aprendizaje práctico con la sabiduría indígena y académica. Los guardianes NFT obtienen acceso exclusivo a herramientas de restauración, experiencias inmersivas y vínculos directos con el conocimiento ecológico y espiritual Kogi."
+      "visionText": "El Faro Ñuiyanzhi es un laboratorio viviente donde la restauración ecológica se encuentra con el conocimiento ancestral. Regenera suelos degradados por el sobrepastoreo, monocultivos y agroquímicos, creando un punto caliente de biodiversidad para especies en peligro de extinción. Como centro de formación, combina el aprendizaje práctico con la sabiduría indígena y académica. Los custodios NFT obtienen acceso exclusivo a herramientas de restauración, experiencias inmersivas y vínculos directos con el conocimiento ecológico y espiritual Kogi."
     },
     "aguaDeLuna": {
       "label": "Punto Caliente de Biodiversidad",
@@ -161,7 +161,7 @@
       },
       {
         "question": "¿Puedo visitar el Faro Nuiyanzhi?",
-        "answer": "Sí, los guardianes y custodios NFT tienen oportunidades exclusivas para visitar, aprender y participar en experiencias prácticas en el Faro."
+        "answer": "Sí, los custodios y custodios NFT tienen oportunidades exclusivas para visitar, aprender y participar en experiencias prácticas en el Faro."
       }
     ]
   },
@@ -176,7 +176,7 @@
       "heading": "Pioneros de <span class=\"highlighted-text\">corredores globales</span> para <span class=\"highlighted-text\">proteger</span> ecosistemas vitales y fomentar la <span class=\"highlighted-text\">innovación biocultural</span>."
     },
     "hubs": {
-      "title": "Biocultural <br> <strong>Faros</strong>",
+      "title": "Faros <br> <strong>Bioculturales</strong>",
       "description": "Ubicados en diferentes bioregiones, Los faros son importantes puntos calientes de biodiversidad y faros de aprendizaje que preservan y comparten recursos ecológicos y conocimiento vivo para dar forma al corredor.",
       "cards": [
         {
@@ -288,8 +288,8 @@
     "infographic": {
       "landTenureTitle": "Marco de Tenencia<br /><strong>de la Tierra</strong>",
       "landTenureDescription": "Un modelo innovador de reservas naturales que reconoce a la naturaleza como una entidad legal con derechos y otorga derechos y beneficios específicos a las personas que apoyan la protección y regeneración permanente de estos puntos claves de biodiversidad.",
-      "NFTtewardsTitle": "Guardianes NFT",
-              "NFTtewardsDescription": "Personas de cualquier parte del mundo pueden convertirse en protectores permanente de la naturaleza, con la capacidad de monitorear, salvaguardar y acceder a estos faros prósperos, junto con numerosos beneficios al recorrer el Corredor.",
+      "nftStewardsTitle": "Custodios NFT",
+      "nftStewardsDescription": "Personas de cualquier parte del mundo pueden convertirse en protectores permanente de la naturaleza, con la capacidad de monitorear, salvaguardar y acceder a estos faros prósperos, junto con numerosos beneficios al recorrer el Corredor.",
       "natureTitle": "Naturaleza",
       "natureDescription": "La naturaleza es considerada una entidad con derechos dentro de los límites de la tierra, de acuerdo con la Declaración de los Derechos de la Naturaleza (por ejemplo, el derecho a la autorregulación, restauración, protección, toma de decisiones...).",
       "guardiansTitle": "Guardianes",
@@ -297,7 +297,7 @@
     },
     "testimonials": {
       "title": "Conoce a nuestros <strong>Aliados</strong>",
-              "description": "Desde guardianes locales y expertos bio-regionales hasta organizaciones globales y líderes en innovación, cada aliado aporta conocimientos, herramientas y compromiso únicos para hacer crecer una red de FAROS bioculturales—tejiendo juntos un corredor global de diversidad biocultural.",
+              "description": "Desde custodios locales y expertos bio-regionales hasta organizaciones globales y líderes en innovación, cada aliado aporta conocimientos, herramientas y compromiso únicos para hacer crecer una red de FAROS bioculturales—tejiendo juntos un corredor global de diversidad biocultural.",
       "testimonial": {
         "name": "Louise Borreani",
         "quote": "“Inhabit es una poderosa expresión de cómo las herramientas descentralizadas pueden apoyar a las comunidades que cuidan la naturaleza. Es una de las manifestaciones más concretas de la investigación sobre criptografía verde que hemos estado realizando en Ecofrontiers y es muy inspirador verla hacerse realidad.” ",
@@ -315,6 +315,7 @@
       "description": "Mantente actualizado con nuestras últimas noticias y perspectivas sobre biodiversidad y preservación ecológica.",
       "loading": "Cargando listado de entradas",
       "noPosts": "No hay entradas disponibles",
+      "error": "No pudimos mostrar el post en este momento. Intenta de nuevo más tarde.",
       "readTime_one": "{{count}} minuto de lectura",
       "readTime_other": "{{count}} minutos de lectura",
 
@@ -372,11 +373,11 @@
         },
         {
           "question": "¿Qué es un faro biocultural?",
-          "answer": "La regeneración verdadera y duradera requiere más que plantar árboles: requiere un cambio profundo en cómo valoramos y cuidamos la tierra. Los faros Bioculturales lideran esta transformación.\n\nLos faros son centros de regeneración y renovación cultural, diseñados para encender y cultivar el sentido de custodia necesario para restaurar nuestro planeta. Los faros protegen la biodiversidad, forman a la próxima generación de guardianes de la tierra y entrelazan la sabiduría ancestral con el conocimiento contemporáneo para impulsar un cambio profundo.\n\nSon espacios donde cualquiera puede aprender las prácticas más profundas de habitar y custodiar la naturaleza: lugares para explorar nuevas formas de relacionarse con la tierra, reconocer sus muchos valores intrínsecos y darse cuenta del poder de nuestro papel en nutrirlos y multiplicarlos.\n\nCada Faro no solo restaura ecosistemas, sino que también tiene la tarea de expandir un Corredor global aumentando las áreas de conservación mediante la colaboración con faros, proyectos y comunidades cercanas en su bioregión.\n\nLos faros son los bloques de construcción del Corredor: una red mundial de islas de biodiversidad y hitos culturales. El Corredor quiere inspirar un movimiento de custodia en todo el mundo."
+          "answer": "La regeneración verdadera y duradera requiere más que plantar árboles: requiere un cambio profundo en cómo valoramos y cuidamos la tierra. Los faros Bioculturales lideran esta transformación.\n\nLos faros son centros de regeneración y renovación cultural, diseñados para encender y cultivar el sentido de custodia necesario para restaurar nuestro planeta. Los faros protegen la biodiversidad, forman a la próxima generación de custodios de la tierra y entrelazan la sabiduría ancestral con el conocimiento contemporáneo para impulsar un cambio profundo.\n\nSon espacios donde cualquiera puede aprender las prácticas más profundas de habitar y custodiar la naturaleza: lugares para explorar nuevas formas de relacionarse con la tierra, reconocer sus muchos valores intrínsecos y darse cuenta del poder de nuestro papel en nutrirlos y multiplicarlos.\n\nCada Faro no solo restaura ecosistemas, sino que también tiene la tarea de expandir un Corredor global aumentando las áreas de conservación mediante la colaboración con faros, proyectos y comunidades cercanas en su bioregión.\n\nLos faros son los bloques de construcción del Corredor: una red mundial de islas de biodiversidad y hitos culturales. El Corredor quiere inspirar un movimiento de custodia en todo el mundo."
         },
         {
           "question": "¿Qué es exactamente un NFT de custodia?",
-          "answer": "Imagina tener un contrato especial en tu billetera digital (como un pasaporte o una escritura) que demuestra que eres parte de algo real. No es solo una imagen o un token, es una llave. Te otorga derechos de por vida y beneficios tangibles vinculados a una parcela específica de tierra, junto con acceso al valor intrínseco que se regenera en el terreno. El contrato se almacena de forma segura y permanente en la blockchain, lo que significa que no se puede perder, alterar ni falsificar. Cada NFT es único (como una obra de arte), y solo se emite un número limitado para cada tierra. Es un activo digital con valor real que puede transferirse. Además de asegurar tus derechos sobre la tierra, el NFT encapsula todo el marco legal que protege la tierra misma. Refleja y protege tanto los Derechos de la Naturaleza como el rol de los guardianes humanos, a través de un modelo innovador que redefine lo que significa la propiedad de la tierra, pasando del control al cuidado, de la posesión a la responsabilidad. Muchos creen que la custodia dará forma al futuro de las economías, y el NFT de custodia de INHABIT es una de las primeras herramientas que hace tangible esa visión, vinculando la creación de valor con el cuidado, la regeneración y la responsabilidad compartida."
+          "answer": "Imagina tener un contrato especial en tu billetera digital (como un pasaporte o una escritura) que demuestra que eres parte de algo real. No es solo una imagen o un token, es una llave. Te otorga derechos de por vida y beneficios tangibles vinculados a una parcela específica de tierra, junto con acceso al valor intrínseco que se regenera en el terreno. El contrato se almacena de forma segura y permanente en la blockchain, lo que significa que no se puede perder, alterar ni falsificar. Cada NFT es único (como una obra de arte), y solo se emite un número limitado para cada tierra. Es un activo digital con valor real que puede transferirse. Además de asegurar tus derechos sobre la tierra, el NFT encapsula todo el marco legal que protege la tierra misma. Refleja y protege tanto los Derechos de la Naturaleza como el rol de los custodios humanos, a través de un modelo innovador que redefine lo que significa la propiedad de la tierra, pasando del control al cuidado, de la posesión a la responsabilidad. Muchos creen que la custodia dará forma al futuro de las economías, y el NFT de custodia de INHABIT es una de las primeras herramientas que hace tangible esa visión, vinculando la creación de valor con el cuidado, la regeneración y la responsabilidad compartida."
         },
         {
           "question": "¿Qué derechos y beneficios recibo como titular de un NFT?",
@@ -463,13 +464,13 @@
           "label": "Seguridad de la Tierra para Restauración Duradera",
           "title": "Guardianes",
           "subtitle": "Derechos",
-          "description": "Este marco otorga derechos de uso permanente y financiamiento para la restauración a los guardianes de la tierra, creando las condiciones esenciales para la regeneración a largo plazo y la expansión del corredor ecológico."
+          "description": "Este marco otorga derechos de uso permanente y financiamiento para la restauración a los custodios de la tierra, creando las condiciones esenciales para la regeneración a largo plazo y la expansión del corredor ecológico."
         },
         {
           "label": "Sistema de Garantía",
           "title": "Guardianes NFT",
           "subtitle": "Derechos",
-          "description": "Este marco otorga a los guardianes NFT derechos de custodia sobre la tierra, actuando como garantes de los derechos de la naturaleza. Les permite monitorear y apoyar la restauración mientras disfrutan de beneficios exclusivos y acceso a puntos calientes de biodiversidad y conocimiento esencial."
+          "description": "Este marco otorga a los custodios NFT derechos de custodia sobre la tierra, actuando como garantes de los derechos de la naturaleza. Les permite monitorear y apoyar la restauración mientras disfrutan de beneficios exclusivos y acceso a puntos calientes de biodiversidad y conocimiento esencial."
         },
         {
           "label": "Transparencia, Verificación y Participación Activa",
@@ -495,7 +496,7 @@
           "number": "02",
           "title": "Incubadoras de",
           "subtitle": "Guardianes de la tierra",
-          "description": "Cada FARO debe convertirse en un centro de aprendizaje para futuros guardianes de la tierra, brindando experiencia en diversos campos del conocimiento e innovación rural-social, y facilitando la asignación de recursos clave para establecer nuevos Faros."
+          "description": "Cada FARO debe convertirse en un centro de aprendizaje para futuros custodios de la tierra, brindando experiencia en diversos campos del conocimiento e innovación rural-social, y facilitando la asignación de recursos clave para establecer nuevos Faros."
         },
         {
           "number": "03",
@@ -560,7 +561,7 @@
       "2": {
         "eyebrow": "DERECHOS DE CUSTODIA",
         "title": "Protector legal de la tierra",
-        "description": "Formas parte de un sistema legal de garantía que reconoce a la Naturaleza como sujeto de derechos en una parcela específica.\n\nEste marco, alineado con la Declaración de los Derechos de la Naturaleza y los principios bioculturales, nos ayuda a reclamar nuestro rol como guardianes de los ecosistemas vivos de los que dependemos y de los que somos parte inseparable."
+        "description": "Formas parte de un sistema legal de garantía que reconoce a la Naturaleza como sujeto de derechos en una parcela específica.\n\nEste marco, alineado con la Declaración de los Derechos de la Naturaleza y los principios bioculturales, nos ayuda a reclamar nuestro rol como custodios de los ecosistemas vivos de los que dependemos y de los que somos parte inseparable."
       },
       "3": {
         "eyebrow": "DERECHOS DE IMPACTO",
@@ -589,7 +590,7 @@
       },
       {
         "name": "Dror Noi",
-        "role": "Emprendedor social y diseñador de permacultura apasionado por las culturas/agriculturas descentralizadas y regenerativas. Creció en Israel, fundó el primer centro de Innovación Social en TLV. Cofundador de Yumajai y socio en Inside-hub. Administra una finca de permacultura en Colombia."
+        "role": "Emprendedor social y diseñador de permacultura apasionado por las culturas/agriculturas descentralizadas y regenerativas. Creció en Israel, fundó el primer centro de Innovación Social en TLV. Cofundador de Yumajai y socio en Inside-faro. Administra una finca de permacultura en Colombia."
       },
       {
         "name": "Talya Weinberg",
@@ -613,8 +614,8 @@
         "role": "Experto en comunicaciones digitales y marketing, nacido, criado y radicado en Bogotá, con más de 13 años de experiencia desarrollando estrategias de marca y contenido. Especialista en simplificar temas complejos como cambio climático, biodiversidad, blockchain y conservación comunitaria. Apasionado por humanizar la tecnología a través de historias y trabajar en la restauración de la relación de la humanidad con la naturaleza. Líder de Comunicaciones en INHABIT."
       },
       {
-        "name": "Mohamd Ibrahim",
-        "role": "Ingeniero en redes y comunicaciones satelitales, experto en TIC con más de 20 años de experiencia. Creció en Congo (R.D.), donde fundó varios proveedores de servicios de Internet, estaciones terrestres y hubs de datos que llevaron conectividad confiable, redundante, segura y asequible a África. Experto en ciberseguridad, hosting, administración de sistemas, enrutamiento y optimización de redes, ingeniería blockchain e inteligencia artificial."
+        "name": "Mohamad Ibrahim",
+        "role": "Ingeniero en redes y comunicaciones satelitales, experto en TIC con más de 20 años de experiencia. Creció en Congo (R.D.), donde fundó varios proveedores de servicios de Internet, estaciones terrestres y faros de datos que llevaron conectividad confiable, redundante, segura y asequible a África. Experto en ciberseguridad, hosting, administración de sistemas, enrutamiento y optimización de redes, ingeniería blockchain e inteligencia artificial."
       },
       {
         "name": "Celia Mercado",
@@ -644,7 +645,7 @@
         },
         {
           "title": "Financia la implementación",
-          "description": "Los fondos se usan para cuatro acciones clave: adquirir y proteger tierras degradadas, restaurar sus ecosistemas, transformarlas en HUBS bioculturales prósperos y mejorar nuestro modelo regenerativo para asegurar impacto a largo plazo, escalabilidad y participación glocal."
+          "description": "Los fondos se usan para cuatro acciones clave: adquirir y proteger tierras degradadas, restaurar sus ecosistemas, transformarlas en FAROS bioculturales prósperos y mejorar nuestro modelo regenerativo para asegurar impacto a largo plazo, escalabilidad y participación glocal."
         }
       ]
     },
@@ -659,7 +660,7 @@
       "iframeAriaLabel": "Reproductor de video del proyecto"
     },
     "visitThisProject": "Visitar este proyecto",
-    "visitThisHub": "Visitar este hub",
+    "visitThisHub": "Visitar este faro",
     "stewardshipNFT": {
       "title": "Custodia",
       "subtitle": "<strong>NFT</strong>",
@@ -677,7 +678,7 @@
         },
         {
           "question": "02 Incubadora de Guardianes de la Tierra – \"Aprender viviendo\"",
-          "answer": "El Hub Ñuiyanzhi funciona como un centro de formación para futuros guardianes de la tierra, ofreciendo experiencia práctica en restauración ecológica, arquitectura bioclimática y prácticas tradicionales. A través de programas de aprendizaje inmersivo que integran sabiduría ancestral con conocimientos académicos y sistémicos, cultiva una nueva generación de custodios capaces de adaptar y replicar estas prácticas en otros territorios.\nEl enfoque enfatiza el \"aprender viviendo\", donde los participantes se involucran directamente con el entorno y sus ciclos naturales, experimentando los ritmos del cuidado diario y fomentando una comprensión profunda de la dinámica ecológica y la interconexión de todos los seres vivos. Ubicado en la Sierra y conectado tanto al mar como al río, Ñuiyanzhi brinda la oportunidad de presenciar la restauración ecológica de primera mano, evidenciada por el regreso de aves y la recuperación de la tierra bajo custodia local. La iniciativa resalta el rol de la custodia, donde los participantes aprenden de los mayores indígenas que comparten conocimientos enraizados en la Ley de Origen—un marco ecológico y espiritual que guía la coexistencia sostenible con la naturaleza.\nAl participar activamente en este proceso, los aprendices no solo adquieren habilidades prácticas sino que también cultivan un compromiso duradero con la sostenibilidad y la biodiversidad en sus propias comunidades. La experiencia Ñuiyanzhi fomenta el equilibrio ecológico, la sostenibilidad cultural y los principios del Buen Vivir, que integran bienestar, sostenibilidad y reciprocidad en el tejido social y ecológico."
+          "answer": "El Hub Ñuiyanzhi funciona como un centro de formación para futuros custodios de la tierra, ofreciendo experiencia práctica en restauración ecológica, arquitectura bioclimática y prácticas tradicionales. A través de programas de aprendizaje inmersivo que integran sabiduría ancestral con conocimientos académicos y sistémicos, cultiva una nueva generación de custodios capaces de adaptar y replicar estas prácticas en otros territorios.\nEl enfoque enfatiza el \"aprender viviendo\", donde los participantes se involucran directamente con el entorno y sus ciclos naturales, experimentando los ritmos del cuidado diario y fomentando una comprensión profunda de la dinámica ecológica y la interconexión de todos los seres vivos. Ubicado en la Sierra y conectado tanto al mar como al río, Ñuiyanzhi brinda la oportunidad de presenciar la restauración ecológica de primera mano, evidenciada por el regreso de aves y la recuperación de la tierra bajo custodia local. La iniciativa resalta el rol de la custodia, donde los participantes aprenden de los mayores indígenas que comparten conocimientos enraizados en la Ley de Origen—un marco ecológico y espiritual que guía la coexistencia sostenible con la naturaleza.\nAl participar activamente en este proceso, los aprendices no solo adquieren habilidades prácticas sino que también cultivan un compromiso duradero con la sostenibilidad y la biodiversidad en sus propias comunidades. La experiencia Ñuiyanzhi fomenta el equilibrio ecológico, la sostenibilidad cultural y los principios del Buen Vivir, que integran bienestar, sostenibilidad y reciprocidad en el tejido social y ecológico."
         },
         {
           "question": "03 Hub de Sabiduría – \"Encuentro de saberes\"",
@@ -691,7 +692,7 @@
     },
     "vision": {
       "title": "La Visión",
-      "text": "El Hub Ñuiyanzhi es un santuario e incubadora de guardianes de la tierra, enraizado en la contemplación de la naturaleza y la sabiduría ancestral Kogui. Combina restauración ecológica, diseño bioclimático y prácticas tradicionales, formando futuros custodios a través de aprendizaje práctico e inmersivo. Como centro de intercambio de saberes entre mayores indígenas e investigadores, fomenta la regeneración de suelos, la bioconstrucción sostenible, el reciclaje de recursos y la continuidad cultural. Hogar de custodios, fauna y ecosistemas vitales, Ñuiyanzhi es un modelo viviente de Buen Vivir y custodia ecológica.\n\nEnraizado en la contemplación de la naturaleza y la biomímesis, el proyecto honra el enfoque atemporal del pueblo Kogui para vivir en equilibrio con la naturaleza. Al combinar sabiduría ancestral con diseño ecológico moderno, Ñuiyanzhi se convierte en un laboratorio viviente donde los futuros guardianes aprenden a través de la práctica regenerativa basada en la tierra.",
+      "text": "El Hub Ñuiyanzhi es un santuario e incubadora de custodios de la tierra, enraizado en la contemplación de la naturaleza y la sabiduría ancestral Kogui. Combina restauración ecológica, diseño bioclimático y prácticas tradicionales, formando futuros custodios a través de aprendizaje práctico e inmersivo. Como centro de intercambio de saberes entre mayores indígenas e investigadores, fomenta la regeneración de suelos, la bioconstrucción sostenible, el reciclaje de recursos y la continuidad cultural. Hogar de custodios, fauna y ecosistemas vitales, Ñuiyanzhi es un modelo viviente de Buen Vivir y custodia ecológica.\n\nEnraizado en la contemplación de la naturaleza y la biomímesis, el proyecto honra el enfoque atemporal del pueblo Kogui para vivir en equilibrio con la naturaleza. Al combinar sabiduría ancestral con diseño ecológico moderno, Ñuiyanzhi se convierte en un laboratorio viviente donde los futuros custodios aprenden a través de la práctica regenerativa basada en la tierra.",
       "imageAlt": "La Visión"
     },
     "guardians": {
@@ -705,20 +706,20 @@
       "imageAlt": "La Tierra"
     },
     "faq": {
-      "title": "hubs Bioculturales",
+      "title": "faros Bioculturales",
       "description": "Preguntas Frecuentes",
       "items": [
         {
           "question": "¿Qué es un centro biocultural?",
-          "answer": "La regeneración verdadera y duradera necesita más que plantar árboles—requiere un cambio profundo en cómo valoramos y cuidamos la tierra.  los faros Bioculturales lideran esta transformación.\n\n los faros son espacios de regeneración y renovación cultural, diseñados para encender y cultivar el sentido de custodia necesario para restaurar nuestro planeta.  los faros protegen la biodiversidad, forman a la próxima generación de custodios de la tierra, y entrelazan la sabiduría ancestral con el conocimiento contemporáneo para impulsar un cambio profundo.\n\nSon espacios donde cualquiera puede aprender las prácticas más profundas de habitar y custodiar la naturaleza—lugares para explorar nuevas formas de relacionarse con la tierra, reconocer sus múltiples valores intrínsecos, y realizar el poder de nuestro rol en nutrirlos y multiplicarlos.\n\nCada Centro no solo restaura ecosistemas sino que también tiene la tarea de expandir un Corredor global mediante el aumento de áreas de conservación a través de la colaboración con hubs cercanos, proyectos y comunidades en su biorregión.\n\n los faros son los bloques fundamentales del Corredor—una red mundial de islas de biodiversidad y puntos de referencia culturales. El Corredor busca inspirar un movimiento de custodia en todo el mundo."
+          "answer": "La regeneración verdadera y duradera necesita más que plantar árboles—requiere un cambio profundo en cómo valoramos y cuidamos la tierra.  los faros Bioculturales lideran esta transformación.\n\n los faros son espacios de regeneración y renovación cultural, diseñados para encender y cultivar el sentido de custodia necesario para restaurar nuestro planeta.  los faros protegen la biodiversidad, forman a la próxima generación de custodios de la tierra, y entrelazan la sabiduría ancestral con el conocimiento contemporáneo para impulsar un cambio profundo.\n\nSon espacios donde cualquiera puede aprender las prácticas más profundas de habitar y custodiar la naturaleza—lugares para explorar nuevas formas de relacionarse con la tierra, reconocer sus múltiples valores intrínsecos, y realizar el poder de nuestro rol en nutrirlos y multiplicarlos.\n\nCada Centro no solo restaura ecosistemas sino que también tiene la tarea de expandir un Corredor global mediante el aumento de áreas de conservación a través de la colaboración con faros cercanos, proyectos y comunidades en su biorregión.\n\n los faros son los bloques fundamentales del Corredor—una red mundial de islas de biodiversidad y puntos de referencia culturales. El Corredor busca inspirar un movimiento de custodia en todo el mundo."
         },
         {
           "question": "¿Qué hace que un Centro sea un punto caliente de biodiversidad?",
-          "answer": "Un punto caliente de biodiversidad es un espacio con niveles excepcionalmente altos de diversidad biológica que también está bajo una amenaza significativa por la actividad humana.  los faros Bioculturales funcionan como 'hubs de semillas vivas'—espacios de importancia ecológica crítica, diseñados para salvaguardar y propagar la vida a través del Corredor.\n\nSimilar a un jardín botánico regional, pero arraigado únicamente en los ecosistemas nativos, cada Centro sirve como un nodo vital en una red más amplia - fomentando la conectividad ecológica a través del tejido más grande del Corredor. Estos hubs permiten que tanto las personas como los polinizadores actúen como portadores vivos de biodiversidad, dispersando naturalmente semillas, conocimiento y prácticas regenerativas a través del paisaje.\n\nEn el corazón de cada Centro yace un Corredor Interior—una vía ecológica diseñada que:\n• Conecta paisajes fragmentados o degradados,\n• Proporciona refugio para especies en peligro,\n• Apoya el flujo de genes, especies y conocimiento cultural,\n• Y fortalece tanto la resiliencia local como la conectividad ecológica global."
+          "answer": "Un punto caliente de biodiversidad es un espacio con niveles excepcionalmente altos de diversidad biológica que también está bajo una amenaza significativa por la actividad humana.  los faros Bioculturales funcionan como 'faros de semillas vivas'—espacios de importancia ecológica crítica, diseñados para salvaguardar y propagar la vida a través del Corredor.\n\nSimilar a un jardín botánico regional, pero arraigado únicamente en los ecosistemas nativos, cada Centro sirve como un nodo vital en una red más amplia - fomentando la conectividad ecológica a través del tejido más grande del Corredor. Estos faros permiten que tanto las personas como los polinizadores actúen como portadores vivos de biodiversidad, dispersando naturalmente semillas, conocimiento y prácticas regenerativas a través del paisaje.\n\nEn el corazón de cada Centro yace un Corredor Interior—una vía ecológica diseñada que:\n• Conecta paisajes fragmentados o degradados,\n• Proporciona refugio para especies en peligro,\n• Apoya el flujo de genes, especies y conocimiento cultural,\n• Y fortalece tanto la resiliencia local como la conectividad ecológica global."
         },
         {
           "question": "¿Qué actividades se realizan en un Centro Biocultural?",
-          "answer": " los faros Bioculturales son espacios vibrantes donde convergen la regeneración ecológica, la renovación cultural y la participación comunitaria. Cada CENTRO es único—moldeado por su ubicación específica, contexto ecológico y guiado por la visión de sus guardianes de la tierra. Cada Centro está dedicado a un campo distinto de conocimiento, produciendo y compartiendo información que integra el conocimiento sistémico y contemporáneo con la sabiduría ancestral alrededor de un tema específico.\n\nEnfocado en un tema específico—como restauración ecológica, construcción de paz, emprendimiento regenerativo, diseño bioclimático, micro-agricultura, eco-alfabetización, sanación y desarrollo interior arraigado en la sabiduría biocultural—por nombrar algunos.\n\nAlbergan actividades basadas en el lugar, experiencias de aprendizaje práctico a través de diversos campos de conocimiento. Los Custodios NFT y visitantes pueden diseñar viajes de aprendizaje personalizados, moviéndose a través de diferentes hubs en el Corredor cada uno un guardián de conocimiento ecológico y cultural único.\n\nEl marco INHABIT define 4 criterios clave para que un sitio evolucione hacia un Centro Biocultural, permitiendo que cada uno desarrolle su propio enfoque único y expresión de estos pilares."
+          "answer": " los faros Bioculturales son espacios vibrantes donde convergen la regeneración ecológica, la renovación cultural y la participación comunitaria. Cada CENTRO es único—moldeado por su ubicación específica, contexto ecológico y guiado por la visión de sus custodios de la tierra. Cada Centro está dedicado a un campo distinto de conocimiento, produciendo y compartiendo información que integra el conocimiento sistémico y contemporáneo con la sabiduría ancestral alrededor de un tema específico.\n\nEnfocado en un tema específico—como restauración ecológica, construcción de paz, emprendimiento regenerativo, diseño bioclimático, micro-agricultura, eco-alfabetización, sanación y desarrollo interior arraigado en la sabiduría biocultural—por nombrar algunos.\n\nAlbergan actividades basadas en el lugar, experiencias de aprendizaje práctico a través de diversos campos de conocimiento. Los Custodios NFT y visitantes pueden diseñar viajes de aprendizaje personalizados, moviéndose a través de diferentes faros en el Corredor cada uno un guardián de conocimiento ecológico y cultural único.\n\nEl marco INHABIT define 4 criterios clave para que un sitio evolucione hacia un Centro Biocultural, permitiendo que cada uno desarrolle su propio enfoque único y expresión de estos pilares."
         },
         {
           "question": "¿Cómo participan las comunidades locales?",
@@ -772,7 +773,7 @@
     "badgeArtDesc": "Cada obra representa un Jardín Flotante Migratorio del ecosistema del HUB, con una especie nativa vital para ese hábitat y vinculada a niveles de cuidado en el pensamiento ancestral Kogui. La insignia artística simboliza tu conexión legal de custodia con una parcela específica, que puedes usar para recorrer y activar el corredor.",
     "monitoringRights": "DERECHOS DE MONITOREO",
     "monitoringAccess": "Acceso a Monitoreo de Impacto vía <span class='text-orange-400 font-bold'>MAPA AQUÍ</span>",
-    "monitoringAccessDesc": "Sigue el progreso de la tierra que ayudas a proteger mediante mapeo de datos en tiempo real y narrativas de geolocalización. Observa la transformación de la tierra en un hub biocultural. Recibes datos e informes de impacto en tiempo real, geolocalización, mapeo visual e indicadores clave de desempeño (KPIs) sobre avances en áreas como plantación de árboles, aumento de biodiversidad e impacto en la comunidad local."
+    "monitoringAccessDesc": "Sigue el progreso de la tierra que ayudas a proteger mediante mapeo de datos en tiempo real y narrativas de geolocalización. Observa la transformación de la tierra en un faro biocultural. Recibes datos e informes de impacto en tiempo real, geolocalización, mapeo visual e indicadores clave de desempeño (KPIs) sobre avances en áreas como plantación de árboles, aumento de biodiversidad e impacto en la comunidad local."
   },
   "privacyPolicy": {
     "title": "Política de Privacidad",
@@ -938,10 +939,10 @@
         },
         {
           "number": "03",
-          "label": "HUBS BIOCULTURALES PRÓSPEROS",
+          "label": "FAROS BIOCULTURALES PRÓSPEROS",
           "title": "Transformar",
           "subtitle": "La Sociedad",
-          "description": "Para financiar el desarrollo de hubs dedicados a campos únicos de conocimiento, fomentando la producción y difusión de sabiduría, y ampliando el acceso a conocimiento transformador para todos."
+          "description": "Para financiar el desarrollo de faros dedicados a campos únicos de conocimiento, fomentando la producción y difusión de sabiduría, y ampliando el acceso a conocimiento transformador para todos."
         },
         {
           "number": "04",
@@ -969,12 +970,12 @@
     "2": {
       "eyebrow": "DERECHOS DE CUSTODIA",
       "title": "Protector legal de la tierra",
-      "description": "Formas parte de un sistema legal de garantía que reconoce a la Naturaleza como sujeto de derechos en una parcela específica.\n\nEste marco, alineado con la Declaración de los Derechos de la Naturaleza y los principios bioculturales, nos ayuda a reclamar nuestro rol como guardianes de los ecosistemas vivos de los que dependemos y de los que somos parte inseparable."
+      "description": "Formas parte de un sistema legal de garantía que reconoce a la Naturaleza como sujeto de derechos en una parcela específica.\n\nEste marco, alineado con la Declaración de los Derechos de la Naturaleza y los principios bioculturales, nos ayuda a reclamar nuestro rol como custodios de los ecosistemas vivos de los que dependemos y de los que somos parte inseparable."
     },
     "3": {
       "eyebrow": "DERECHOS DE IMPACTO",
       "title": "Monitoreo de Impacto",
-      "description": "Sigue el progreso de la tierra que ayudas a proteger mediante datos en tiempo real y narrativas de geolocalización.\n\nObserva su transformación en un hub biocultural con actualizaciones regulares, mapas visuales e informes de impacto. Consulta KPIs sobre plantación de árboles, aumento de biodiversidad e impacto en la comunidad—todo mostrando tu contribución a la regeneración en acción."
+      "description": "Sigue el progreso de la tierra que ayudas a proteger mediante datos en tiempo real y narrativas de geolocalización.\n\nObserva su transformación en un faro biocultural con actualizaciones regulares, mapas visuales e informes de impacto. Consulta KPIs sobre plantación de árboles, aumento de biodiversidad e impacto en la comunidad—todo mostrando tu contribución a la regeneración en acción."
     },
     "4": {
       "eyebrow": "DERECHOS DE GOBERNANZA",
@@ -997,12 +998,12 @@
       },
       {
         "title": "Financia la implementación",
-        "description": "Los fondos se usan para cuatro acciones clave: adquirir y proteger tierras degradadas, restaurar sus ecosistemas, transformarlas en HUBS bioculturales prósperos y mejorar nuestro modelo regenerativo para asegurar impacto a largo plazo, escalabilidad y participación glocal."
+        "description": "Los fondos se usan para cuatro acciones clave: adquirir y proteger tierras degradadas, restaurar sus ecosistemas, transformarlas en FAROS bioculturales prósperos y mejorar nuestro modelo regenerativo para asegurar impacto a largo plazo, escalabilidad y participación glocal."
       }
     ]
   },
   "internalPagesHero": {
-    "hubs": {
+    "faros": {
       "title": "biocultural",
       "strong": "Hubs",
       "description": " los faros son como 'Jardines Migratorios': existen en el mundo real pero se comportan de manera diferente; son 'espacios de transición' para experimentar nuevas formas de relacionarnos con nosotros mismos y la naturaleza. Lugares para aprender las prácticas más profundas de habitar y custodiar la tierra."
@@ -1167,18 +1168,18 @@
     },
     "footer": "Al usar este sitio web o interactuar con nuestros activos digitales, usted acepta estos Términos."
   },
-  "hubsPage": {
+  "farosPage": {
     "faq": {
       "title": "Preguntas<br /><strong>Frecuentes</strong>",
       "description": "Encuentra respuestas a preguntas comunes sobre  los faros Bioculturales, conservación e impacto de los NFT.",
       "items": [
         {
           "question": "¿Cómo contribuyen  los faros Bioculturales a la conservación?",
-          "answer": "<ul><li><strong>• Protección de la Biodiversidad:</strong> Salvaguardan la biodiversidad protegiendo ecosistemas vitales y restaurando hábitats para especies nativas y en peligro de extinción. Como \"hubs vivos de semillas\", ayudan a propagar la vida a lo largo del Corredor.</li><li><strong>• Restauración de Tierras:</strong> Restauran tierras degradadas mediante la reforestación, regeneración del suelo, protección de cuencas hidrográficas y difusión del conocimiento ecológico.</li><li><strong>• Conocimiento Indígena:</strong> Revitalizan el conocimiento indígena colaborando con las comunidades locales para honrar y compartir las prácticas ancestrales.</li><li><strong>• Conectividad Ecológica:</strong> Expanden los corredores ecológicos conectando hábitats fragmentados y fomentando la conectividad en toda la bioregión.</li><li><strong>• Innovación Rural:</strong> Promueven la innovación rural sirviendo como laboratorios de prácticas regenerativas y vida sostenible basada en el lugar.</li><li><strong>• Empoderamiento Comunitario:</strong> Empoderan a los guardianes locales a través de la capacitación y la gobernanza dirigida por la comunidad.</li><li><strong>• Modelos de Tenencia:</strong> Introducen nuevos modelos de tenencia de la tierra, reconociendo los Derechos de la Naturaleza y las responsabilidades de custodia a largo plazo.</li><li><strong>• Conservación Compartida:</strong> Redefinen la conservación como una responsabilidad compartida, donde los titulares de NFT obtienen custodia legal y participan en la regeneración del mundo real a través del compromiso biocultural.</li></ul>"
+          "answer": "<ul><li><strong>• Protección de la Biodiversidad:</strong> Salvaguardan la biodiversidad protegiendo ecosistemas vitales y restaurando hábitats para especies nativas y en peligro de extinción. Como \"faros vivos de semillas\", ayudan a propagar la vida a lo largo del Corredor.</li><li><strong>• Restauración de Tierras:</strong> Restauran tierras degradadas mediante la reforestación, regeneración del suelo, protección de cuencas hidrográficas y difusión del conocimiento ecológico.</li><li><strong>• Conocimiento Indígena:</strong> Revitalizan el conocimiento indígena colaborando con las comunidades locales para honrar y compartir las prácticas ancestrales.</li><li><strong>• Conectividad Ecológica:</strong> Expanden los corredores ecológicos conectando hábitats fragmentados y fomentando la conectividad en toda la bioregión.</li><li><strong>• Innovación Rural:</strong> Promueven la innovación rural sirviendo como laboratorios de prácticas regenerativas y vida sostenible basada en el lugar.</li><li><strong>• Empoderamiento Comunitario:</strong> Empoderan a los custodios locales a través de la capacitación y la gobernanza dirigida por la comunidad.</li><li><strong>• Modelos de Tenencia:</strong> Introducen nuevos modelos de tenencia de la tierra, reconociendo los Derechos de la Naturaleza y las responsabilidades de custodia a largo plazo.</li><li><strong>• Conservación Compartida:</strong> Redefinen la conservación como una responsabilidad compartida, donde los titulares de NFT obtienen custodia legal y participan en la regeneración del mundo real a través del compromiso biocultural.</li></ul>"
         },
         {
           "question": "¿Cómo ayuda mi compra de NFT a la conservación?",
-          "answer": "Tu compra de NFT apoya directamente la conservación y regeneración del mundo real. El Corredor está diseñado para impulsar un movimiento global de custodia ecológica, y tu contribución juega un papel vital.<br/><br/>85% de los fondos van directamente a:<br/><br/><ul><li><strong>PROTEGER:</strong> Comprar y salvaguardar permanentemente tierras bajo el innovador marco legal de INHABIT, reconociendo los ecosistemas como entidades legales con derechos protegidos, mientras se otorgan derechos y beneficios específicos a las personas que apoyan su regeneración.</li><li><strong>RESTAURAR:</strong> Financiar la regeneración del ecosistema a largo plazo a través de la restauración basada en la custodia con programas de tres años, restaurando la diversidad y funcionalidad completa del ecosistema, no solo plantando árboles.</li><li><strong>TRANSFORMAR:</strong> Desarrollar hubs bioculturales prósperos dedicados a campos únicos de conocimiento, fomentando la producción y difusión de sabiduría, y expandiendo activamente el corredor.</li><li><strong>MEJORAR:</strong> Desarrollar una versión mejorada y más valiosa del NFT de Custodia, ofreciendo mayores beneficios a los titulares de NFT mientras se expande aún más el corredor (NFT 2.0).</li></ul>"
+          "answer": "Tu compra de NFT apoya directamente la conservación y regeneración del mundo real. El Corredor está diseñado para impulsar un movimiento global de custodia ecológica, y tu contribución juega un papel vital.<br/><br/>85% de los fondos van directamente a:<br/><br/><ul><li><strong>PROTEGER:</strong> Comprar y salvaguardar permanentemente tierras bajo el innovador marco legal de INHABIT, reconociendo los ecosistemas como entidades legales con derechos protegidos, mientras se otorgan derechos y beneficios específicos a las personas que apoyan su regeneración.</li><li><strong>RESTAURAR:</strong> Financiar la regeneración del ecosistema a largo plazo a través de la restauración basada en la custodia con programas de tres años, restaurando la diversidad y funcionalidad completa del ecosistema, no solo plantando árboles.</li><li><strong>TRANSFORMAR:</strong> Desarrollar faros bioculturales prósperos dedicados a campos únicos de conocimiento, fomentando la producción y difusión de sabiduría, y expandiendo activamente el corredor.</li><li><strong>MEJORAR:</strong> Desarrollar una versión mejorada y más valiosa del NFT de Custodia, ofreciendo mayores beneficios a los titulares de NFT mientras se expande aún más el corredor (NFT 2.0).</li></ul>"
         },
         {
           "question": "¿Qué sucede si no se alcanza el monto mínimo necesario para comprar la tierra y financiar el proyecto?",
@@ -1190,7 +1191,7 @@
         },
         {
           "question": "¿Qué garantiza que la tierra esté protegida a perpetuidad?",
-          "answer": "El marco legal de INHABIT asegura la protección permanente de la tierra a través de un sistema en capas que integra los Derechos de la Naturaleza, gobernanza tokenizada, contratos inteligentes y custodia en el terreno:<br/><br/><ul><li><strong>1-Derechos de la Naturaleza:</strong> La tierra es legalmente reconocida como una entidad con derechos. Una vez tokenizada, no puede ser vendida ni explotada, asegurando una protección duradera.</li><li><strong>2-NFT de Custodia:</strong> Cada NFT está vinculado a un contrato legal de membresía. Los titulares obtienen derechos de gobernanza para monitorear la tierra, intervenir si la naturaleza está en riesgo y ayudar a dar forma a las decisiones, utilizando narrativas geolocalizadas y KPIs para verificación en tiempo real.</li><li><strong>3-Guardianes en el Terreno:</strong> Los guardianes locales reciben derechos permanentes de uso de la tierra y aseguran el cuidado y protección ecológica diaria.</li><li><strong>4-Contratos Inteligentes:</strong> Los derechos y responsabilidades (incluidos los de la Naturaleza) se hacen cumplir a través de contratos transparentes e inmutables que codifican instrumentos legales y permiten la gobernanza digital y física.</li><li><strong>5-Supervisión Institucional:</strong> INHABIT SAS y la Fundación INHABIT supervisan el uso de fondos, el cumplimiento legal y la aplicación de derechos, con documentos encriptados en la cadena de bloques.</li></ul>"
+          "answer": "El marco legal de INHABIT asegura la protección permanente de la tierra a través de un sistema en capas que integra los Derechos de la Naturaleza, gobernanza tokenizada, contratos inteligentes y custodia en el terreno:<br/><br/><ul><li><strong>1-Derechos de la Naturaleza:</strong> La tierra es legalmente reconocida como una entidad con derechos. Una vez tokenizada, no puede ser vendida ni explotada, asegurando una protección duradera.</li><li><strong>2-NFT de Custodia:</strong> Cada NFT está vinculado a un contrato legal de membresía. Los titulares obtienen derechos de gobernanza para monitorear la tierra, intervenir si la naturaleza está en riesgo y ayudar a dar forma a las decisiones, utilizando narrativas geolocalizadas y KPIs para verificación en tiempo real.</li><li><strong>3-Guardianes en el Terreno:</strong> Los custodios locales reciben derechos permanentes de uso de la tierra y aseguran el cuidado y protección ecológica diaria.</li><li><strong>4-Contratos Inteligentes:</strong> Los derechos y responsabilidades (incluidos los de la Naturaleza) se hacen cumplir a través de contratos transparentes e inmutables que codifican instrumentos legales y permiten la gobernanza digital y física.</li><li><strong>5-Supervisión Institucional:</strong> INHABIT SAS y la Fundación INHABIT supervisan el uso de fondos, el cumplimiento legal y la aplicación de derechos, con documentos encriptados en la cadena de bloques.</li></ul>"
         }
       ]
     }

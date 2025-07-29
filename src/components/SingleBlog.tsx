@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { BlogPost, ProcessedPost } from "@/types/wordpress";
@@ -25,33 +25,53 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
     "id" | "title" | "content" | "date" | "image"
   > | null>(null);
 
+  const loadingRef = useRef(false);
+
   const clearPostStates = () => {
     setPost(null);
     setPrevPost(null);
     setNextPost(null);
     setError(null);
     setLoading(true);
+    loadingRef.current = false;
   };
 
   const loadPost = async (postID: string) => {
+    if (loadingRef.current) return;
+    loadingRef.current = true;
+    
     clearPostStates();
+
+    // Minimum loading time for slow connections
+    const startTime = Date.now();
+    const minLoadingTime = 2000; // 2 seconds minimum
 
     try {
       const { current, next, previous } = await fetchPostWithNavigation(postID);
+      
+      // Ensure minimum loading time
+      const elapsedTime = Date.now() - startTime;
+      const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
+      
+      if (remainingTime > 0) {
+        await new Promise(resolve => setTimeout(resolve, remainingTime));
+      }
+      
       setPost(current);
       setPrevPost(previous);
       setNextPost(next);
     } catch (err) {
-      setError(t("mainPage.blog.error"));
-      console.error("Error loading blog posts:", err);
+      console.error("Error loading blog post:", err);
+      setError(err instanceof Error ? err.message : t("mainPage.blog.error"));
     } finally {
       setLoading(false);
+      loadingRef.current = false;
     }
   };
 
   useEffect(() => {
     if (id) loadPost(id);
-  }, [id, t]);
+  }, [id]);
 
   useEffect(() => {
     if (!loading && post && onPageReady) {
@@ -73,8 +93,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
             lineHeight: 1.1,
           }}
         >
-          No pudimos mostrar el post en este momento. Intenta de nuevo más
-          tarde.
+          {t("mainPage.blog.error")}
         </h1>
       )}
 
