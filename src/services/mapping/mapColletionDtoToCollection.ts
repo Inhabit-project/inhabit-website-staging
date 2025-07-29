@@ -15,6 +15,13 @@ export async function mapCollectionDtoToCollection(
       membershipContract: "",
     }));
 
+  const availableSupply =
+    Number(dto.supply) - Number(dto.tokenCount) < 0
+      ? 0
+      : Number(dto.supply) - Number(dto.tokenCount);
+
+  console.log("availableSupply", availableSupply);
+
   return {
     campaignId: Number(dto.campaignId),
     id: Number(dto.collectionId),
@@ -25,7 +32,7 @@ export async function mapCollectionDtoToCollection(
     uri: sanitizeIpfsUri(dto.baseURI),
     sold: Number(dto.tokenCount),
     supply: Number(dto.supply),
-    availableSupply: Number(dto.supply) - Number(dto.tokenCount),
+    availableSupply,
     price: formatUsdcToUsd(dto.price),
     state: dto.state,
     description: metadata.description,

@@ -12,13 +12,14 @@ import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
 import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
 
 export type Props = {
+  availableSupply: number;
   membershipContract: string;
   price: number;
 };
 
 export default function Stepper(props: Props): JSX.Element {
   // props
-  const { membershipContract, price } = props;
+  const { availableSupply, membershipContract, price } = props;
 
   // hooks
   const [step, setStep] = useState<1 | 2>(1);
@@ -94,6 +95,7 @@ export default function Stepper(props: Props): JSX.Element {
 
       {step === 2 && (
         <VoucherStep
+          availableSupply={availableSupply}
           kycType={kycType}
           price={price}
           selectedCoin={selectedCoin}

@@ -9,7 +9,7 @@ import { Info } from "./_componets/Info";
 import OtherCollections from "./_componets/OtherCollections";
 import Stepper from "./_componets/Stepper";
 
-type Props = { 
+type Props = {
   onHeroImageLoad?: VoidFunction;
   onPageReady?: VoidFunction;
 };
@@ -42,8 +42,13 @@ export default function Membership(props: Props): JSX.Element {
 
   // effects
   useEffect(() => {
-    console.log("Membership page mounted with campaignId:", campaignId, "collectionId:", collectionId);
-    
+    console.log(
+      "Membership page mounted with campaignId:",
+      campaignId,
+      "collectionId:",
+      collectionId
+    );
+
     if (Number.isNaN(campaignId) || Number.isNaN(collectionId)) {
       console.error("Invalid campaignId or collectionId, navigating to 404");
       navigate("/404");
@@ -179,6 +184,7 @@ export default function Membership(props: Props): JSX.Element {
               <RightsTable rights={collection.rights} />
             </div>
             <Stepper
+              availableSupply={collection.availableSupply}
               price={collection.price}
               membershipContract={collection.membershipContract}
             />
