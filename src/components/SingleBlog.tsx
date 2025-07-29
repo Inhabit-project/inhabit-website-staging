@@ -191,7 +191,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
                   color: "var(--color-secondary)",
                   fontSize: 20,
                 }}
-                aria-label="Share on Website"
+                aria-label={t('common.shareOnWebsite')}
               >
                 🌐
               </button>
@@ -202,7 +202,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
                   color: "var(--color-secondary)",
                   fontSize: 20,
                 }}
-                aria-label="Share on Twitter"
+                aria-label={t('common.shareOnTwitter')}
               >
                 🐦
               </button>
@@ -213,7 +213,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
                   color: "var(--color-secondary)",
                   fontSize: 20,
                 }}
-                aria-label="Share on Facebook"
+                aria-label={t('common.shareOnFacebook')}
               >
                 📘
               </button>
@@ -311,7 +311,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span style={{ fontWeight: 700 }}>Previous Article</span>
+                  <span style={{ fontWeight: 700 }}>{t('common.previousArticle')}</span>
                   <span style={{ opacity: 0.7, marginLeft: 8 }}>
                     {prevPost.title}
                   </span>
@@ -343,10 +343,10 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
                     width: "100%",
                     justifyContent: "flex-end",
                   }}
-                  aria-label="Next article: Meet the Stewards of Tierra Kilwa"
+                  aria-label={`${t('common.nextArticle')}: ${nextPost.title}`}
                 >
                   <span style={{ fontWeight: 700, marginRight: 8 }}>
-                    Next Article
+                    {t('common.nextArticle')}
                   </span>
                   <span style={{ opacity: 0.7 }}>
                     Meet the Stewards of Tierra Kilwa

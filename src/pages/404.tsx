@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { Helmet } from 'react-helmet-async';
@@ -35,6 +36,7 @@ interface FourOhFourPageProps {
 }
 
 const FourOhFourPage: React.FC<FourOhFourPageProps> = ({ onPageReady }) => {
+  const { t } = useTranslation();
   const [isMobile, setIsMobile] = useState(false);
   const leafRefs = useRef<(HTMLImageElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -121,11 +123,10 @@ const FourOhFourPage: React.FC<FourOhFourPageProps> = ({ onPageReady }) => {
       </Helmet>
       {/* Top Left Title */}
       <div className="flex flex-col md:flex-row items-start justify-between gap-[13.3125rem] w-full">
-            <h2 className="heading-2 text-secondary max-w-[40.9375rem]">
-            Page<br /><strong>Not found</strong>
+            <h2 className="heading-2 text-secondary max-w-[40.9375rem]" dangerouslySetInnerHTML={{ __html: t('error404.title') }}>
             </h2>
-            <p className="body-M text-secondary max-w-[35rem]">
-            This digital habitat is empty. <br />But real-world impact awaits<br />let's get you back on track.</p>
+            <p className="body-M text-secondary max-w-[35rem]" dangerouslySetInnerHTML={{ __html: t('error404.description') }}>
+            </p>
           </div>
 
       {/* Leaves */}
@@ -148,7 +149,7 @@ const FourOhFourPage: React.FC<FourOhFourPageProps> = ({ onPageReady }) => {
           to="/"
           className="btn-primary mt-8 inline-flex items-center gap-2 px-8 py-3 button-text"
         >
-          <span>Find your path again</span>
+          <span>{t('error404.button')}</span>
           <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>

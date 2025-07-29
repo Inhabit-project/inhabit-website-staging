@@ -241,9 +241,17 @@ const ProjectsVideoSection: React.FC = () => {
                   <defs>
                     <path id="circle-path-projects" d="M 50 50 m -40 0 a 40 40 0 1 1 80 0 a 40 40 0 1 1 -80 0" />
                   </defs>
-                  <text className="text-xs font-medium fill-white">
+                  <text className="text-[12px] font-medium fill-white uppercase">
                     <textPath href="#circle-path-projects" startOffset="0%">
-                      PLAY VIDEO • PLAY VIDEO • PLAY VIDEO • PLAY VIDEO •
+                      {(() => {
+                        const text = t('common.playVideo');
+                        const textLength = text.length;
+                        // Calculate repetitions based on text length
+                        // Shorter text (Spanish) needs more repetitions
+                        // Longer text (English) needs fewer repetitions
+                        const repetitions = textLength <= 8 ? 7 : 6;
+                        return Array(repetitions).fill(text).join(' • ') + ' •';
+                      })()}
                     </textPath>
                   </text>
                 </svg>

@@ -1,13 +1,15 @@
-import { JSX } from "react";
-import { Right } from "src/models/right.model";
-import MobileRightsAccordion from "./MobileRightsAccordion";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Right } from '../../../models/right.model';
+import MobileRightsAccordion from './MobileRightsAccordion';
 
-type Props = {
+interface Props {
   rights: Right[];
-};
+}
 
 export default function RightsTable(props: Props): JSX.Element {
   const { rights } = props;
+  const { t } = useTranslation();
 
   // Helper function to render values in the table cells
   const renderCellValue = (value: boolean | string) => {
@@ -63,7 +65,7 @@ export default function RightsTable(props: Props): JSX.Element {
     }
 
     // Para strings, renderizar como texto o badge especial
-    if (value === "Basic level contents" || value === "Medium level contents") {
+    if (value === t('nftTable.basicLevel') || value === t('nftTable.mediumLevel')) {
       return (
         <span className="inline-block px-3 py-1 bg-[#E2EDD3] border border-green-soft text-[#1C3625] font-bold text-xs rounded-none">
           {value}
@@ -88,13 +90,13 @@ export default function RightsTable(props: Props): JSX.Element {
               {/* Column for the type of right */}
             </th>
             <th className="py-4 px-6 font-montserrat font-bold text-secondary text-base tracking-wide">
-              RIGHT DETAIL
+              {t('nftTable.landRights')}
             </th>
             <th className="py-4 px-6 font-montserrat font-bold text-secondary text-base tracking-wide text-center">
-              MINIMUM FUNDRAISE
+              {t('nftTable.minFundraise')}
             </th>
             <th className="py-4 px-6 font-montserrat font-bold text-secondary text-base tracking-wide text-center">
-              FULL FUNDRAISE
+              {t('nftTable.fullFundraise')}
             </th>
           </tr>
         </thead>

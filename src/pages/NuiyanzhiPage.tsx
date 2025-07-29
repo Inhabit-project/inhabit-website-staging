@@ -125,7 +125,7 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
 
         {!campaignsLoading &&
           (campaigns.length === 0 ? (
-            <p className="text-lg text-gray-500">No campaigns available.</p>
+                            <p className="text-lg text-gray-500">{t('common.noCampaignsAvailable')}</p>
           ) : (
             campaigns.map((campaign) => (
               <NFTGrid key={campaign.id} campaign={campaign} />

@@ -131,7 +131,7 @@ const CTA: React.FC = () => {
                   <button
                     onClick={() => (window.location.href = "/hubs/nuiyanzhi")}
                     className="mt-0 flex items-center h-[4.2rem] bg-[var(--color-accent)] hover:bg-[var(--color-green-soft)] text-light hover:text-secondary rounded-button backdrop-blur-sm transition-all duration-200 group no-underline"
-                    aria-label="Explore Nuiyanzhi Hub"
+                    aria-label={t('common.exploreHub')}
                   >
                     <div className="flex items-center gap-2 px-6">
                       <svg
@@ -152,7 +152,7 @@ const CTA: React.FC = () => {
                         />
                       </svg>
                       <span className="button-text text-sm tracking-[0.02em] uppercase">
-                        Explore Nuiyanzhi Hub
+                        {t('common.exploreHub')}
                       </span>
                     </div>
                     <div className="flex items-center px-4">
@@ -183,7 +183,7 @@ const CTA: React.FC = () => {
                     }}
                     onMouseUp={(e) => e.currentTarget.blur()}
                     className="btn-secondary flex items-center h-[4.2rem] bg-[var(--color-green-soft)] hover:bg-[var(--color-accent)] text-secondary hover:text-light rounded-button backdrop-blur-sm transition-all duration-200 group no-underline"
-                    aria-label="Explore Nuiyanzhi Hub"
+                    aria-label={t('common.exploreHub')}
                   >
                     <div className="flex items-center gap-2 px-4 md:px-6">
                       <img

@@ -136,7 +136,7 @@ const Footer: React.FC = () => {
       trigger: footerRef.current,
       start: "top 80%",
       end: "bottom 20%",
-      toggleActions: "restart none none none",
+      toggleActions: "play none none reverse",
       animation: timeline,
       id: `footer-${Date.now()}`,
     });

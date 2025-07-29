@@ -85,57 +85,56 @@ function MainPage(props: Props) {
         href="#main-content"
         className="sr-only focus:not-sr-only absolute top-2 left-2 bg-white text-black p-2 z-50 rounded"
       >
-        Skip to main content
+        {t('common.skipToMainContent')}
       </a>
       <Menu />
       <main id="main-content" tabIndex={-1} role="main">
-        <section className="no-scroll-snap" aria-label="Hero section">
+        <section className="no-scroll-snap" aria-label={t('sections.hero')}>
           <Hero
             scrollToRef={videoSectionRef}
             onHeroImageLoad={onHeroImageLoad}
           />
         </section>
         <section
-          aria-label="Video section"
+          aria-label={t('sections.video')}
           className="scroll-container"
           ref={videoSectionRef}
         >
           <Video />
         </section>
-        <section aria-label="Hubs section">
+        <section aria-label={t('sections.hubs')}>
           <Hubs />
         </section>
-        <section aria-label="Stewardship NFT section">
+        <section aria-label={t('sections.stewardshipNFT')}>
           <StewardshipNFT />
         </section>
-        <section aria-label="Highlight section">
+        <section aria-label={t('sections.highlight')}>
           <Highlight />
         </section>
-        <section ref={nftGridRef} aria-label="NFT Grid section">
+        <section ref={nftGridRef} aria-label={t('sections.nftGrid')}>
           {!campaignsLoading &&
-            (!lastCampaign ? (
-              // TODO: improve this message
-              <p className="text-lg text-gray-500">No campaigns available.</p>
+                          (!lastCampaign ? (
+                <p className="text-lg text-gray-500">{t('common.noCampaignsAvailable')}</p>
             ) : (
               <NFTGrid key={lastCampaign.id} campaign={lastCampaign} />
             ))}
         </section>
-        <section aria-label="Photo section">
+        <section aria-label={t('sections.photo')}>
           <Photo />
         </section>
-        <section aria-label="Infographic section">
+        <section aria-label={t('sections.infographic')}>
           <Infographic />
         </section>
-        <section aria-label="Testimonials section">
+        <section aria-label={t('sections.testimonials')}>
           <Testimonials />
         </section>
-        <section aria-label="Call to action section">
+        <section aria-label={t('sections.cta')}>
           <CTA />
         </section>
-        <section aria-label="Blog section">
+        <section aria-label={t('sections.blog')}>
           <Blog />
         </section>
-        <section aria-label="FAQ section">
+        <section aria-label={t('sections.faq')}>
           <FAQ />
         </section>
       </main>

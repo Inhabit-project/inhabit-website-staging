@@ -74,18 +74,18 @@ export default function StewardshipNFTPage(props: Props): JSX.Element {
         href="#main-content"
         className="sr-only focus:not-sr-only absolute top-2 left-2 bg-white text-black p-2 z-50 rounded"
       >
-        Skip to main content
+        {t('common.skipToMainContent')}
       </a>
       <div className="min-h-screen background-gradient-light">
         <Menu />
         <main id="main-content" role="main" tabIndex={-1}>
-          <section aria-label="Stewardship NFT hero section">
+          <section aria-label={t('sections.hero')}>
             <InternalPagesHero
               variant="stewardship"
               onHeroImageLoad={onHeroImageLoad}
             />
           </section>
-          <section aria-label="Stewardship NFT introduction">
+          <section aria-label={t('sections.stewardshipNFT')}>
             <ImageSection
               eyebrow={t("mainPage.stewardshipNFTPage.imageSection.eyebrow")}
               heading={
@@ -101,38 +101,37 @@ export default function StewardshipNFTPage(props: Props): JSX.Element {
               imageAlt={t("mainPage.stewardshipNFTPage.imageSection.imageAlt")}
             />
           </section>
-          <section aria-label="Stewardship NFT benefits">
+          <section aria-label={t('sections.stewardshipNFT')}>
             <StewardshipNFTBenefitsSection />
           </section>
-          <section aria-label="Stewardship NFT highlight">
+          <section aria-label={t('sections.highlight')}>
             <Highlight />
           </section>
-          <section aria-label="How Stewardship NFT works">
+          <section aria-label={t('sections.stewardshipNFT')}>
             <NFTWorksSection />
           </section>
-          <section aria-label="Stewardship NFT criteria">
+          <section aria-label={t('sections.faq')}>
             <FourCriteriaHubGlobal />
           </section>
-          <section aria-label="Available Stewardship NFTs" ref={nftGridRef}>
+          <section aria-label={t('sections.nftGrid')} ref={nftGridRef}>
             <SubLoader isLoading={campaignsLoading} />
 
             {!campaignsLoading &&
               (campaigns.length === 0 ? (
-                // TODO: improve this message
-                <p className="text-lg text-gray-500">No campaigns available.</p>
+                <p className="text-lg text-gray-500">{t('common.noCampaignsAvailable')}</p>
               ) : (
                 campaigns.map((campaign) => (
                   <NFTGrid key={campaign.id} campaign={campaign} />
                 ))
               ))}
           </section>
-          <section aria-label="Blog posts">
+          <section aria-label={t('sections.blog')}>
             <Blog />
           </section>
-          <section aria-label="Call to action">
+          <section aria-label={t('sections.cta')}>
             <CTA />
           </section>
-          <section aria-label="Frequently asked questions">
+          <section aria-label={t('sections.faq')}>
             <FAQStewardshipNFT />
           </section>
         </main>

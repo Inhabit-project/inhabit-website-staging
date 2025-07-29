@@ -124,7 +124,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
       trigger: sectionRef.current,
       start: "top 80%",
       end: "bottom 20%",
-      toggleActions: "restart none none none",
+      toggleActions: "play none none reverse",
       animation: timeline,
       id: `blog-${Date.now()}`, // Unique ID to avoid conflicts
     });
@@ -216,7 +216,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                               style={{ color: "var(--color-primary)" }}
                               onClick={() => {}}
                             >
-                              Read more
+                              {t('common.readMore')}
                             </button>
                           </Link>
                         </div>
@@ -265,7 +265,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                                   style={{ color: "var(--color-primary)" }}
                                   onClick={() => {}}
                                 >
-                                  Read more
+                                  {t('common.readMore')}
                                 </button>
                               </Link>
                             </div>

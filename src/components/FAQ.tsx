@@ -220,7 +220,7 @@ export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string 
         trigger: sectionRef.current,
         start: "top center",
         end: "center center",
-        toggleActions: "restart none none none"
+        toggleActions: "play none none reverse"
       }
     });
 
