@@ -3,10 +3,7 @@ export function sanitizeIpfsUri(uri: string): string {
 
   // If it's an ipfs:// URI
   if (uri.startsWith("ipfs://")) {
-    return uri.replace(
-      "ipfs://",
-      "https://black-fast-chipmunk-543.mypinata.cloud/ipfs/"
-    );
+    return uri.replace("ipfs://", "https://gateway.lighthouse.storage/ipfs/");
   }
 
   // If it's a plain CID
