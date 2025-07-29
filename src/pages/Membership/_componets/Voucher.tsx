@@ -17,6 +17,7 @@ import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
 import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
 
 interface Props {
+  availableSupply: number;
   kycType: KYC_TYPE;
   price: number;
   requiresHardKyc: boolean;
@@ -26,8 +27,14 @@ interface Props {
 
 export function VoucherStep(props: Props): JSX.Element {
   // props
-  const { price, selectedCoin, requiresHardKyc, kycType, setSelectedCoin } =
-    props;
+  const {
+    availableSupply,
+    price,
+    selectedCoin,
+    requiresHardKyc,
+    kycType,
+    setSelectedCoin,
+  } = props;
 
   // hooks
   const [isProcessing, setIsProcessing] = useState(false);
@@ -70,6 +77,7 @@ export function VoucherStep(props: Props): JSX.Element {
   }, [selectedCoin, usdcBalance, usdtBalance]);
 
   const hasSufficientBalance = selectedBalance >= price;
+  const isAvailable = availableSupply > 0;
 
   const coins = [
     {
@@ -318,9 +326,10 @@ export function VoucherStep(props: Props): JSX.Element {
           className="btn-primary"
           onClick={handlePurchase}
           disabled={
-            isProcessing ||
-            !selectedCoin ||
+            !isAvailable ||
             !hasSufficientBalance ||
+            !selectedCoin ||
+            isProcessing ||
             (requiresHardKyc && !isKycHardCompleted)
           }
         >
