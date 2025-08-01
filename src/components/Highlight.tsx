@@ -85,8 +85,8 @@ const Highlight = () => {
   }, { scope: contentRef, dependencies: [isLoading] });
 
   return (
-    <div className="relative w-full min-h-screen background-gradient-dark flex items-center justify-center overflow-hidden ">
-      <div ref={svgRef} className="absolute opacity-0 topographic-map mix-blend-overlay">
+    <div className="relative w-full h-screen background-gradient-dark flex items-center justify-center overflow-hidden">
+      <div ref={svgRef} className="absolute inset-0 opacity-0 topographic-map mix-blend-overlay">
         <img src="/assets/topographic-map.webp" alt="Topographic map" className="w-full h-full object-cover" />
       </div>
       <div 

@@ -15,6 +15,30 @@ type Props = {
   campaign: Campaign;
 };
 
+// Animation configuration constants
+const ANIMATION_CONFIG = {
+  desktop: {
+    duration: 0.8,
+    stagger: 0.15,
+    ease: "power3.out",
+    initialY: 50,
+    initialScale: 0.95,
+    triggerStart: "top center",
+    triggerEnd: "center center",
+    delay: 200,
+  },
+  mobile: {
+    duration: 0.6,
+    stagger: 0.1,
+    ease: "power2.out",
+    initialY: 30,
+    initialScale: 0.98,
+    triggerStart: "top 80%",
+    triggerEnd: "bottom 20%",
+    delay: 100,
+  },
+} as const;
+
 export default function NFTGrid(props: Props): JSX.Element {
   const { campaign } = props;
   const { t } = useTranslation();
@@ -27,13 +51,36 @@ export default function NFTGrid(props: Props): JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
-  const cardsContainerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const tableRef = useRef<HTMLDivElement>(null);
   
+  // Track if animation has been initialized to prevent re-triggering
+  const animationInitializedRef = useRef(false);
+  
+  // Check if we're on mobile using CSS media query approach
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Handle mobile detection using ResizeObserver for better performance
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    
+    const handleResize = (e: MediaQueryListEvent | MediaQueryList) => {
+      setIsMobile(e.matches);
+    };
+    
+    // Set initial state
+    handleResize(mediaQuery);
+    
+    // Add listener
+    mediaQuery.addEventListener('change', handleResize);
+    
+    return () => {
+      mediaQuery.removeEventListener('change', handleResize);
+    };
+  }, []);
+  
   // Handle loading state change
   useEffect(() => {
-    // Allow animations when page is ready for animations OR when loader is not active
     if (pageAnimationReady || !isLoading) {
       const timer = setTimeout(() => {
         setCanAnimate(true);
@@ -45,133 +92,159 @@ export default function NFTGrid(props: Props): JSX.Element {
     }
   }, [isLoading, pageAnimationReady]);
 
-  // Reset card refs when campaign changes
+  // Reset animation state when campaign changes
   useEffect(() => {
     cardRefs.current = [];
+    animationInitializedRef.current = false;
+    
+    // Clean up ScrollTrigger instances
+    ScrollTrigger.getAll().forEach(trigger => {
+      if (trigger.vars.trigger === sectionRef.current) {
+        trigger.kill();
+      }
+    });
   }, [campaign]);
 
-  // Separate function to setup animation
+  // Optimized animation setup function
   const setupAnimation = useCallback(() => {
-    if (!canAnimate || !sectionRef.current) return;
+    if (!canAnimate || !sectionRef.current || animationInitializedRef.current) return;
     
-    // Check if all required DOM elements are ready
-    if (!titleRef.current || !descriptionRef.current || !tableRef.current) {
+    // Get configuration based on device type
+    const config = isMobile ? ANIMATION_CONFIG.mobile : ANIMATION_CONFIG.desktop;
+    
+    // Validate required DOM elements
+    const requiredElements = [titleRef.current, descriptionRef.current, tableRef.current];
+    if (requiredElements.some(el => !el)) {
       return;
     }
     
-    // Check if card refs are populated (they should match the number of collections)
+    // Validate card refs
     const validCardRefs = cardRefs.current.filter(Boolean);
-    if (validCardRefs.length !== campaign.collections.length) {
+    if (validCardRefs.length === 0) {
       return;
     }
+    
+    // Mark as initialized
+    animationInitializedRef.current = true;
     
     // Set initial states
     gsap.set([titleRef.current, descriptionRef.current], {
       opacity: 0,
-      y: 50,
+      y: config.initialY,
     });
-    gsap.set(cardRefs.current, {
+    
+    gsap.set(validCardRefs, {
       opacity: 0,
-      y: 50,
-      scale: 0.95,
+      y: config.initialY,
+      scale: config.initialScale,
     });
+    
     gsap.set(tableRef.current, {
       opacity: 0,
-      y: 30,
+      y: config.initialY * 0.6,
     });
     
-    // Add a small delay to ensure everything is properly rendered
-    setTimeout(() => {
-      const timeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "center center",
-          toggleActions: "play none none reverse",
-        },
-      });
+    // Create timeline with optimized ScrollTrigger
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: config.triggerStart,
+        end: config.triggerEnd,
+        toggleActions: "play none none reverse",
+        // Performance optimizations
+        fastScrollEnd: true,
+        preventOverlaps: true,
+      },
+    });
 
-      timeline
-        .to(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-        })
-        .to(
-          descriptionRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-          },
-          "-=0.6"
-        )
-        .to(
-          cardRefs.current,
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: "power3.out",
-          },
-          "-=0.4"
-        )
-        .to(
-          tableRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-          },
-          "-=0.4"
-        );
+    // Animate elements with proper staggering
+    timeline
+      .to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: config.duration,
+        ease: config.ease,
+      })
+      .to(descriptionRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: config.duration,
+        ease: config.ease,
+      }, `-=${config.duration * 0.75}`)
+      .to(validCardRefs, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: config.duration,
+        stagger: config.stagger,
+        ease: config.ease,
+      }, `-=${config.duration * 0.5}`)
+      .to(tableRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: config.duration,
+        ease: config.ease,
+      }, `-=${config.duration * 0.25}`);
 
-      // Refresh ScrollTrigger to ensure it works on page refresh
-      ScrollTrigger.refresh();
-    }, 200); // Small delay to ensure DOM is fully rendered
-  }, [canAnimate, campaign]);
+    // Refresh ScrollTrigger
+    ScrollTrigger.refresh();
+  }, [canAnimate, campaign, isMobile]);
 
-  // Handle animation setup when dependencies change
+  // Handle animation setup with proper timing
   useEffect(() => {
-    if (canAnimate && campaign && campaign.collections && campaign.collections.length > 0 && !campaignsLoading) {
-      // Small delay to ensure DOM is ready
-      setTimeout(() => {
+    if (canAnimate && campaign?.collections?.length > 0 && !campaignsLoading) {
+      const config = isMobile ? ANIMATION_CONFIG.mobile : ANIMATION_CONFIG.desktop;
+      
+      const timer = setTimeout(() => {
         setupAnimation();
-      }, 100);
+      }, config.delay);
+      
+      return () => clearTimeout(timer);
     }
-  }, [canAnimate, campaign, campaignsLoading, setupAnimation]);
+  }, [canAnimate, campaign, campaignsLoading, setupAnimation, isMobile]);
 
-  // Set initial states and handle animations with useGSAP
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.vars.trigger === sectionRef.current) {
+          trigger.kill();
+        }
+      });
+    };
+  }, []);
+
+  // Optimized useGSAP implementation
   useGSAP(() => {
-    if (!sectionRef.current) return;
-    
-    // Check if campaign data is ready and not loading
-    if (!campaign || !campaign.collections || campaign.collections.length === 0 || campaignsLoading) {
+    if (!sectionRef.current || !canAnimate || !campaign?.collections?.length || campaignsLoading) {
       return;
     }
     
-    // Check if all required DOM elements are ready
-    if (!titleRef.current || !descriptionRef.current || !tableRef.current) {
+    // Validate all required elements
+    const requiredElements = [titleRef.current, descriptionRef.current, tableRef.current];
+    if (requiredElements.some(el => !el)) {
       return;
     }
     
-    // Check if card refs are populated (they should match the number of collections)
     const validCardRefs = cardRefs.current.filter(Boolean);
-    if (validCardRefs.length !== campaign.collections.length) {
+    if (validCardRefs.length === 0) {
       return;
     }
     
-    // Check if all collection images are loaded
+    // On mobile, start animation immediately
+    if (isMobile) {
+      setupAnimation();
+      return;
+    }
+    
+    // On desktop, wait for images to load for smoother experience
     const imageElements = validCardRefs.map(ref => ref?.querySelector('img')).filter(Boolean);
     const allImagesLoaded = imageElements.every(img => (img as HTMLImageElement).complete);
     
-    if (!allImagesLoaded) {
-      // Wait for all images to load
+    if (allImagesLoaded) {
+      setupAnimation();
+    } else {
+      // Wait for images to load
       Promise.all(
         imageElements.map(img => {
           return new Promise<void>((resolve) => {
@@ -179,23 +252,20 @@ export default function NFTGrid(props: Props): JSX.Element {
               resolve();
             } else {
               (img as HTMLImageElement).onload = () => resolve();
-              (img as HTMLImageElement).onerror = () => resolve(); // Continue even if image fails
+              (img as HTMLImageElement).onerror = () => resolve();
             }
           });
         })
       ).then(() => {
-        // Retry animation setup after images are loaded
-        setTimeout(() => {
-          setupAnimation();
-        }, 100);
+        setupAnimation();
       });
-      return;
     }
-    
-    setupAnimation();
-  }, { scope: sectionRef, dependencies: [canAnimate, campaign, campaign.collections, campaignsLoading] });
+  }, { 
+    scope: sectionRef, 
+    dependencies: [canAnimate, campaign, campaignsLoading, isMobile] 
+  });
 
-  // Early return if campaign data is not ready
+  // Early return if data is not ready
   if (!campaign || !campaign.collections || campaign.collections.length === 0 || campaignsLoading) {
     return (
       <section
@@ -253,8 +323,8 @@ export default function NFTGrid(props: Props): JSX.Element {
             </div>
           ))}
         </div>
-        {/* TODO: What do we do with this? */}
-        {/* NFT Table (from Figma) */}
+        
+        {/* NFT Table */}
         <div ref={tableRef} className="overflow-x-auto mt-16">
           <ComparisonCards campaign={campaign} />
         </div>
