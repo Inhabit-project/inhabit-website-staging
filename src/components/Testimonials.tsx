@@ -20,175 +20,91 @@ const Testimonials: React.FC = () => {
   const testimonialCardRef = useRef<HTMLDivElement>(null);
   const testimonialImageRef = useRef<HTMLDivElement>(null);
   const testimonialContentRef = useRef<HTMLDivElement>(null);
-  
-  // Store ScrollTrigger reference for cleanup
-  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   // Set initial states and handle animations with useGSAP
   useGSAP(() => {
-    // Set initial states
-    gsap.set([titleRef.current, descriptionRef.current], {
-      opacity: 0,
-      y: 50
-    });
-    gsap.set(testimonialCardRef.current, {
-      opacity: 0,
-      y: 50,
-      scale: 0.95
-    });
-    gsap.set(testimonialImageRef.current, {
-      opacity: 0,
-      scale: 0.95
-    });
-    gsap.set(testimonialContentRef.current, {
-      opacity: 0,
-      y: 30
-    });
+    try {
+      // Set initial states
+      gsap.set([titleRef.current, descriptionRef.current], {
+        opacity: 0,
+        y: 50
+      });
+      gsap.set(testimonialCardRef.current, {
+        opacity: 0,
+        y: 50,
+        scale: 0.95
+      });
+      gsap.set(testimonialImageRef.current, {
+        opacity: 0,
+        scale: 0.95
+      });
+      gsap.set(testimonialContentRef.current, {
+        opacity: 0,
+        y: 30
+      });
 
-    // Only create animations if we can animate
-    if (!canAnimate) return;
+      // Only create animations if we can animate
+      if (!canAnimate) return;
 
-    // Clean up previous ScrollTrigger if it exists
-    if (scrollTriggerRef.current) {
-      scrollTriggerRef.current.kill();
-      scrollTriggerRef.current = null;
+      // Create timeline
+      const timeline = gsap.timeline({
+        defaults: { ease: 'power3.out' }
+      });
+
+      timeline
+        .to(titleRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+        })
+        .to(descriptionRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+        }, "-=0.6")
+        .to(testimonialCardRef.current, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+        }, "-=0.4")
+        .to(testimonialImageRef.current, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+        }, "-=0.6")
+        .to(testimonialContentRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+        }, "-=0.6");
+
+      // Create scroll trigger
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top 80%",
+        end: "bottom 20%",
+        toggleActions: "play none none reverse",
+        animation: timeline,
+      });
+
+      // Refresh ScrollTrigger to ensure it works on page refresh
+      ScrollTrigger.refresh();
+    } catch (error) {
+      // Animation failed silently
     }
-    if (timelineRef.current) {
-      timelineRef.current.kill();
-      timelineRef.current = null;
-    }
-
-    // Create new timeline
-    timelineRef.current = gsap.timeline({
-      paused: true,
-      defaults: { ease: 'power3.out' }
-    });
-
-    timelineRef.current
-      .to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-      })
-      .to(descriptionRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-      }, "-=0.6")
-      // Testimonial card animation
-      .to(testimonialCardRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.8,
-      }, "-=0.4")
-      // Testimonial image animation
-      .to(testimonialImageRef.current, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-      }, "-=0.6")
-      // Testimonial content animation
-      .to(testimonialContentRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-      }, "-=0.6");
-
-    // Create scroll trigger with improved configuration for page refresh
-    scrollTriggerRef.current = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top 80%",
-      end: "bottom 20%",
-      toggleActions: "play none none reverse", // Changed from "restart" to "play" for better refresh handling
-      animation: timelineRef.current,
-      id: `testimonials-${Date.now()}`, // Unique ID to avoid conflicts
-      onEnter: () => {
-        // Ensure animation plays when entering the trigger area
-        if (timelineRef.current) {
-          timelineRef.current.play();
-        }
-      },
-      onLeaveBack: () => {
-        // Reverse animation when scrolling back up
-        if (timelineRef.current) {
-          timelineRef.current.reverse();
-        }
-      },
-      onRefresh: () => {
-        // Handle refresh by checking if element is in view and playing animation accordingly
-        if (scrollTriggerRef.current && timelineRef.current) {
-          const progress = scrollTriggerRef.current.progress;
-          if (progress > 0) {
-            timelineRef.current.progress(progress);
-          }
-        }
-      }
-    });
-
-    // Refresh ScrollTrigger to ensure it works properly
-    ScrollTrigger.refresh();
   }, { scope: sectionRef, dependencies: [canAnimate] });
 
   // Handle loading state change
   useEffect(() => {
-    // Allow animations when page is ready for animations OR when loader is not active
     if (!isLoading) {
-      const timer = setTimeout(() => {
-        setCanAnimate(true);
-      }, 1500);
-
-      return () => clearTimeout(timer);
+      setCanAnimate(true);
     } else {
       setCanAnimate(false);
     }
   }, [isLoading]);
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.kill();
-      }
-      if (timelineRef.current) {
-        timelineRef.current.kill();
-      }
-    };
-  }, []);
-
-  // Handle page refresh by checking scroll position
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      // Store current scroll position
-      sessionStorage.setItem('testimonialsScrollPosition', window.scrollY.toString());
-    };
-
-    const handleLoad = () => {
-      // Check if we're returning from a refresh and scroll to position if needed
-      const savedPosition = sessionStorage.getItem('testimonialsScrollPosition');
-      if (savedPosition) {
-        const position = parseInt(savedPosition, 10);
-        // Only scroll if the position is significant
-        if (position > 100) {
-          setTimeout(() => {
-            window.scrollTo(0, position);
-            // Clear the stored position
-            sessionStorage.removeItem('testimonialsScrollPosition');
-          }, 100);
-        }
-      }
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    window.addEventListener('load', handleLoad);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      window.removeEventListener('load', handleLoad);
-    };
-  }, []);
-
+  
   return (
     <>
       <section 

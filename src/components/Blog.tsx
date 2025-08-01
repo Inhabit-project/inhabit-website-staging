@@ -9,6 +9,7 @@ import { LoadingContext } from '../App';
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import { useGSAP } from '@gsap/react';
 
+
 // Register the hook to avoid React version discrepancies
 gsap.registerPlugin(useGSAP);
 
@@ -32,6 +33,10 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
+
+  // Store ScrollTrigger and timeline references for cleanup
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   const loadPosts = async () => {
     setIsLoadingPosts(true);
@@ -84,7 +89,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
     if (!isLoading) {
       const timer = setTimeout(() => {
         setCanAnimate(true);
-      }, 1500);
+      }, 800); // Reduced from 1500ms for better responsiveness
       return () => clearTimeout(timer);
     } else {
       setCanAnimate(false);
@@ -102,12 +107,22 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
     // Only create animations if we can animate
     if (!canAnimate) return;
 
-    const timeline = gsap.timeline({
+    // Clean up previous ScrollTrigger and timeline if they exist
+    if (scrollTriggerRef.current) {
+      scrollTriggerRef.current.kill();
+      scrollTriggerRef.current = null;
+    }
+    if (timelineRef.current) {
+      timelineRef.current.kill();
+      timelineRef.current = null;
+    }
+
+    timelineRef.current = gsap.timeline({
       paused: true,
       defaults: { ease: 'power3.out' }
     });
 
-    timeline
+    timelineRef.current
       .to(titleRef.current, {
         opacity: 1,
         y: 0,
@@ -119,19 +134,93 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
         duration: 0.8,
       }, "-=0.6");
 
-    // Create scroll trigger
-    ScrollTrigger.create({
+    // Create scroll trigger with improved configuration for page refresh
+    scrollTriggerRef.current = ScrollTrigger.create({
       trigger: sectionRef.current,
-      start: "top 80%",
-      end: "bottom 20%",
-      toggleActions: "play none none reverse",
-      animation: timeline,
+      start: "top 80%", // Back to original position
+      end: "bottom 20%", // Back to original position
+      toggleActions: "play none none reverse", // Changed from "restart" to "play" for better refresh handling
+      animation: timelineRef.current,
       id: `blog-${Date.now()}`, // Unique ID to avoid conflicts
+      onEnter: () => {
+        // Ensure animation plays when entering the trigger area
+        if (timelineRef.current) {
+          timelineRef.current.play();
+        }
+      },
+      onLeaveBack: () => {
+        // Reverse animation when scrolling back up
+        if (timelineRef.current) {
+          timelineRef.current.reverse();
+        }
+      },
+      onRefresh: () => {
+        // Handle refresh by checking if element is in view and playing animation accordingly
+        if (scrollTriggerRef.current && timelineRef.current) {
+          const progress = scrollTriggerRef.current.progress;
+          if (progress > 0) {
+            timelineRef.current.progress(progress);
+          }
+        }
+      }
     });
 
-    // Refresh ScrollTrigger to ensure it works properly
-    ScrollTrigger.refresh();
+    // Refresh ScrollTrigger to ensure it works properly - with delay to avoid conflicts
+    setTimeout(() => {
+      try {
+        // Only refresh if there are active ScrollTriggers
+        if (ScrollTrigger.getAll().length > 0) {
+          ScrollTrigger.refresh();
+        }
+      } catch (error) {
+        console.warn("ScrollTrigger refresh failed in Blog:", error);
+      }
+    }, 100);
   }, { scope: sectionRef, dependencies: [canAnimate] });
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+      }
+      if (timelineRef.current) {
+        timelineRef.current.kill();
+      }
+    };
+  }, []);
+
+  // Handle page refresh by checking scroll position
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      // Store current scroll position
+      sessionStorage.setItem('blogScrollPosition', window.scrollY.toString());
+    };
+
+    const handleLoad = () => {
+      // Check if we're returning from a refresh and scroll to position if needed
+      const savedPosition = sessionStorage.getItem('blogScrollPosition');
+      if (savedPosition) {
+        const position = parseInt(savedPosition, 10);
+        // Only scroll if the position is significant
+        if (position > 100) {
+          setTimeout(() => {
+            window.scrollTo(0, position);
+            // Clear the stored position
+            sessionStorage.removeItem('blogScrollPosition');
+          }, 100);
+        }
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('load', handleLoad);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('load', handleLoad);
+    };
+  }, []);
 
   return (
     <section ref={sectionRef} className="background-gradient-light w-full min-h-screen">

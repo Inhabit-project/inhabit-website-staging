@@ -1,5 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 interface PageTransitionProps {
   in: boolean; // true = transition in (reveal), false = transition out (cover)
@@ -9,12 +13,13 @@ interface PageTransitionProps {
 const PageTransition: React.FC<PageTransitionProps> = ({ in: isIn, onComplete }) => {
   const maskRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  // Handle page transition animations with useGSAP
+  useGSAP(() => {
     const mask = maskRef.current;
     if (!mask) return;
-    let tween: gsap.core.Tween;
+
     if (isIn) {
-      tween = gsap.fromTo(
+      gsap.fromTo(
         mask,
         { scale: 0, opacity: 1 },
         {
@@ -26,7 +31,7 @@ const PageTransition: React.FC<PageTransitionProps> = ({ in: isIn, onComplete })
         }
       );
     } else {
-      tween = gsap.fromTo(
+      gsap.fromTo(
         mask,
         { scale: 1.2, opacity: 0 },
         {
@@ -38,8 +43,7 @@ const PageTransition: React.FC<PageTransitionProps> = ({ in: isIn, onComplete })
         }
       );
     }
-    return () => { tween && tween.kill(); };
-  }, [isIn, onComplete]);
+  }, { scope: maskRef, dependencies: [isIn, onComplete] });
 
   return (
     <div className="page-transition-overlay">

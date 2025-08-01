@@ -1076,7 +1076,9 @@
     "shareOnTwitter": "Share on Twitter",
     "shareOnFacebook": "Share on Facebook",
     "skipToMainContent": "Skip to main content",
-    "noCampaignsAvailable": "No campaigns available."
+    "noCampaignsAvailable": "No campaigns available.",
+    "errorLoadingProjects": "Error loading projects. Please try again later.",
+    "noProjectsAvailable": "No projects available at the moment."
   },
   "error404": {
     "title": "Page<br /><strong>Not found</strong>",

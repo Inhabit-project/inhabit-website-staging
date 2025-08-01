@@ -70,8 +70,7 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
   // Handle loading state change
   useEffect(() => {
     if (!isLoading) {
-      const timer = setTimeout(() => setCanAnimate(true), 1500);
-      return () => clearTimeout(timer);
+      setCanAnimate(true);
     } else {
       setCanAnimate(false);
     }

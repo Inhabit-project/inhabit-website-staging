@@ -24,6 +24,7 @@
 /* Todo: translate de comments to english */
 @layer base {
   :root {
+    background-color: #f6ffea;
     background-color: linear-gradient(
       90deg,
       #deedcb 2.26%,
@@ -911,6 +912,31 @@
   background-repeat: no-repeat;
 }
 
+.background-gradient-light {
+  background: var(--background-gradient-light);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+@keyframes pointer-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.pointer-pulse {
+  animation: pointer-pulse 2s ease-in-out infinite;
+}
+
 /* Horizontal Scroll Section for GSAP */
 .horizontal-scroll-section {
   width: 100vw;
@@ -1040,26 +1066,13 @@
   color: var(--color-secondary);
 }
 
-/* Topographic Map Animation */
+/* Topographic Map Styles */
 
 .topographic-map svg path {
   fill: #00300e;
   stroke-width: 1;
   stroke-miterlimit: 0;
   stroke: #006c12;
-  stroke-dasharray: 500;
-  stroke-dashoffset: 1000;
-  animation: dash 10s linear alternate infinite;
-}
-
-@keyframes dash {
-  from {
-    stroke-dashoffset: 1000;
-  }
-
-  to {
-    stroke-dashoffset: 0;
-  }
 }
 
 @keyframes menuSlideDown {
@@ -1282,6 +1295,24 @@
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes loaderPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes loaderPulseMobile {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
   }
 }
 

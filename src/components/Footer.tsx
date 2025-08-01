@@ -105,10 +105,10 @@ const Footer: React.FC = () => {
 
   useEffect(() => {
     if (!isLoading) {
-      const timer = setTimeout(() => setCanAnimate(true), 1500);
-      return () => clearTimeout(timer);
+      setCanAnimate(true);
+    } else {
+      setCanAnimate(false);
     }
-    setCanAnimate(false);
   }, [isLoading]);
 
   // Handle animations with useGSAP

@@ -55,56 +55,61 @@ const Hubs: React.FC = () => {
       scale: 0.5,
     });
     
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top center",
-        end: "center center",
-        toggleActions: "play none none reverse",
-      },
-    });
-    
-    tl.to(titleRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out",
-    })
-      .to(
-        descriptionRef.current,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
+    try {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top center",
+          end: "center center",
+          toggleActions: "play none none reverse",
+          id: `hubs-${Date.now()}`, // Unique ID to avoid conflicts
         },
-        "-=0.6"
-      )
-      .to(
-        mapWrapperRef.current,
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.2,
-          ease: "power3.out",
-        },
-        "-=0.7"
-      )
-      .to(
-        markersRef.current,
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "back.out(1.7)",
-        },
-        "-=0.8"
-      );
+      });
+      
+      tl.to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      })
+        .to(
+          descriptionRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+          },
+          "-=0.6"
+        )
+        .to(
+          mapWrapperRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 1.2,
+            ease: "power3.out",
+          },
+          "-=0.7"
+        )
+        .to(
+          markersRef.current,
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "back.out(1.7)",
+          },
+          "-=0.8"
+        );
 
-    // Refresh ScrollTrigger to ensure it works on page refresh
-    ScrollTrigger.refresh();
+      // Refresh ScrollTrigger to ensure it works on page refresh
+      ScrollTrigger.refresh();
+    } catch (error) {
+      // Animation failed silently
+    }
   }, { scope: sectionRef, dependencies: [isLoading] });
 
   // Animate card in with useGSAP

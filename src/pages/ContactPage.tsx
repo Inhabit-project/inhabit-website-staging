@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
 import Menu from '../components/Menu';
 import Footer from '../components/Footer';
 import { LoadingContext } from '../App';
 import { Helmet } from 'react-helmet-async';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 interface ContactPageProps {
   onPageReady?: () => void;
@@ -24,8 +28,8 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageReady }) => {
   const formRef = useRef<HTMLDivElement>(null);
   const infoRef = useRef<HTMLDivElement>(null);
 
-  // Set initial states
-  useEffect(() => {
+  // Set initial states with useGSAP
+  useGSAP(() => {
     gsap.set([titleRef.current?.children || []], {
       opacity: 0,
       y: 50
@@ -36,61 +40,58 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageReady }) => {
       y: 50,
       scale: 0.95
     });
-  }, []);
+  }, { scope: mainRef });
 
   // Handle loading state change
   useEffect(() => {
     if (!isLoading) {
       const timer = setTimeout(() => {
         setCanAnimate(true);
-      }, 1500);
+      }, 800); // Reduced from 1500ms for better responsiveness
       return () => clearTimeout(timer);
     } else {
       setCanAnimate(false);
     }
   }, [isLoading]);
 
-  // Handle animations
-  useEffect(() => {
+  // Handle animations with useGSAP
+  useGSAP(() => {
     if (!canAnimate) return;
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        defaults: {
-          ease: "power3.out"
-        }
-      });
+    const tl = gsap.timeline({
+      defaults: {
+        ease: "power3.out"
+      }
+    });
 
-      // Title and subtitle animation first
-      tl.to(titleRef.current?.children || [], {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        stagger: 0.1
-      })
-      // Add a brief pause before the next animations
-      .addLabel("contentStart", "+=0.2")
-      // Info section animation
-      .to(infoRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.5,
-        ease: "power3.out"
-      }, "contentStart")
-      // Form section animation with a slight delay
-      .to(formRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.5,
-        ease: "power3.out"
-      }, "contentStart+=0.1");
-    }, mainRef);
+    // Title and subtitle animation first
+    tl.to(titleRef.current?.children || [], {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      stagger: 0.1
+    })
+    // Add a brief pause before the next animations
+    .addLabel("contentStart", "+=0.2")
+    // Info section animation
+    .to(infoRef.current, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.5,
+      ease: "power3.out"
+    }, "contentStart")
+    // Form section animation with a slight delay
+    .to(formRef.current, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.5,
+      ease: "power3.out"
+    }, "contentStart+=0.1");
 
     if (onPageReady) onPageReady();
-    return () => ctx.revert();
-  }, [canAnimate, onPageReady]);
+  }, { scope: mainRef, dependencies: [canAnimate, onPageReady] });
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};

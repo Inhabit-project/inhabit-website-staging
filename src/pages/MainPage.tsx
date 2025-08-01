@@ -8,6 +8,7 @@ import Highlight from "../components/Highlight";
 import NFTGrid from "../components/NFTGrid";
 import Photo from "../components/Photo";
 import Infographic from "../components/Infographic";
+import ImpactCardsSection from "../components/ImpactCardsSection";
 import Testimonials from "../components/Testimonials";
 import CTA from "../components/CTA";
 import Blog from "../components/Blog";
@@ -124,6 +125,9 @@ function MainPage(props: Props) {
         </section>
         <section aria-label={t('sections.infographic')}>
           <Infographic />
+        </section>
+        <section aria-label={t('sections.impactCards')}>
+          <ImpactCardsSection />
         </section>
         <section aria-label={t('sections.testimonials')}>
           <Testimonials />

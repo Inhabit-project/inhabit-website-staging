@@ -2,89 +2,118 @@ import React, { useRef, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
-import ImpactCard from './ImpactCard';
 import { useGSAP } from '@gsap/react';
 
 // Register the hook to avoid React version discrepancies
 gsap.registerPlugin(useGSAP);
 
+interface SlideData {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  alt: string;
+  position?: { x: number; y: number };
+}
+
 const Infographic: React.FC = () => {
   const { t } = useTranslation();
   const isLoading = useContext(LoadingContext);
   const [canAnimate, setCanAnimate] = useState(false);
+  const [activeSlide, setActiveSlide] = useState<string | null>(null);
+  const [isCardOpen, setIsCardOpen] = useState(false);
 
   // Slide refs
   const slide1TitleRef = useRef<HTMLHeadingElement>(null);
   const slide1DescRef = useRef<HTMLParagraphElement>(null);
   const slide1ImgRef = useRef<HTMLImageElement>(null);
-  const slide2TitleRef = useRef<HTMLHeadingElement>(null);
-  const slide2DescRef = useRef<HTMLParagraphElement>(null);
-  const slide2ImgRef = useRef<HTMLImageElement>(null);
-  const slide3TitleRef = useRef<HTMLHeadingElement>(null);
-  const slide3DescRef = useRef<HTMLParagraphElement>(null);
-  const slide3ImgRef = useRef<HTMLImageElement>(null);
-  const slide4TitleRef = useRef<HTMLHeadingElement>(null);
-  const slide4DescRef = useRef<HTMLParagraphElement>(null);
-  const slide4ImgRef = useRef<HTMLImageElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const cardContentRef = useRef<HTMLDivElement>(null);
+  const cardImageRef = useRef<HTMLImageElement>(null);
+  const cardTitleRef = useRef<HTMLHeadingElement>(null);
+  const cardDescRef = useRef<HTMLParagraphElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
-  
-  // Cards section refs
-  const cardsTitleRef = useRef<HTMLHeadingElement>(null);
-  const cardsDescRef = useRef<HTMLParagraphElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-
-  const impactCards = [
-    {
-      label: t('mainPage.impactLegalInnovationCardsSection.cards.0.label'),
-      icon: '/assets/icons/Icon-1.svg',
-      title: t('mainPage.impactLegalInnovationCardsSection.cards.0.title'),
-      subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.0.subtitle'),
-      description: t('mainPage.impactLegalInnovationCardsSection.cards.0.description'),
-    },
-    {
-      label: t('mainPage.impactLegalInnovationCardsSection.cards.1.label'),
-      icon: '/assets/icons/Icon-2.svg',
-      title: t('mainPage.impactLegalInnovationCardsSection.cards.1.title'),
-      subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.1.subtitle'),
-      description: t('mainPage.impactLegalInnovationCardsSection.cards.1.description'),
-    },
-    {
-      label: t('mainPage.impactLegalInnovationCardsSection.cards.2.label'),
-      icon: '/assets/icons/Icon-3.svg',
-      title: t('mainPage.impactLegalInnovationCardsSection.cards.2.title'),
-      subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.2.subtitle'),
-      description: t('mainPage.impactLegalInnovationCardsSection.cards.2.description'),
-    },
-    {
-      label: t('mainPage.impactLegalInnovationCardsSection.cards.3.label'),
-      icon: '/assets/icons/Icon-4.svg',
-      title: t('mainPage.impactLegalInnovationCardsSection.cards.3.title'),
-      subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.3.subtitle'),
-      description: t('mainPage.impactLegalInnovationCardsSection.cards.3.description'),
-    },
-  ];
+  const pointsRef = useRef<HTMLDivElement>(null);
 
   // Handle loading state change
   React.useEffect(() => {
     if (!isLoading) {
-      const timer = setTimeout(() => {
-        setCanAnimate(true);
-      }, 1000);
-      return () => clearTimeout(timer);
+      setCanAnimate(true);
     } else {
       setCanAnimate(false);
     }
   }, [isLoading]);
 
+  // Slide data
+  const slides: SlideData[] = [
+    {
+      id: 'land-tenure',
+      title: t('mainPage.infographic.landTenureTitle'),
+      description: t('mainPage.infographic.landTenureDescription'),
+      image: '/assets/infographic-1.webp',
+      alt: 'Land Tenure Framework Infographic',
+      position: { x: 20, y: 30 }
+    },
+    {
+      id: 'nft-stewards',
+      title: t('mainPage.infographic.nftStewardsTitle'),
+      description: t('mainPage.infographic.nftStewardsDescription'),
+      image: '/assets/stewards-illustration.webp',
+      alt: 'NFT Stewards Illustration',
+      position: { x: 80, y: 55 }
+    },
+    {
+      id: 'nature',
+      title: t('mainPage.infographic.natureTitle'),
+      description: t('mainPage.infographic.natureDescription'),
+      image: '/assets/nature-illustration.webp',
+      alt: 'Nature Illustration',
+      position: { x: 47, y: 65 }
+    },
+    {
+      id: 'guardians',
+      title: t('mainPage.infographic.guardiansTitle'),
+      description: t('mainPage.infographic.guardiansDescription'),
+      image: '/assets/guardians-illustration.webp',
+      alt: 'Guardians Illustration',
+      position: { x: 25, y: 60 }
+    }
+  ];
+
+  // Handle point click
+  const handlePointClick = (slideId: string) => {
+    setActiveSlide(slideId);
+    setIsCardOpen(true);
+  };
+
+  // Handle card close
+  const handleCloseCard = () => {
+    setIsCardOpen(false);
+    setTimeout(() => {
+      setActiveSlide(null);
+    }, 300);
+  };
+
+  // Prevent scrolling when card is open
+  React.useEffect(() => {
+    if (isCardOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup function to restore scrolling when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isCardOpen]);
+
   // Set initial states and handle animations with useGSAP
   useGSAP(() => {
     // Set all elements to initial state
     const allElements = [
-      slide1TitleRef.current, slide1DescRef.current, slide1ImgRef.current,
-      slide2TitleRef.current, slide2DescRef.current, slide2ImgRef.current,
-      slide3TitleRef.current, slide3DescRef.current, slide3ImgRef.current,
-      slide4TitleRef.current, slide4DescRef.current, slide4ImgRef.current,
-      cardsTitleRef.current, cardsDescRef.current
+      slide1TitleRef.current, slide1DescRef.current, slide1ImgRef.current
     ];
     
     gsap.set(allElements, {
@@ -93,156 +122,125 @@ const Infographic: React.FC = () => {
     });
     
     // Set images to slightly scaled down
-    const allImages = [
-      slide1ImgRef.current, slide2ImgRef.current, slide3ImgRef.current, slide4ImgRef.current
-    ];
-    
-    gsap.set(allImages, {
+    gsap.set(slide1ImgRef.current, {
       scale: 0.95
     });
 
-    // Set cards to initial state
-    gsap.set(cardsRef.current, {
+    // Set points to initial state
+    gsap.set(pointsRef.current, {
       opacity: 0,
-      y: 30,
-      scale: 0.95
+      scale: 0.8
     });
 
     // Only create animations if we can animate
     if (!canAnimate) return;
     
-    // Create a single timeline for all animations
-    const timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: rootRef.current,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        toggleActions: 'play none none reverse',
-        id: `infographic-${Date.now()}`, // Unique ID to avoid conflicts
-      }
-    });
+    try {
+      // Create a single timeline but with better configuration
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: rootRef.current,
+          start: 'top 75%',
+          end: 'bottom 25%',
+          toggleActions: 'play none none reverse',
+          id: `infographic-${Date.now()}`,
+        }
+      });
 
-    // Slide 1 animations
-    timeline
-      .to(slide1TitleRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.8, 
-        ease: 'power2.out' 
-      })
-      .to(slide1DescRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.8, 
-        ease: 'power2.out' 
-      }, '-=0.6')
-      .to(slide1ImgRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        scale: 1, 
-        duration: 1, 
-        ease: 'power2.out' 
-      }, '-=0.4');
+      // Slide 1 animations (original design)
+      timeline
+        .to(slide1TitleRef.current, { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.8, 
+          ease: 'power2.out' 
+        })
+        .to(slide1DescRef.current, { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.8, 
+          ease: 'power2.out' 
+        }, '-=0.6')
+        .to(slide1ImgRef.current, { 
+          opacity: 1, 
+          y: 0, 
+          scale: 1, 
+          duration: 1, 
+          ease: 'power2.out' 
+        }, '-=0.4')
+        .to(pointsRef.current, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.6,
+          ease: 'power2.out'
+        }, '-=0.2');
 
-    // Slide 2 animations
-    timeline
-      .to(slide2TitleRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.8, 
-        ease: 'power2.out' 
-      }, '-=0.2')
-      .to(slide2DescRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.8, 
-        ease: 'power2.out' 
-      }, '-=0.6')
-      .to(slide2ImgRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        scale: 1, 
-        duration: 1, 
-        ease: 'power2.out' 
-      }, '-=0.4');
-
-    // Slide 3 animations
-    timeline
-      .to(slide3TitleRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.8, 
-        ease: 'power2.out' 
-      }, '-=0.2')
-      .to(slide3DescRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.8, 
-        ease: 'power2.out' 
-      }, '-=0.6')
-      .to(slide3ImgRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        scale: 1, 
-        duration: 1, 
-        ease: 'power2.out' 
-      }, '-=0.4');
-
-    // Slide 4 animations
-    timeline
-      .to(slide4TitleRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.8, 
-        ease: 'power2.out' 
-      }, '-=0.2')
-      .to(slide4DescRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.8, 
-        ease: 'power2.out' 
-      }, '-=0.6')
-      .to(slide4ImgRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        scale: 1, 
-        duration: 1, 
-        ease: 'power2.out' 
-      }, '-=0.4');
-
-    // Cards section animations
-    timeline
-      .to(cardsTitleRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.8, 
-        ease: 'power2.out' 
-      }, '-=0.2')
-      .to(cardsDescRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.8, 
-        ease: 'power2.out' 
-      }, '-=0.6')
-      .to(cardsRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        scale: 1, 
-        duration: 0.8, 
-        stagger: {
-          each: 0.15,
-          from: "start"
-        },
-        ease: 'power2.out' 
-      }, '-=0.4');
-
-    // Refresh ScrollTrigger to ensure it works properly
-    ScrollTrigger.refresh();
+      // Refresh ScrollTrigger
+      setTimeout(() => {
+        try {
+          if (ScrollTrigger.getAll().length > 0) {
+            ScrollTrigger.refresh();
+          }
+        } catch (error) {
+          console.warn("ScrollTrigger refresh failed in Infographic:", error);
+        }
+      }, 100);
+    } catch (error) {
+      // Animation failed silently
+    }
   }, { scope: rootRef, dependencies: [canAnimate, t] });
+
+  // Separate useGSAP for card animations to prevent reloading
+  useGSAP(() => {
+    if (isCardOpen && cardRef.current) {
+      // Set card to initial state
+      gsap.set(cardRef.current, {
+        scale: 0.8,
+        opacity: 0
+      });
+
+      // Card animations
+      const cardTimeline = gsap.timeline();
+      
+      cardTimeline
+        .to(cardRef.current, {
+          scale: 1,
+          opacity: 1,
+          duration: 0.4,
+          ease: 'power2.out'
+        })
+        .to(cardContentRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out'
+        }, '-=0.2')
+        .to(cardImageRef.current, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: 'power2.out'
+        }, '-=0.4')
+        .to([cardTitleRef.current, cardDescRef.current], {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out'
+        }, '-=0.6')
+        .to(closeButtonRef.current, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.4,
+          ease: 'power2.out'
+        }, '-=0.4');
+    }
+  }, { dependencies: [isCardOpen, activeSlide] });
+
+  const activeSlideData = slides.find(slide => slide.id === activeSlide);
 
   return (
     <section ref={rootRef} className="relative w-full flex flex-col items-center background-gradient-light">
-      {/* Slide 1: Land Tenure Framework */}
+      {/* Slide 1: Land Tenure Framework - Original Design */}
       <div className="background-gradient-light w-full flex flex-col items-start justify-center px-[clamp(1.5rem,5vw,6.25rem)] py-24">
         <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
           <h2 ref={slide1TitleRef} className="heading-2 text-secondary max-w-[40.9375rem]">
@@ -258,101 +256,82 @@ const Infographic: React.FC = () => {
             src="/assets/infographic-1.webp" 
             alt="Land Tenure Framework Infographic"
             className="w-full h-full object-cover"
-            loading="lazy"
           />
+          
+          {/* Clickable Points */}
+          <div ref={pointsRef} className="absolute inset-0">
+            {slides.slice(1).map((slide) => (
+              <button
+                key={slide.id}
+                onClick={() => handlePointClick(slide.id)}
+                className="absolute w-8 h-8 bg-primary rounded-full border-2 border-white shadow-lg hover:scale-110 transition-transform duration-200 cursor-pointer group pointer-pulse"
+                style={{
+                  left: `${slide.position?.x}%`,
+                  top: `${slide.position?.y}%`,
+                  transform: 'translate(-50%, -50%)'
+                }}
+                aria-label={`Click to learn more about ${slide.title}`}
+              >
+                <div className="w-full h-full bg-primary rounded-full"></div>
+                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-white text-secondary text-xs px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+                  {slide.title.split(' ').slice(0, 2).join(' ')}
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Slide 2: NFT Stewards */}
-      <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)]">
-        <div className="w-full lg:w-2/5 max-w-6xl flex flex-col">
-          <h2 ref={slide2TitleRef} className="heading-2 text-secondary mb-6 font-bold" dangerouslySetInnerHTML={{ __html: t('mainPage.infographic.nftStewardsTitle') }} />
-          <p ref={slide2DescRef} className="body-M text-secondary">
-            {t('mainPage.infographic.nftStewardsDescription')}
-          </p>
-        </div>
-        <div className="w-full lg:w-3/5 flex self-center justify-end">
-          <div className="w-[43.75rem]">
-            <img 
-              ref={slide2ImgRef}
-              src="/assets/stewards-illustration.webp" 
-              alt="NFT Stewards Illustration"
-              className="w-full h-full object-contain"
-              loading="lazy"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Slide 3: Nature */}
-      <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)]">
-        <div className="w-full lg:w-2/5 max-w-6xl flex flex-col justify-start">
-          <h2 ref={slide3TitleRef} className="heading-2 text-secondary mb-6 font-bold">{t('mainPage.infographic.natureTitle')}</h2>
-          <p ref={slide3DescRef} className="body-M text-secondary">
-            {t('mainPage.infographic.natureDescription')}
-          </p>
-        </div>
-        <div className="w-full lg:w-3/5 flex self-center justify-end">
-          <div className="w-[43.75rem]">
-            <img 
-              ref={slide3ImgRef}
-              src="/assets/nature-illustration.webp" 
-              alt="Nature Illustration"
-              className="w-full h-full object-contain"
-              loading="lazy"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Slide 4: Guardians */}
-      <section className="py-24 background-gradient-light w-full flex flex-col lg:flex-row items-center justify-between gap-8 px-[clamp(1.5rem,5vw,6.25rem)]">
-        <div className="w-full lg:w-2/5 max-w-6xl flex flex-col">
-          <h2 ref={slide4TitleRef} className="heading-2 text-secondary mb-6 font-bold">{t('mainPage.infographic.guardiansTitle')}</h2>
-          <p ref={slide4DescRef} className="body-M text-secondary">
-            {t('mainPage.infographic.guardiansDescription')}
-          </p>
-        </div>
-        <div className="w-full lg:w-3/5 flex self-center justify-end">
-          <div className="w-[43.75rem]">
-            <img 
-              ref={slide4ImgRef}
-              src="/assets/guardians-illustration.webp" 
-              alt="Guardians Illustration"
-              className="w-full h-full object-contain"
-              loading="lazy"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Cards Section - Integrated directly to avoid conflicts */}
-      <section className="w-full flex flex-col items-center background-gradient-light py-24 px-[clamp(1.5rem,5vw,6.25rem)]">
-        <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full max-w-[120rem] mx-auto mb-[2.5rem]">
-          <h2 
-            ref={cardsTitleRef}
-            className="heading-2 text-secondary max-w-[40.9375rem]"
+      {/* Interactive Card Modal */}
+      {isCardOpen && activeSlideData && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div 
+            ref={cardRef}
+            className="background-gradient-light rounded-2xl shadow-2xl w-[95vw] max-h-[95vh] overflow-hidden relative p-8 lg:p-12"
           >
-            <span dangerouslySetInnerHTML={{ __html: t('mainPage.impactLegalInnovationCardsSection.title') }} />
-          </h2>
-          <p 
-            ref={cardsDescRef}
-            className="body-M text-secondary max-w-[35rem]"
-          >
-            {t('mainPage.impactLegalInnovationCardsSection.description')}
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[107.5rem] mx-auto">
-          {impactCards.map((card, idx) => (
-            <div
-              key={idx}
-              ref={el => cardsRef.current[idx] = el}
+            {/* Close Button */}
+            <button
+              ref={closeButtonRef}
+              onClick={handleCloseCard}
+              className="absolute top-4 right-4 z-10 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors duration-200"
+              aria-label="Close card"
             >
-              <ImpactCard {...card} />
+              <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Card Content */}
+            <div ref={cardContentRef} className="flex flex-col lg:flex-row h-full gap-4 lg:gap-24">
+              {/* Image Section */}
+              <div className="w-full lg:w-1/2 h-64 lg:h-auto">
+                <img 
+                  ref={cardImageRef}
+                  src={activeSlideData.image}
+                  alt={activeSlideData.alt}
+                  className="w-full h-full object-contain"
+                  loading="lazy"
+                />
+              </div>
+
+              {/* Text Section */}
+              <div className="w-full lg:w-1/2 p-4 lg:p-8 flex flex-col justify-center">
+                <h2 
+                  ref={cardTitleRef}
+                  className="heading-2 text-secondary mb-6 font-bold"
+                  dangerouslySetInnerHTML={{ __html: activeSlideData.title }}
+                />
+                <p 
+                  ref={cardDescRef}
+                  className="body-M text-secondary"
+                >
+                  {activeSlideData.description}
+                </p>
+              </div>
             </div>
-          ))}
+          </div>
         </div>
-      </section>
+      )}
     </section>
   );
 };

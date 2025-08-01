@@ -1,9 +1,13 @@
-import React, { useRef, useEffect, useContext, useState } from 'react';
+import React, { useRef, useContext, useState, useEffect } from 'react';
 import ImpactCard from './ImpactCard';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 const ImpactLegalInnovationCardsSection: React.FC = () => {
   const { t } = useTranslation();
@@ -13,42 +17,14 @@ const ImpactLegalInnovationCardsSection: React.FC = () => {
   // Refs for animations
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const descriptionRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const impactCards = [
-    {
-      label: t('mainPage.impactLegalInnovationCardsSection.cards.0.label'),
-      icon: '/assets/icons/Icon-1.svg',
-      title: t('mainPage.impactLegalInnovationCardsSection.cards.0.title'),
-      subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.0.subtitle'),
-      description: t('mainPage.impactLegalInnovationCardsSection.cards.0.description'),
-    },
-    {
-      label: t('mainPage.impactLegalInnovationCardsSection.cards.1.label'),
-      icon: '/assets/icons/Icon-2.svg',
-      title: t('mainPage.impactLegalInnovationCardsSection.cards.1.title'),
-      subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.1.subtitle'),
-      description: t('mainPage.impactLegalInnovationCardsSection.cards.1.description'),
-    },
-    {
-      label: t('mainPage.impactLegalInnovationCardsSection.cards.2.label'),
-      icon: '/assets/icons/Icon-3.svg',
-      title: t('mainPage.impactLegalInnovationCardsSection.cards.2.title'),
-      subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.2.subtitle'),
-      description: t('mainPage.impactLegalInnovationCardsSection.cards.2.description'),
-    },
-    {
-      label: t('mainPage.impactLegalInnovationCardsSection.cards.3.label'),
-      icon: '/assets/icons/Icon-4.svg',
-      title: t('mainPage.impactLegalInnovationCardsSection.cards.3.title'),
-      subtitle: t('mainPage.impactLegalInnovationCardsSection.cards.3.subtitle'),
-      description: t('mainPage.impactLegalInnovationCardsSection.cards.3.description'),
-    },
-  ];
+  // Get cards array from translations
+  const innovationCards = t('mainPage.impactLegalInnovationPage.innovationCardsSection.cards', { returnObjects: true }) as Array<any>;
 
-  // Set initial states
-  useEffect(() => {
+  // Set initial states with useGSAP
+  useGSAP(() => {
     gsap.set([titleRef.current, descriptionRef.current], {
       opacity: 0,
       y: 50
@@ -56,10 +32,9 @@ const ImpactLegalInnovationCardsSection: React.FC = () => {
 
     gsap.set(cardsRef.current, {
       opacity: 0,
-      y: 50,
-      scale: 0.95
+      y: 50
     });
-  }, []);
+  }, { scope: sectionRef });
 
   // Handle loading state change
   useEffect(() => {
@@ -74,53 +49,41 @@ const ImpactLegalInnovationCardsSection: React.FC = () => {
     }
   }, [isLoading]);
 
-  // Handle animations
-  useEffect(() => {
-    let ctx = gsap.context(() => {});
+  // Handle animations with useGSAP
+  useGSAP(() => {
+    if (!canAnimate) return;
 
-    if (canAnimate) {
-      ctx = gsap.context(() => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 75%",
-            end: "center center",
-            toggleActions: "play none none reverse"
-          }
-        });
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "play none none reverse"
+      }
+    });
 
-        // Title and description animations
-        tl.to(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        })
-        .to(descriptionRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        }, "-=0.6")
-        // Cards stagger animation with scale
-        .to(cardsRef.current, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          stagger: {
-            each: 0.15,
-            from: "start"
-          },
-          ease: "power3.out"
-        }, "-=0.4");
-      });
-    }
-
-    return () => {
-      ctx.revert();
-    };
-  }, [canAnimate]);
+    // Title and description animations
+    tl.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    })
+    .to(descriptionRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    }, "-=0.6")
+    // Cards stagger animation
+    .to(cardsRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power3.out"
+    }, "-=0.4");
+  }, { scope: sectionRef, dependencies: [canAnimate] });
 
   return (
     <section 
@@ -142,7 +105,7 @@ const ImpactLegalInnovationCardsSection: React.FC = () => {
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[107.5rem] mx-auto">
-        {impactCards.map((card, idx) => (
+        {innovationCards.map((card, idx) => (
           <div
             key={idx}
             ref={el => cardsRef.current[idx] = el}

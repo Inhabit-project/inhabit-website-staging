@@ -1238,7 +1238,9 @@
     "shareOnTwitter": "Compartir en Twitter",
     "shareOnFacebook": "Compartir en Facebook",
     "skipToMainContent": "Saltar al contenido principal",
-    "noCampaignsAvailable": "No hay campañas disponibles."
+    "noCampaignsAvailable": "No hay campañas disponibles.",
+    "errorLoadingProjects": "Error al cargar proyectos. Por favor, inténtalo de nuevo más tarde.",
+    "noProjectsAvailable": "No hay proyectos disponibles en este momento."
   },
   "error404": {
     "title": "Página<br /><strong>No encontrada</strong>",

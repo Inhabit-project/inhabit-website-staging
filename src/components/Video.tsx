@@ -55,7 +55,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       title={t('mainPage.hero.title')}
       frameBorder="0"
       allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
-      allowFullScreen
       referrerPolicy="strict-origin-when-cross-origin"
       className="w-full h-full"
       loading="lazy"
@@ -104,52 +103,60 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
       scale: 0.5
     });
 
-    // Create scroll-triggered animation
-    const timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top center",
-        end: "center center",
-        toggleActions: "play none none reverse"
-      }
-    });
-
-    timeline
-      .to(eyebrowRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      })
-      .to(headingRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: "power3.out"
-      }, "-=0.6")
-      .to(videoContainerRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1.2,
-        ease: "power3.out"
-      }, "-=0.7")
-      .to(playButtonRef.current, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-        ease: "back.out(1.7)"
-      }, "-=0.5");
-
-    // Add attention-grabbing pulse animation to video container
-    if (videoContainerRef.current) {
-      gsap.to(videoContainerRef.current, {
-        boxShadow: "0 0 30px rgba(255, 166, 0, 0.3)",
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "power2.inOut"
+    // Create scroll-triggered animation with better error handling
+    try {
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top center",
+          end: "center center",
+          toggleActions: "play none none reverse",
+          id: `video-${Date.now()}` // Unique ID to avoid conflicts
+        }
       });
+
+      timeline
+        .to(eyebrowRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        })
+        .to(headingRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out"
+        }, "-=0.6")
+        .to(videoContainerRef.current, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out"
+        }, "-=0.7")
+        .to(playButtonRef.current, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: "back.out(1.7)"
+        }, "-=0.5");
+
+      // Add attention-grabbing pulse animation to video container
+      if (videoContainerRef.current) {
+        gsap.to(videoContainerRef.current, {
+          boxShadow: "0 0 30px rgba(255, 166, 0, 0.3)",
+          duration: 2,
+          repeat: -1,
+          yoyo: true,
+          ease: "power2.inOut"
+        });
+      }
+
+      // Refresh ScrollTrigger to ensure it works properly
+      ScrollTrigger.refresh();
+    } catch (error) {
+      // Animation failed silently
     }
   }, { scope: sectionRef, dependencies: [isLoading] });
 
@@ -280,7 +287,7 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
                   <defs>
                     <path id="circle-path" d="M 50 50 m -40 0 a 40 40 0 1 1 80 0 a 40 40 0 1 1 -80 0" />
                   </defs>
-                  <text className="text-[12px] font-medium fill-white uppercase">
+                  <text className="text-[12.5px] font-medium fill-white uppercase">
                     <textPath href="#circle-path" startOffset="0%">
                       {(() => {
                         const text = t('common.playVideo');

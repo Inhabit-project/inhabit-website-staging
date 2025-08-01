@@ -94,8 +94,7 @@ const RelatedPost: React.FC = () => {
   // Wait for posts to load, then allow animation
   useEffect(() => {
     if (!isLoading && posts.length > 0) {
-      const timer = setTimeout(() => setCanAnimate(true), 400);
-      return () => clearTimeout(timer);
+      setCanAnimate(true);
     } else {
       setCanAnimate(false);
     }

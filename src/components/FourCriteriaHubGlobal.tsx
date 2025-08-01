@@ -1,9 +1,13 @@
-import React, { useRef, useLayoutEffect, useContext, useState, useEffect } from 'react';
+import React, { useRef, useContext, useState, useEffect } from 'react';
 import ImpactCard from './ImpactCard';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 const FourCriteriaHubGlobal: React.FC = () => {
   const { t } = useTranslation();
@@ -22,18 +26,13 @@ const FourCriteriaHubGlobal: React.FC = () => {
     fundsCards = [];
   }
 
-  // Register ScrollTrigger (safe to call multiple times)
-  useLayoutEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-  }, []);
-
-  // Set initial states
-  useLayoutEffect(() => {
+  // Set initial states with useGSAP
+  useGSAP(() => {
     gsap.set(cardsRef.current, {
       opacity: 0,
       y: 50
     });
-  }, []);
+  }, { scope: sectionRef });
 
   // Handle loading state change
   useEffect(() => {
@@ -48,36 +47,28 @@ const FourCriteriaHubGlobal: React.FC = () => {
     }
   }, [isLoading]);
 
-  // Handle animations
-  useLayoutEffect(() => {
-    let ctx = gsap.context(() => {});
+  // Handle animations with useGSAP
+  useGSAP(() => {
+    if (!canAnimate) return;
 
-    if (canAnimate) {
-      ctx = gsap.context(() => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top center",
-            end: "center center",
-            toggleActions: "play none none reverse"
-          }
-        });
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "play none none reverse"
+      }
+    });
 
-        // Cards stagger animation
-        tl.to(cardsRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power3.out"
-        });
-      }, sectionRef);
-    }
-
-    return () => {
-      ctx.revert();
-    };
-  }, [canAnimate]);
+    // Cards stagger animation
+    tl.to(cardsRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power3.out"
+    });
+  }, { scope: sectionRef, dependencies: [canAnimate] });
 
   return (
     <section

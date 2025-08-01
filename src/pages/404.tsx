@@ -1,8 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { gsap } from 'gsap';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import { Helmet } from 'react-helmet-async';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 const desktopLeafPositions = [
   { style: { top: '3%', left: '15%', width: '8rem', transform: 'rotate(-8deg)' } }, // top left
@@ -50,16 +54,45 @@ const FourOhFourPage: React.FC<FourOhFourPageProps> = ({ onPageReady }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Handle leaf animations with useGSAP
+  useGSAP(() => {
+    if (!containerRef.current) return;
+
+    // Initial leaf animations
+    leafRefs.current.forEach((leaf, i) => {
+      if (!leaf) return;
+      
+      // Set initial position
+      gsap.set(leaf, {
+        x: leafPositions[i].style.left ? parseFloat(leafPositions[i].style.left as string) : 0,
+        y: leafPositions[i].style.top ? parseFloat(leafPositions[i].style.top as string) : 0,
+        opacity: 0,
+        scale: 0.8
+      });
+
+      // Animate leaves in with stagger
+      gsap.to(leaf, {
+        opacity: 1,
+        scale: 1,
+        duration: 1,
+        delay: i * 0.1,
+        ease: 'power2.out'
+      });
+    });
+  }, { scope: containerRef, dependencies: [isMobile] });
+
+  // Mouse interaction effects (keep existing logic)
   useEffect(() => {
+    if (!containerRef.current || isMobile) return;
+
     const container = containerRef.current;
-    if (!container) return;
     let rect = container.getBoundingClientRect();
     let rectNeedsUpdate = false;
     let rafId: number | null = null;
+
     const updateRect = () => {
       rect = container.getBoundingClientRect();
       rectNeedsUpdate = false;
-      rafId = null;
     };
     const scheduleRectUpdate = () => {
       if (!rectNeedsUpdate) {

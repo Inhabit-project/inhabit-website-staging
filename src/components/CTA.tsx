@@ -65,25 +65,31 @@ const CTA: React.FC = () => {
     // Create scroll trigger
     ScrollTrigger.create({
       trigger: sectionRef.current,
-      start: "top 70%",
-      end: "bottom 30%",
+      start: "top 80%", // Back to original position
+      end: "bottom 20%", // Back to original position
       toggleActions: "play none none reverse",
       animation: timeline,
       id: `cta-${Date.now()}`, // Unique ID to avoid conflicts
     });
 
-    // Refresh ScrollTrigger to ensure it works properly
-    ScrollTrigger.refresh();
+    // Refresh ScrollTrigger to ensure it works properly - with delay to avoid conflicts
+    setTimeout(() => {
+      try {
+        // Only refresh if there are active ScrollTriggers
+        if (ScrollTrigger.getAll().length > 0) {
+          ScrollTrigger.refresh();
+        }
+      } catch (error) {
+        console.warn("ScrollTrigger refresh failed in CTA:", error);
+      }
+    }, 100);
   }, { scope: sectionRef, dependencies: [canAnimate] });
 
   // Handle loading state change
   React.useEffect(() => {
-    // Allow animations when page is ready for animations OR when loader is not active
+    // Allow animations immediately when loader is not active
     if (!isLoading) {
-      const timer = setTimeout(() => {
-        setCanAnimate(true);
-      }, 1500);
-      return () => clearTimeout(timer);
+      setCanAnimate(true);
     } else {
       setCanAnimate(false);
     }

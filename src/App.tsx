@@ -137,7 +137,6 @@ const App: React.FC = () => {
         return;
       }
       
-      console.log("Starting transition for:", location.pathname);
       setShowTransition(true);
       setTransitionIn(false); // Start with cover
       setPageReady(false); // Reset page ready on navigation
@@ -150,10 +149,7 @@ const App: React.FC = () => {
 
   // Scroll to top only after both transition and page are ready
   useEffect(() => {
-    console.log("Transition state - transitionIn:", transitionIn, "pageReady:", pageReady);
-    
     if (transitionIn && pageReady) {
-      console.log("Completing page transition");
       setShowTransition(false);
       requestAnimationFrame(() => {
         if (scrollManager && typeof scrollManager.scrollTo === "function") {
@@ -161,11 +157,19 @@ const App: React.FC = () => {
         } else {
           window.scrollTo({ top: 0, behavior: "auto" });
         }
+        // Delay ScrollTrigger refresh to avoid conflicts with animations
         setTimeout(() => {
           import("./utils/gsap").then(({ ScrollTrigger }) => {
-            ScrollTrigger.refresh();
+            try {
+              // Only refresh if there are active ScrollTriggers
+              if (ScrollTrigger.getAll().length > 0) {
+                ScrollTrigger.refresh();
+              }
+            } catch (error) {
+              console.warn("ScrollTrigger refresh failed:", error);
+            }
           });
-        }, 100);
+        }, 200); // Increased delay to avoid conflicts
       });
     }
   }, [transitionIn, pageReady]);
@@ -182,18 +186,24 @@ const App: React.FC = () => {
   // Called when Loader finishes its progress animation
   const handleLoaderComplete = () => {
     setIsLoading(false);
-    // Refresh ScrollTrigger after loader disappears
+    // Refresh ScrollTrigger after loader disappears with longer delay
     setTimeout(() => {
       import("./utils/gsap").then(({ ScrollTrigger }) => {
-        ScrollTrigger.refresh();
+        try {
+          // Only refresh if there are active ScrollTriggers
+          if (ScrollTrigger.getAll().length > 0) {
+            ScrollTrigger.refresh();
+          }
+        } catch (error) {
+          console.warn("ScrollTrigger refresh failed:", error);
+        }
       });
-    }, 200);
+    }, 300); // Increased delay to avoid conflicts
   };
 
   // Helper to pass onPageReady to all pages
   const pageProps = { 
     onPageReady: () => {
-      console.log("Page ready callback called");
       setPageReady(true);
     }
   };
@@ -240,10 +250,10 @@ const App: React.FC = () => {
     }
   }, [canFinishLoading, shouldShowLoader]);
 
-  // Scroll to top on initial mount (page refresh)
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // Scroll to top on initial mount (page refresh) - REMOVED: redundant with transition logic
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
 
   // Ensure scroll position is reset before page unload (for browser scroll restoration)
   useEffect(() => {
@@ -256,19 +266,20 @@ const App: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (!isLoading && shouldShowLoader) {
-      // Ensure scroll is at the very top after loader disappears
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-      }, 10);
-    }
-  }, [isLoading, shouldShowLoader]);
+  // REMOVED: Redundant scroll to top after loader - handled by transition logic
+  // useEffect(() => {
+  //   if (!isLoading && shouldShowLoader) {
+  //     setTimeout(() => {
+  //       window.scrollTo(0, 0);
+  //     }, 10);
+  //   }
+  // }, [isLoading, shouldShowLoader]);
 
   return (
     <LoadingContext.Provider value={isLoading}>
       <PageAnimationContext.Provider value={transitionIn}>
-        <ScrollToTop />
+        {/* REMOVED: ScrollToTop component - redundant and causes conflicts */}
+        {/* <ScrollToTop /> */}
         <div
           className={`app-container ${isTransitioning ? "transitioning" : ""}`}
         >

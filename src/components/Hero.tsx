@@ -135,8 +135,10 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
 
   // Setup animations
   const setupAnimations = () => {
-    if (isLoading || animationRef.current) return;
+    if (animationRef.current) return;
 
+    // Don't block animations if loader is active - let them start when ready
+    // The loader will handle the timing, and we want animations to be ready
     animationRef.current = gsap.timeline({
       defaults: {
         ease: "power3.out",
@@ -256,7 +258,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
       {/* Hero Content */}
       <div
         ref={contentRef}
-        className="relative w-full h-[calc(100vh-5rem)] flex flex-col justify-between"
+        className="relative w-full h-[calc(100vh-5.5rem)] flex flex-col justify-between"
       >
         {/* Centered Title Container */}
         <div className="w-full max-w-[92rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] flex justify-center">

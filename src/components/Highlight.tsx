@@ -1,5 +1,4 @@
 import React, { useRef, useContext } from 'react';
-import { ReactSVG } from 'react-svg';
 import { useTranslation } from 'react-i18next';
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
@@ -86,9 +85,9 @@ const Highlight = () => {
   }, { scope: contentRef, dependencies: [isLoading] });
 
   return (
-    <div className="relative w-full min-h-screen background-gradient-dark flex items-center justify-center overflow-hidden">
-      <div ref={svgRef} className="absolute opacity-0 topographic-map">
-        <ReactSVG src="/assets/topographic-map.svg" />
+    <div className="relative w-full min-h-screen background-gradient-dark flex items-center justify-center overflow-hidden ">
+      <div ref={svgRef} className="absolute opacity-0 topographic-map mix-blend-overlay">
+        <img src="/assets/topographic-map.webp" alt="Topographic map" className="w-full h-full object-cover" />
       </div>
       <div 
         ref={contentRef}

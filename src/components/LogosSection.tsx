@@ -1,8 +1,12 @@
-import React, { useRef, useEffect, useState, useContext } from 'react';
+import React, { useRef, useEffect, useContext, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
+import { useGSAP } from '@gsap/react';
+
+// Register the hook to avoid React version discrepancies
+gsap.registerPlugin(useGSAP);
 
 interface Logo {
   logo: string;
@@ -49,10 +53,12 @@ const partners: Logo[] = [
 const Marquee: React.FC<{ logos: Logo[] }> = ({ logos }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  const [repeatCount, setRepeatCount] = useState(2);
-  const [canAnimate, setCanAnimate] = useState(false);
   const isLoading = useContext(LoadingContext);
+  const [canAnimate, setCanAnimate] = useState(false);
+  const [repeatCount, setRepeatCount] = useState(1);
+  const rafId = useRef<number | null>(null);
 
+  // Handle loading state change
   useEffect(() => {
     if (!isLoading) {
       const timer = setTimeout(() => {
@@ -64,52 +70,52 @@ const Marquee: React.FC<{ logos: Logo[] }> = ({ logos }) => {
     }
   }, [isLoading]);
 
-  useEffect(() => {
+  // Calculate repeat count for smooth marquee
+  const calculateRepeat = useCallback(() => {
     if (!containerRef.current || !cardRef.current) return;
-    let rafId: number | null = null;
-    let needsUpdate = false;
-    const calculateRepeat = () => {
-      const containerWidth = containerRef.current!.offsetWidth;
-      const cardWidth = cardRef.current!.offsetWidth + 32;
-      const minCards = Math.ceil((containerWidth * 2) / cardWidth);
-      setRepeatCount(Math.max(2, Math.ceil(minCards / logos.length)));
-      rafId = null;
-      needsUpdate = false;
-    };
-    const scheduleUpdate = () => {
-      if (!needsUpdate) {
-        needsUpdate = true;
-        rafId = requestAnimationFrame(calculateRepeat);
-      }
-    };
-    window.addEventListener('resize', scheduleUpdate);
-    // Initial calculation
-    calculateRepeat();
-    return () => {
-      window.removeEventListener('resize', scheduleUpdate);
-      if (rafId !== null) cancelAnimationFrame(rafId);
-    };
-  }, [logos.length]);
 
+    const containerWidth = containerRef.current.offsetWidth;
+    const cardWidth = cardRef.current.scrollWidth;
+    const neededRepeats = Math.ceil((containerWidth * 2) / cardWidth);
+    setRepeatCount(Math.max(neededRepeats, 2));
+  }, []);
+
+  // Handle resize and initial calculation
   useEffect(() => {
-    if (containerRef.current && cardRef.current) {
-      // Initial GSAP state
-      gsap.set(cardRef.current, {
-        opacity: 0,
-        y: 30
-      });
+    calculateRepeat();
+    
+    const handleResize = () => {
+      if (rafId.current !== null) cancelAnimationFrame(rafId.current);
+      rafId.current = requestAnimationFrame(calculateRepeat);
+    };
 
-      // Animate in when ready
-      if (canAnimate) {
-        gsap.to(cardRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        });
-      }
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (rafId.current !== null) cancelAnimationFrame(rafId.current);
+    };
+  }, [calculateRepeat]);
+
+  // Handle animations with useGSAP
+  useGSAP(() => {
+    if (!containerRef.current || !cardRef.current) return;
+
+    // Set initial state
+    gsap.set(cardRef.current, {
+      opacity: 0,
+      y: 30
+    });
+
+    // Animate in when ready
+    if (canAnimate) {
+      gsap.to(cardRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      });
     }
-  }, [logos.length, canAnimate]);
+  }, { scope: containerRef, dependencies: [canAnimate, logos.length] });
 
   // If exactly 5 logos, repeat them to make the marquee look continuous
   const marqueeLogos = logos.length === 5 ? [...logos, ...logos, ...logos] : logos;
@@ -169,8 +175,6 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
   const isLoading = useContext(LoadingContext);
   const [canAnimate, setCanAnimate] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
-  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   
   // Refs for titles and marquees
   const alliesTitleRef = useRef<HTMLHeadingElement>(null);
@@ -196,115 +200,91 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
     }
   }, [isLoading]);
 
-  // Set initial states
-  useEffect(() => {
+  // Set initial states with useGSAP
+  useGSAP(() => {
     if (!sectionRef.current) return;
 
-    const ctx = gsap.context(() => {
-      // Set initial states for titles
-      [alliesTitleRef, buildersTitleRef, partnersTitleRef].forEach(ref => {
-        if (ref.current) {
-          gsap.set(ref.current, {
-            opacity: 0,
-            y: 50
-          });
-        }
-      });
+    // Set initial states for titles
+    [alliesTitleRef, buildersTitleRef, partnersTitleRef].forEach(ref => {
+      if (ref.current) {
+        gsap.set(ref.current, {
+          opacity: 0,
+          y: 50
+        });
+      }
+    });
 
-      // Set initial states for marquees
-      [alliesMarqueeRef, buildersMarqueeRef, partnersMarqueeRef].forEach(ref => {
-        if (ref.current) {
-          gsap.set(ref.current, {
-            opacity: 0,
-            y: 30
-          });
-        }
-      });
-    }, sectionRef);
+    // Set initial states for marquees
+    [alliesMarqueeRef, buildersMarqueeRef, partnersMarqueeRef].forEach(ref => {
+      if (ref.current) {
+        gsap.set(ref.current, {
+          opacity: 0,
+          y: 30
+        });
+      }
+    });
+  }, { scope: sectionRef });
 
-    return () => ctx.revert();
-  }, []);
-
-  // Handle animations
-  useEffect(() => {
+  // Handle animations with useGSAP
+  useGSAP(() => {
     if (!canAnimate || !sectionRef.current) return;
 
-    const ctx = gsap.context(() => {
-      // Kill existing timeline and scroll trigger if they exist
-      if (timelineRef.current) {
-        timelineRef.current.kill();
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top 75%',
+        end: 'center center',
+        toggleActions: 'play none none reverse',
+        id: `logos-section-${Date.now()}` // Unique ID to avoid conflicts
       }
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.kill();
-      }
+    });
 
-      // Create new timeline
-      timelineRef.current = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 75%',
-          end: 'center center',
-          toggleActions: 'play none none reverse',
-          id: `logos-section-${Date.now()}` // Unique ID to avoid conflicts
-        }
-      });
+    // Animate each section if it exists
+    if (showAllies && alliesTitleRef.current && alliesMarqueeRef.current) {
+      tl.to(alliesTitleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      })
+      .to(alliesMarqueeRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, '-=0.4');
+    }
 
-      // Animate each section if it exists
-      if (showAllies && alliesTitleRef.current && alliesMarqueeRef.current) {
-        timelineRef.current
-          .to(alliesTitleRef.current, {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: 'power3.out'
-          })
-          .to(alliesMarqueeRef.current, {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: 'power3.out'
-          }, '-=0.4');
-      }
+    if (showBuilders && buildersTitleRef.current && buildersMarqueeRef.current) {
+      tl.to(buildersTitleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, '-=0.2')
+      .to(buildersMarqueeRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, '-=0.4');
+    }
 
-      if (showBuilders && buildersTitleRef.current && buildersMarqueeRef.current) {
-        timelineRef.current
-          .to(buildersTitleRef.current, {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: 'power3.out'
-          }, '-=0.2')
-          .to(buildersMarqueeRef.current, {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: 'power3.out'
-          }, '-=0.4');
-      }
-
-      if (showPartners && partnersTitleRef.current && partnersMarqueeRef.current) {
-        timelineRef.current
-          .to(partnersTitleRef.current, {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: 'power3.out'
-          }, '-=0.2')
-          .to(partnersMarqueeRef.current, {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: 'power3.out'
-          }, '-=0.4');
-      }
-    }, sectionRef);
-
-    return () => {
-      ctx.revert(); // This will clean up all animations created in this context
-      if (timelineRef.current) timelineRef.current.kill();
-      if (scrollTriggerRef.current) scrollTriggerRef.current.kill();
-    };
-  }, [canAnimate, showAllies, showBuilders, showPartners]);
+    if (showPartners && partnersTitleRef.current && partnersMarqueeRef.current) {
+      tl.to(partnersTitleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, '-=0.2')
+      .to(partnersMarqueeRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, '-=0.4');
+    }
+  }, { scope: sectionRef, dependencies: [canAnimate, showAllies, showBuilders, showPartners] });
 
   return (
     <section 

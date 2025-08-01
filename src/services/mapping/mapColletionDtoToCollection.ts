@@ -20,8 +20,6 @@ export async function mapCollectionDtoToCollection(
       ? 0
       : Number(dto.supply) - Number(dto.tokenCount);
 
-  console.log("availableSupply", availableSupply);
-
   return {
     campaignId: Number(dto.campaignId),
     id: Number(dto.collectionId),

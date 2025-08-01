@@ -81,10 +81,7 @@ const Photo: React.FC = () => {
   // Handle loading state change with Pattern 2 delay
   React.useEffect(() => {
     if (!isLoading && imagesLoaded) {
-      const timer = setTimeout(() => {
-        setCanAnimate(true);
-      }, 1500); // Add 1500ms delay for consistency with other components
-      return () => clearTimeout(timer);
+      setCanAnimate(true);
     } else {
       setCanAnimate(false);
     }

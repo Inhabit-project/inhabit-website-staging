@@ -80,13 +80,11 @@ const NewsletterCTA: React.FC = () => {
 
   // Wait for global loader end before allowing scroll animation
   useEffect(() => {
-    let timer: NodeJS.Timeout;
     if (!isLoading) {
-      timer = setTimeout(() => setCanAnimate(true), 1200);
+      setCanAnimate(true);
     } else {
       setCanAnimate(false);
     }
-    return () => timer && clearTimeout(timer);
   }, [isLoading]);
 
   // Build ScrollTrigger timeline
