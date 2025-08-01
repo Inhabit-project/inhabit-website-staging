@@ -25,6 +25,54 @@ class ScrollManager {
     window.scrollTo({ top, behavior });
   }
 
+  // New method to ensure page always loads at hero section
+  scrollToHero(options?: {
+    immediate?: boolean;
+    offset?: number;
+  }) {
+    // Try multiple selectors to find the hero section, prioritizing aria-label
+    const heroSelectors = [
+      'section[aria-label*="hero"]', // Section with hero in aria-label (most specific)
+      'main section:first-child', // First section in main
+      '.hero', // Hero class
+      'section:first-of-type', // First section
+      'main > section:first-child' // First section in main
+    ];
+
+    let heroElement: HTMLElement | null = null;
+    
+    for (const selector of heroSelectors) {
+      const element = document.querySelector(selector);
+      if (element instanceof HTMLElement) {
+        heroElement = element;
+        break;
+      }
+    }
+
+    if (heroElement) {
+      this.scrollTo(heroElement, {
+        offset: options?.offset ?? 0,
+        immediate: options?.immediate ?? true
+      });
+    } else {
+      // Fallback to top of page
+      this.scrollTo(0, {
+        immediate: options?.immediate ?? true
+      });
+    }
+  }
+
+  // Enhanced method to ensure page loads at top/hero on navigation
+  ensurePageStartsAtTop(options?: {
+    immediate?: boolean;
+    force?: boolean;
+  }) {
+    // If force is true or we're at the top, scroll to hero
+    if (options?.force || window.scrollY === 0) {
+      this.scrollToHero({ immediate: options?.immediate ?? true });
+    }
+  }
+
   destroy() {}
   stop() {}
   start() {}

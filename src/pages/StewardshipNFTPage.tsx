@@ -15,6 +15,7 @@ import NFTGrid from "../components/NFTGrid";
 import SubLoader from "@/load/SubLoader";
 import { useStore } from "@/store";
 import SEOHead from "@/components/SEOHead";
+import { scrollManager } from "../utils/scrollManager";
 
 interface Props {
   onPageReady?: () => void;
@@ -42,24 +43,44 @@ export default function StewardshipNFTPage(props: Props): JSX.Element {
   }, []);
 
   useEffect(() => {
+    // Only scroll to NFT grid if explicitly requested and not on initial page load
     if (
       scrollToSection === "nftGrid" &&
       nftGridRef.current &&
       !campaignsLoading &&
       campaigns.length > 0
     ) {
-      const offset = -100;
-      const y =
-        nftGridRef.current.getBoundingClientRect().top +
-        window.scrollY +
-        offset;
-      window.scrollTo({ top: y, behavior: "auto" });
+      // Add a delay to ensure hero section is properly loaded first
+      setTimeout(() => {
+        const offset = -100;
+        const y =
+          nftGridRef.current!.getBoundingClientRect().top +
+          window.scrollY +
+          offset;
+        window.scrollTo({ top: y, behavior: "auto" });
+      }, 500); // Delay to ensure hero section loads first
     }
   }, [scrollToSection, campaignsLoading, campaigns]);
 
   useEffect(() => {
     if (onPageReady) onPageReady();
   }, [onPageReady]);
+
+  // Ensure page always starts at hero section
+  useEffect(() => {
+    if (!scrollToSection) {
+      // Small delay to ensure DOM is ready
+      const timer = setTimeout(() => {
+        if (scrollManager && typeof scrollManager.scrollToHero === "function") {
+          scrollManager.scrollToHero({ immediate: true });
+        } else {
+          window.scrollTo({ top: 0, behavior: "auto" });
+        }
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }
+  }, [scrollToSection]);
 
   return (
     <>
@@ -79,7 +100,7 @@ export default function StewardshipNFTPage(props: Props): JSX.Element {
       <div className="min-h-screen background-gradient-light">
         <Menu />
         <main id="main-content" role="main" tabIndex={-1}>
-          <section aria-label={t('sections.hero')}>
+          <section className="hero" aria-label={t('sections.hero')}>
             <InternalPagesHero
               variant="stewardship"
               onHeroImageLoad={onHeroImageLoad}

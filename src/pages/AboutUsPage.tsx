@@ -40,7 +40,7 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ onPageReady, onHeroImageLoad 
       <div className="min-h-screen background-gradient-light">
         <Menu />
         <main id="main-content" role="main" tabIndex={-1}>
-          <section aria-label={t('sections.hero')}>
+          <section className="hero" aria-label={t('sections.hero')}>
             <InternalPagesHero variant="about" onHeroImageLoad={onHeroImageLoad} />
           </section>
           <section aria-label={t('sections.photo')}>

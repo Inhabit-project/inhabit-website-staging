@@ -36,7 +36,7 @@ const HubsPage: React.FC<HubsPageProps> = ({ onPageReady, onHeroImageLoad }) => 
       <div className="min-h-screen background-gradient-light">
         <Menu />
         <main id="main-content" tabIndex={-1} role="main">
-          <section aria-label={t('sections.hero')}>
+          <section className="hero" aria-label={t('sections.hero')}>
             <InternalPagesHero variant="hubs" onHeroImageLoad={onHeroImageLoad} />
           </section>
           <section aria-label={t('sections.hubs')}>

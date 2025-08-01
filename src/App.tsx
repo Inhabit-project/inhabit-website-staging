@@ -147,12 +147,14 @@ const App: React.FC = () => {
     }
   }, [location]);
 
-  // Scroll to top only after both transition and page are ready
+  // Scroll to hero section only after both transition and page are ready
   useEffect(() => {
     if (transitionIn && pageReady) {
       setShowTransition(false);
       requestAnimationFrame(() => {
-        if (scrollManager && typeof scrollManager.scrollTo === "function") {
+        if (scrollManager && typeof scrollManager.scrollToHero === "function") {
+          scrollManager.scrollToHero({ immediate: true });
+        } else if (scrollManager && typeof scrollManager.scrollTo === "function") {
           scrollManager.scrollTo(0, { immediate: true });
         } else {
           window.scrollTo({ top: 0, behavior: "auto" });
@@ -265,6 +267,18 @@ const App: React.FC = () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
+
+  // Ensure page always starts at hero section on initial load and navigation
+  useEffect(() => {
+    // Small delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      if (scrollManager && typeof scrollManager.ensurePageStartsAtTop === "function") {
+        scrollManager.ensurePageStartsAtTop({ immediate: true, force: true });
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
 
   // REMOVED: Redundant scroll to top after loader - handled by transition logic
   // useEffect(() => {

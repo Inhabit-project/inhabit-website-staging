@@ -18,6 +18,7 @@ import { useStore } from "../store";
 import SEOHead from "@/components/SEOHead";
 import { useTranslation } from "react-i18next";
 import Cursor from "../utils/cursor";
+import { scrollManager } from "../utils/scrollManager";
 
 interface Props {
   onPageReady?: () => void;
@@ -49,21 +50,27 @@ function MainPage(props: Props) {
   }, [onPageReady]);
 
   useEffect(() => {
+    // Only scroll to NFT grid if explicitly requested and not on initial page load
     if (
       scrollToSection === "nftGrid" &&
       nftGridRef.current &&
       !campaignsLoading &&
-      campaigns.length > 0
+      campaigns.length > 0 &&
+      // Add a small delay to ensure hero section loads first
+      loaderDone
     ) {
-      const offset = -100;
-      const y =
-        nftGridRef.current.getBoundingClientRect().top +
-        window.scrollY +
-        offset;
+      // Add a delay to ensure hero section is properly loaded first
+      setTimeout(() => {
+        const offset = -100;
+        const y =
+          nftGridRef.current!.getBoundingClientRect().top +
+          window.scrollY +
+          offset;
 
-      window.scrollTo({ top: y, behavior: "auto" });
+        window.scrollTo({ top: y, behavior: "auto" });
+      }, 500); // Delay to ensure hero section loads first
     }
-  }, [scrollToSection, campaignsLoading, campaigns]);
+  }, [scrollToSection, campaignsLoading, campaigns, loaderDone]);
 
   useEffect(() => {
     if (!loaderDone) return;
@@ -72,6 +79,22 @@ function MainPage(props: Props) {
       cursor.destroy();
     };
   }, [loaderDone]);
+
+  // Ensure page always starts at hero section
+  useEffect(() => {
+    if (loaderDone && !scrollToSection) {
+      // Small delay to ensure DOM is ready
+      const timer = setTimeout(() => {
+        if (scrollManager && typeof scrollManager.scrollToHero === "function") {
+          scrollManager.scrollToHero({ immediate: true });
+        } else {
+          window.scrollTo({ top: 0, behavior: "auto" });
+        }
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }
+  }, [loaderDone, scrollToSection]);
 
   return (
     <>
@@ -90,7 +113,7 @@ function MainPage(props: Props) {
       </a>
       <Menu />
       <main id="main-content" tabIndex={-1} role="main">
-        <section className="no-scroll-snap" aria-label={t('sections.hero')}>
+        <section className="no-scroll-snap hero" aria-label={t('sections.hero')}>
           <Hero
             scrollToRef={videoSectionRef}
             onHeroImageLoad={onHeroImageLoad}
