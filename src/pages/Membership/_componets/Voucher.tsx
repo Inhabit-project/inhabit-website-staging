@@ -15,6 +15,7 @@ import { useInhabit } from "@/hooks/contracts/inhabit";
 import { keccak256, toBytes } from "viem";
 import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
 import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
+import { t } from "i18next";
 
 interface Props {
   availableSupply: number;
@@ -138,7 +139,7 @@ export function VoucherStep(props: Props): JSX.Element {
 
         resendKycEmail(dto, {
           onSuccess: () => {
-            alert("✅ KYC request sent successfully!");
+            alert(t("membership.checkout.KYC request sent successfully!"));
             const expiresAt = Math.floor(Date.now() / 1000) + 180;
             localStorage.setItem(COOLDOWN_KEY, expiresAt.toString());
             setCooldown(180);
@@ -146,13 +147,19 @@ export function VoucherStep(props: Props): JSX.Element {
 
           onError: (error) => {
             console.error("❌", error);
-            alert("Error sending KYC request. Please try again.");
+            alert(
+              t(
+                "membership.checkout.Error sending KYC request. Please try again"
+              )
+            );
           },
         });
       },
       onError: (error) => {
         console.error("❌", error);
-        alert("Error signing message. Please try again.");
+        alert(
+          t("membership.checkout.Error signing message. Please try again.")
+        );
       },
     });
   };
@@ -198,7 +205,7 @@ export function VoucherStep(props: Props): JSX.Element {
             onSuccess: async () => {
               await refetch();
               confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-              alert("✅ Membership purchased successfully!");
+              alert(t("membership.voucher.Membership purchased successfully!"));
               resolve();
             },
             onError: reject,
@@ -217,10 +224,12 @@ export function VoucherStep(props: Props): JSX.Element {
       {/* Summary */}
       <div className="bg-green-soft/30 rounded-xl p-4 flex flex-col gap-2 mt-2">
         <div className="flex justify-between font-semibold">
-          <h4 className="heading-6">Balance</h4>
+          <h4 className="heading-6">{t("membership.voucher.Balance")}</h4>
         </div>
         <div className="flex justify-between font-semibold">
-          <span className="body-S text-light">USDC</span>
+          <span className="body-S text-light">
+            {t("membership.voucher.USDC")}
+          </span>
           <div className="flex items-center space-x-3">
             <span className="body-S text-light">${usdcBalance.toFixed(2)}</span>
             <img
@@ -231,7 +240,9 @@ export function VoucherStep(props: Props): JSX.Element {
           </div>
         </div>
         <div className="flex justify-between font-semibold">
-          <span className="body-S text-light">USDT</span>
+          <span className="body-S text-light">
+            {t("membership.voucher.USDT")}
+          </span>
           <div className="flex items-center space-x-3">
             <span className="body-S text-light">
               ${usdtBalance.toFixed(2)}{" "}
@@ -247,12 +258,16 @@ export function VoucherStep(props: Props): JSX.Element {
         {/* TODO: add styles */}
         {address && isKycHardCompleted && !hasSufficientBalance && (
           <label className="text-center p-3 body-S text-light">
-            You don't have enough balance to buy this membership
+            {t(
+              "membership.voucher.You don't have enough balance to buy this membership"
+            )}
           </label>
         )}
         {address && !requiresHardKyc && !hasSufficientBalance && (
           <label className="text-center p-3 body-S text-light">
-            You don't have enough balance to buy this membership
+            {t(
+              "membership.voucher.You don't have enough balance to buy this membership"
+            )}
           </label>
         )}
         {/* <div className="flex justify-between text-secondary font-bold text-lg">
@@ -265,7 +280,7 @@ export function VoucherStep(props: Props): JSX.Element {
             </div> */}
       </div>
       <div className="bg-green-soft/30 rounded-xl p-4 flex flex-col gap-4">
-        <h4 className="heading-6">Select coin</h4>
+        <h4 className="heading-6">{t("membership.voucher.Select coin")}</h4>
 
         {coins.map((c) => (
           <label
@@ -288,7 +303,9 @@ export function VoucherStep(props: Props): JSX.Element {
         ))}
 
         <div className="flex justify-between mt-2">
-          <span className="body-S text-light">Total</span>
+          <span className="body-S text-light">
+            {t("membership.voucher.Total")}
+          </span>
           <span className="body-S text-light">
             ${price.toFixed(2)} {selectedCoin ?? ""}
           </span>
@@ -298,7 +315,11 @@ export function VoucherStep(props: Props): JSX.Element {
       {requiresHardKyc && !isKycHardCompleted && (
         <div className="flex flex-col justify-center items-center p-3">
           <label className="text-center body-S text-light">
-            You need to pass the KYC to purchase this NFT.{" "}
+            {isNoncePending || isResendingKyc
+              ? t(
+                  "membership.voucher.You need to pass the KYC to purchase this NFT."
+                )
+              : null}
             <button
               type="button"
               className={`${
@@ -310,12 +331,14 @@ export function VoucherStep(props: Props): JSX.Element {
               disabled={isNoncePending || isResendingKyc || cooldown > 0}
             >
               {isNoncePending || isResendingKyc
-                ? "Resending KYC request..."
+                ? t("membership.voucher.Resending KYC request...")
                 : cooldown > 0
-                ? `Wait ${Math.floor(cooldown / 60)}:${(cooldown % 60)
-                    .toString()
-                    .padStart(2, "0")} to resend`
-                : "Click here to resend KYC request"}
+                ? `${t("membership.voucher.Wait")} ${Math.floor(
+                    cooldown / 60
+                  )}:${(cooldown % 60).toString().padStart(2, "0")} ${t(
+                    "membership.voucher.to resend"
+                  )}`
+                : t("membership.voucher.Click here to resend KYC request")}
             </button>
           </label>
         </div>
@@ -333,7 +356,11 @@ export function VoucherStep(props: Props): JSX.Element {
             (requiresHardKyc && !isKycHardCompleted)
           }
         >
-          {isProcessing ? "Processing…" : "Purchase Membership"}
+          {isProcessing ? (
+            <span>{t("membership.voucher.Processing…")}</span>
+          ) : (
+            t("membership.voucher.Purchase Membership")
+          )}
         </button>
       </div>
     </div>

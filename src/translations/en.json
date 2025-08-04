@@ -631,6 +631,26 @@
       "You must accept the terms and conditions": "You must accept the terms and conditions",
       "and accept its terms and conditions, granting me rights and benefits related to this Land and Project, and acknowledge this action as a valid electronic signature.": "and accept its terms and conditions, granting me rights and benefits related to this Land and Project, and acknowledge this action as a valid electronic signature.",
       "@pepioperez": "@pepioperez"
+    },
+    "voucher": {
+      "Balance": "Balance",
+      "Click here to resend KYC request": "Click here to resend KYC request",
+      "Error sending KYC request. Please try again": "Error sending KYC request. Please try again.",
+      "Error signing message. Please try again.": "Error signing message. Please try again.",
+      "KYC request sent successfully!": "KYC request sent successfully!",
+      "Membership purchased successfully!": "Membership purchased successfully!",
+      "Processing…": "Processing…",
+      "Purchase Membership": "Purchase Membership",
+      "Resend KYC Request": "Resend KYC Request...",
+      "Select coin": "Select coin",
+      "Total": "Total",
+      "USDC": "USDC",
+      "USDT": "USDT",
+      "Wait": "Wait",
+      "Waiting for nonce...": "Waiting for nonce...",
+      "You don't have enough balance to buy this membership": "You don't have enough balance to buy this membership.",
+      "You need to pass the KYC to purchase this NFT.": "You need to pass the KYC to purchase this NFT.",
+      "to resend": "to resend"
     }
   },
   "nuiyanzhiPage": {

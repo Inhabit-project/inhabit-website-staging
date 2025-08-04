@@ -710,6 +710,26 @@
       "You must accept the terms and conditions": "Debes aceptar los términos y condiciones",
       "and accept its terms and conditions, granting me rights and benefits related to this Land and Project, and acknowledge this action as a valid electronic signature.": "y acepto sus términos y condiciones, otorgándome derechos y beneficios relacionados con esta Tierra y Proyecto, y reconozco esta acción como una firma electrónica válida.",
       "@pepioperez": "@pepioperez"
+    },
+    "voucher": {
+      "Balance": "Saldo",
+      "Click here to resend KYC request": "Haz clic aquí para reenviar la solicitud de KYC",
+      "Error sending KYC request. Please try again": "Error al enviar la solicitud de KYC. Por favor, inténtalo de nuevo.",
+      "Error signing message. Please try again.": "Error al firmar el mensaje. Por favor, inténtalo de nuevo.",
+      "KYC request sent successfully!": "¡Solicitud de KYC enviada con éxito!",
+      "Membership purchased successfully!": "¡Membresía comprada con éxito!",
+      "Processing…": "Procesando…",
+      "Purchase Membership": "Comprar membresía",
+      "Resending KYC request...": "Reenviando solicitud de KYC...",
+      "Select coin": "Selecciona una moneda",
+      "Total": "Total",
+      "USDC": "USDC",
+      "USDT": "USDT",
+      "Wait": "Espera",
+      "Waiting for nonce...": "Esperando nonce...",
+      "You don't have enough balance to buy this membership": "No tienes suficiente saldo para comprar esta membresía.",
+      "You need to pass the KYC to purchase this NFT.": "Debes completar el KYC para poder comprar este NFT.",
+      "to resend": "para reenviar"
     }
   },
   "nuiyanzhiPage": {
