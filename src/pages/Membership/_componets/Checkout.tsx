@@ -229,7 +229,7 @@ export function Checkout(props: Props): JSX.Element {
         sendKycEmail(dto, {
           onSuccess: () => {
             setKycSent(kycType, true);
-            alert("membership.checkout.✅ KYC request sent successfully!");
+            alert(t("membership.checkout.KYC request sent successfully!"));
             goNext();
             reset();
           },
@@ -237,14 +237,18 @@ export function Checkout(props: Props): JSX.Element {
           onError: (error) => {
             console.error("❌", error);
             alert(
-              "membership.checkout.Error sending KYC request. Please try again."
+              t(
+                "membership.checkout.Error sending KYC request. Please try again"
+              )
             );
           },
         });
       },
       onError: (error) => {
         console.error("❌", error);
-        alert("membership.checkout.Error signing message. Please try again.");
+        alert(
+          t("membership.checkout.Error signing message. Please try again.")
+        );
       },
     });
   };
