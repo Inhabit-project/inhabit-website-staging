@@ -230,7 +230,7 @@
           },
           {
             "question": "¿Es el uso de blockchain ambientalmente sostenible para INHABIT?",
-                          "answer": "Sí — INHABIT utiliza CELO, una blockchain carbono-negativa diseñada para proyectos respetuosos con el clima.<br /><br />Acuñar todos los NFT necesarios para financiar un FARO de INHABIT produce menos CO₂ que preparar una sola taza de café.<br /><br />Cada NFT usa solo 0.00001 kWh y emite solo 5 mg de CO₂ — menos que una búsqueda en Google.<br /><br />En comparación:<ul><li>Ethereum (pre-fusión) = 15,000× más emisiones</li><li>Bitcoin = 100,000× más</li></ul>Además, CELO ejecuta un programa integrado de compensación de carbono: una parte de cada tarifa de transacción financia proyectos verificados que eliminan CO₂ de la atmósfera. Esto hace que CELO sea carbono-negativo, lo que significa que compensa más de lo que emite — por lo que incluso nuestros NFT terminan siendo carbono-negativos, convirtiendo la blockchain en una herramienta para la regeneración climática."
+            "answer": "Sí — INHABIT utiliza CELO, una blockchain carbono-negativa diseñada para proyectos respetuosos con el clima.<br /><br />Acuñar todos los NFT necesarios para financiar un FARO de INHABIT produce menos CO₂ que preparar una sola taza de café.<br /><br />Cada NFT usa solo 0.00001 kWh y emite solo 5 mg de CO₂ — menos que una búsqueda en Google.<br /><br />En comparación:<ul><li>Ethereum (pre-fusión) = 15,000× más emisiones</li><li>Bitcoin = 100,000× más</li></ul>Además, CELO ejecuta un programa integrado de compensación de carbono: una parte de cada tarifa de transacción financia proyectos verificados que eliminan CO₂ de la atmósfera. Esto hace que CELO sea carbono-negativo, lo que significa que compensa más de lo que emite — por lo que incluso nuestros NFT terminan siendo carbono-negativos, convirtiendo la blockchain en una herramienta para la regeneración climática."
           }
         ]
       },
@@ -274,7 +274,7 @@
     },
     "photo": {
       "section1": "Al comprar un NFT te conviertes en guardián de por vida de un Faro específico, permitiéndote monitorear y participar en decisiones importantes que afectan estos ecosistemas, y obtener acceso exclusivo a experiencias bioculturales, eventos, talleres, visitar Los faros y explorar todo el Corredor.",
-              "section2": "Los fondos recaudados de estos NFT se utilizan para adquirir tierras degradadas y transformarlas en Faros bioculturales. Estas áreas están protegidas bajo el marco de tenencia de tierra INHABIT un modelo pionero de reservas naturales que otorga derechos legales a la naturaleza, redefiniendo la protección y custodia de la tierra a un nuevo nivel."
+      "section2": "Los fondos recaudados de estos NFT se utilizan para adquirir tierras degradadas y transformarlas en Faros bioculturales. Estas áreas están protegidas bajo el marco de tenencia de tierra INHABIT un modelo pionero de reservas naturales que otorga derechos legales a la naturaleza, redefiniendo la protección y custodia de la tierra a un nuevo nivel."
     },
     "nftGrid": {
       "title": "Nuestros innovadores <br /><strong>NFT</strong>",
@@ -293,11 +293,11 @@
       "natureTitle": "Naturaleza",
       "natureDescription": "La naturaleza es considerada una entidad con derechos dentro de los límites de la tierra, de acuerdo con la Declaración de los Derechos de la Naturaleza (por ejemplo, el derecho a la autorregulación, restauración, protección, toma de decisiones...).",
       "guardiansTitle": "Guardianes",
-              "guardiansDescription": "Una familia de agentes de cambio, que recibe derechos de uso permanente y financiamiento para la restauración, asegurando la regeneración y conservación de la tierra, desarrollando un FARO biocultural innovador y expandiendo la protección del corredor."
+      "guardiansDescription": "Una familia de agentes de cambio, que recibe derechos de uso permanente y financiamiento para la restauración, asegurando la regeneración y conservación de la tierra, desarrollando un FARO biocultural innovador y expandiendo la protección del corredor."
     },
     "testimonials": {
       "title": "Conoce a nuestros <strong>Aliados</strong>",
-              "description": "Desde custodios locales y expertos bio-regionales hasta organizaciones globales y líderes en innovación, cada aliado aporta conocimientos, herramientas y compromiso únicos para hacer crecer una red de FAROS bioculturales tejiendo juntos un corredor global de diversidad biocultural.",
+      "description": "Desde custodios locales y expertos bio-regionales hasta organizaciones globales y líderes en innovación, cada aliado aporta conocimientos, herramientas y compromiso únicos para hacer crecer una red de FAROS bioculturales tejiendo juntos un corredor global de diversidad biocultural.",
       "testimonial": {
         "name": "Louise Borreani",
         "quote": "“Inhabit es una poderosa expresión de cómo las herramientas descentralizadas pueden apoyar a las comunidades que cuidan la naturaleza. Es una de las manifestaciones más concretas de la investigación sobre criptografía verde que hemos estado realizando en Ecofrontiers y es muy inspirador verla hacerse realidad.” ",
@@ -482,7 +482,7 @@
     },
     "criteriaCardsSection": {
       "title": "Cuatro Criterios <br /><strong>Para Ser un FARO</strong>",
-              "description": "El marco de INHABIT prevé que Cada faro desarrolle cuatro campos clave para convertirse en un FARO biocultural, desarrollando cada uno según su propia visión y singularidad."
+      "description": "El marco de INHABIT prevé que Cada faro desarrolle cuatro campos clave para convertirse en un FARO biocultural, desarrollando cada uno según su propia visión y singularidad."
     },
     "FourCriteriaHubGlobal": {
       "cards": [
@@ -665,6 +665,48 @@
       "title": "Custodia",
       "subtitle": "<strong>NFT</strong>",
       "description": "Tu llave digital para el cuidado permanente de ecosistemas únicos. Cada NFT representa una conexión directa con una zona de conservación específica, otorgándote derechos y acceso exclusivo a experiencias bioculturales."
+    }
+  },
+  "membership": {
+    "checkout": {
+      "First Name*": "Nombre*",
+      "Last Name*": "Apellido*",
+      "Email*": "Correo electrónico*",
+      "Country Code*": "Código de país*",
+      "Cellphone*": "Teléfono celular*",
+      "Telegram Handle": "Usuario de Telegram",
+      "Enter your name": "Ingresa tu nombre",
+      "Enter your last name": "Ingresa tu apellido",
+      "Enter your email": "Ingresa tu correo electrónico",
+      "Enter phone number": "Ingresa tu número de teléfono",
+      "Select country first": "Primero selecciona un país",
+      "@pepitoperez": "ej. @pepitoperez",
+      "Select country": "Selecciona un país",
+      "I consent to the processing of my personal data in accordance with the": "Consiento el tratamiento de mis datos personales de acuerdo con la",
+      "Privacy Policy": "Política de Privacidad",
+      "I consent to adhere to the": "Acepto adherirme al",
+      "Membership Agreement": "Acuerdo de Membresía",
+      "and accept its terms and conditions, granting me rights and benefits related to this Land and Project, and acknowledge this action as a valid electronic signature.": "y acepto sus términos y condiciones, reconociendo los derechos y beneficios asociados a esta Tierra y Proyecto, y reconociendo esta acción como una firma electrónica válida.",
+      "I understand that I'll need to complete a KYC Verification to eventually fully access the rights and benefits associated with my membership.": "Entiendo que debo completar la verificación KYC para acceder plenamente a los derechos y beneficios asociados con mi membresía.",
+      "Registering...": "Registrando...",
+      "Get here your NFT": "Obtén aquí tu NFT",
+      "First name must be at least 2 characters": "El nombre debe tener al menos 2 caracteres",
+      "First name must be less than 50 characters": "El nombre debe tener menos de 50 caracteres",
+      "First name can only contain letters and spaces": "El nombre solo puede contener letras y espacios",
+      "Last name must be at least 2 characters": "El apellido debe tener al menos 2 caracteres",
+      "Last name must be less than 50 characters": "El apellido debe tener menos de 50 caracteres",
+      "Last name can only contain letters and spaces": "El apellido solo puede contener letras y espacios",
+      "Please enter a valid email address": "Ingresa un correo electrónico válido",
+      "Email must be at least 5 characters": "El correo debe tener al menos 5 caracteres",
+      "Email must be less than 100 characters": "El correo debe tener menos de 100 caracteres",
+      "Telegram handle must be at least 3 characters": "El usuario de Telegram debe tener al menos 3 caracteres",
+      "Telegram handle must be less than 32 characters": "El usuario de Telegram debe tener menos de 32 caracteres",
+      "Invalid telegram handle format": "Formato de usuario de Telegram inválido",
+      "You must accept the terms and conditions": "Debes aceptar los términos y condiciones",
+      "You must accept the Membership Agreement": "Debes aceptar el Acuerdo de Membresía",
+      "You must accept the KYC terms": "Debes aceptar los términos de KYC",
+      "Phone number is required when country is selected": "El número de teléfono es obligatorio cuando se selecciona un país",
+      "Phone number must be 10 digits and only numbers": "El número de teléfono debe tener 10 dígitos y solo números"
     }
   },
   "nuiyanzhiPage": {

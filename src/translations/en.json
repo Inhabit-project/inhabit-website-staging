@@ -291,8 +291,8 @@
         {
           "question": "What is a biocultural hub?",
           "answer": "True and lasting regeneration needs more than tree planting. It requires a deep shift in how we value and care for land. Biocultural Hubs lead this transformation.\n\nHUBS are centers of regeneration and cultural renewal, designed to ignite and cultivate the sense of stewardship needed to restore our planet. HUBS protect biodiversity, train the next generation of land stewards, and weave together ancestral wisdom with contemporary knowledge to drive deep change.\n\nThey are spaces where anyone can learn the deepest practices of inhabiting and stewarding nature. Places to explore new ways of relating to land, to recognize its many intrinsic values, and to realize the power of our role in nurturing and multiplying them.\n\nEach Hub not only restores ecosystems but is also tasked with expanding a global Corridor by increasing conservation areas through collaboration with nearby hubs, projects, and communities in its bioregion.\n\nHUBS are the building blocks of the Corridor. A worldwide network of biodiversity islands and cultural landmarks. The Corridor wants to inspire a movement of stewardship across the globe."
-                  },
-          {
+        },
+        {
           "question": "What exactly is a Stewardship NFT?",
           "answer": "Imagine having a special contract in your digital wallet. A bit like a passport or deed that shows you are part of something real. It's not just a picture or a token. It's a key. It gives you lifelong rights and tangible benefits linked to a specific piece of land, along with access to the intrinsic value being regenerated on the ground.<br /><br />The contract is securely and permanently stored on the blockchain, meaning it can't be lost, altered, or faked. Each NFT is unique like a piece of art and only a limited number are issued for each land. It's a digital asset with real value that can be transferred.<br /><br />In addition to securing your rights in relation to the land, the NFT encapsulates the entire legal framework that protects the land itself. It reflects and protects both the Rights of Nature and the role of human stewards, through a groundbreaking model that redefines what land ownership means. Shifting it from control to care, from possession to responsibility.<br /><br />Many believe stewardship will shape the future of economies and the Inhabit Stewardship NFT is one of the first tools making that vision tangible, linking value creation to care, regeneration, and shared responsibility."
         },
@@ -588,6 +588,48 @@
     "visitThisProject": "Visit this project",
     "visitThisHub": "Visit this hub"
   },
+  "membership": {
+    "checkout": {
+      "First Name*": "First Name*",
+      "Last Name*": "Last Name*",
+      "Email*": "Email*",
+      "Country Code*": "Country Code*",
+      "Cellphone*": "Cellphone*",
+      "Telegram Handle": "Telegram Handle",
+      "Enter your name": "Enter your name",
+      "Enter your last name": "Enter your last name",
+      "Enter your email": "Enter your email",
+      "Enter phone number": "Enter phone number",
+      "Select country first": "Select country first",
+      "e.g. @pepioperez": "e.g. @pepioperez",
+      "Select country": "Select country",
+      "I consent to the processing of my personal data in accordance with the": " I consent to the processing of my personal data in accordance with the",
+      "Privacy Policy": "Privacy Policy",
+      "I consent to adhere to the": "I consent to adhere to the",
+      "Membership Agreement": "Membership Agreement",
+      "and accept its terms and conditions, granting me rights and benefits related to this Land and Project, and acknowledge this action as a valid electronic signature.": "and accept its terms and conditions, granting me rights and benefits related to this Land and Project, and acknowledge this action as a valid electronic signature.",
+      "I understand that I'll need to complete a KYC Verification to eventually fully access the rights and benefits associated with my membership.": "I understand that I'll need to complete a KYC Verification to eventually fully access the rights and benefits associated with my membership.",
+      "Registering...": "Registering...",
+      "Get here your NFT": "Get here your NFT",
+      "First name must be at least 2 characters": "First name must be at least 2 characters",
+      "First name must be less than 50 characters": "First name must be less than 50 characters",
+      "First name can only contain letters and spaces": "First name can only contain letters and spaces",
+      "Last name must be at least 2 characters": "Last name must be at least 2 characters",
+      "Last name must be less than 50 characters": "Last name must be less than 50 characters",
+      "Last name can only contain letters and spaces": "Last name can only contain letters and spaces",
+      "Please enter a valid email address": "Please enter a valid email address",
+      "Email must be at least 5 characters": "Email must be at least 5 characters",
+      "Email must be less than 100 characters": "Email must be less than 100 characters",
+      "Telegram handle must be at least 3 characters": "Telegram handle must be at least 3 characters",
+      "Telegram handle must be less than 32 characters": "Telegram handle must be less than 32 characters",
+      "Invalid telegram handle format": "Invalid telegram handle format",
+      "You must accept the terms and conditions": "You must accept the terms and conditions",
+      "You must accept the Membership Agreement": "You must accept the Membership Agreement",
+      "You must accept the KYC terms": "You must accept the KYC terms",
+      "Phone number is required when country is selected": "Phone number is required when country is selected",
+      "Phone number must be 10 digits and only numbers": "Phone number must be 10 digits and only numbers"
+    }
+  },
   "nuiyanzhiPage": {
     "fourCriteria": {
       "title": "Four Criteria ",
@@ -808,7 +850,7 @@
     "annexNo1Declaration": "Declaration and Authorization to Consult, Report, and Share Information",
     "annexNo1Authorization": "I expressly and irrevocably authorize INHABIT CO S.A.S., whom I represent or to whom I assign my rights, or whom it hires for the exercise of these rights, its obligations, or its contractual position in any capacity, in relation to the products or services of which I am the primary or joint owner, or as its representative, to consult, request, supply, report, process, obtain, collect, compile, conform, exchange, modify, use, analyze, study, retain, receive, and send my personal data...",
     "annexNo1Note": "* Note: This form must be signed for validity and attention and submitted in the original form to INHABIT CO S.A.S., which, as the data controller, will process the claim within the terms established by law, starting on the day following the date of receipt.",
-    "seoTitle": "Privacy Policy | INHABIT", 
+    "seoTitle": "Privacy Policy | INHABIT",
     "seoDescription": "Learn how INHABIT protects your privacy and handles your personal data. Read about our commitment to data security and user privacy protection.",
     "seoKeywords": "INHABIT privacy policy, data protection, user privacy, information security, GDPR compliance"
   },
@@ -844,7 +886,7 @@
     "description": "Our projects span ecosystem restoration, biocultural innovation, and community empowerment.",
     "skipToMainContent": "Skip to main content",
     "mainContent": "Main content of the Projects page",
-    "seoTitle": "Conservation Projects - Ecosystem Restoration & Protection | INHABIT", 
+    "seoTitle": "Conservation Projects - Ecosystem Restoration & Protection | INHABIT",
     "seoDescription": "Discover INHABIT's conservation projects protecting vital ecosystems worldwide. Learn about our ecosystem restoration, biodiversity protection, and community-led environmental initiatives.",
     "seoKeywords": "conservation projects, ecosystem restoration, biodiversity protection, environmental projects, sustainable conservation, community-led initiatives"
   },
@@ -944,7 +986,6 @@
     "seoDescription": "Explore INHABIT's biocultural hubs creating global biodiversity corridors. Discover how our community-led projects protect ecosystems, support local communities, and drive sustainable innovation.",
     "seoKeywords": "biocultural hubs, biodiversity corridors, ecosystem restoration, community conservation, sustainable development, environmental protection"
   },
-
   "termsAndConditionsPage": {
     "title": "Terms of Use",
     "strong": "and Conditions",

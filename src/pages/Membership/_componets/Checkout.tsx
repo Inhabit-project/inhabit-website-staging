@@ -11,6 +11,7 @@ import { useSendKycEmail } from "../../../hooks/useKycEmail";
 import { KYC_TYPE } from "../../../config/enums";
 import { mapUserToUserDto } from "../../../services/mapping/mapUserToUserDto";
 import { useStore } from "../../../store";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   membershipContract: string;
@@ -20,40 +21,70 @@ type Props = {
 };
 
 export function Checkout(props: Props): JSX.Element {
+  const { t } = useTranslation();
+
   const schema = z
     .object({
       firstName: z
         .string()
-        .min(2, "First name must be at least 2 characters")
-        .max(50, "First name must be less than 50 characters")
+        .min(
+          2,
+          t("membership.checkout.First name must be at least 2 characters")
+        )
+        .max(
+          50,
+          t("membership.checkout.First name must be less than 50 characters")
+        )
         .regex(
           /^[a-zA-Z\s]+$/,
-          "First name can only contain letters and spaces"
+          t(
+            "membership.checkout.First name can only contain letters and spaces"
+          )
         ),
 
       lastName: z
         .string()
-        .min(2, "Last name must be at least 2 characters")
-        .max(50, "Last name must be less than 50 characters")
+        .min(
+          2,
+          t("membership.checkout.Last name must be at least 2 characters")
+        )
+        .max(
+          50,
+          t("membership.checkout.Last name must be less than 50 characters")
+        )
         .regex(
           /^[a-zA-Z\s]+$/,
-          "Last name can only contain letters and spaces"
+          t("membership.checkout.Last name can only contain letters and spaces")
         ),
 
       email: z
         .string()
-        .email("Please enter a valid email address")
-        .min(5, "Email must be at least 5 characters")
-        .max(100, "Email must be less than 100 characters"),
+        .email(t("membership.checkout.Please enter a valid email address"))
+        .min(5, t("membership.checkout.Email must be at least 5 characters"))
+        .max(
+          100,
+          t("membership.checkout.Email must be less than 100 characters")
+        ),
 
       countryCode: z.string().optional(),
       cellphone: z.string().optional(),
 
       telegramHandle: z
         .string()
-        .min(3, "Telegram handle must be at least 3 characters")
-        .max(32, "Telegram handle must be less than 32 characters")
-        .regex(/^@?[a-zA-Z0-9_]+$/, "Invalid telegram handle format")
+        .min(
+          3,
+          t("membership.checkout.Telegram handle must be at least 3 characters")
+        )
+        .max(
+          32,
+          t(
+            "membership.checkout.Telegram handle must be less than 32 characters"
+          )
+        )
+        .regex(
+          /^@?[a-zA-Z0-9_]+$/,
+          t("membership.checkout.Invalid telegram handle format")
+        )
         .optional()
         .or(z.literal("")),
 
@@ -61,19 +92,22 @@ export function Checkout(props: Props): JSX.Element {
         .boolean()
         .refine(
           (val) => val === true,
-          "You must accept the terms and conditions"
+          t("membership.checkout.You must accept the terms and conditions")
         ),
 
-      MembershipAgreetment: z
+      MembershipAgreement: z
         .boolean()
         .refine(
           (val) => val === true,
-          "You must accept the Membership Agreement"
+          t("membership.checkout.You must accept the Membership Agreement")
         ),
 
       kycAcceptance: z
         .boolean()
-        .refine((val) => val === true, "You must accept the KYC terms")
+        .refine(
+          (val) => val === true,
+          t("membership.checkout.You must accept the KYC terms")
+        )
         .optional(),
     })
     .superRefine((data, ctx) => {
@@ -83,7 +117,9 @@ export function Checkout(props: Props): JSX.Element {
         ctx.addIssue({
           path: ["cellphone"],
           code: z.ZodIssueCode.custom,
-          message: "Phone number is required when country is selected",
+          message: t(
+            "membership.checkout.Phone number is required when country is selected"
+          ),
         });
       }
 
@@ -91,7 +127,9 @@ export function Checkout(props: Props): JSX.Element {
         ctx.addIssue({
           path: ["cellphone"],
           code: z.ZodIssueCode.custom,
-          message: "Phone number must be 10 digits and only numbers",
+          message: t(
+            "membership.checkout.Phone number must be 10 digits and only numbers"
+          ),
         });
       }
 
@@ -99,7 +137,7 @@ export function Checkout(props: Props): JSX.Element {
         ctx.addIssue({
           path: ["kycAcceptance"],
           code: z.ZodIssueCode.custom,
-          message: "You must accept the KYC terms",
+          message: t("membership.checkout.You must accept the KYC terms"),
         });
       }
     });
@@ -191,20 +229,22 @@ export function Checkout(props: Props): JSX.Element {
         sendKycEmail(dto, {
           onSuccess: () => {
             setKycSent(kycType, true);
-            alert("✅ KYC request sent successfully!");
+            alert("membership.checkout.✅ KYC request sent successfully!");
             goNext();
             reset();
           },
 
           onError: (error) => {
             console.error("❌", error);
-            alert("Error sending KYC request. Please try again.");
+            alert(
+              "membership.checkout.Error sending KYC request. Please try again."
+            );
           },
         });
       },
       onError: (error) => {
         console.error("❌", error);
-        alert("Error signing message. Please try again.");
+        alert("membership.checkout.Error signing message. Please try again.");
       },
     });
   };
@@ -244,35 +284,35 @@ export function Checkout(props: Props): JSX.Element {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="body-S block text-light font-semibold mb-1">
-              First Name*
+              {t("membership.checkout.First Name*")}
             </label>
             <input
               type="text"
               className="input-main"
-              placeholder="Enter your name"
+              placeholder={t("membership.checkout.Enter your name")}
               {...register("firstName")}
             />
           </div>
           <div>
             <label className="body-S block text-light font-semibold mb-1">
-              Last Name*
+              {t("membership.checkout.Last Name*")}
             </label>
             <input
               type="text"
               className="input-main"
-              placeholder="Enter your last name"
+              placeholder={t("membership.checkout.Enter your last name")}
               {...register("lastName")}
             />
           </div>
         </div>
         <div>
           <label className="body-S block text-light font-semibold mb-1">
-            E-Mail*
+            {t("membership.checkout.Email*")}
           </label>
           <input
             type="email"
             className="input-main"
-            placeholder="your@email.com"
+            placeholder={t("membership.checkout.Enter your email")}
             {...register("email")}
           />
         </div>
@@ -280,7 +320,7 @@ export function Checkout(props: Props): JSX.Element {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="relative" ref={dropdownRef}>
             <label className="body-S block text-light font-semibold mb-1">
-              Country Code
+              {t("membership.checkout.Country Code*")}
             </label>
             <div
               className="custom-dropdown-trigger"
@@ -295,7 +335,9 @@ export function Checkout(props: Props): JSX.Element {
                     {selectedIndicatorData.code})
                   </span>
                 ) : (
-                  <span className="placeholder-text">Select country</span>
+                  <span className="placeholder-text">
+                    {t("membership.checkout.Select country")}
+                  </span>
                 )}
               </div>
               <div
@@ -346,13 +388,15 @@ export function Checkout(props: Props): JSX.Element {
 
           <div>
             <label className="body-S block text-light font-semibold mb-1">
-              Cellphone
+              {t("membership.checkout.Cellphone*")}
             </label>
             <input
               type="tel"
               className="input-main"
               placeholder={
-                selectedIndicatorData ? "1234567890" : "Select country first"
+                selectedIndicatorData
+                  ? t("membership.checkout.Enter phone number")
+                  : t("membership.checkout.Select country first")
               }
               disabled={!selectedIndicator}
               {...register("cellphone")}
@@ -362,7 +406,7 @@ export function Checkout(props: Props): JSX.Element {
         {/* Telegram handle */}
         <div>
           <label className="body-S block text-light font-semibold mb-1">
-            Telegram handle
+            {t("membership.checkout.Telegram Handle")}
           </label>
           <input
             type="text"
@@ -380,8 +424,9 @@ export function Checkout(props: Props): JSX.Element {
               {...register("termsAcceptance")}
             />
             <span className="body-S text-light">
-              I consent to the processing of my personal data in accordance with
-              the{" "}
+              {t(
+                "membership.checkout.I consent to the processing of my personal data in accordance with the"
+              )}{" "}
               <a
                 href={privacyPolicyPDF}
                 target="_blank"
@@ -389,7 +434,7 @@ export function Checkout(props: Props): JSX.Element {
                 className="body-S text-[#D57300] hover:underline inline normal-case"
                 onClick={(e) => e.stopPropagation()}
               >
-                Privacy Policy
+                {t("membership.checkout.Privacy Policy")}
               </a>
             </span>
           </label>
@@ -397,10 +442,10 @@ export function Checkout(props: Props): JSX.Element {
             <input
               type="checkbox"
               className="mt-1"
-              {...register("MembershipAgreetment")}
+              {...register("MembershipAgreement")}
             />
             <span className="body-S text-light">
-              I consent to adhere to the{" "}
+              {t("membership.checkout.I consent to adhere to the")}{" "}
               <button
                 type="button"
                 className="body-S text-[#D57300] hover:underline inline normal-case"
@@ -414,11 +459,11 @@ export function Checkout(props: Props): JSX.Element {
                   );
                 }}
               >
-                Membership Agreement
+                {t("membership.checkout.Membership Agreement")}
               </button>{" "}
-              and accept its terms and conditions, granting me rights and
-              benefits related to this Land and Project, and acknowledge this
-              action as a valid electronic signature.
+              {t(
+                "membership.checkout.and accept its terms and conditions, granting me rights and benefits related to this Land and Project, and acknowledge this action as a valid electronic signature."
+              )}
             </span>
           </label>
           {/* TODO: SOFT  */}
@@ -430,9 +475,9 @@ export function Checkout(props: Props): JSX.Element {
                 {...register("kycAcceptance")}
               />
               <span className="body-S text-light">
-                I understand that I'll need to complete a KYC Verification to
-                eventually fully access the rights and benefits associated with
-                my membership.
+                {t(
+                  "membership.checkout.I understand that I'll need to complete a KYC Verification to eventually fully access the rights and benefits associated with my membership."
+                )}
               </span>
             </label>
           )}
@@ -443,8 +488,8 @@ export function Checkout(props: Props): JSX.Element {
           disabled={formDisabled}
         >
           {isNoncePending || isKycPending
-            ? "Registering..."
-            : "Get here your NFT"}
+            ? t("membership.checkout.Registering...")
+            : t("membership.checkout.Get here your NFT")}
         </button>
       </fieldset>
     </form>
