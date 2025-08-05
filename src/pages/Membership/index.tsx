@@ -8,6 +8,7 @@ import RightsTable from "./_componets/RightsTable";
 import { Info } from "./_componets/Info";
 import OtherCollections from "./_componets/OtherCollections";
 import Stepper from "./_componets/Stepper";
+import { usePrivy } from "@privy-io/react-auth";
 
 type Props = {
   onHeroImageLoad?: VoidFunction;
@@ -23,6 +24,7 @@ export default function Membership(props: Props): JSX.Element {
   const [isReferralValid, setIsReferralValid] = useState<boolean>(false);
 
   // external hooks
+  const { ready } = usePrivy();
   const { campaignId, collectionId, referral } = useParams();
   const navigate = useNavigate();
 
@@ -42,13 +44,6 @@ export default function Membership(props: Props): JSX.Element {
 
   // effects
   useEffect(() => {
-    console.log(
-      "Membership page mounted with campaignId:",
-      campaignId,
-      "collectionId:",
-      collectionId
-    );
-
     if (Number.isNaN(campaignId) || Number.isNaN(collectionId)) {
       console.error("Invalid campaignId or collectionId, navigating to 404");
       navigate("/404");
@@ -80,21 +75,13 @@ export default function Membership(props: Props): JSX.Element {
       if (!isReferralValid) return;
 
       try {
-        console.log("loadCampaign called with state:", state);
-        console.log("loadCampaign called with campaignId:", campaignId);
-        console.log("loadCampaign called with collectionId:", collectionId);
-
         if (state?.collection && state?.campaign) {
-          console.log("Using state data for campaign and collection");
-          console.log("State campaign:", state.campaign);
-          console.log("State collection:", state.collection);
           setCollection(state.collection);
           setCollectionStore(state.collection);
           setCampaign(state.campaign);
           return;
         }
 
-        console.log("Loading campaign data for campaignId:", campaignId);
         const loadedCampaign = await getCampaign(Number(campaignId));
 
         if (!loadedCampaign) {
@@ -102,9 +89,6 @@ export default function Membership(props: Props): JSX.Element {
           navigate("/404");
           return;
         }
-
-        console.log("Loaded campaign:", loadedCampaign);
-        console.log("Looking for collection with id:", collectionId);
 
         const found = loadedCampaign.collections.find(
           (c) => c.id === Number(collectionId)
@@ -116,8 +100,6 @@ export default function Membership(props: Props): JSX.Element {
           return;
         }
 
-        console.log("Found collection:", found);
-        console.log("Setting collection and campaign data");
         setCollection(found);
         setCollectionStore(found);
         setCampaign(loadedCampaign);
@@ -161,9 +143,7 @@ export default function Membership(props: Props): JSX.Element {
 
   // Cleanup effect to ensure proper state reset
   useEffect(() => {
-    return () => {
-      console.log("Membership page unmounting");
-    };
+    return () => {};
   }, []);
 
   return (

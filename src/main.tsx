@@ -19,7 +19,7 @@ import "@fontsource/nunito-sans/600.css"; // SemiBold
 import "@fontsource/abel/400.css"; // Regular
 
 // Add font-display: swap CSS override and optimization
-const fontDisplayStyle = document.createElement('style');
+const fontDisplayStyle = document.createElement("style");
 fontDisplayStyle.textContent = `
   @font-face {
     font-family: 'Montserrat';
@@ -38,6 +38,7 @@ document.head.appendChild(fontDisplayStyle);
 
 import { RainbowKitProviderConfig } from "./config/rainbow-kit.config";
 import { BrowserRouter } from "react-router";
+import { PrivyProviderConfig } from "./config/privy-provider.config";
 
 // Initialize font optimization
 initializeFontOptimization();
@@ -80,13 +81,15 @@ const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <HelmetProvider>
-      <RainbowKitProviderConfig>
-        <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </QueryClientProvider>
-      </RainbowKitProviderConfig>
+      <PrivyProviderConfig>
+        <RainbowKitProviderConfig>
+          <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </QueryClientProvider>
+        </RainbowKitProviderConfig>
+      </PrivyProviderConfig>
     </HelmetProvider>
   </React.StrictMode>
 );

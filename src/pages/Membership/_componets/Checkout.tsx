@@ -12,6 +12,7 @@ import { KYC_TYPE } from "../../../config/enums";
 import { mapUserToUserDto } from "../../../services/mapping/mapUserToUserDto";
 import { useStore } from "../../../store";
 import { useTranslation } from "react-i18next";
+import { useLoginWithEmail, usePrivy } from "@privy-io/react-auth";
 
 type Props = {
   membershipContract: string;
