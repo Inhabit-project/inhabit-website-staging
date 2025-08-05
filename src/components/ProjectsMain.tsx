@@ -13,7 +13,7 @@ gsap.registerPlugin(useGSAP);
 const projects = [
   {
     key: 'project1',
-    backgroundImage: '/assets/images/img1.webp',
+    backgroundImage: '/assets/sevindua.webp',
     mapImage: '/assets/sewindua.webp',
     sliderImages: [
       '/assets/sendiwa-1.webp',
@@ -26,7 +26,7 @@ const projects = [
   {
     key: 'project2',
     backgroundImage: '/assets/arte-selva1.webp',
-    mapImage: '/assets/images/img5.webp',
+    mapImage: '/assets/arteselva.webp',
     sliderImages: [
       '/assets/arte-selva1.webp',
       '/assets/arte-selva2.webp',
@@ -65,7 +65,12 @@ const ProjectsMain: React.FC = () => {
       const data = t('projectsMain', { returnObjects: true }) as any;
       // Extract project keys from the data
       const projectKeys = Object.keys(data || {}).filter(key => key.startsWith('project'));
-      return projectKeys.map(key => ({ key, ...data[key] }));
+      return projectKeys.map(key => ({ 
+        key, 
+        ...data[key],
+        // Get image data from static projects array
+        ...projects.find(p => p.key === key)
+      }));
     } catch (error) {
       console.warn('Failed to load projects data from translations:', error);
       setHasError(true);

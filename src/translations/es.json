@@ -316,6 +316,7 @@
       "loading": "Cargando listado de entradas",
       "noPosts": "No hay entradas disponibles",
       "error": "No pudimos mostrar el post en este momento. Intenta de nuevo más tarde.",
+      "timeout": "Tiempo de conexión agotado. Por favor, verifica tu conexión a internet e intenta de nuevo.",
       "readTime_one": "{{count}} minuto de lectura",
       "readTime_other": "{{count}} minutos de lectura",
 
@@ -1305,7 +1306,8 @@
     "skipToMainContent": "Saltar al contenido principal",
     "noCampaignsAvailable": "No hay campañas disponibles.",
     "errorLoadingProjects": "Error al cargar proyectos. Por favor, inténtalo de nuevo más tarde.",
-    "noProjectsAvailable": "No hay proyectos disponibles en este momento."
+    "noProjectsAvailable": "No hay proyectos disponibles en este momento.",
+    "retry": "Reintentar"
   },
   "error404": {
     "title": "Página<br /><strong>No encontrada</strong>",

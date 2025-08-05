@@ -261,6 +261,7 @@
       "loading": "Loading list of posts",
       "noPosts": "No posts available",
       "error": "We couldn't display the post at this time. Please try again later.",
+      "timeout": "Connection timeout. Please check your internet connection and try again.",
       "readTime_one": "{{count}} min read",
       "readTime_other": "{{count}} mins read",
 
@@ -298,7 +299,7 @@
         },
         {
           "question": "What rights and benefits do I receive as an NFT holder?",
-          "answer": "The Stewardship NFT grants you lifetime membership and a living bond between you and a biocultural hub.<br />Their unique offerings, may include:<ul><li>• Legal rights as a protector of a Hub</li><li>• Exclusive artworks</li><li>• Free accommodation and on-site workshops</li><li>• Immersive biocultural experiences</li><li>Participation in DAO governance</li><li>• Access to tools to monitor the real impact of your contribution</li><li>• Exclusive educational contents</li><li>Airdrops</li><li>...and much more</li></ul>"
+          "answer": "The Stewardship NFT grants you lifetime membership and a living bond between you and a biocultural hub.<br />Their unique offerings, may include:<ul><li>• Legal rights as a protector of a Hub</li><li>• Exclusive artworks</li><li>• Free accommodation and on-site workshops</li><li>• Immersive biocultural experiences</li><li>• Participation in DAO governance</li><li>• Access to tools to monitor the real impact of your contribution</li><li>• Exclusive educational contents</li><li>• Airdrops</li><li>...and much more</li></ul>"
         },
         {
           "question": "What makes the Inhabit NFT unique and different from conventional NFTs?",
@@ -951,31 +952,14 @@
       "title": "SEWINDUA CORRIDOR",
       "description": "Was established in 2024 by the INHABIT Foundation. Located in the heart of Palomino, the corridor serves as a sanctuary for biodiversity, designed to support pollinators and wildlife.",
       "visionHeading": "PROJECT VISION",
-      "visionText": "Home to over 140 native tree species, it restores different strata of a dry tropical forest, transitioning into a humid ecosystem. The corridor also features a Food Forest with more than 60 native fruit and nut species from the Caribbean, alongside an agroecological intensive mandala food garden, fostering regenerative agriculture and local food sovereignty.",
-      "backgroundImage": "/assets/images/img1.webp",
-      "mapImage": "/assets/images/img2.webp",
-      "sliderImages": [
-        "/assets/sendiwa-1.webp",
-        "/assets/sendiwa-2.webp",
-        "/assets/sendiwa-3.webp",
-        "/assets/sendiwa-4.webp",
-        "/assets/sendiwa-5.webp"
-      ]
+      "visionText": "Home to over 140 native tree species, it restores different strata of a dry tropical forest, transitioning into a humid ecosystem. The corridor also features a Food Forest with more than 60 native fruit and nut species from the Caribbean, alongside an agroecological intensive mandala food garden, fostering regenerative agriculture and local food sovereignty."
     },
     "project2": {
       "label": "ART TRACES THE PATH",
       "title": "ARTE SELVA",
       "description": "ArteSelva weaves art into the land to activate ecological corridors and awaken biocultural connection.",
       "visionHeading": "PROJECT VISION",
-      "visionText": "ArteSelva is a program that embodies a unique approach to creating biological corridors and botanical gardensbiodiversity hotspots enriched by experimental ArtScape pathways designed to awaken environmental consciousness and invite immersive, multi-sensory experiences that deepen our connection to nature.",
-      "backgroundImage": "/assets/arte-selva1.webp",
-      "mapImage": "/assets/images/img5.webp",
-      "sliderImages": [
-        "/assets/arte-selva1.webp",
-        "/assets/arte-selva2.webp",
-        "/assets/arte-selva3.webp",
-        "/assets/arte-selva4.webp"
-      ]
+      "visionText": "ArteSelva is a program that embodies a unique approach to creating biological corridors and botanical gardensbiodiversity hotspots enriched by experimental ArtScape pathways designed to awaken environmental consciousness and invite immersive, multi-sensory experiences that deepen our connection to nature."
     }
   },
   "hubsPage": {
@@ -1142,7 +1126,8 @@
     "skipToMainContent": "Skip to main content",
     "noCampaignsAvailable": "No campaigns available.",
     "errorLoadingProjects": "Error loading projects. Please try again later.",
-    "noProjectsAvailable": "No projects available at the moment."
+    "noProjectsAvailable": "No projects available at the moment.",
+    "retry": "Retry"
   },
   "error404": {
     "title": "Page<br /><strong>Not found</strong>",
