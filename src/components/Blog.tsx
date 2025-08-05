@@ -9,13 +9,95 @@ import { LoadingContext } from '../App';
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import { useGSAP } from '@gsap/react';
 
-
 // Register the hook to avoid React version discrepancies
 gsap.registerPlugin(useGSAP);
 
 interface BlogProps extends ImportedBlogProps {
   onReady?: () => void;
 }
+
+// Skeleton component for loading state
+const BlogSkeleton: React.FC = () => {
+  return (
+    <div className="flex flex-col lg:flex-row gap-8 animate-pulse">
+      {/* Main post skeleton */}
+      <div className="lg:w-1/2">
+        <div className="flex flex-col gap-5">
+          <div className="relative aspect-[16/9] w-full overflow-hidden">
+            <div className="absolute inset-0 w-full h-full bg-gray-200 rounded-xl"></div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="h-4 bg-gray-200 rounded w-24"></div>
+            <div className="h-6 bg-gray-200 rounded w-full"></div>
+            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Small posts skeleton */}
+      <div className="lg:w-1/2">
+        <div className="flex flex-col gap-[1.125rem]">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex gap-5">
+              <div className="relative aspect-[4/3] w-1/3">
+                <div className="absolute inset-0 w-full h-full bg-gray-200 rounded-lg"></div>
+              </div>
+              <div className="flex flex-col gap-2 flex-1">
+                <div className="h-3 bg-gray-200 rounded w-20"></div>
+                <div className="h-4 bg-gray-200 rounded w-full"></div>
+                <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Optimized image component with lazy loading and fallback
+const OptimizedImage: React.FC<{
+  src: string;
+  alt: string;
+  className: string;
+  fallbackSrc?: string;
+}> = ({ src, alt, className, fallbackSrc = "/assets/placeholder-blog.svg" }) => {
+  const [imageSrc, setImageSrc] = useState<string>(src);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setImageSrc(src);
+    setIsLoading(true);
+    setHasError(false);
+  }, [src]);
+
+  const handleLoad = () => {
+    setIsLoading(false);
+  };
+
+  const handleError = () => {
+    if (!hasError) {
+      setHasError(true);
+      setImageSrc(fallbackSrc);
+    } else {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <img
+      src={imageSrc}
+      alt={alt}
+      className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+      loading="lazy"
+      onLoad={handleLoad}
+      onError={handleError}
+      style={{ transition: 'opacity 0.3s ease' }}
+    />
+  );
+};
 
 const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const location = useLocation();
@@ -28,6 +110,8 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const [error, setError] = useState<string | null>(null);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
   const [contentVisible, setContentVisible] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const [showSkeleton, setShowSkeleton] = useState(true);
 
   // Animation refs
   const sectionRef = useRef<HTMLElement>(null);
@@ -38,28 +122,82 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
-  const loadPosts = async () => {
+  // Cache key for localStorage
+  const getCacheKey = () => `blog_posts_${i18n.language}_${isMainPage ? 'main' : 'all'}`;
+
+  // Load posts with timeout and retry logic
+  const loadPosts = async (useCache = true) => {
     setIsLoadingPosts(true);
     setError(null);
+    setShowSkeleton(true);
+
+    // Try to load from cache first
+    if (useCache) {
+      try {
+        const cached = localStorage.getItem(getCacheKey());
+        if (cached) {
+          const { posts: cachedPosts, timestamp } = JSON.parse(cached);
+          const cacheAge = Date.now() - timestamp;
+          // Cache valid for 5 minutes
+          if (cacheAge < 5 * 60 * 1000) {
+            setPosts(cachedPosts);
+            setIsLoadingPosts(false);
+            setShowSkeleton(false);
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to load from cache:', err);
+      }
+    }
 
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
       const blogService = blogServices();
       const { posts } = await blogService.fetchPosts({
         per_page: 4,
         page: 1,
       });
+
+      clearTimeout(timeoutId);
+
+      // Cache the results
+      try {
+        localStorage.setItem(getCacheKey(), JSON.stringify({
+          posts,
+          timestamp: Date.now()
+        }));
+      } catch (err) {
+        console.warn('Failed to cache posts:', err);
+      }
+
       setPosts(posts);
+      setRetryCount(0);
     } catch (err) {
-      setError(t("mainPage.blog.error"));
       console.error("Error loading blog posts:", err);
+      
+      if (err instanceof Error && err.name === 'AbortError') {
+        setError(t("mainPage.blog.timeout"));
+      } else if (retryCount < 2) {
+        setRetryCount(prev => prev + 1);
+        // Retry after 2 seconds
+        setTimeout(() => loadPosts(false), 2000);
+        return;
+      } else {
+        setError(t("mainPage.blog.error"));
+      }
     } finally {
       setIsLoadingPosts(false);
+      // Show skeleton for a minimum time to avoid flickering
+      setTimeout(() => setShowSkeleton(false), 500);
     }
   };
 
   useEffect(() => {
     loadPosts();
-  }, [t]);
+  }, [t, i18n.language]);
 
   const [mainPost, ...smallPosts] = posts;
 
@@ -244,10 +382,14 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
             </p>
           </div>
 
-          {/* Blog content with fade-in */}
-          <div className={`relative${isLoadingPosts ? ' min-h-80' : ''}`}>
-            <SubLoader isLoading={isLoadingPosts} />
-            {!isLoadingPosts && (
+          {/* Blog content with improved loading */}
+          <div className={`relative${isLoadingPosts || showSkeleton ? ' min-h-80' : ''}`}>
+            {isLoadingPosts && <SubLoader isLoading={isLoadingPosts} />}
+            
+            {/* Show skeleton while loading */}
+            {showSkeleton && <BlogSkeleton />}
+            
+            {!isLoadingPosts && !showSkeleton && (
               <div
                 style={{
                   opacity: contentVisible ? 1 : 0,
@@ -255,10 +397,19 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                 }}
               >
                 {error && (
-                  <div className="text-center py-12 text-red-500">{error}</div>
+                  <div className="text-center py-12">
+                    <div className="text-red-500 mb-4">{error}</div>
+                    <button
+                      onClick={() => loadPosts(false)}
+                      className="px-4 py-2 bg-primary text-white rounded hover:opacity-80 transition-opacity"
+                      style={{ color: "var(--color-primary)" }}
+                    >
+                      {t("common.retry")}
+                    </button>
+                  </div>
                 )}
 
-                {posts.length === 0 && (
+                {posts.length === 0 && !error && (
                   <div className="text-center py-12">
                     {t("mainPage.blog.noPosts")}
                   </div>
@@ -270,7 +421,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                     <div className="lg:w-1/2">
                       <div className="flex flex-col gap-5">
                         <div className="relative aspect-[16/9] w-full overflow-hidden">
-                          <img
+                          <OptimizedImage
                             src={mainPost.image}
                             alt={mainPost.title}
                             className="absolute inset-0 w-full h-full object-cover rounded-xl"
@@ -318,11 +469,10 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                         {smallPosts.map((post) => (
                           <div key={post.id} className="flex gap-5">
                             <div className="relative aspect-[4/3] w-1/3">
-                              <img
+                              <OptimizedImage
                                 src={post.image}
                                 alt={post.title}
                                 className="absolute inset-0 w-full h-full object-cover rounded-lg"
-                                loading="lazy"
                               />
                             </div>
                             <div className="flex flex-col gap-2 flex-1">

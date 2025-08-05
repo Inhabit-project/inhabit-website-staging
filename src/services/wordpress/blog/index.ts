@@ -84,13 +84,20 @@ export function blogServices() {
         url.searchParams.append("page", page.toString());
       }
 
+      // Create AbortController for timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+
       const response = await fetch(url.toString(), {
         headers: { Accept: "application/json" },
         credentials: "include", // Test if cookies are needed
+        signal: controller.signal,
       });
 
+      clearTimeout(timeoutId);
+
       if (!response.ok) {
-        throw new Error("Failed to fetch WordPress posts");
+        throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
       }
 
       const totalPosts = parseInt(
@@ -137,6 +144,12 @@ export function blogServices() {
       };
     } catch (error) {
       console.error("Error fetching WordPress posts:", error);
+      
+      // Re-throw AbortError for timeout handling
+      if (error instanceof Error && error.name === 'AbortError') {
+        throw error;
+      }
+      
       return { posts: [], totalPages: 0 };
     }
   };
@@ -178,7 +191,15 @@ export function blogServices() {
     try {
       const url = `${host}/wp-json/wp/v2/posts?_embed&include[]=${postId}&lang=${currentLanguage}`;
       
-      const response = await fetch(url);
+      // Create AbortController for timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+      
+      const response = await fetch(url, {
+        signal: controller.signal,
+      });
+      
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
@@ -240,6 +261,12 @@ export function blogServices() {
       };
     } catch (error) {
       console.error("Error fetching single WordPress post:", error);
+      
+      // Re-throw AbortError for timeout handling
+      if (error instanceof Error && error.name === 'AbortError') {
+        throw error;
+      }
+      
       return null;
     }
   };
@@ -315,9 +342,18 @@ export function blogServices() {
       return null;
     }
 
+    // Create AbortController for timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout for adjacent posts
+    
     const response = await fetch(
-      `${host}/wp-json/wp/v2/posts?${direction}=${date}&per_page=1&order=${order}&_embed&lang=${currentLanguage}`
+      `${host}/wp-json/wp/v2/posts?${direction}=${date}&per_page=1&order=${order}&_embed&lang=${currentLanguage}`,
+      {
+        signal: controller.signal,
+      }
     );
+    
+    clearTimeout(timeoutId);
     const data = await response.json();
     return data.length > 0 ? formatPost(data[0]) : null;
   };

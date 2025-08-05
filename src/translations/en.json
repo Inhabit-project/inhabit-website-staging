@@ -261,6 +261,7 @@
       "loading": "Loading list of posts",
       "noPosts": "No posts available",
       "error": "We couldn't display the post at this time. Please try again later.",
+      "timeout": "Connection timeout. Please check your internet connection and try again.",
       "readTime_one": "{{count}} min read",
       "readTime_other": "{{count}} mins read",
 
@@ -1125,7 +1126,8 @@
     "skipToMainContent": "Skip to main content",
     "noCampaignsAvailable": "No campaigns available.",
     "errorLoadingProjects": "Error loading projects. Please try again later.",
-    "noProjectsAvailable": "No projects available at the moment."
+    "noProjectsAvailable": "No projects available at the moment.",
+    "retry": "Retry"
   },
   "error404": {
     "title": "Page<br /><strong>Not found</strong>",
