@@ -32,7 +32,7 @@ export const INHABIT_JSON =
 
 export const USDC_JSON = ENV === "prod" ? usdcCeloJson : usdcAlfajoresJson;
 
-export const USDT_JSON = ENV === "true" ? usdtCeloJson : usdtAlfajoresJson;
+export const USDT_JSON = ENV === "prod" ? usdtCeloJson : usdtAlfajoresJson;
 
 // SiweMessage
 
