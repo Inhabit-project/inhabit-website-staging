@@ -38,7 +38,6 @@ document.head.appendChild(fontDisplayStyle);
 
 import { RainbowKitProviderConfig } from "./config/rainbow-kit.config";
 import { BrowserRouter } from "react-router";
-import { PrivyProviderConfig } from "./config/privy-provider.config";
 
 // Initialize font optimization
 initializeFontOptimization();
@@ -81,15 +80,13 @@ const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <HelmetProvider>
-      <PrivyProviderConfig>
-        <RainbowKitProviderConfig>
-          <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </QueryClientProvider>
-        </RainbowKitProviderConfig>
-      </PrivyProviderConfig>
+      <RainbowKitProviderConfig>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </QueryClientProvider>
+      </RainbowKitProviderConfig>
     </HelmetProvider>
   </React.StrictMode>
 );

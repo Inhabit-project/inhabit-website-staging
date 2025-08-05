@@ -4,29 +4,12 @@ import path from "path";
 import { ensureEnvVar } from "./src/utils/ensure-env.util";
 import compression from "vite-plugin-compression";
 
-function getHostOnly(urlOrHost: string): string {
-  try {
-    return new URL(urlOrHost).hostname;
-  } catch {
-    return urlOrHost.split(":")[0];
-  }
-}
-
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   const host = ensureEnvVar(process.env.HOST || env.HOST, "HOST");
   const port = Number(ensureEnvVar(process.env.PORT || env.PORT, "PORT"));
-  const domainRaw = ensureEnvVar(process.env.DOMAIN || env.DOMAIN, "DOMAIN");
-  const ngrokRaw = ensureEnvVar(
-    process.env.NGROK_URL || env.NGROK_URL,
-    "NGROK_URL"
-  );
-
-  const domain = getHostOnly(domainRaw);
-  const ngrok = getHostOnly(ngrokRaw);
-
-  console.log(`Using host: ${host}`);
+  const domain = ensureEnvVar(process.env.DOMAIN || env.DOMAIN, "DOMAIN");
 
   return {
     plugins: [
@@ -57,7 +40,7 @@ export default defineConfig(({ mode }) => {
       strictPort: true,
     },
     server: {
-      allowedHosts: [domain, ngrok],
+      allowedHosts: [domain],
       host,
       port,
       strictPort: true,

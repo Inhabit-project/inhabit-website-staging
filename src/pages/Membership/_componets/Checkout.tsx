@@ -247,9 +247,7 @@ export function Checkout(props: Props): JSX.Element {
       },
       onError: (error) => {
         console.error("❌", error);
-        alert(
-          t("membership.checkout.Error signing message. Please try again.")
-        );
+        alert(t("membership.checkout.Error signing message. Please try again"));
       },
     });
   };
