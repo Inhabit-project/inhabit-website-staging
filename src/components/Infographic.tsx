@@ -51,7 +51,7 @@ const Infographic: React.FC = () => {
       id: 'land-tenure',
       title: t('mainPage.infographic.landTenureTitle'),
       description: t('mainPage.infographic.landTenureDescription'),
-      image: '/assets/infographic-1.webp',
+      image: '/assets/infographic.webp',
       alt: 'Land Tenure Framework Infographic',
       position: { x: 20, y: 30 }
     },
@@ -61,7 +61,7 @@ const Infographic: React.FC = () => {
       description: t('mainPage.infographic.nftStewardsDescription'),
       image: '/assets/stewards-illustration.webp',
       alt: 'NFT Stewards Illustration',
-      position: { x: 80, y: 55 }
+      position: { x: 80, y: 63 }
     },
     {
       id: 'nature',
@@ -69,7 +69,7 @@ const Infographic: React.FC = () => {
       description: t('mainPage.infographic.natureDescription'),
       image: '/assets/nature-illustration.webp',
       alt: 'Nature Illustration',
-      position: { x: 47, y: 65 }
+      position: { x: 47, y: 80 }
     },
     {
       id: 'guardians',
@@ -77,7 +77,7 @@ const Infographic: React.FC = () => {
       description: t('mainPage.infographic.guardiansDescription'),
       image: '/assets/guardians-illustration.webp',
       alt: 'Guardians Illustration',
-      position: { x: 25, y: 60 }
+      position: { x: 20, y: 55 }
     }
   ];
 
@@ -127,10 +127,12 @@ const Infographic: React.FC = () => {
     });
 
     // Set points to initial state
-    gsap.set(pointsRef.current, {
-      opacity: 0,
-      scale: 0.8
-    });
+    if (pointsRef.current) {
+      gsap.set(Array.from(pointsRef.current.children), {
+        opacity: 0,
+        scale: 0.8
+      });
+    }
 
     // Only create animations if we can animate
     if (!canAnimate) return;
@@ -168,12 +170,13 @@ const Infographic: React.FC = () => {
           duration: 1, 
           ease: 'power2.out' 
         }, '-=0.4')
-        .to(pointsRef.current, {
+        .to(pointsRef.current ? Array.from(pointsRef.current.children) : [], {
           opacity: 1,
           scale: 1,
-          duration: 0.6,
-          ease: 'power2.out'
-        }, '-=0.2');
+          duration: 0.3,
+          ease: 'power2.out',
+          stagger: 0.15
+        }, '-=0.1');
 
       // Refresh ScrollTrigger
       setTimeout(() => {
@@ -241,7 +244,7 @@ const Infographic: React.FC = () => {
   return (
     <section ref={rootRef} className="relative w-full flex flex-col items-center background-gradient-light">
       {/* Slide 1: Land Tenure Framework - Original Design */}
-      <div className="background-gradient-light w-full flex flex-col items-start justify-center px-[clamp(1.5rem,5vw,6.25rem)] py-24">
+      <div className="w-full flex flex-col items-start justify-center px-[clamp(1.5rem,5vw,6.25rem)] py-24">
         <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full mb-[2.5rem]">
           <h2 ref={slide1TitleRef} className="heading-2 text-secondary max-w-[40.9375rem]">
             <span dangerouslySetInnerHTML={{ __html: t('mainPage.infographic.landTenureTitle') }} />
@@ -253,18 +256,18 @@ const Infographic: React.FC = () => {
         <div className="self-center relative overflow-hidden">
           <img 
             ref={slide1ImgRef}
-            src="/assets/infographic-1.webp" 
+            src="/assets/infographic.webp" 
             alt="Land Tenure Framework Infographic"
             className="w-full h-full object-cover"
           />
           
-          {/* Clickable Points */}
+          {/* Clickable Images */}
           <div ref={pointsRef} className="absolute inset-0">
             {slides.slice(1).map((slide) => (
               <button
                 key={slide.id}
                 onClick={() => handlePointClick(slide.id)}
-                className="absolute w-8 h-8 bg-primary rounded-full border-2 border-white shadow-lg hover:scale-110 transition-transform duration-200 cursor-pointer group pointer-pulse"
+                className="absolute w-24 h-24 md:w-[200px] md:h-[200px] transition-transform duration-300 cursor-pointer group pointer-pulse"
                 style={{
                   left: `${slide.position?.x}%`,
                   top: `${slide.position?.y}%`,
@@ -272,8 +275,15 @@ const Infographic: React.FC = () => {
                 }}
                 aria-label={`Click to learn more about ${slide.title}`}
               >
-                <div className="w-full h-full bg-primary rounded-full"></div>
-                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-white text-secondary text-xs px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+                <div className="w-full h-full rounded-full group-hover:ring-4 group-hover:ring-primary hover:ring-primary !ring-primary transition-all duration-300" style={{ '--tw-ring-color': '#d57300' } as React.CSSProperties}>
+                  <img 
+                    src={slide.image}
+                    alt={slide.alt}
+                    className="w-full h-full object-contain rounded-full"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-white text-secondary text-xs px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10">
                   {slide.title.split(' ').slice(0, 2).join(' ')}
                 </div>
               </button>
@@ -284,16 +294,16 @@ const Infographic: React.FC = () => {
 
       {/* Interactive Card Modal */}
       {isCardOpen && activeSlideData && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-hidden">
           <div 
             ref={cardRef}
-            className="background-gradient-light rounded-2xl shadow-2xl w-[95vw] max-h-[95vh] overflow-hidden relative p-8 lg:p-12"
+            className="background-gradient-light rounded-2xl shadow-2xl w-[95vw] max-h-[95vh] overflow-hidden relative flex flex-col"
           >
-            {/* Close Button */}
+            {/* Close Button - Always visible */}
             <button
               ref={closeButtonRef}
               onClick={handleCloseCard}
-              className="absolute top-4 right-4 z-10 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors duration-200"
+              className="absolute top-4 right-4 z-20 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors duration-200"
               aria-label="Close card"
             >
               <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -301,10 +311,10 @@ const Infographic: React.FC = () => {
               </svg>
             </button>
 
-            {/* Card Content */}
-            <div ref={cardContentRef} className="flex flex-col lg:flex-row h-full gap-4 lg:gap-24">
+            {/* Card Content - Scrollable */}
+            <div ref={cardContentRef} className="flex flex-col lg:flex-row h-full overflow-y-auto p-6 lg:p-12">
               {/* Image Section */}
-              <div className="w-full lg:w-1/2 h-64 lg:h-auto">
+              <div className="w-full lg:w-1/2 h-64 lg:h-auto flex-shrink-0">
                 <img 
                   ref={cardImageRef}
                   src={activeSlideData.image}
@@ -315,7 +325,7 @@ const Infographic: React.FC = () => {
               </div>
 
               {/* Text Section */}
-              <div className="w-full lg:w-1/2 p-4 lg:p-8 flex flex-col justify-center">
+              <div className="w-full lg:w-1/2 p-4 lg:p-8 flex flex-col justify-start">
                 <h2 
                   ref={cardTitleRef}
                   className="heading-2 text-secondary mb-6 font-bold"

@@ -216,24 +216,28 @@ export const InfoCardRightImage: React.FC<InfoCardProps> = ({ title, subtitle = 
   const logoRef = useRef<HTMLImageElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
-  // Set initial states with useGSAP
-  useGSAP(() => {
-    if (!sectionRef.current) return;
+  // Set initial states
+  useEffect(() => {
+    if (sectionRef.current) {
+      const ctx = gsap.context(() => {
+        gsap.set(imageRef.current, {
+          opacity: 0,
+          x: 50,
+          scale: 0.95
+        });
+        gsap.set([titleGroupRef.current, ...(logoRef.current ? [logoRef.current] : [])], {
+          opacity: 0,
+          y: 30
+        });
+        gsap.set(textRef.current, {
+          opacity: 0,
+          y: 20
+        });
+      }, sectionRef);
 
-    gsap.set(imageRef.current, {
-      opacity: 0,
-      x: 50,
-      scale: 0.95
-    });
-    gsap.set([titleGroupRef.current, ...(logoRef.current ? [logoRef.current] : [])], {
-      opacity: 0,
-      y: 30
-    });
-    gsap.set(textRef.current, {
-      opacity: 0,
-      y: 20
-    });
-  }, { scope: sectionRef });
+      return () => ctx.revert();
+    }
+  }, []);
 
   // Handle loading state change
   useEffect(() => {
@@ -247,40 +251,46 @@ export const InfoCardRightImage: React.FC<InfoCardProps> = ({ title, subtitle = 
     }
   }, [isLoading]);
 
-  // Handle animations with useGSAP
-  useGSAP(() => {
+  // Handle animations
+  useEffect(() => {
     if (!canAnimate || !sectionRef.current) return;
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 75%",
-        end: "center center",
-        toggleActions: "play none none reverse"
-      }
-    });
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          end: "center center",
+          toggleActions: "play none none reverse"
+        }
+      });
 
-    tl.to(imageRef.current, {
-      opacity: 1,
-      x: 0,
-      scale: 1,
-      duration: 1,
-      ease: "power3.out"
-    })
-    .to([titleGroupRef.current, ...(logoRef.current ? [logoRef.current] : [])], {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out",
-      stagger: 0.1
-    }, "-=0.6")
-    .to(textRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    }, "-=0.4");
-  }, { scope: sectionRef, dependencies: [canAnimate] });
+      tl.to(imageRef.current, {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        duration: 1,
+        ease: "power3.out"
+      })
+      .to([titleGroupRef.current, ...(logoRef.current ? [logoRef.current] : [])], {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        stagger: 0.1
+      }, "-=0.6")
+      .to(textRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      }, "-=0.4");
+    }, sectionRef);
+
+    return () => {
+      ctx.revert();
+    };
+  }, [canAnimate]);
 
   return (
     <section 
