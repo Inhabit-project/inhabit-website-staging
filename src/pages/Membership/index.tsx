@@ -8,7 +8,6 @@ import RightsTable from "./_componets/RightsTable";
 import { Info } from "./_componets/Info";
 import OtherCollections from "./_componets/OtherCollections";
 import Stepper from "./_componets/Stepper";
-import { usePrivy } from "@privy-io/react-auth";
 
 type Props = {
   onHeroImageLoad?: VoidFunction;
@@ -24,7 +23,6 @@ export default function Membership(props: Props): JSX.Element {
   const [isReferralValid, setIsReferralValid] = useState<boolean>(false);
 
   // external hooks
-  const { ready } = usePrivy();
   const { campaignId, collectionId, referral } = useParams();
   const navigate = useNavigate();
 
