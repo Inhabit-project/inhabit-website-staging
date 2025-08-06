@@ -31,6 +31,7 @@ class FontOptimization {
         this.observer = new PerformanceObserver((list) => {
           list.getEntries().forEach((entry) => {
             if (entry.entryType === 'measure' && entry.name.includes('font')) {
+              // Track font loading performance
             }
           });
         });
@@ -83,6 +84,7 @@ class FontOptimization {
 
   /**
    * Preload critical fonts with optimal settings
+   * Fonts are loaded via CSS imports, this just ensures they're ready
    */
   preloadCriticalFonts(): void {
     if (!('fonts' in document)) {
@@ -94,63 +96,31 @@ class FontOptimization {
       {
         family: 'Nunito Sans',
         weights: [400, 600],
-        display: 'swap',
-        subset: 'latin'
+        display: 'swap'
       },
       {
         family: 'Montserrat',
         weights: [400, 700],
-        display: 'swap',
-        subset: 'latin'
+        display: 'swap'
       },
       {
         family: 'Abel',
         weights: [400],
-        display: 'swap',
-        subset: 'latin'
+        display: 'swap'
       }
     ];
 
+    // Fonts are already loaded via CSS imports, just ensure they're ready
     criticalFonts.forEach((font) => {
       font.weights.forEach((weight) => {
         const fontId = `${font.family}-${weight}`;
         
-        if (!document.querySelector(`link[data-font-id="${fontId}"]`)) {
-          try {
-            // Create optimized font face
-            const fontUrlName = font.family.toLowerCase().replace(/\s+/g, '-');
-            const fontFace = new FontFace(
-              font.family,
-              `url('/node_modules/@fontsource/${fontUrlName}/files/${fontUrlName}-${font.subset}-${weight}-normal.woff2') format('woff2')`,
-              {
-                weight: weight.toString(),
-                display: font.display as FontDisplay,
-                unicodeRange: this.getUnicodeRange(font.subset)
-              }
-            );
-
-            document.fonts.add(fontFace);
-            fontFace.load().catch((error) => {
-              console.warn(`Failed to load font ${font.family} ${weight}:`, error);
-            });
-          } catch (error) {
-            console.warn(`Error creating font face for ${font.family} ${weight}:`, error);
-          }
+        // Check if font is already loaded
+        if (!document.fonts.check(`${weight} 16px "${font.family}"`)) {
+          // Font will be loaded by CSS imports, just track it
         }
       });
     });
-  }
-
-  /**
-   * Get unicode range for font subset
-   * Only Latin subset is supported for optimal performance
-   */
-  private getUnicodeRange(subset: string): string {
-    const ranges = {
-      latin: 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD',
-      'latin-ext': 'U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF'
-    };
-    return ranges[subset as keyof typeof ranges] || ranges.latin;
   }
 
   /**
@@ -181,49 +151,14 @@ class FontOptimization {
    * Load only essential fonts for slow connections
    */
   private loadEssentialFontsOnly(): void {
-    const essentialFonts = [
-      { family: 'Nunito Sans', weight: 400 },
-      { family: 'Montserrat', weight: 400 }
-    ];
-
-    essentialFonts.forEach((font) => {
-      const fontFace = new FontFace(
-        font.family,
-        `url('/node_modules/@fontsource/${font.family.toLowerCase().replace(' ', '-')}/files/${font.family.toLowerCase().replace(' ', '-')}-latin-${font.weight}-normal.woff2') format('woff2')`,
-        {
-          weight: font.weight.toString(),
-          display: 'swap'
-        }
-      );
-      document.fonts.add(fontFace);
-      fontFace.load();
-    });
+    // For slow connections, we rely on CSS imports but can optimize loading
   }
 
   /**
    * Load reduced font set for medium connections
    */
   private loadReducedFontSet(): void {
-    const reducedFonts = [
-      { family: 'Nunito Sans', weights: [400] },
-      { family: 'Montserrat', weights: [400] },
-      { family: 'Abel', weights: [400] }
-    ];
-
-    reducedFonts.forEach((font) => {
-      font.weights.forEach((weight) => {
-        const fontFace = new FontFace(
-          font.family,
-          `url('/node_modules/@fontsource/${font.family.toLowerCase().replace(' ', '-')}/files/${font.family.toLowerCase().replace(' ', '-')}-latin-${weight}-normal.woff2') format('woff2')`,
-          {
-            weight: weight.toString(),
-            display: 'swap'
-          }
-        );
-        document.fonts.add(fontFace);
-        fontFace.load();
-      });
-    });
+    // For medium connections, we rely on CSS imports
   }
 
   /**
@@ -232,7 +167,6 @@ class FontOptimization {
   trackFontPerformance(): void {
     if ('fonts' in document) {
       document.fonts.ready.then(() => {
-        
         try {
           performance.mark('fonts-ready');
           
@@ -325,6 +259,4 @@ export const FontUtils = {
       return false;
     }
   },
-
-
 }; 

@@ -34,6 +34,21 @@ export default defineConfig(({ mode }) => {
         "@": path.resolve(__dirname, "./src"),
       },
     },
+    build: {
+      // Enable asset hash generation for better caching
+      rollupOptions: {
+        output: {
+          // Generate hashed filenames for better caching
+          entryFileNames: "assets/[name]-[hash].js",
+          chunkFileNames: "assets/[name]-[hash].js",
+          assetFileNames: "assets/[name]-[hash].[ext]",
+        },
+      },
+      // Optimize chunk size
+      chunkSizeWarningLimit: 1000,
+      // Enable source maps for debugging (disable in production)
+      sourcemap: mode === "development",
+    },
     preview: {
       allowedHosts: [domain],
       port,

@@ -9,6 +9,8 @@ import { HelmetProvider } from "react-helmet-async";
 
 // Font optimization utilities
 import { initializeFontOptimization } from "./utils/fontOptimization";
+import { initializeFontLoading, FontLoadingUtils } from "./utils/fontLoading";
+import { initializeFontPreloading } from "./utils/fontPreloader";
 
 // Optimized font imports with font-display: swap
 // @fontsource packages only include latin subset by default. No cyrillic or vietnamese fonts are included.
@@ -36,11 +38,16 @@ fontDisplayStyle.textContent = `
 `;
 document.head.appendChild(fontDisplayStyle);
 
+// Apply fallback fonts immediately
+FontLoadingUtils.applyFallbacks();
+
 import { RainbowKitProviderConfig } from "./config/rainbow-kit.config";
 import { BrowserRouter } from "react-router";
 
-// Initialize font optimization
+// Initialize font optimization, loading, and preloading
 initializeFontOptimization();
+initializeFontLoading();
+initializeFontPreloading();
 
 // Initialize smooth scrolling
 scrollManager.init();
