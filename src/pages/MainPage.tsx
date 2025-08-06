@@ -11,7 +11,7 @@ import Infographic from "../components/Infographic";
 import ImpactCardsSection from "../components/ImpactCardsSection";
 import Testimonials from "../components/Testimonials";
 import CTA from "../components/CTA";
-import Blog from "../components/Blog";
+import Blog from "../components/blog/Blog";
 import FAQ from "../components/FAQ";
 import Footer from "../components/Footer";
 import { useStore } from "../store";

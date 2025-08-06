@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import Menu from "@/components/Menu";
 import NewsletterCTA from "@/components/NewsletterCTA";
-import RelatedPost from "@/components/RelatedPost";
+import RelatedPost from "@/components/blog/RelatedPost";
 import Footer from "@/components/Footer";
-import SingleBlog from "@/components/SingleBlog";
+import SingleBlog from "@/components/blog/SingleBlog";
 import SEOHead from "@/components/SEOHead";
 
 interface ArticlePageProps {

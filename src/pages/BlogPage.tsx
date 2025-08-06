@@ -1,8 +1,8 @@
 import React from "react";
 import Menu from "../components/Menu";
-import Blog from "../components/Blog";
+import Blog from "../components/blog/Blog";
+import RelatedPost from "../components/blog/RelatedPost";
 import Footer from "../components/Footer";
-import RelatedPost from "../components/RelatedPost";
 import NewsletterCTA from "../components/NewsletterCTA";
 import SEOHead from "@/components/SEOHead";
 import { useTranslation } from "react-i18next";

@@ -32,7 +32,7 @@
       #deedcb 99.01%
     );
     /* Base sizes */
-    --font-size-4xl: clamp(2.5rem, 4vw + 1.5rem, 6.875rem);
+    --font-size-4xl: clamp(2.5rem, 4vw + 1.5rem, 6.8rem);
     /* 40px to 110px */
     --font-size-3xl: clamp(2rem, 3vw + 1rem, 5rem);
     /* 32px to 80px */
@@ -1426,4 +1426,36 @@
   .grid > * {
     transform-style: preserve-3d;
   }
+}
+
+/* Blog content spacing */
+.blog-content p {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4,
+.blog-content h5,
+.blog-content h6 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.blog-content ul,
+.blog-content ol {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.blog-content blockquote {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.blog-content div {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }

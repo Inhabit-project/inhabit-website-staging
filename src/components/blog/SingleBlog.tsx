@@ -16,6 +16,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
   const [post, setPost] = useState<ProcessedPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
   const [prevPost, setPrevPost] = useState<Pick<
     BlogPost,
     "id" | "title" | "content" | "date" | "image"
@@ -36,33 +37,72 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
     loadingRef.current = false;
   };
 
-  const loadPost = async (postID: string) => {
+  const loadPost = async (postID: string, useCache = true) => {
     if (loadingRef.current) return;
     loadingRef.current = true;
     
     clearPostStates();
 
-    // Minimum loading time for slow connections
-    const startTime = Date.now();
-    const minLoadingTime = 2000; // 2 seconds minimum
+    // Try to load from cache first
+    if (useCache) {
+      try {
+        const cached = localStorage.getItem(`blog_post_${postID}`);
+        if (cached) {
+          const { post: cachedPost, next: cachedNext, previous: cachedPrev, timestamp } = JSON.parse(cached);
+          const cacheAge = Date.now() - timestamp;
+          // Cache valid for 10 minutes for individual posts
+          if (cacheAge < 10 * 60 * 1000) {
+            setPost(cachedPost);
+            setPrevPost(cachedPrev);
+            setNextPost(cachedNext);
+            setLoading(false);
+            loadingRef.current = false;
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to load from cache:', err);
+      }
+    }
 
     try {
+      // Create AbortController for timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
       const { current, next, previous } = await fetchPostWithNavigation(postID);
       
-      // Ensure minimum loading time
-      const elapsedTime = Date.now() - startTime;
-      const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
+      clearTimeout(timeoutId);
       
-      if (remainingTime > 0) {
-        await new Promise(resolve => setTimeout(resolve, remainingTime));
+      // Cache the results
+      try {
+        localStorage.setItem(`blog_post_${postID}`, JSON.stringify({
+          post: current,
+          next,
+          previous,
+          timestamp: Date.now()
+        }));
+      } catch (err) {
+        console.warn('Failed to cache post:', err);
       }
       
       setPost(current);
       setPrevPost(previous);
       setNextPost(next);
+      setRetryCount(0);
     } catch (err) {
       console.error("Error loading blog post:", err);
-      setError(err instanceof Error ? err.message : t("mainPage.blog.error"));
+      
+      if (err instanceof Error && err.name === 'AbortError') {
+        setError(t("mainPage.blog.timeout"));
+      } else if (retryCount < 2) {
+        setRetryCount(prev => prev + 1);
+        // Retry after 2 seconds
+        setTimeout(() => loadPost(postID, false), 2000);
+        return;
+      } else {
+        setError(err instanceof Error ? err.message : t("mainPage.blog.error"));
+      }
     } finally {
       setLoading(false);
       loadingRef.current = false;
@@ -124,11 +164,11 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
           </nav>
           {/* Title */}
           <h1
-            className="heading-2 mb-2"
+            className="mb-2"
             style={{
               color: "var(--color-secondary)",
-              fontWeight: 500,
-              fontSize: 48,
+              fontWeight: 600,
+              fontSize: 56,
               lineHeight: 1.1,
             }}
           >
@@ -158,7 +198,11 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
           {/** Post content */}
           <div
             className="body-S blog-content"
-            style={{ color: "var(--color-secondary)" }}
+            style={{ 
+              color: "var(--color-secondary)",
+              marginTop: "1rem",
+              marginBottom: "1rem"
+            }}
             dangerouslySetInnerHTML={{ __html: post.content }}
           ></div>
           {/* Share section */}
@@ -168,6 +212,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
             style={{ borderTop: "1px solid #D9E6C3", paddingTop: 24 }}
           >
             <h2
+              className="heading-5 mb-2"
               id="share-heading"
               style={{
                 color: "var(--color-secondary)",
@@ -225,9 +270,9 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
             className="flex items-center gap-4 mt-8"
             style={{ borderTop: "1px solid #D9E6C3", paddingTop: 24 }}
           >
-            <h2 id="author-heading" className="sr-only">
+            <h6 id="author-heading" className="sr-only">
               About the Author
-            </h2>
+            </h6>
             <div
               style={{
                 width: 48,
@@ -247,15 +292,6 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
             <div>
               <div style={{ color: "var(--color-secondary)", fontWeight: 600 }}>
                 {post.author.name}
-              </div>
-              <div
-                style={{
-                  color: "var(--color-secondary)",
-                  opacity: 0.7,
-                  fontSize: 14,
-                }}
-              >
-                Job title, Company name
               </div>
             </div>
           </section>
@@ -293,6 +329,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
                     transition: "background 0.2s",
                     width: "100%",
                     justifyContent: "flex-start",
+                    height: "9rem",
                   }}
                   aria-label={`Previous article: ${prevPost.title}`}
                 >
@@ -342,6 +379,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
                     transition: "background 0.2s",
                     width: "100%",
                     justifyContent: "flex-end",
+                    height: "9rem",
                   }}
                   aria-label={`${t('common.nextArticle')}: ${nextPost.title}`}
                 >

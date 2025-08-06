@@ -86,7 +86,7 @@ export function blogServices() {
 
       // Create AbortController for timeout
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout for bad connections
 
       const response = await fetch(url.toString(), {
         headers: { Accept: "application/json" },
@@ -193,7 +193,7 @@ export function blogServices() {
       
       // Create AbortController for timeout
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout for bad connections
       
       const response = await fetch(url, {
         signal: controller.signal,
@@ -344,7 +344,7 @@ export function blogServices() {
 
     // Create AbortController for timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout for adjacent posts
+    const timeoutId = setTimeout(() => controller.abort(), 25000); // 25 second timeout for adjacent posts
     
     const response = await fetch(
       `${host}/wp-json/wp/v2/posts?${direction}=${date}&per_page=1&order=${order}&_embed&lang=${currentLanguage}`,

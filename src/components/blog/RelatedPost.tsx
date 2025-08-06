@@ -1,7 +1,7 @@
 import { BlogPost } from "@/types/wordpress";
 import React, { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import Pagination from "./Pagination";
+import Pagination from "../Pagination";
 import { Link } from "react-router-dom";
 import { truncateHtml } from "@/utils/html";
 import SubLoader from "@/load/SubLoader";

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import Menu from "../components/Menu";
 import InternalPagesHero from "../components/InternalPagesHero";
 import CTA from "../components/CTA";
-import Blog from "../components/Blog";
+import Blog from "../components/blog/Blog";
 import { FAQStewardshipNFT } from "../components/FAQ";
 import Footer from "../components/Footer";
 import ImageSection from "../components/ImageSection";

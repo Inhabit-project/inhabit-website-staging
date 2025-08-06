@@ -4,7 +4,7 @@ import InternalPagesHero from '../components/InternalPagesHero';
 import HubsMain from '../components/HubsMain';
 import FourCriteriaCardsSection from '../components/FourCriteriaCardsSection';
 import CTA from '../components/CTA';
-import Blog from '../components/Blog';
+import Blog from '../components/blog/Blog';
 import FAQ, { FAQHubs } from '../components/FAQ';
 import Footer from '../components/Footer';
 import SEOHead from "@/components/SEOHead";

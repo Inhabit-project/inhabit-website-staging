@@ -5,8 +5,8 @@ import { BlogPost, BlogProps as ImportedBlogProps } from "@/types/wordpress";
 import { truncateHtml } from "@/utils/html";
 import { Link, useLocation } from "react-router-dom";
 import SubLoader from "@/load/SubLoader";
-import { LoadingContext } from '../App';
-import { gsap, ScrollTrigger } from '../utils/gsap';
+import { LoadingContext } from '../../App';
+import { gsap, ScrollTrigger } from '../../utils/gsap';
 import { useGSAP } from '@gsap/react';
 
 // Register the hook to avoid React version discrepancies
@@ -15,46 +15,6 @@ gsap.registerPlugin(useGSAP);
 interface BlogProps extends ImportedBlogProps {
   onReady?: () => void;
 }
-
-// Skeleton component for loading state
-const BlogSkeleton: React.FC = () => {
-  return (
-    <div className="flex flex-col lg:flex-row gap-8 animate-pulse">
-      {/* Main post skeleton */}
-      <div className="lg:w-1/2">
-        <div className="flex flex-col gap-5">
-          <div className="relative aspect-[16/9] w-full overflow-hidden">
-            <div className="absolute inset-0 w-full h-full bg-gray-200 rounded-xl"></div>
-          </div>
-          <div className="flex flex-col gap-2">
-            <div className="h-4 bg-gray-200 rounded w-24"></div>
-            <div className="h-6 bg-gray-200 rounded w-full"></div>
-            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-          </div>
-        </div>
-      </div>
-
-      {/* Small posts skeleton */}
-      <div className="lg:w-1/2">
-        <div className="flex flex-col gap-[1.125rem]">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="flex gap-5">
-              <div className="relative aspect-[4/3] w-1/3">
-                <div className="absolute inset-0 w-full h-full bg-gray-200 rounded-lg"></div>
-              </div>
-              <div className="flex flex-col gap-2 flex-1">
-                <div className="h-3 bg-gray-200 rounded w-20"></div>
-                <div className="h-4 bg-gray-200 rounded w-full"></div>
-                <div className="h-3 bg-gray-200 rounded w-2/3"></div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 // Optimized image component with lazy loading and fallback
 const OptimizedImage: React.FC<{
@@ -109,14 +69,13 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-  const [contentVisible, setContentVisible] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
-  const [showSkeleton, setShowSkeleton] = useState(true);
 
   // Animation refs
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // Store ScrollTrigger and timeline references for cleanup
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
@@ -129,7 +88,6 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const loadPosts = async (useCache = true) => {
     setIsLoadingPosts(true);
     setError(null);
-    setShowSkeleton(true);
 
     // Try to load from cache first
     if (useCache) {
@@ -142,7 +100,6 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
           if (cacheAge < 5 * 60 * 1000) {
             setPosts(cachedPosts);
             setIsLoadingPosts(false);
-            setShowSkeleton(false);
             return;
           }
         }
@@ -153,7 +110,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
 
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout for bad connections
 
       const blogService = blogServices();
       const { posts } = await blogService.fetchPosts({
@@ -190,44 +147,28 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
       }
     } finally {
       setIsLoadingPosts(false);
-      // Show skeleton for a minimum time to avoid flickering
-      setTimeout(() => setShowSkeleton(false), 500);
     }
   };
 
   useEffect(() => {
     loadPosts();
-  }, [t, i18n.language]);
+  }, [t, i18n.language, isMainPage]);
 
   const [mainPost, ...smallPosts] = posts;
 
-  // Handle loading state change for animations
   useEffect(() => {
-    // Reset content visibility when loading starts
-    if (isLoadingPosts) {
-      setContentVisible(false);
-      return;
-    }
-
-    // Show content when posts are loaded
-    if (!isLoadingPosts && posts.length > 0) {
-      setContentVisible(true);
-    }
-  }, [isLoadingPosts, posts.length]);
-
-  useEffect(() => {
-    if (!isLoadingPosts && posts.length > 0 && contentVisible && onReady) {
+    if (!isLoadingPosts && posts.length > 0 && onReady) {
       onReady();
     }
-  }, [isLoadingPosts, posts.length, contentVisible, onReady]);
+  }, [isLoadingPosts, posts.length, onReady]);
 
   // Handle loading state change for GSAP animations
   React.useEffect(() => {
-    // Allow animations when page is ready for animations OR when loader is not active
     if (!isLoading) {
+      // Wait for SubLoader exit animation to complete
       const timer = setTimeout(() => {
         setCanAnimate(true);
-      }, 800); // Reduced from 1500ms for better responsiveness
+      }, 1500); // Increased delay to ensure SubLoader is completely gone
       return () => clearTimeout(timer);
     } else {
       setCanAnimate(false);
@@ -236,11 +177,19 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
 
   // Set initial states and handle animations with useGSAP
   useGSAP(() => {
-    // Set initial states
+    // Set initial states immediately
     gsap.set([titleRef.current, descriptionRef.current], {
       opacity: 0,
-      y: 50
+      y: 100
     });
+
+    // Set initial state for content (only when posts are loaded)
+    if (contentRef.current && posts.length > 0) {
+      gsap.set(contentRef.current, {
+        opacity: 0,
+        y: 50
+      });
+    }
 
     // Only create animations if we can animate
     if (!canAnimate) return;
@@ -256,65 +205,38 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
     }
 
     timelineRef.current = gsap.timeline({
-      paused: true,
-      defaults: { ease: 'power3.out' }
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top center",
+        end: "center center",
+        toggleActions: "play none none reverse"
+      }
     });
 
     timelineRef.current
       .to(titleRef.current, {
         opacity: 1,
         y: 0,
-        duration: 0.8,
+        duration: 0.5,
+        ease: "power3.out"
       })
       .to(descriptionRef.current, {
         opacity: 1,
         y: 0,
-        duration: 0.8,
-      }, "-=0.6");
+        duration: 0.5,
+        ease: "power3.out"
+      }, "-=0.4");
 
-    // Create scroll trigger with improved configuration for page refresh
-    scrollTriggerRef.current = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top 80%", // Back to original position
-      end: "bottom 20%", // Back to original position
-      toggleActions: "play none none reverse", // Changed from "restart" to "play" for better refresh handling
-      animation: timelineRef.current,
-      id: `blog-${Date.now()}`, // Unique ID to avoid conflicts
-      onEnter: () => {
-        // Ensure animation plays when entering the trigger area
-        if (timelineRef.current) {
-          timelineRef.current.play();
-        }
-      },
-      onLeaveBack: () => {
-        // Reverse animation when scrolling back up
-        if (timelineRef.current) {
-          timelineRef.current.reverse();
-        }
-      },
-      onRefresh: () => {
-        // Handle refresh by checking if element is in view and playing animation accordingly
-        if (scrollTriggerRef.current && timelineRef.current) {
-          const progress = scrollTriggerRef.current.progress;
-          if (progress > 0) {
-            timelineRef.current.progress(progress);
-          }
-        }
-      }
-    });
-
-    // Refresh ScrollTrigger to ensure it works properly - with delay to avoid conflicts
-    setTimeout(() => {
-      try {
-        // Only refresh if there are active ScrollTriggers
-        if (ScrollTrigger.getAll().length > 0) {
-          ScrollTrigger.refresh();
-        }
-      } catch (error) {
-        console.warn("ScrollTrigger refresh failed in Blog:", error);
-      }
-    }, 100);
-  }, { scope: sectionRef, dependencies: [canAnimate] });
+    // Animate content only when posts are loaded and not loading
+    if (contentRef.current && posts.length > 0 && !isLoadingPosts) {
+      timelineRef.current.to(contentRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power3.out"
+      }, "-=0.2");
+    }
+  }, { scope: sectionRef, dependencies: [canAnimate, posts.length, isLoadingPosts] });
 
   // Cleanup on unmount
   useEffect(() => {
@@ -383,24 +305,19 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
           </div>
 
           {/* Blog content with improved loading */}
-          <div className={`relative${isLoadingPosts || showSkeleton ? ' min-h-80' : ''}`}>
+          <div className={`relative${isLoadingPosts ? ' min-h-80' : ''}`}>
             {isLoadingPosts && <SubLoader isLoading={isLoadingPosts} />}
             
-            {/* Show skeleton while loading */}
-            {showSkeleton && <BlogSkeleton />}
-            
-            {!isLoadingPosts && !showSkeleton && (
-              <div
-                style={{
-                  opacity: contentVisible ? 1 : 0,
-                  transition: "opacity 0.8s ease"
-                }}
-              >
+            {!isLoadingPosts && (
+              <div ref={contentRef}>
                 {error && (
                   <div className="text-center py-12">
                     <div className="text-red-500 mb-4">{error}</div>
                     <button
-                      onClick={() => loadPosts(false)}
+                      onClick={() => {
+                        setRetryCount(0);
+                        loadPosts(false);
+                      }}
                       className="px-4 py-2 bg-primary text-white rounded hover:opacity-80 transition-opacity"
                       style={{ color: "var(--color-primary)" }}
                     >
