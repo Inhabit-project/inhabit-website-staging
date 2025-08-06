@@ -167,10 +167,10 @@ export default function Membership(props: Props): JSX.Element {
   }, []);
 
   return (
-    <>
+    <div className="min-h-screen background-gradient-light">
       <Menu />
       {campaignLoading ? (
-        <div className="mt-8 w-full background-gradient-light flex items-center justify-center min-h-[50vh]">
+        <div className="mt-8 w-full flex items-center justify-center min-h-[50vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-secondary mx-auto mb-4"></div>
             <p className="text-secondary">Loading collection data...</p>
@@ -178,7 +178,7 @@ export default function Membership(props: Props): JSX.Element {
         </div>
       ) : collection ? (
         <>
-          <div className="mt-8 w-full background-gradient-light flex flex-col lg:flex-row gap-8 px-4 lg:py-20 max-w-[1600px] mx-auto ">
+          <div className="mt-8 w-full flex flex-col lg:flex-row gap-8 px-4 lg:py-20 max-w-[1600px] mx-auto ">
             <div className="flex-1 flex flex-col gap-8">
               <Info collection={collection} />
               <RightsTable rights={collection.rights} />
@@ -199,12 +199,12 @@ export default function Membership(props: Props): JSX.Element {
           </div>
         </>
       ) : (
-        <div className="mt-8 w-full background-gradient-light flex items-center justify-center min-h-[50vh]">
+        <div className="mt-8 w-full flex items-center justify-center min-h-[50vh]">
           <div className="text-center">
             <p className="text-secondary">No collection data available</p>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
