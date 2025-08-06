@@ -57,6 +57,7 @@ const Marquee: React.FC<{ logos: Logo[] }> = ({ logos }) => {
   const [canAnimate, setCanAnimate] = useState(false);
   const [repeatCount, setRepeatCount] = useState(1);
   const rafId = useRef<number | null>(null);
+  const resizeObserver = useRef<ResizeObserver | null>(null);
 
   // Handle loading state change
   useEffect(() => {
@@ -70,40 +71,53 @@ const Marquee: React.FC<{ logos: Logo[] }> = ({ logos }) => {
     }
   }, [isLoading]);
 
-  // Calculate repeat count for smooth marquee
+  // Optimized repeat calculation with batching
   const calculateRepeat = useCallback(() => {
     if (!containerRef.current || !cardRef.current) return;
 
-    const containerWidth = containerRef.current.offsetWidth;
-    const cardWidth = cardRef.current.scrollWidth;
+    // Batch DOM reads
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const cardRect = cardRef.current.getBoundingClientRect();
+    
+    const containerWidth = containerRect.width;
+    const cardWidth = cardRect.width;
     const neededRepeats = Math.ceil((containerWidth * 2) / cardWidth);
     setRepeatCount(Math.max(neededRepeats, 2));
   }, []);
 
-  // Handle resize and initial calculation
+  // Handle resize with ResizeObserver for better performance
   useEffect(() => {
-    calculateRepeat();
-    
-    const handleResize = () => {
+    if (!containerRef.current) return;
+
+    // Use ResizeObserver instead of window resize for better performance
+    resizeObserver.current = new ResizeObserver(() => {
       if (rafId.current !== null) cancelAnimationFrame(rafId.current);
       rafId.current = requestAnimationFrame(calculateRepeat);
-    };
+    });
 
-    window.addEventListener('resize', handleResize);
+    resizeObserver.current.observe(containerRef.current);
+    calculateRepeat(); // Initial calculation
+
     return () => {
-      window.removeEventListener('resize', handleResize);
-      if (rafId.current !== null) cancelAnimationFrame(rafId.current);
+      if (resizeObserver.current) {
+        resizeObserver.current.disconnect();
+      }
+      if (rafId.current !== null) {
+        cancelAnimationFrame(rafId.current);
+      }
     };
   }, [calculateRepeat]);
 
-  // Handle animations with useGSAP
+  // Handle animations with useGSAP - optimized to prevent reflow
   useGSAP(() => {
     if (!containerRef.current || !cardRef.current) return;
 
-    // Set initial state
+    // Set initial state using transform instead of layout properties
     gsap.set(cardRef.current, {
       opacity: 0,
-      y: 30
+      y: 30,
+      force3D: true, // Force hardware acceleration
+      transformOrigin: "center center"
     });
 
     // Animate in when ready
@@ -112,7 +126,8 @@ const Marquee: React.FC<{ logos: Logo[] }> = ({ logos }) => {
         opacity: 1,
         y: 0,
         duration: 0.8,
-        ease: "power3.out"
+        ease: "power3.out",
+        force3D: true
       });
     }
   }, { scope: containerRef, dependencies: [canAnimate, logos.length] });
@@ -133,22 +148,35 @@ const Marquee: React.FC<{ logos: Logo[] }> = ({ logos }) => {
         ref={cardRef}
         className={`flex gap-8 w-max items-center ${canAnimate ? 'marquee-track' : ''}`}
         style={{
-          willChange: 'transform',
-          animation: canAnimate ? 'marquee 30s linear infinite' : 'none'
+          willChange: canAnimate ? 'transform' : 'auto',
+          transform: 'translateZ(0)', // Force hardware acceleration
+          backfaceVisibility: 'hidden' // Prevent flickering
         }}
       >
         {displayLogos.map((logo, index) => (
           <div
             key={index}
             className="bg-white/10 shadow-[0px_0px_47.8px_rgba(0,0,0,0.10)] backdrop-blur-md flex items-center justify-center"
-            style={{ width: '20rem', height: '8.75rem', minWidth: '20rem', maxWidth: '20rem', borderRadius: 'var(--radius-md)' }}
+            style={{ 
+              width: '20rem', 
+              height: '8.75rem', 
+              minWidth: '20rem', 
+              maxWidth: '20rem', 
+              borderRadius: 'var(--radius-md)',
+              transform: 'translateZ(0)', // Force hardware acceleration
+              backfaceVisibility: 'hidden'
+            }}
             role="listitem"
           >
             <img
               src={logo.logo}
               alt={logo.name}
               className="object-contain max-h-[7.5rem] max-w-[13.75rem]"
-              style={{ margin: 'auto' }}
+              style={{ 
+                margin: 'auto',
+                transform: 'translateZ(0)', // Force hardware acceleration
+                backfaceVisibility: 'hidden'
+              }}
               loading="lazy"
             />
           </div>
@@ -159,10 +187,12 @@ const Marquee: React.FC<{ logos: Logo[] }> = ({ logos }) => {
           .marquee-track {
             will-change: transform;
             animation: marquee 30s linear infinite;
+            transform: translateZ(0);
+            backface-visibility: hidden;
           }
           @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            0% { transform: translateX(0) translateZ(0); }
+            100% { transform: translateX(-50%) translateZ(0); }
           }
         `}
       </style>
@@ -200,32 +230,25 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
     }
   }, [isLoading]);
 
-  // Set initial states with useGSAP
+  // Set initial states with useGSAP - optimized to prevent reflow
   useGSAP(() => {
     if (!sectionRef.current) return;
 
-    // Set initial states for titles
-    [alliesTitleRef, buildersTitleRef, partnersTitleRef].forEach(ref => {
-      if (ref.current) {
-        gsap.set(ref.current, {
-          opacity: 0,
-          y: 50
-        });
-      }
-    });
+    // Batch all initial state settings
+    const elementsToSet = [
+      ...([alliesTitleRef, buildersTitleRef, partnersTitleRef].map(ref => ref.current).filter(Boolean)),
+      ...([alliesMarqueeRef, buildersMarqueeRef, partnersMarqueeRef].map(ref => ref.current).filter(Boolean))
+    ];
 
-    // Set initial states for marquees
-    [alliesMarqueeRef, buildersMarqueeRef, partnersMarqueeRef].forEach(ref => {
-      if (ref.current) {
-        gsap.set(ref.current, {
-          opacity: 0,
-          y: 30
-        });
-      }
+    gsap.set(elementsToSet, {
+      opacity: 0,
+      y: 50,
+      force3D: true, // Force hardware acceleration
+      transformOrigin: "center center"
     });
   }, { scope: sectionRef });
 
-  // Handle animations with useGSAP
+  // Handle animations with useGSAP - optimized to prevent reflow
   useGSAP(() => {
     if (!canAnimate || !sectionRef.current) return;
 
@@ -235,7 +258,10 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
         start: 'top 75%',
         end: 'center center',
         toggleActions: 'play none none reverse',
-        id: `logos-section-${Date.now()}` // Unique ID to avoid conflicts
+        id: `logos-section-${Date.now()}`, // Unique ID to avoid conflicts
+        // Performance optimizations
+        fastScrollEnd: true,
+        preventOverlaps: true
       }
     });
 
@@ -245,13 +271,15 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
         opacity: 1,
         y: 0,
         duration: 0.8,
-        ease: 'power3.out'
+        ease: 'power3.out',
+        force3D: true
       })
       .to(alliesMarqueeRef.current, {
         opacity: 1,
         y: 0,
         duration: 0.8,
-        ease: 'power3.out'
+        ease: 'power3.out',
+        force3D: true
       }, '-=0.4');
     }
 
@@ -260,13 +288,15 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
         opacity: 1,
         y: 0,
         duration: 0.8,
-        ease: 'power3.out'
+        ease: 'power3.out',
+        force3D: true
       }, '-=0.2')
       .to(buildersMarqueeRef.current, {
         opacity: 1,
         y: 0,
         duration: 0.8,
-        ease: 'power3.out'
+        ease: 'power3.out',
+        force3D: true
       }, '-=0.4');
     }
 
@@ -275,13 +305,15 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
         opacity: 1,
         y: 0,
         duration: 0.8,
-        ease: 'power3.out'
+        ease: 'power3.out',
+        force3D: true
       }, '-=0.2')
       .to(partnersMarqueeRef.current, {
         opacity: 1,
         y: 0,
         duration: 0.8,
-        ease: 'power3.out'
+        ease: 'power3.out',
+        force3D: true
       }, '-=0.4');
     }
   }, { scope: sectionRef, dependencies: [canAnimate, showAllies, showBuilders, showPartners] });
@@ -291,6 +323,11 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
       ref={sectionRef}
       className="background-gradient-dark py-8 md:py-16 lg:py-[6.5rem] px-4 md:px-8 lg:px-[6.25rem] overflow-x-hidden flex flex-col gap-8 md:gap-16 lg:gap-[3.75rem] scroll-container"
       aria-label="Partners and collaborators"
+      style={{
+        willChange: 'auto',
+        transform: 'translateZ(0)', // Force hardware acceleration
+        backfaceVisibility: 'hidden'
+      }}
     >
       <div className="w-full">
         <div className="flex flex-col gap-8 w-full">
@@ -301,11 +338,23 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
                   ref={alliesTitleRef}
                   id="allies-title"
                   className="heading-2 text-light max-w-[40.9375rem]"
+                  style={{
+                    willChange: 'auto',
+                    transform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden'
+                  }}
                 >
                   <span dangerouslySetInnerHTML={{ __html: t('mainPage.testimonials.partnersTitle') }} />
                 </h2>
               </div>
-              <div ref={alliesMarqueeRef}>
+              <div 
+                ref={alliesMarqueeRef}
+                style={{
+                  willChange: 'auto',
+                  transform: 'translateZ(0)',
+                  backfaceVisibility: 'hidden'
+                }}
+              >
                 <Marquee logos={alliesToShow} />
               </div>
             </section>
@@ -317,11 +366,23 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
                   ref={buildersTitleRef}
                   id="builders-title"
                   className="heading-2 text-light max-w-[40.9375rem]"
+                  style={{
+                    willChange: 'auto',
+                    transform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden'
+                  }}
                 >
                   <span dangerouslySetInnerHTML={{ __html: t('mainPage.logosSection.buildersTitle') }} />
                 </h2>
               </div>
-              <div ref={buildersMarqueeRef}>
+              <div 
+                ref={buildersMarqueeRef}
+                style={{
+                  willChange: 'auto',
+                  transform: 'translateZ(0)',
+                  backfaceVisibility: 'hidden'
+                }}
+              >
                 <Marquee logos={buildersToShow} />
               </div>
             </section>
@@ -333,11 +394,23 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
                   ref={partnersTitleRef}
                   id="partners-title"
                   className="heading-2 text-light max-w-[40.9375rem]"
+                  style={{
+                    willChange: 'auto',
+                    transform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden'
+                  }}
                 >
                   <span dangerouslySetInnerHTML={{ __html: t('mainPage.logosSection.partnersTitle') }} />
                 </h2>
               </div>
-              <div ref={partnersMarqueeRef}>
+              <div 
+                ref={partnersMarqueeRef}
+                style={{
+                  willChange: 'auto',
+                  transform: 'translateZ(0)',
+                  backfaceVisibility: 'hidden'
+                }}
+              >
                 <Marquee logos={partnersToShow} />
               </div>
             </section>

@@ -1,6 +1,10 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
 import biodiversityIcon from '../assets/icons/biodiversity-icon.svg';
+
+// Register useGSAP plugin
+gsap.registerPlugin(useGSAP);
 
 interface BiodiversityCardProps {
   number?: string;
@@ -11,19 +15,6 @@ interface BiodiversityCardProps {
   id?: string;
 }
 
-const cardVariants = {
-  hidden: { y: 100, opacity: 0 },
-  visible: (i: number) => ({
-    y: 0,
-    opacity: 1,
-    transition: {
-      delay: i * 0.2,
-      duration: 0.8,
-      ease: [0.25, 0.1, 0.25, 1]
-    }
-  })
-};
-
 const BiodiversityCard: React.FC<BiodiversityCardProps> = ({
   number = "001",
   title = "Biodiversity\nHotspots",
@@ -32,12 +23,39 @@ const BiodiversityCard: React.FC<BiodiversityCardProps> = ({
   isInView = true,
   id
 }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Handle animations with useGSAP
+  useGSAP(() => {
+    if (!cardRef.current) return;
+
+    // Set initial state
+    gsap.set(cardRef.current, {
+      y: 100,
+      opacity: 0
+    });
+
+    // Animate when in view
+    if (isInView) {
+      gsap.to(cardRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        delay: index * 0.2,
+        ease: [0.25, 0.1, 0.25, 1]
+      });
+    } else {
+      // Reset to hidden state when not in view
+      gsap.set(cardRef.current, {
+        y: 100,
+        opacity: 0
+      });
+    }
+  }, [isInView, index]);
+
   return (
-    <motion.div
-      custom={index}
-      variants={cardVariants}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
+    <div
+      ref={cardRef}
       className="w-full background-gradient-light border border-[#B6B6B6] radius-2xl p-6 md:p-[50px]"
       aria-labelledby={id}
     >
@@ -66,7 +84,7 @@ const BiodiversityCard: React.FC<BiodiversityCardProps> = ({
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
