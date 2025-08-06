@@ -137,20 +137,37 @@ const App: React.FC = () => {
         return;
       }
       
+      // Start transition
       setShowTransition(true);
       setTransitionIn(false); // Start with cover
       setPageReady(false); // Reset page ready on navigation
+      
+      // After cover animation, update location and start reveal
       setTimeout(() => {
         setPendingLocation(location);
         setTransitionIn(true); // Reveal
       }, 1200); // match animation duration (1.2s)
     }
-  }, [location]);
+  }, [location, pendingLocation]);
+
+  // Cleanup effect to reset transition state
+  useEffect(() => {
+    return () => {
+      // Reset transition state on unmount
+      setShowTransition(false);
+      setTransitionIn(false);
+      setPageReady(false);
+    };
+  }, []);
 
   // Scroll to top or hero section only after both transition and page are ready
   useEffect(() => {
     if (transitionIn && pageReady) {
-      setShowTransition(false);
+      // Hide transition after reveal is complete
+      setTimeout(() => {
+        setShowTransition(false);
+      }, 1200); // Wait for reveal animation to complete
+      
       requestAnimationFrame(() => {
         // List of routes that do NOT use a hero image
         const noHeroRoutes = [
