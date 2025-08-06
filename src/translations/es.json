@@ -277,7 +277,7 @@
       "section2": "Los fondos recaudados de estos NFT se utilizan para adquirir tierras degradadas y transformarlas en Faros bioculturales. Estas áreas están protegidas bajo el marco de tenencia de tierra INHABIT un modelo pionero de reservas naturales que otorga derechos legales a la naturaleza, redefiniendo la protección y custodia de la tierra a un nuevo nivel."
     },
     "nftGrid": {
-      "title": "Nuestros innovadores <br /><strong>NFT</strong>",
+      "title": "Nuestros  <br /><strong>innovadores NFT</strong>",
       "description": "Cada NFT representa una conexión directa entre tú y un área de conservación específica, otorgándote derechos y acceso exclusivo a puntos calientes clave y experiencias bioculturales únicas a lo largo del corredor.",
       "checkThisNFT": "VER ESTE NFT",
       "availableMembership": "Membresías disponibles"
@@ -662,6 +662,7 @@
     },
     "visitThisProject": "Visitar este proyecto",
     "visitThisHub": "Visitar este faro",
+    "checkTerritory": "Revisar el territorio",
     "stewardshipNFT": {
       "title": "Custodia",
       "subtitle": "<strong>NFT</strong>",

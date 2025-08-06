@@ -12,7 +12,6 @@ import Highlight from "../components/Highlight";
 import NFTWorksSection from "../components/NFTWorksSection";
 import FourCriteriaHubGlobal from "../components/FourCriteriaHubGlobal";
 import NFTGrid from "../components/NFTGrid";
-import SubLoader from "@/load/SubLoader";
 import { useStore } from "@/store";
 import SEOHead from "@/components/SEOHead";
 import { scrollManager } from "../utils/scrollManager";
@@ -135,8 +134,6 @@ export default function StewardshipNFTPage(props: Props): JSX.Element {
             <FourCriteriaHubGlobal />
           </section>
           <section aria-label={t('sections.nftGrid')} ref={nftGridRef}>
-            <SubLoader isLoading={campaignsLoading} />
-
             {!campaignsLoading &&
               (campaigns.length === 0 ? (
                 <p className="text-lg text-gray-500">{t('common.noCampaignsAvailable')}</p>

@@ -145,48 +145,50 @@ const FourOhFourPage: React.FC<FourOhFourPageProps> = ({ onPageReady }) => {
   const leafPositions = isMobile ? mobileLeafPositions : desktopLeafPositions;
 
   return (
-    <div ref={containerRef} className="background-gradient-light min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden container">
-      <Helmet>
-        <title>404 Not Found | INHABIT</title>
-        <meta name="description" content="Page not found. This digital habitat is empty, but real-world impact awaits." />
-        <meta property="og:title" content="404 Not Found | INHABIT" />
-        <meta property="og:description" content="Page not found. This digital habitat is empty, but real-world impact awaits." />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Helmet>
-      {/* Top Left Title */}
-      <div className="flex flex-col md:flex-row items-start justify-between gap-[13.3125rem] w-full">
-            <h2 className="heading-2 text-secondary max-w-[40.9375rem]" dangerouslySetInnerHTML={{ __html: t('error404.title') }}>
-            </h2>
-            <p className="body-M text-secondary max-w-[35rem]" dangerouslySetInnerHTML={{ __html: t('error404.description') }}>
-            </p>
-          </div>
+    <div className="background-gradient-light min-h-screen w-full">
+      <div ref={containerRef} className="min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden container">
+        <Helmet>
+          <title>404 Not Found | INHABIT</title>
+          <meta name="description" content="Page not found. This digital habitat is empty, but real-world impact awaits." />
+          <meta property="og:title" content="404 Not Found | INHABIT" />
+          <meta property="og:description" content="Page not found. This digital habitat is empty, but real-world impact awaits." />
+          <meta property="og:type" content="website" />
+          <meta name="twitter:card" content="summary_large_image" />
+        </Helmet>
+        {/* Top Left Title */}
+        <div className="flex flex-col md:flex-row items-start justify-between gap-[13.3125rem] w-full">
+          <h2 className="heading-2 text-secondary max-w-[40.9375rem]" dangerouslySetInnerHTML={{ __html: t('error404.title') }}>
+          </h2>
+          <p className="body-M text-secondary max-w-[35rem]" dangerouslySetInnerHTML={{ __html: t('error404.description') }}>
+          </p>
+        </div>
 
-      {/* Leaves */}
-      {leafIcons.map((src, i) => (
-        <img
-          key={src}
-          ref={el => (leafRefs.current[i] = el)}
-          src={src}
-          alt="leaf"
-          style={{ position: 'absolute', pointerEvents: 'none', userSelect: 'none', zIndex: 10, ...leafPositions[i].style }}
-          draggable="false"
-        />
-      ))}
+        {/* Leaves */}
+        {leafIcons.map((src, i) => (
+          <img
+            key={src}
+            ref={el => (leafRefs.current[i] = el)}
+            src={src}
+            alt="leaf"
+            style={{ position: 'absolute', pointerEvents: 'none', userSelect: 'none', zIndex: 10, ...leafPositions[i].style }}
+            draggable="false"
+          />
+        ))}
 
-      {/* Main Content */}
-      <div className="flex flex-col items-center justify-center z-20 w-full max-w-3xl px-4 text-center">
-        <div className="four-oh-four-number" style={{ color: '#1B3A2B', fontWeight: 700, letterSpacing: '-8px', lineHeight: 1 }}>404</div>
-        
-        <Link
-          to="/"
-          className="btn-primary mt-8 inline-flex items-center gap-2 px-8 py-3 button-text"
-        >
-          <span>{t('error404.button')}</span>
-          <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </Link>
+        {/* Main Content */}
+        <div className="flex flex-col items-center justify-center z-20 w-full max-w-3xl px-4 text-center">
+          <div className="four-oh-four-number" style={{ color: '#1B3A2B', fontWeight: 700, letterSpacing: '-8px', lineHeight: 1 }}>404</div>
+          
+          <Link
+            to="/"
+            className="btn-primary mt-8 inline-flex items-center gap-2 px-8 py-3 button-text"
+          >
+            <span>{t('error404.button')}</span>
+            <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </Link>
+        </div>
       </div>
     </div>
   );

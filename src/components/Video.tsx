@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
-import SubLoader from '@/load/SubLoader';
 import { useGSAP } from '@gsap/react';
 
 // Register the hook to avoid React version discrepancies
@@ -344,7 +343,6 @@ const Video: React.FC<VideoProps> = ({ showVideo = true }) => {
             </div>
           </button>
           <div className="relative w-full h-full max-w-[100vw] max-h-[98vh] aspect-video">
-            <SubLoader isLoading={isVideoLoading} />
             <VideoPlayer 
               videoUrl="https://youtu.be/rziRiIrr_kE" 
               startTime={2}

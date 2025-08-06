@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
-import SubLoader from '@/load/SubLoader';
 
 const ProjectsVideoSection: React.FC = () => {
   const { t } = useTranslation();
@@ -307,7 +306,6 @@ const ProjectsVideoSection: React.FC = () => {
             </div>
           </button>
           <div className="relative w-full h-full max-w-[100vw] max-h-[98vh] aspect-video">
-            <SubLoader isLoading={isVideoLoading} />
             <iframe
               width="100%"
               height="100%"

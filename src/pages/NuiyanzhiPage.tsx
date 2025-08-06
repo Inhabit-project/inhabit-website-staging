@@ -7,7 +7,6 @@ import NFTGrid from "../components/NFTGrid";
 import Footer from "../components/Footer";
 import { useTranslation } from "react-i18next";
 import ImageSection from "../components/ImageSection";
-import SubLoader from "@/load/SubLoader";
 import { useStore } from "@/store";
 import SEOHead from "@/components/SEOHead";
 import { scrollManager } from "../utils/scrollManager";
@@ -145,8 +144,6 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
         />
 
         <section aria-label="Available NFTs" ref={nftGridRef}>
-          <SubLoader isLoading={campaignsLoading} />
-
           {!campaignsLoading &&
             (campaigns.length === 0 ? (
                               <p className="text-lg text-gray-500">{t('common.noCampaignsAvailable')}</p>

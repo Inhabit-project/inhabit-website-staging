@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LoadingContext } from '../App';
 import { useGSAP } from '@gsap/react';
+import { useTranslation } from 'react-i18next';
 
 // Register the hook to avoid React version discrepancies
 gsap.registerPlugin(useGSAP);
@@ -20,6 +21,7 @@ interface InfoCardProps {
 }
 
 const InfoCard: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logoAlt = '', text, imageSrc, imageAlt = '', className, showPopupButton = false }) => {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const titleGroupRef = useRef<HTMLDivElement>(null);
@@ -162,12 +164,12 @@ const InfoCard: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logo
           </div>
           {showPopupButton && (
             <button
-              className="mt-6 btn-primary"
+              className="mt-6 btn-primary px-6"
               onClick={() => setIsPopupOpen(true)}
               aria-expanded={isPopupOpen}
               aria-controls="news-popup"
             >
-              Read Latest News
+              {t('mainPage.checkTerritory')}
             </button>
           )}
         </div>
@@ -179,15 +181,17 @@ const InfoCard: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logo
           aria-modal="true"
           aria-labelledby="news-popup-title"
         >
+          <button
+            onClick={() => setIsPopupOpen(false)}
+            className="absolute top-4 right-4 w-10 h-10 z-50 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-[4.125px] flex items-center justify-center transition-all duration-300 group"
+            aria-label="Close news popup"
+          >
+            <div className="relative w-4 h-4">
+              <div className="absolute top-1/2 left-0 w-4 h-[2px] bg-white rotate-45 group-hover:bg-orange-500 transition-colors duration-300" />
+              <div className="absolute top-1/2 left-0 w-4 h-[2px] bg-white -rotate-45 group-hover:bg-orange-500 transition-colors duration-300" />
+            </div>
+          </button>
           <div className="popup-content">
-            <button
-              className="btn-primary"
-              style={{ position: 'absolute', top: 24, right: 24, zIndex: 2 }}
-              onClick={() => setIsPopupOpen(false)}
-              aria-label="Close news popup"
-            >
-              &times;
-            </button>
             <iframe
               id="news-popup"
               src="https://explorer.land/p/project/bioculturalcorridor/site/Z6UXzL/news"

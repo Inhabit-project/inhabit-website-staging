@@ -587,7 +587,8 @@
       "iframeAriaLabel": "Project video player"
     },
     "visitThisProject": "Visit this project",
-    "visitThisHub": "Visit this hub"
+    "visitThisHub": "Visit this hub",
+    "checkTerritory": "Check the territory"
   },
   "membership": {
     "checkout": {
