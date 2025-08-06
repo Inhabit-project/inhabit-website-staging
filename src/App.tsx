@@ -147,18 +147,50 @@ const App: React.FC = () => {
     }
   }, [location]);
 
-  // Scroll to hero section only after both transition and page are ready
+  // Scroll to top or hero section only after both transition and page are ready
   useEffect(() => {
     if (transitionIn && pageReady) {
       setShowTransition(false);
       requestAnimationFrame(() => {
-        if (scrollManager && typeof scrollManager.scrollToHero === "function") {
-          scrollManager.scrollToHero({ immediate: true });
-        } else if (scrollManager && typeof scrollManager.scrollTo === "function") {
-          scrollManager.scrollTo(0, { immediate: true });
+        // List of routes that do NOT use a hero image
+        const noHeroRoutes = [
+          "/membership",
+          "/checkout",
+          "/blog",
+          "/hubs/agua-de-luna",
+          "/hubs/tierrakilwa",
+          "/terms",
+          "/privacy",
+          "/projects",
+          "/contact",
+          "/blog/article", // match base for dynamic article routes
+        ];
+
+        // Check if current route is a no-hero route
+        const isNoHeroRoute = noHeroRoutes.some(
+          (route) =>
+            location.pathname === route ||
+            location.pathname.startsWith(route + "/")
+        );
+
+        if (isNoHeroRoute) {
+          // For pages without hero, scroll to top
+          if (scrollManager && typeof scrollManager.scrollTo === "function") {
+            scrollManager.scrollTo(0, { immediate: true });
+          } else {
+            window.scrollTo({ top: 0, behavior: "auto" });
+          }
         } else {
-          window.scrollTo({ top: 0, behavior: "auto" });
+          // For pages with hero, scroll to hero section
+          if (scrollManager && typeof scrollManager.scrollToHero === "function") {
+            scrollManager.scrollToHero({ immediate: true });
+          } else if (scrollManager && typeof scrollManager.scrollTo === "function") {
+            scrollManager.scrollTo(0, { immediate: true });
+          } else {
+            window.scrollTo({ top: 0, behavior: "auto" });
+          }
         }
+        
         // Delay ScrollTrigger refresh to avoid conflicts with animations
         setTimeout(() => {
           import("./utils/gsap").then(({ ScrollTrigger }) => {
@@ -174,7 +206,7 @@ const App: React.FC = () => {
         }, 200); // Increased delay to avoid conflicts
       });
     }
-  }, [transitionIn, pageReady]);
+  }, [transitionIn, pageReady, location.pathname]);
 
   const handleTransitionComplete = () => {
     // No-op: scroll now handled in useEffect above

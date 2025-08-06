@@ -801,6 +801,13 @@
     "imageSection": {
       "eyebrow": "Descubre Ñuiyanzhi",
       "heading": "Un <span style=\"color: var(--color-primary)\">laboratorio viviente</span> donde la <span style=\"color: var(--color-primary)\">restauración ecológica</span>, el <span style=\"color: var(--color-primary)\">conocimiento ancestral</span> y la custodia territorial <span style=\"color: var(--color-primary)\">convergen</span>."
+    },
+    "cta": {
+      "title": "¡Restaura la Tierra con Nosotros – <span style=\"color: var(--color-accent)\">Fusiona Sabiduría Ancestral & Ciencia</span> para un Futuro Próspero!",
+      "description": "Echa un vistazo a nuestra presentación para descubrir cómo Ñuiyanzhi combina sabiduría ancestral con conocimiento académico para restaurar ciclos naturales en tierras afectadas por décadas de degradación. Experimenta nuestro innovador centro de restauración de suelos en acción.",
+      "showPresentation": "Ver Presentación",
+      "learnMore": "Saber Más",
+      "imageAlt": "Guardianes de Ñuiyanzhi"
     }
   },
   "aguaDeLunaPage": {

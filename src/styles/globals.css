@@ -1458,3 +1458,73 @@
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+
+/* Language Button Styles */
+.language-btn {
+  background: none;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  color: var(--color-light);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.language-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.language-btn.active {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.language-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: var(--color-secondary);
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1000;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18.9px);
+  margin-top: 4px;
+}
+
+.dropdown-content.open {
+  display: block;
+}
+
+.dropdown-content.closed {
+  display: none;
+}
+
+.dropdown-content .language-btn {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  width: 100%;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-content .language-btn:last-child {
+  border-bottom: none;
+}
+
+.dropdown-content .language-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

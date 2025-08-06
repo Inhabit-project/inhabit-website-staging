@@ -1,50 +1,9 @@
 import React, { useState, useLayoutEffect, useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { LoadingContext } from '../App';
 import { useMenuScrollHide } from '../utils/scrollManager';
 import { gsap } from '../utils/gsap';
-
-const LanguageButton = styled.button`
-  background: none;
-  border: 1px solid #ccc;
-  padding: 5px 10px;
-  margin: 0 5px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  color: var(--color-light);
-  font-size: 0.875rem;
-  text-transform: uppercase;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-
-  &.active {
-    background-color: var(--color-accent);
-    border-color: var(--color-accent);
-  }
-`;
-
-const LanguageDropdown = styled.div`
-  position: relative;
-  display: inline-block;
-`;
-
-const DropdownContent = styled.div<{ isOpen: boolean }>`
-  display: ${props => props.isOpen ? 'block' : 'none'};
-  position: absolute;
-  right: 0;
-  background-color: var(--color-secondary);
-  min-width: 100px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(18.9px);
-`;
 
 interface MenuProps {
   hideMenu?: boolean;
@@ -53,6 +12,7 @@ interface MenuProps {
 const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
   const lastScrollY = useRef(0);
   const { t, i18n } = useTranslation();
   const isLoading = useContext(LoadingContext);
@@ -121,6 +81,24 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
     i18n.changeLanguage(lng);
   };
 
+  // Close dropdown when clicking outside
+  const handleClickOutside = (event: MouseEvent) => {
+    const target = event.target as Element;
+    if (!target.closest('.language-dropdown')) {
+      setLanguageDropdownOpen(false);
+    }
+  };
+
+  // Add click outside listener
+  React.useEffect(() => {
+    if (languageDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [languageDropdownOpen]);
+
   if (hideMenu || isLoading) {
     return null;
   }
@@ -152,21 +130,41 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
             ))}
           </nav>
 
-          {/* Desktop Right side buttons */}
+                    {/* Desktop Right side buttons */}
           <div className="hidden xl:flex items-center gap-4">
-            <div className="flex gap-2">
-              <LanguageButton
-                onClick={() => changeLanguage('en')}
-                className={i18n.language === 'en' ? 'active' : ''}
+            <div className="language-dropdown">
+              <button
+                onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
+                className="language-btn flex items-center gap-2"
+                aria-label="Select language"
               >
-                EN
-              </LanguageButton>
-              <LanguageButton
-                onClick={() => changeLanguage('es')}
-                className={i18n.language === 'es' ? 'active' : ''}
-              >
-                ES
-              </LanguageButton>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 12H8M3 12C3 16.9706 7.02944 21 12 21M3 12C3 7.02944 7.02944 3 12 3M8 12H16M8 12C8 16.9706 9.79086 21 12 21M8 12C8 7.02944 9.79086 3 12 3M16 12H21M16 12C16 7.02944 14.2091 3 12 3M16 12C16 16.9706 14.2091 21 12 21M21 12C21 7.02944 16.9706 3 12 3M21 12C21 16.9706 16.9706 21 12 21" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <span>{i18n.language.toUpperCase()}</span>
+              </button>
+              {languageDropdownOpen && (
+                <div className="dropdown-content open">
+                  <button
+                    onClick={() => {
+                      changeLanguage('en');
+                      setLanguageDropdownOpen(false);
+                    }}
+                    className={`language-btn w-full text-left ${i18n.language === 'en' ? 'active' : ''}`}
+                  >
+                    EN
+                  </button>
+                  <button
+                    onClick={() => {
+                      changeLanguage('es');
+                      setLanguageDropdownOpen(false);
+                    }}
+                    className={`language-btn w-full text-left ${i18n.language === 'es' ? 'active' : ''}`}
+                  >
+                    ES
+                  </button>
+                </div>
+              )}
             </div>
             <a href="https://docsend.com/view/z34fcq8w3f8hgz7h" target="_blank" rel="noopener noreferrer">
               <button className="btn-secondary transition-all duration-200 group">
@@ -222,26 +220,32 @@ const Menu: React.FC<MenuProps> = ({ hideMenu = false }) => {
               ))}
             </nav>
             <div className="flex gap-4 mt-4">
-              <LanguageButton
+              <button
                 onClick={() => {
                   changeLanguage('en');
                   setMobileOpen(false);
                 }}
-                className={i18n.language === 'en' ? 'active' : ''}
+                className={`language-btn flex items-center gap-2 ${i18n.language === 'en' ? 'active' : ''}`}
                 ref={el => (mobileLangBtnRef.current[0] = el)}
               >
-                EN
-              </LanguageButton>
-              <LanguageButton
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 12H8M3 12C3 16.9706 7.02944 21 12 21M3 12C3 7.02944 7.02944 3 12 3M8 12H16M8 12C8 16.9706 9.79086 21 12 21M8 12C8 7.02944 9.79086 3 12 3M16 12H21M16 12C16 7.02944 14.2091 3 12 3M16 12C16 16.9706 14.2091 21 12 21M21 12C21 7.02944 16.9706 3 12 3M21 12C21 16.9706 16.9706 21 12 21" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <span>EN</span>
+              </button>
+              <button
                 onClick={() => {
                   changeLanguage('es');
                   setMobileOpen(false);
                 }}
-                className={i18n.language === 'es' ? 'active' : ''}
+                className={`language-btn flex items-center gap-2 ${i18n.language === 'es' ? 'active' : ''}`}
                 ref={el => (mobileLangBtnRef.current[1] = el)}
               >
-                ES
-              </LanguageButton>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 12H8M3 12C3 16.9706 7.02944 21 12 21M3 12C3 7.02944 7.02944 3 12 3M8 12H16M8 12C8 16.9706 9.79086 21 12 21M8 12C8 7.02944 9.79086 3 12 3M16 12H21M16 12C16 7.02944 14.2091 3 12 3M16 12C16 16.9706 14.2091 21 12 21M21 12C21 7.02944 16.9706 3 12 3M21 12C21 16.9706 16.9706 21 12 21" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <span>ES</span>
+              </button>
             </div>
             <a href="https://docsend.com/view/z34fcq8w3f8hgz7h" target="_blank" rel="noopener noreferrer">
               <button

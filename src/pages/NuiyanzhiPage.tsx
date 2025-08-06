@@ -7,6 +7,7 @@ import NFTGrid from "../components/NFTGrid";
 import Footer from "../components/Footer";
 import { useTranslation } from "react-i18next";
 import ImageSection from "../components/ImageSection";
+import NuyanziCTA from "../components/NuyanziCTA";
 import { useStore } from "@/store";
 import SEOHead from "@/components/SEOHead";
 import { scrollManager } from "../utils/scrollManager";
@@ -153,6 +154,8 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
               ))
             ))}
         </section>
+        {/* Section: CTA */}
+        <NuyanziCTA />
         {/* Section: FAQ */}
         <FAQ
           faqItems={
