@@ -6,7 +6,7 @@ import FAQ, { FAQWhite } from "../components/FAQ";
 import NFTGrid from "../components/NFTGrid";
 import Footer from "../components/Footer";
 import { useTranslation } from "react-i18next";
-import ImageSection from "../components/ImageSection";
+import VideoSection from "../components/VideoSection";
 import NuyanziCTA from "../components/NuyanziCTA";
 import { useStore } from "@/store";
 import SEOHead from "@/components/SEOHead";
@@ -95,8 +95,8 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
           />
         </section>
 
-        {/* Image Section: Nuiyanzhi Vision */}
-        <ImageSection
+        {/* Video Section: Nuiyanzhi Vision */}
+        <VideoSection
           eyebrow={t("nuiyanzhiPage.imageSection.eyebrow")}
           heading={
             <span
@@ -105,8 +105,9 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
               }}
             />
           }
-          imageSrc="/assets/1Hub/vision.webp"
-          imageAlt="Nuiyanzhi Vision"
+          videoUrl="https://www.youtube.com/watch?v=YZEqU3EQu58&ab_channel=Inhabit"
+          thumbnailSrc="/assets/nuiyanzhi-video.webp"
+          thumbnailAlt="Nuiyanzhi Vision Video"
         />
 
         {/* Section: Four goals to be a HUB */}

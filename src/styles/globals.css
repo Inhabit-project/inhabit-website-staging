@@ -936,6 +936,25 @@
   animation: pointer-pulse 2s ease-in-out infinite;
 }
 
+@keyframes videoPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-videoPulse {
+  animation: videoPulse 2s ease-in-out infinite;
+}
+
 /* Horizontal Scroll Section for GSAP */
 .horizontal-scroll-section {
   width: 100vw;

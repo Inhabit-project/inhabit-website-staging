@@ -16,49 +16,6 @@ interface BlogProps extends ImportedBlogProps {
   onReady?: () => void;
 }
 
-// Optimized image component with lazy loading and fallback
-const OptimizedImage: React.FC<{
-  src: string;
-  alt: string;
-  className: string;
-  fallbackSrc?: string;
-}> = ({ src, alt, className, fallbackSrc = "/assets/placeholder-blog.svg" }) => {
-  const [imageSrc, setImageSrc] = useState<string>(src);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-
-  useEffect(() => {
-    setImageSrc(src);
-    setIsLoading(true);
-    setHasError(false);
-  }, [src]);
-
-  const handleLoad = () => {
-    setIsLoading(false);
-  };
-
-  const handleError = () => {
-    if (!hasError) {
-      setHasError(true);
-      setImageSrc(fallbackSrc);
-    } else {
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <img
-      src={imageSrc}
-      alt={alt}
-      className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'}`}
-      loading="lazy"
-      onLoad={handleLoad}
-      onError={handleError}
-      style={{ transition: 'opacity 0.3s ease' }}
-    />
-  );
-};
-
 const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const location = useLocation();
   const { t, i18n } = useTranslation();
@@ -338,10 +295,11 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                     <div className="lg:w-1/2">
                       <div className="flex flex-col gap-5">
                         <div className="relative aspect-[16/9] w-full overflow-hidden">
-                          <OptimizedImage
+                          <img
                             src={mainPost.image}
                             alt={mainPost.title}
                             className="absolute inset-0 w-full h-full object-cover rounded-xl"
+                            loading="lazy"
                           />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -386,10 +344,11 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                         {smallPosts.map((post) => (
                           <div key={post.id} className="flex gap-5">
                             <div className="relative aspect-[4/3] w-1/3">
-                              <OptimizedImage
+                              <img
                                 src={post.image}
                                 alt={post.title}
                                 className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                                loading="lazy"
                               />
                             </div>
                             <div className="flex flex-col gap-2 flex-1">

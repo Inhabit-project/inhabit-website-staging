@@ -155,7 +155,7 @@ const NewsletterCTA: React.FC = () => {
         className="w-full container rounded-3xl shadow-xl mx-auto flex flex-col items-start px-12 py-16 relative overflow-hidden"
         style={{
           minHeight: 420,
-          backgroundImage: "url('/assets/CTA5.webp')",
+          backgroundImage: "url('/assets/CTA.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",

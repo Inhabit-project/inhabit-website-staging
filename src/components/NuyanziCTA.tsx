@@ -90,7 +90,7 @@ const NuyanziCTA: React.FC = () => {
   }, [isLoading]);
 
   const handlePresentationClick = () => {
-    window.open("https://www.canva.com/design/DAGpOqXVkIY/LdxkIGRqXkB47kf8wvnvBw/edit?utm_content=DAGpOqXVkIY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton", "_blank");
+    window.open("https://www.canva.com/design/DAGpOqXVkIY/pXgWgQt2dsLWP8wSELwddQ/view?utm_content=DAGpOqXVkIY&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h4d7600fd34", "_blank");
   };
 
   return (
