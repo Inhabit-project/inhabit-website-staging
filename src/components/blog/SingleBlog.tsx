@@ -11,7 +11,7 @@ interface SingleBlogProps {
 
 const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
   const { id } = useParams();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { fetchPostWithNavigation } = blogServices();
   const [post, setPost] = useState<ProcessedPost | null>(null);
   const [loading, setLoading] = useState(true);
@@ -40,30 +40,11 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
   const loadPost = async (postID: string, useCache = true) => {
     if (loadingRef.current) return;
     loadingRef.current = true;
-    
+
     clearPostStates();
 
     // Try to load from cache first
-    if (useCache) {
-      try {
-        const cached = localStorage.getItem(`blog_post_${postID}`);
-        if (cached) {
-          const { post: cachedPost, next: cachedNext, previous: cachedPrev, timestamp } = JSON.parse(cached);
-          const cacheAge = Date.now() - timestamp;
-          // Cache valid for 10 minutes for individual posts
-          if (cacheAge < 10 * 60 * 1000) {
-            setPost(cachedPost);
-            setPrevPost(cachedPrev);
-            setNextPost(cachedNext);
-            setLoading(false);
-            loadingRef.current = false;
-            return;
-          }
-        }
-      } catch (err) {
-        console.warn('Failed to load from cache:', err);
-      }
-    }
+    if (useCache) verifyPostCache(postID);
 
     try {
       // Create AbortController for timeout
@@ -71,32 +52,35 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
       const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
       const { current, next, previous } = await fetchPostWithNavigation(postID);
-      
+
       clearTimeout(timeoutId);
-      
+
       // Cache the results
       try {
-        localStorage.setItem(`blog_post_${postID}`, JSON.stringify({
-          post: current,
-          next,
-          previous,
-          timestamp: Date.now()
-        }));
+        localStorage.setItem(
+          `blog_post_${postID}_${i18n.language}`,
+          JSON.stringify({
+            post: current,
+            next,
+            previous,
+            timestamp: Date.now(),
+          })
+        );
       } catch (err) {
-        console.warn('Failed to cache post:', err);
+        console.warn("Failed to cache post:", err);
       }
-      
+
       setPost(current);
       setPrevPost(previous);
       setNextPost(next);
       setRetryCount(0);
     } catch (err) {
       console.error("Error loading blog post:", err);
-      
-      if (err instanceof Error && err.name === 'AbortError') {
+
+      if (err instanceof Error && err.name === "AbortError") {
         setError(t("mainPage.blog.timeout"));
-      } else if (retryCount < 2) {
-        setRetryCount(prev => prev + 1);
+      } else if (retryCount < 2 && err instanceof Error && !err.message.includes("not found")) {
+        setRetryCount((prev) => prev + 1);
         // Retry after 2 seconds
         setTimeout(() => loadPost(postID, false), 2000);
         return;
@@ -109,9 +93,37 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
     }
   };
 
+  const verifyPostCache = (postID: string) => {
+    try {
+      const cached = localStorage.getItem(
+        `blog_post_${postID}_${i18n.language}`
+      );
+      if (cached) {
+        const {
+          post: cachedPost,
+          next: cachedNext,
+          previous: cachedPrev,
+          timestamp,
+        } = JSON.parse(cached);
+        const cacheAge = Date.now() - timestamp;
+        // Cache valid for 10 minutes for individual posts
+        if (cacheAge < 10 * 60 * 1000) {
+          setPost(cachedPost);
+          setPrevPost(cachedPrev);
+          setNextPost(cachedNext);
+          setLoading(false);
+          loadingRef.current = false;
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn("Failed to load from cache:", err);
+    }
+  };
+
   useEffect(() => {
     if (id) loadPost(id);
-  }, [id]);
+  }, [id, t]);
 
   useEffect(() => {
     if (!loading && post && onPageReady) {
@@ -124,17 +136,19 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
       <SubLoader isLoading={loading} />
 
       {!loading && error && (
-        <h1
-          className="py-24"
-          style={{
-            color: "var(--color-secondary)",
-            fontWeight: 500,
-            fontSize: 48,
-            lineHeight: 1.1,
-          }}
-        >
-          {t("mainPage.blog.error")}
-        </h1>
+        <main className="container mx-auto py-24" style={{ maxWidth: 900 }}>
+          <h1
+            className="py-24"
+            style={{
+              color: "var(--color-secondary)",
+              fontWeight: 500,
+              fontSize: 48,
+              lineHeight: 1.1,
+            }}
+          >
+            {t("mainPage.blog.error")}
+          </h1>
+        </main>
       )}
 
       {!loading && post && (
@@ -198,10 +212,10 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
           {/** Post content */}
           <div
             className="body-S blog-content"
-            style={{ 
+            style={{
               color: "var(--color-secondary)",
               marginTop: "1rem",
-              marginBottom: "1rem"
+              marginBottom: "1rem",
             }}
             dangerouslySetInnerHTML={{ __html: post.content }}
           ></div>
@@ -236,7 +250,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
                   color: "var(--color-secondary)",
                   fontSize: 20,
                 }}
-                aria-label={t('common.shareOnWebsite')}
+                aria-label={t("common.shareOnWebsite")}
               >
                 🌐
               </button>
@@ -247,7 +261,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
                   color: "var(--color-secondary)",
                   fontSize: 20,
                 }}
-                aria-label={t('common.shareOnTwitter')}
+                aria-label={t("common.shareOnTwitter")}
               >
                 🐦
               </button>
@@ -258,7 +272,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
                   color: "var(--color-secondary)",
                   fontSize: 20,
                 }}
-                aria-label={t('common.shareOnFacebook')}
+                aria-label={t("common.shareOnFacebook")}
               >
                 📘
               </button>
@@ -348,7 +362,9 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span style={{ fontWeight: 700 }}>{t('common.previousArticle')}</span>
+                  <span style={{ fontWeight: 700 }}>
+                    {t("common.previousArticle")}
+                  </span>
                   <span style={{ opacity: 0.7, marginLeft: 8 }}>
                     {prevPost.title}
                   </span>
@@ -381,10 +397,10 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
                     justifyContent: "flex-end",
                     height: "9rem",
                   }}
-                  aria-label={`${t('common.nextArticle')}: ${nextPost.title}`}
+                  aria-label={`${t("common.nextArticle")}: ${nextPost.title}`}
                 >
                   <span style={{ fontWeight: 700, marginRight: 8 }}>
-                    {t('common.nextArticle')}
+                    {t("common.nextArticle")}
                   </span>
                   <span style={{ opacity: 0.7 }}>
                     Meet the Stewards of Tierra Kilwa
