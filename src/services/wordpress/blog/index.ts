@@ -12,6 +12,7 @@ import { isValidDate } from "@/utils/date";
 import { calculateReadTime } from "@/utils/calculateReadTime";
 import { formatDate } from "@/utils/dateFormatter";
 import { getHost } from "..";
+import indexedDBCache from "@/services/cache/indexedDB";
 
 export function blogServices() {
   const { host } = getHost();
@@ -70,7 +71,16 @@ export function blogServices() {
     const { per_page = 3, page = 1, skipFeatured = false } = params ?? {};
     const featuredPostsToSkip = 4;
 
+    // Create cache key
+    const cacheKey = `blog_list_${currentLanguage}_${per_page}_${page}_${skipFeatured ? 'skip' : 'all'}`;
+
     try {
+      // Try to get from cache first
+      const cached = await indexedDBCache.getBlogList(cacheKey, currentLanguage);
+      if (cached) {
+        return cached;
+      }
+
       const url = new URL(`${host}/wp-json/wp/v2/posts`);
       url.searchParams.append("_embed", "");
       url.searchParams.append("per_page", per_page.toString());
@@ -118,7 +128,7 @@ export function blogServices() {
 
       const posts: WordPressPosts[] = await response.json();
 
-      return {
+      const result = {
         posts: posts.map((post) => {
           const categories =
             post._embedded?.["wp:term"]?.[0]?.map((cat: any) => cat.name) ?? [];
@@ -142,6 +152,15 @@ export function blogServices() {
         }),
         totalPages,
       };
+
+      // Cache the result
+      try {
+        await indexedDBCache.setBlogList(cacheKey, result, currentLanguage);
+      } catch (err) {
+        console.warn("Failed to cache blog list:", err);
+      }
+
+      return result;
     } catch (error) {
       console.error("Error fetching WordPress posts:", error);
       
@@ -291,7 +310,20 @@ export function blogServices() {
   const fetchPostWithNavigation = async (
     postId: string
   ): Promise<PostNavigation> => {
+    const currentLanguage = i18n.language;
+    const cacheKey = `blog_post_${postId}_${currentLanguage}`;
+
     try {
+      // Try to get from cache first
+      const cached = await indexedDBCache.getBlogPost(cacheKey, currentLanguage);
+      if (cached) {
+        return {
+          current: cached.post,
+          next: cached.next,
+          previous: cached.previous
+        };
+      }
+
       const current = await fetchPost(postId);
 
       if (current == null) {
@@ -303,7 +335,21 @@ export function blogServices() {
         fetchAdjacentPost(current.dateWithoutFormat, "before", "desc"),
       ]);
 
-      return { current, next, previous };
+      const result = { current, next, previous };
+
+      // Cache the result
+      try {
+        await indexedDBCache.setBlogPost(cacheKey, {
+          post: current,
+          next,
+          previous,
+          timestamp: Date.now()
+        }, currentLanguage);
+      } catch (err) {
+        console.warn("Failed to cache blog post:", err);
+      }
+
+      return result;
     } catch (error) {
       console.error("Error in fetchPostWithNavigation:", error);
       throw error;

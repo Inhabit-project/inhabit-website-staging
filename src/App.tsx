@@ -10,6 +10,7 @@ import PageTransition from "@/load/PageTransition";
 import { useLocation } from "react-router-dom";
 import { useScrollToTopOnNavigation } from "@/utils/scrollToTopOnNavigation";
 import ScrollToTop from "@/components/ScrollToTop";
+import CacheManager from "@/utils/cacheManager";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -76,6 +77,24 @@ const App: React.FC = () => {
   const [minLoaderTimeElapsed, setMinLoaderTimeElapsed] = useState(false);
   const [canFinishLoading, setCanFinishLoading] = useState(false);
   const [pendingLocation, setPendingLocation] = useState(location);
+
+  // Initialize IndexedDB cache on app startup
+  useEffect(() => {
+    let isInitialized = false;
+    
+    const initializeCache = async () => {
+      if (isInitialized) return;
+      
+      try {
+        await CacheManager.initializeCache();
+        isInitialized = true;
+      } catch (error) {
+        console.error('Failed to initialize blog cache:', error);
+      }
+    };
+
+    initializeCache();
+  }, []);
 
   // Only allow loader to finish when both hero image and timer are done (and if loader should be shown)
   useEffect(() => {
