@@ -78,7 +78,7 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
 
   return (
     <>
-      <SEOHead 
+      <SEOHead
         pageType="nuiyanzhiPage"
         customData={{
           image: "/assets/1Hub/vision.webp"
@@ -91,7 +91,7 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
           <InternalPagesHero
             variant="nuiyanzhi"
             onHeroImageLoad={onHeroImageLoad}
-            // Optionally, you can extend InternalPagesHero to accept custom props for this hub
+          // Optionally, you can extend InternalPagesHero to accept custom props for this hub
           />
         </section>
 
@@ -144,20 +144,19 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
           imageSrc="/assets/1Hub/land.webp"
           showPopupButton={true}
         />
-
+        {/* Section: CTA */}
+        <NuyanziCTA />
+        {/* Section: FAQ */}
         <section aria-label="Available NFTs" ref={nftGridRef}>
           {!campaignsLoading &&
             (campaigns.length === 0 ? (
-                              <p className="text-lg text-gray-500">{t('common.noCampaignsAvailable')}</p>
+              <p className="text-lg text-gray-500">{t('common.noCampaignsAvailable')}</p>
             ) : (
               campaigns.map((campaign) => (
                 <NFTGrid key={campaign.id} campaign={campaign} />
               ))
             ))}
         </section>
-        {/* Section: CTA */}
-        <NuyanziCTA />
-        {/* Section: FAQ */}
         <FAQ
           faqItems={
             t("nuiyanzhiPage.faq.items", { returnObjects: true }) as any[]

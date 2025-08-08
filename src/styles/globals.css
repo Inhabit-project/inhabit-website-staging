@@ -1511,10 +1511,10 @@
 
 .dropdown-content {
   position: absolute;
-  right: 0;
+  left: 6px;
   top: 100%;
   background-color: var(--color-secondary);
-  min-width: 120px;
+  min-width: 67px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1000;
   border-radius: 4px;
