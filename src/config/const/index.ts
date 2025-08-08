@@ -61,3 +61,8 @@ export const MUST_DO_KYC_HARD = (price: number): boolean => {
 };
 
 export const COOLDOWN_KEY = "kycCooldownTimestamp";
+
+export const COOKIE_REFERRAL = ensureEnvVar(
+  import.meta.env.VITE_COOKIE_REFERRAL,
+  "VITE_COOKIE_REFERRAL"
+);

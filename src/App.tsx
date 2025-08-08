@@ -433,7 +433,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/stewardship-nft/:campaignId?/:referral?"
+                path="/stewardship-nft"
                 element={
                   <StewardshipNFTPage
                     {...pageProps}
@@ -442,7 +442,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/latest-campaign"
+                path="/latest-campaign/:campaignId?/:referral?"
                 element={
                   <LastestCampaign
                     {...pageProps}

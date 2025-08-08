@@ -20,10 +20,9 @@ export default function Membership(props: Props): JSX.Element {
 
   // hooks
   const [collection, setCollection] = useState<Collection | null>(null);
-  const [isReferralValid, setIsReferralValid] = useState<boolean>(false);
 
   // external hooks
-  const { campaignId, collectionId, referral } = useParams();
+  const { campaignId, collectionId } = useParams();
   const navigate = useNavigate();
 
   const state = useLocation().state as {
@@ -34,7 +33,6 @@ export default function Membership(props: Props): JSX.Element {
 
   const {
     campaignLoading,
-    inhabit,
     getCampaign,
     setCampaign,
     setCollection: setCollectionStore,
@@ -42,93 +40,47 @@ export default function Membership(props: Props): JSX.Element {
 
   // effects
   useEffect(() => {
-    console.log(
-      "Membership page mounted with campaignId:",
-      campaignId,
-      "collectionId:",
-      collectionId
-    );
-
     if (Number.isNaN(campaignId) || Number.isNaN(collectionId)) {
-      console.error("Invalid campaignId or collectionId, navigating to 404");
       navigate("/404");
     }
   }, [campaignId, collectionId]);
 
   useEffect(() => {
-    const validateSlugs = async () => {
-      if (!referral) {
-        setIsReferralValid(true);
-        return;
-      }
-
-      const group = await inhabit.getGroup(Number(campaignId), referral);
-
-      if (!group) {
-        navigate("/404");
-        return;
-      }
-
-      setIsReferralValid(true);
-    };
-
-    validateSlugs();
-  }, [campaignId, collectionId, referral]);
-
-  useEffect(() => {
     const loadCampaign = async () => {
-      if (!isReferralValid) return;
-
       try {
-        console.log("loadCampaign called with state:", state);
-        console.log("loadCampaign called with campaignId:", campaignId);
-        console.log("loadCampaign called with collectionId:", collectionId);
-
         if (state?.collection && state?.campaign) {
-          console.log("Using state data for campaign and collection");
-          console.log("State campaign:", state.campaign);
-          console.log("State collection:", state.collection);
           setCollection(state.collection);
           setCollectionStore(state.collection);
           setCampaign(state.campaign);
           return;
         }
 
-        console.log("Loading campaign data for campaignId:", campaignId);
         const loadedCampaign = await getCampaign(Number(campaignId));
 
         if (!loadedCampaign) {
-          console.error("Campaign not found, navigating to 404");
           navigate("/404");
           return;
         }
-
-        console.log("Loaded campaign:", loadedCampaign);
-        console.log("Looking for collection with id:", collectionId);
 
         const found = loadedCampaign.collections.find(
           (c) => c.id === Number(collectionId)
         );
 
         if (!found) {
-          console.error("Collection not found, navigating to 404");
           navigate("/404");
           return;
         }
 
-        console.log("Found collection:", found);
-        console.log("Setting collection and campaign data");
         setCollection(found);
         setCollectionStore(found);
         setCampaign(loadedCampaign);
       } catch (error) {
-        console.error("Error loading campaign data:", error);
         navigate("/404");
       }
     };
 
     loadCampaign();
-  }, [isReferralValid, state, campaignId, collectionId]);
+  }, [state, campaignId, collectionId]);
 
   useEffect(() => {
     if (!campaignLoading && collection && onHeroImageLoad) {

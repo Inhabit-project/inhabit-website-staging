@@ -4,8 +4,10 @@ import { useTranslation } from "react-i18next";
 import { useStore } from "@/store";
 import SEOHead from "@/components/SEOHead";
 import { useNavigate, useParams } from "react-router-dom";
-import { scrollManager } from "@/utils/scrollManager";
 import NFTGrid from "@/components/NFTGrid";
+import Cookies from "js-cookie";
+import { keccak256, toBytes } from "viem";
+import { COOKIE_REFERRAL } from "@/config/const";
 
 interface Props {
   onPageReady?: () => void;
@@ -29,7 +31,6 @@ export default function LastestCampaign(props: Props): JSX.Element {
 
   // variables
   const nftGridRef = useRef<HTMLElement>(null);
-  const nftGridItemRef = useRef<HTMLDivElement>(null);
 
   // effects
   useEffect(() => {
@@ -46,11 +47,25 @@ export default function LastestCampaign(props: Props): JSX.Element {
         return;
       }
 
+      const hashedReferral = keccak256(toBytes(referral));
+
+      const oneHourFromNow = new Date(Date.now() + 60 * 60 * 1000);
+
+      Cookies.remove(COOKIE_REFERRAL, { path: "/" });
+
+      Cookies.set(COOKIE_REFERRAL, hashedReferral, {
+        expires: oneHourFromNow,
+        path: "/",
+        sameSite: "lax",
+        secure: true,
+      });
+
       setIsReferralValid(true);
     };
 
     validateSlugs();
-  }, [campaignId, referral]);
+  }, [campaignId, referral, navigate, inhabit]);
+
   useEffect(() => {
     const loadCampaign = async () => {
       if (!isReferralValid) return;
@@ -60,28 +75,7 @@ export default function LastestCampaign(props: Props): JSX.Element {
     };
 
     loadCampaign();
-  }, [isReferralValid]);
-
-  useEffect(() => {
-    // Posicionar directamente en el grid cuando hay referral y las campañas están listas
-    if (
-      !campaignsLoading &&
-      campaigns.length > 0 &&
-      referral &&
-      isReferralValid &&
-      nftGridItemRef.current
-    ) {
-      // Posicionar directamente sin animación suave
-      setTimeout(() => {
-        const offset = -80;
-        const y =
-          nftGridItemRef.current!.getBoundingClientRect().top +
-          window.scrollY +
-          offset;
-        window.scrollTo({ top: y, behavior: "auto" });
-      }, 100);
-    }
-  }, [campaignsLoading, campaigns.length, referral, isReferralValid]);
+  }, [isReferralValid, campaigns.length, getCampaigns]);
 
   useEffect(() => {
     if (onPageReady) onPageReady();
