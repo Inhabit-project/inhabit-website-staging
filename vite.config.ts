@@ -37,6 +37,13 @@ export default defineConfig(({ mode }) => {
     build: {
       // Enable asset hash generation for better caching
       rollupOptions: {
+        input: {
+          // Entrada principal del proyecto
+          main: path.resolve(__dirname, "index.html"),
+        },
+        external: [
+          path.resolve(__dirname, "Figma-Context-MCP/**"), // Ignora esta carpeta
+        ],
         output: {
           // Generate hashed filenames for better caching
           entryFileNames: "assets/[name]-[hash].js",
@@ -48,6 +55,7 @@ export default defineConfig(({ mode }) => {
       chunkSizeWarningLimit: 1000,
       // Enable source maps for debugging (disable in production)
       sourcemap: mode === "development",
+      emptyOutDir: true, // limpia la carpeta dist antes del build
     },
     preview: {
       allowedHosts: [domain],
