@@ -1,6 +1,6 @@
 {
-  "proxy": "0xef4229c8c3250C675F21BCefa42f58EfbfF6002a",
-  "implementation": "0xe41f1bb38b5d155534fdabb701c3331927c825e1,",
+  "proxy": "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
+  "implementation": "0xda06d4e3f59fe2c8ff3077a9d50d5be5e231becd,",
   "abi": [
     { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
     {
