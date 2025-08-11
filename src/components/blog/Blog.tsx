@@ -38,11 +38,23 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
-  // Cache key for localStorage
-  const getCacheKey = () => `blog_posts_${i18n.language}_${isMainPage ? 'main' : 'all'}`;
+  // Cache key for localStorage - use base language to match WordPress service
+  const getCacheKey = () => `blog_posts_${i18n.language.split('-')[0]}_${isMainPage ? 'main' : 'all'}`;
 
   // Load posts with timeout and retry logic
   const loadPosts = async (useCache = true) => {
+    const currentLanguage = i18n.language;
+    const baseLanguage = i18n.language.split('-')[0];
+    const cacheKey = getCacheKey();
+    
+    console.log("📚 Loading blog posts:", {
+      fullLanguage: currentLanguage,
+      baseLanguage,
+      cacheKey,
+      isMainPage,
+      useCache
+    });
+    
     setIsLoadingPosts(true);
     setError(null);
 
@@ -55,9 +67,19 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
           const cacheAge = Date.now() - timestamp;
           // Cache valid for 5 minutes
           if (cacheAge < 5 * 60 * 1000) {
+            console.log("✅ Using cached posts:", {
+              cacheKey,
+              postsCount: cachedPosts.length,
+              cacheAge: Math.round(cacheAge / 1000) + "s"
+            });
             setPosts(cachedPosts);
             setIsLoadingPosts(false);
             return;
+          } else {
+            console.log("⏰ Cache expired:", {
+              cacheKey,
+              cacheAge: Math.round(cacheAge / 1000) + "s"
+            });
           }
         }
       } catch (err) {
@@ -87,6 +109,11 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
         console.warn('Failed to cache posts:', err);
       }
 
+      console.log("🔄 Fetched fresh posts from WordPress:", {
+        postsCount: posts.length,
+        posts: posts.map(p => ({ id: p.id, title: p.title, date: p.date }))
+      });
+      
       setPosts(posts);
       setRetryCount(0);
     } catch (err) {
@@ -310,7 +337,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                             {mainPost.date}
                           </span>
                           <h2
-                            className="heading-4"
+                            className="heading-4 font-semibold"
                             style={{ color: "var(--color-secondary)" }}
                           >
                             {mainPost.title}
@@ -359,7 +386,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                                 {post.date}
                               </span>
                               <h3
-                                className="heading-5"
+                                className="heading-5 font-semibold"
                                 style={{ color: "var(--color-secondary)" }}
                               >
                                 {post.title}

@@ -27,6 +27,9 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
   > | null>(null);
 
   const loadingRef = useRef(false);
+  const attemptedPostsRef = useRef<Set<string>>(new Set());
+  const currentPostIdRef = useRef<string | null>(null);
+  const executionLockRef = useRef<Map<string, boolean>>(new Map());
 
   const clearPostStates = () => {
     setPost(null);
@@ -35,12 +38,43 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
     setError(null);
     setLoading(true);
     loadingRef.current = false;
+    // Don't clear attemptedPostsRef here - we want to keep track of attempted posts
   };
 
   const loadPost = async (postID: string, useCache = true) => {
-    if (loadingRef.current) return;
+    console.log("loadPost called for:", postID);
+    
+    // Triple-check execution lock
+    if (!executionLockRef.current.has(postID)) {
+      console.log("🚫 No execution lock, skipping:", postID);
+      return;
+    }
+    
+    // Check if we've already attempted this post
+    if (attemptedPostsRef.current.has(postID)) {
+      console.log("🚫 Post already attempted, skipping:", postID);
+      return;
+    }
+    
+    if (loadingRef.current) {
+      console.log("Already loading, skipping:", postID);
+      return;
+    }
+    
+    // Check if this post has already failed permanently
+    const hasFailed = localStorage.getItem(`blog_post_failed_${postID}`);
+    if (hasFailed === 'true') {
+      console.log("Post already failed, skipping:", postID);
+      setError(t("mainPage.blog.notFound") || "Post not found");
+      setLoading(false);
+      // Mark as attempted even for failed posts
+      attemptedPostsRef.current.add(postID);
+      return;
+    }
+    
+    // Mark this post as attempted
+    attemptedPostsRef.current.add(postID);
     loadingRef.current = true;
-
     clearPostStates();
 
     // Try to load from cache first
@@ -49,16 +83,17 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
     try {
       // Create AbortController for timeout
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout for slower connections
 
       const { current, next, previous } = await fetchPostWithNavigation(postID);
 
       clearTimeout(timeoutId);
 
-      // Cache the results
+      // Cache the results with current language
       try {
+        const currentLanguage = i18n.language.split('-')[0]; // Use base language
         localStorage.setItem(
-          `blog_post_${postID}_${i18n.language}`,
+          `blog_post_${postID}_${currentLanguage}`,
           JSON.stringify({
             post: current,
             next,
@@ -66,6 +101,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
             timestamp: Date.now(),
           })
         );
+        console.log("💾 Cached post with language:", currentLanguage);
       } catch (err) {
         console.warn("Failed to cache post:", err);
       }
@@ -76,10 +112,17 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
       setRetryCount(0);
     } catch (err) {
       console.error("Error loading blog post:", err);
+      console.error("Post ID:", postID, "Language:", i18n.language);
 
       if (err instanceof Error && err.name === "AbortError") {
         setError(t("mainPage.blog.timeout"));
-      } else if (retryCount < 2 && err instanceof Error && !err.message.includes("not found")) {
+      } else if (err instanceof Error && err.message.includes("not found")) {
+        // Post doesn't exist - don't retry and set a permanent error
+        setError(t("mainPage.blog.notFound") || "Post not found");
+        setRetryCount(0);
+        // Mark this post as permanently failed to prevent retries
+        localStorage.setItem(`blog_post_failed_${postID}`, 'true');
+      } else if (retryCount < 2 && err instanceof Error) {
         setRetryCount((prev) => prev + 1);
         // Retry after 2 seconds
         setTimeout(() => loadPost(postID, false), 2000);
@@ -95,8 +138,9 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
 
   const verifyPostCache = (postID: string) => {
     try {
+      const currentLanguage = i18n.language.split('-')[0]; // Use base language
       const cached = localStorage.getItem(
-        `blog_post_${postID}_${i18n.language}`
+        `blog_post_${postID}_${currentLanguage}`
       );
       if (cached) {
         const {
@@ -122,8 +166,56 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
   };
 
   useEffect(() => {
-    if (id) loadPost(id);
-  }, [id, t]);
+    // Early return if no valid ID
+    if (!id || isNaN(Number(id))) {
+      if (id) {
+        setError("Invalid post ID");
+        setLoading(false);
+      }
+      return;
+    }
+
+    // Check if we already have an execution lock for this post ID
+    if (executionLockRef.current.has(id)) {
+      console.log("Execution already locked for post:", id);
+      return;
+    }
+
+    // Check if this post has already been processed (success or failure)
+    if (attemptedPostsRef.current.has(id)) {
+      console.log("Post already processed, skipping:", id);
+      return;
+    }
+
+    // Check if execution lock is already set for this post
+    if (executionLockRef.current.has(id)) {
+      console.log("🚫 Execution lock already set for post:", id, "- skipping duplicate execution");
+      return;
+    }
+
+
+
+    // Set execution lock immediately
+    executionLockRef.current.set(id, true);
+    console.log("🔒 Setting execution lock for post:", id);
+    console.log("📊 Current refs state:", {
+      executionLocks: Array.from(executionLockRef.current.keys()),
+      attemptedPosts: Array.from(attemptedPostsRef.current),
+      loading: loadingRef.current
+    });
+
+    // Load the post
+    loadPost(id);
+
+    // Cleanup function
+    return () => {
+      if (id) {
+        localStorage.removeItem(`blog_post_failed_${id}`);
+        // Don't clear attemptedPostsRef or executionLockRef - they should persist across Strict Mode cycles
+        // This prevents the second Strict Mode invocation from re-executing
+      }
+    };
+  }, [id]); // Only depend on id
 
   useEffect(() => {
     if (!loading && post && onPageReady) {
@@ -131,21 +223,60 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
     }
   }, [loading, post, onPageReady]);
 
+  // Handle language changes - clear cache and reload post
+  useEffect(() => {
+    if (id && i18n.language) {
+      console.log("🌐 Language changed, clearing cache and reloading post:", {
+        postId: id,
+        newLanguage: i18n.language,
+        baseLanguage: i18n.language.split('-')[0]
+      });
+      
+      // Clear cache for this post in the old language
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith(`blog_post_${id}_`)) {
+          localStorage.removeItem(key);
+          console.log("🗑️ Cleared cache:", key);
+        }
+      });
+      
+      // Clear the attempted posts and execution lock for this post
+      attemptedPostsRef.current.delete(id);
+      executionLockRef.current.delete(id);
+      
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // Directly call loadPost with a fresh execution lock
+      executionLockRef.current.set(id, true);
+      console.log("🔒 Set fresh execution lock for language change:", id);
+      loadPost(id);
+    }
+  }, [i18n.language, id]); // Keep id dependency for proper cleanup
+
+  // Cleanup failed post flags on unmount
+  useEffect(() => {
+    return () => {
+      // Clear all failed post flags when component unmounts
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('blog_post_failed_')) {
+          localStorage.removeItem(key);
+        }
+      });
+      
+      // Clear attempted posts set and execution locks
+      attemptedPostsRef.current.clear();
+      executionLockRef.current.clear();
+    };
+  }, []);
+
   return (
     <>
       <SubLoader isLoading={loading} />
 
       {!loading && error && (
         <main className="container mx-auto py-24" style={{ maxWidth: 900 }}>
-          <h1
-            className="py-24"
-            style={{
-              color: "var(--color-secondary)",
-              fontWeight: 500,
-              fontSize: 48,
-              lineHeight: 1.1,
-            }}
-          >
+          <h1 className="py-24 text-secondary font-medium text-5xl leading-tight">
             {t("mainPage.blog.error")}
           </h1>
         </main>
@@ -155,16 +286,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
         <main className="container mx-auto py-24" style={{ maxWidth: 900 }}>
           {/* Breadcrumb and Category */}
           <nav aria-label="Breadcrumb" className="mb-4">
-            <ol
-              className="flex items-center"
-              style={{
-                color: "var(--color-secondary)",
-                fontFamily: "Abel, sans-serif",
-                fontSize: 16,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-              }}
-            >
+            <ol className="flex items-center text-secondary font-abel text-base tracking-wide uppercase">
               <li>
                 <a href="/blog" className="hover:underline">
                   Blog
@@ -176,65 +298,39 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
               <li>{post?.categories[0]}</li>
             </ol>
           </nav>
+          
           {/* Title */}
-          <h1
-            className="mb-2"
-            style={{
-              color: "var(--color-secondary)",
-              fontWeight: 600,
-              fontSize: 56,
-              lineHeight: 1.1,
-            }}
-          >
+          <h1 className="mb-2 heading-2 text-secondary font-semibold">
             {post?.title}
           </h1>
+          
           {/* Meta */}
-          <div
-            className="flex items-center mb-6"
-            style={{
-              color: "var(--color-secondary)",
-              fontFamily: "Abel, sans-serif",
-              fontSize: 16,
-              letterSpacing: "0.08em",
-              opacity: 0.8,
-            }}
-          >
+          <div className="flex items-center mb-6 text-secondary font-abel text-base tracking-wide opacity-80">
             <time dateTime={post?.modified}>{post?.modified}</time>
-            <span style={{ margin: "0 12px" }} aria-hidden="true">
+            <span className="mx-3" aria-hidden="true">
               •
             </span>
             <time dateTime={post?.date}>{post?.date}</time>
-            <span style={{ margin: "0 12px" }} aria-hidden="true">
+            <span className="mx-3" aria-hidden="true">
               •
             </span>
             <span>{post?.readTime}</span>
           </div>
+          
           {/** Post content */}
-          <div
-            className="body-S blog-content"
-            style={{
-              color: "var(--color-secondary)",
-              marginTop: "1rem",
-              marginBottom: "1rem",
-            }}
+          <div 
+            className="body-S blog-content text-secondary mt-4 mb-4"
             dangerouslySetInnerHTML={{ __html: post.content }}
           ></div>
+          
           {/* Share section */}
           <section
             aria-labelledby="share-heading"
-            className="mb-8"
-            style={{ borderTop: "1px solid #D9E6C3", paddingTop: 24 }}
+            className="mb-8 border-t border-green-soft pt-6"
           >
             <h2
-              className="heading-5 mb-2"
+              className="heading-5 mb-2 text-secondary font-abel text-base tracking-wide uppercase"
               id="share-heading"
-              style={{
-                color: "var(--color-secondary)",
-                fontFamily: "Abel, sans-serif",
-                fontSize: 16,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-              }}
             >
               Share this post
             </h2>
@@ -244,107 +340,61 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
               aria-label="Social media sharing options"
             >
               <button
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: "var(--color-secondary)",
-                  fontSize: 20,
-                }}
+                className="bg-transparent border-none text-secondary text-xl hover:opacity-80 transition-opacity"
                 aria-label={t("common.shareOnWebsite")}
               >
                 🌐
               </button>
               <button
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: "var(--color-secondary)",
-                  fontSize: 20,
-                }}
+                className="bg-transparent border-none text-secondary text-xl hover:opacity-80 transition-opacity"
                 aria-label={t("common.shareOnTwitter")}
               >
                 🐦
               </button>
               <button
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: "var(--color-secondary)",
-                  fontSize: 20,
-                }}
+                className="bg-transparent border-none text-secondary text-xl hover:opacity-80 transition-opacity"
                 aria-label={t("common.shareOnFacebook")}
               >
                 📘
               </button>
             </fieldset>
           </section>
+          
           {/* Author */}
           <section
             aria-labelledby="author-heading"
-            className="flex items-center gap-4 mt-8"
-            style={{ borderTop: "1px solid #D9E6C3", paddingTop: 24 }}
+            className="flex items-center gap-4 mt-8 border-t border-green-soft pt-6"
           >
             <h6 id="author-heading" className="sr-only">
               About the Author
             </h6>
             <div
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: "50%",
-                background: "#D9E6C3",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 24,
-                color: "var(--color-secondary)",
-              }}
+              className="w-12 h-12 rounded-full bg-green-soft flex items-center justify-center text-2xl text-secondary"
               aria-hidden="true"
             >
               {post.author.name.charAt(0).toUpperCase()}
             </div>
             <div>
-              <div style={{ color: "var(--color-secondary)", fontWeight: 600 }}>
+              <div className="text-secondary font-semibold">
                 {post.author.name}
               </div>
             </div>
           </section>
+          
           {/* Previous/Next Article Navigation */}
           <nav
             aria-label="Article navigation"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              margin: "64px 0 48px 0",
-              gap: 24,
-            }}
+            className="article-navigation"
           >
             {prevPost && (
               <Link
                 to={{
                   pathname: `/blog/article/${prevPost.id}`,
                 }}
+                className="article-nav-link prev"
               >
                 <button
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 12,
-                    background: "var(--color-light)",
-                    color: "var(--color-secondary)",
-                    border: "none",
-                    borderRadius: 32,
-                    padding: "18px 32px",
-                    fontFamily: "Abel, sans-serif",
-                    fontWeight: 500,
-                    fontSize: 18,
-                    cursor: "pointer",
-                    boxShadow: "0 2px 8px 0 rgba(16, 32, 16, 0.10)",
-                    transition: "background 0.2s",
-                    width: "100%",
-                    justifyContent: "flex-start",
-                    height: "9rem",
-                  }}
+                  className="article-nav-button"
                   aria-label={`Previous article: ${prevPost.title}`}
                 >
                   <svg
@@ -353,6 +403,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
                     fill="none"
                     viewBox="0 0 24 24"
                     aria-hidden="true"
+                    className="article-nav-icon"
                   >
                     <path
                       d="M15 19l-7-7 7-7"
@@ -362,12 +413,14 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span style={{ fontWeight: 700 }}>
-                    {t("common.previousArticle")}
-                  </span>
-                  <span style={{ opacity: 0.7, marginLeft: 8 }}>
-                    {prevPost.title}
-                  </span>
+                  <div className="article-nav-content">
+                    <span className="font-bold">
+                      {t("common.previousArticle")}
+                    </span>
+                    <span className="opacity-70 ml-2">
+                      {prevPost.title}
+                    </span>
+                  </div>
                 </button>
               </Link>
             )}
@@ -376,41 +429,27 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ onPageReady }) => {
                 to={{
                   pathname: `/blog/article/${nextPost.id}`,
                 }}
+                className="article-nav-link next"
               >
                 <button
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 12,
-                    background: "var(--color-light)",
-                    color: "var(--color-secondary)",
-                    border: "none",
-                    borderRadius: 32,
-                    padding: "18px 32px",
-                    fontFamily: "Abel, sans-serif",
-                    fontWeight: 500,
-                    fontSize: 18,
-                    cursor: "pointer",
-                    boxShadow: "0 2px 8px 0 rgba(16, 32, 16, 0.10)",
-                    transition: "background 0.2s",
-                    width: "100%",
-                    justifyContent: "flex-end",
-                    height: "9rem",
-                  }}
+                  className="article-nav-button"
                   aria-label={`${t("common.nextArticle")}: ${nextPost.title}`}
                 >
-                  <span style={{ fontWeight: 700, marginRight: 8 }}>
-                    {t("common.nextArticle")}
-                  </span>
-                  <span style={{ opacity: 0.7 }}>
-                    Meet the Stewards of Tierra Kilwa
-                  </span>
+                  <div className="article-nav-content">
+                    <span className="font-bold mr-2">
+                      {t("common.nextArticle")}
+                    </span>
+                    <span className="opacity-70">
+                      {nextPost.title}
+                    </span>
+                  </div>
                   <svg
                     width="24"
                     height="24"
                     fill="none"
                     viewBox="0 0 24 24"
                     aria-hidden="true"
+                    className="article-nav-icon"
                   >
                     <path
                       d="M9 5l7 7-7 7"
