@@ -83,10 +83,10 @@ export default function StewardshipNFTPage(props: Props): JSX.Element {
 
   return (
     <>
-      <SEOHead 
+      <SEOHead
         pageType="mainPage.stewardshipNFTPage"
         customData={{
-          image: "/assets/nft-hero.jpg"
+          image: "/assets/nft-hero.jpg",
         }}
       />
       {/* Skip to main content link for accessibility */}
@@ -94,18 +94,18 @@ export default function StewardshipNFTPage(props: Props): JSX.Element {
         href="#main-content"
         className="sr-only focus:not-sr-only absolute top-2 left-2 bg-white text-black p-2 z-50 rounded"
       >
-        {t('common.skipToMainContent')}
+        {t("common.skipToMainContent")}
       </a>
       <div className="min-h-screen background-gradient-light">
         <Menu />
         <main id="main-content" role="main" tabIndex={-1}>
-          <section className="hero" aria-label={t('sections.hero')}>
+          <section className="hero" aria-label={t("sections.hero")}>
             <InternalPagesHero
               variant="stewardship"
               onHeroImageLoad={onHeroImageLoad}
             />
           </section>
-          <section aria-label={t('sections.stewardshipNFT')}>
+          <section aria-label={t("sections.stewardshipNFT")}>
             <ImageSection
               eyebrow={t("mainPage.stewardshipNFTPage.imageSection.eyebrow")}
               heading={
@@ -121,35 +121,37 @@ export default function StewardshipNFTPage(props: Props): JSX.Element {
               imageAlt={t("mainPage.stewardshipNFTPage.imageSection.imageAlt")}
             />
           </section>
-          <section aria-label={t('sections.stewardshipNFT')}>
+          <section aria-label={t("sections.stewardshipNFT")}>
             <StewardshipNFTBenefitsSection />
           </section>
-          <section aria-label={t('sections.highlight')}>
+          <section aria-label={t("sections.highlight")}>
             <Highlight />
           </section>
-          <section aria-label={t('sections.stewardshipNFT')}>
+          <section aria-label={t("sections.stewardshipNFT")}>
             <NFTWorksSection />
           </section>
-          <section aria-label={t('sections.faq')}>
+          <section aria-label={t("sections.faq")}>
             <FourCriteriaHubGlobal />
           </section>
-          <section aria-label={t('sections.nftGrid')} ref={nftGridRef}>
+          <section aria-label={t("sections.nftGrid")} ref={nftGridRef}>
             {!campaignsLoading &&
               (campaigns.length === 0 ? (
-                <p className="text-lg text-gray-500">{t('common.noCampaignsAvailable')}</p>
+                <p className="text-lg text-gray-500">
+                  {t("common.noCampaignsAvailable")}
+                </p>
               ) : (
                 campaigns.map((campaign) => (
                   <NFTGrid key={campaign.id} campaign={campaign} />
                 ))
               ))}
           </section>
-          <section aria-label={t('sections.blog')}>
+          <section aria-label={t("sections.blog")}>
             <Blog />
           </section>
-          <section aria-label={t('sections.cta')}>
+          <section aria-label={t("sections.cta")}>
             <CTA />
           </section>
-          <section aria-label={t('sections.faq')}>
+          <section aria-label={t("sections.faq")}>
             <FAQStewardshipNFT />
           </section>
         </main>

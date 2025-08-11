@@ -10,12 +10,13 @@ import { useResendKycEmail } from "@/hooks/useKycEmail";
 import { generateSiweMessage } from "@/utils/generate-siwe-message.util";
 import { useNonce } from "@/hooks/useNonce";
 import { ResendKycDto } from "@/services/dtos/resend-kyc.dto";
-import { COOLDOWN_KEY } from "@/config/const";
+import { COOKIE_REFERRAL, COOLDOWN_KEY } from "@/config/const";
 import { useInhabit } from "@/hooks/contracts/inhabit";
-import { keccak256, toBytes } from "viem";
+import { Hex, keccak256, toBytes } from "viem";
 import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
 import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
 import { t } from "i18next";
+import Cookies from "js-cookie";
 
 interface Props {
   availableSupply: number;
@@ -42,7 +43,7 @@ export function VoucherStep(props: Props): JSX.Element {
   const [cooldown, setCooldown] = useState<number>(0);
 
   // external hooks
-  const { campaignId, referral } = useParams();
+  const { campaignId } = useParams();
 
   const { address, chainId } = useAccount();
   const { data: walletClient } = useWalletClient();
@@ -172,6 +173,10 @@ export function VoucherStep(props: Props): JSX.Element {
     const refetch = isUSDC ? refetchUsdc : refetchUsdt;
     const tokenAddr = isUSDC ? usdc.getAddress() : usdt.getAddress();
 
+    const cookieReferral = Cookies.get(COOKIE_REFERRAL) as Hex | undefined;
+
+    const referral = cookieReferral ? cookieReferral : keccak256(toBytes(""));
+
     try {
       setIsProcessing(true);
 
@@ -198,7 +203,7 @@ export function VoucherStep(props: Props): JSX.Element {
           {
             campaignId: Number(campaignId),
             collectionAddress: collection.address,
-            referral: keccak256(toBytes(referral ?? "")),
+            referral,
             token: tokenAddr,
           },
           {

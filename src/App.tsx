@@ -8,11 +8,10 @@ import Loader from "@/load/Loader";
 import { scrollManager } from "@/utils/scrollManager";
 import PageTransition from "@/load/PageTransition";
 import { useLocation } from "react-router-dom";
-import { useScrollToTopOnNavigation } from "@/utils/scrollToTopOnNavigation";
-import ScrollToTop from "@/components/ScrollToTop";
 import CacheManager from "@/utils/cacheManager";
 
 import { Routes, Route } from "react-router-dom";
+import LastestCampaign from "./pages/LastestCampaing";
 
 // Lazy load pages for code splitting
 const MainPage = React.lazy(() => import("@/pages/MainPage"));
@@ -44,27 +43,33 @@ export const PageAnimationContext = createContext<boolean>(false);
 
 const App: React.FC = () => {
   const location = useLocation();
-  
+
   // Only show loader on main page reload - NEVER for internal pages or navigation
   const isMainPageReload = () => {
     // STRICT: Only main page path allowed
-    if (location.pathname !== '/') return false;
-    
+    if (location.pathname !== "/") return false;
+
     // STRICT: Prevent loader on any navigation (even to main page)
     // Only show on actual page reload/refresh
-    const navigationEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+    const navigationEntries = performance.getEntriesByType(
+      "navigation"
+    ) as PerformanceNavigationTiming[];
     if (navigationEntries.length > 0) {
       const navType = navigationEntries[0].type;
       // Only show loader for 'reload' or 'navigate' (first visit)
       // but NOT for 'back_forward' (browser navigation)
-      return navType === 'reload' || (navType === 'navigate' && !document.referrer);
+      return (
+        navType === "reload" || (navType === "navigate" && !document.referrer)
+      );
     }
-    
+
     // Fallback: only if we're on main page with no same-origin referrer
     // This ensures it's a direct visit or reload, not internal navigation
-    return !document.referrer || !document.referrer.includes(window.location.origin);
+    return (
+      !document.referrer || !document.referrer.includes(window.location.origin)
+    );
   };
-  
+
   // CRITICAL: This should ONLY be true for main page hero loading
   // Never for InternalPagesHero or page navigation
   const shouldShowLoader = isMainPageReload();
@@ -81,15 +86,15 @@ const App: React.FC = () => {
   // Initialize IndexedDB cache on app startup
   useEffect(() => {
     let isInitialized = false;
-    
+
     const initializeCache = async () => {
       if (isInitialized) return;
-      
+
       try {
         await CacheManager.initializeCache();
         isInitialized = true;
       } catch (error) {
-        console.error('Failed to initialize blog cache:', error);
+        console.error("Failed to initialize blog cache:", error);
       }
     };
 
@@ -104,7 +109,7 @@ const App: React.FC = () => {
       setMinLoaderTimeElapsed(true);
       return;
     }
-    
+
     if (heroImageLoaded && minLoaderTimeElapsed) {
       setCanFinishLoading(true);
     }
@@ -116,7 +121,7 @@ const App: React.FC = () => {
       setMinLoaderTimeElapsed(true);
       return;
     }
-    
+
     const timer = setTimeout(() => setMinLoaderTimeElapsed(true), 1200);
     return () => clearTimeout(timer);
   }, [shouldShowLoader]);
@@ -140,10 +145,11 @@ const App: React.FC = () => {
     if (location !== pendingLocation) {
       console.log("Location changed to:", location.pathname);
       console.log("Location state:", location.state);
-      
+
       // Check if skipTransition is set in the location state
-      const shouldSkipTransition = (location.state as any)?.skipTransition === true;
-      
+      const shouldSkipTransition =
+        (location.state as any)?.skipTransition === true;
+
       if (shouldSkipTransition) {
         console.log("Skipping transition for:", location.pathname);
         // Skip transition entirely
@@ -155,12 +161,12 @@ const App: React.FC = () => {
         }, 100);
         return;
       }
-      
+
       // Start transition
       setShowTransition(true);
       setTransitionIn(false); // Start with cover
       setPageReady(false); // Reset page ready on navigation
-      
+
       // After cover animation, update location and start reveal
       setTimeout(() => {
         setPendingLocation(location);
@@ -186,7 +192,7 @@ const App: React.FC = () => {
       setTimeout(() => {
         setShowTransition(false);
       }, 1200); // Wait for reveal animation to complete
-      
+
       requestAnimationFrame(() => {
         // List of routes that do NOT use a hero image
         const noHeroRoutes = [
@@ -195,6 +201,7 @@ const App: React.FC = () => {
           "/blog",
           "/hubs/agua-de-luna",
           "/hubs/tierrakilwa",
+          "/lastest-campaign",
           "/terms",
           "/privacy",
           "/projects",
@@ -218,15 +225,21 @@ const App: React.FC = () => {
           }
         } else {
           // For pages with hero, scroll to hero section
-          if (scrollManager && typeof scrollManager.scrollToHero === "function") {
+          if (
+            scrollManager &&
+            typeof scrollManager.scrollToHero === "function"
+          ) {
             scrollManager.scrollToHero({ immediate: true });
-          } else if (scrollManager && typeof scrollManager.scrollTo === "function") {
+          } else if (
+            scrollManager &&
+            typeof scrollManager.scrollTo === "function"
+          ) {
             scrollManager.scrollTo(0, { immediate: true });
           } else {
             window.scrollTo({ top: 0, behavior: "auto" });
           }
         }
-        
+
         // Delay ScrollTrigger refresh to avoid conflicts with animations
         setTimeout(() => {
           import("./utils/gsap").then(({ ScrollTrigger }) => {
@@ -272,10 +285,10 @@ const App: React.FC = () => {
   };
 
   // Helper to pass onPageReady to all pages
-  const pageProps = { 
+  const pageProps = {
     onPageReady: () => {
       setPageReady(true);
-    }
+    },
   };
 
   // Add this useEffect after your other useEffects
@@ -283,6 +296,7 @@ const App: React.FC = () => {
     // List of routes that do NOT use a hero image
     const noHeroRoutes = [
       "/membership",
+      "/lastest-campaign",
       "/checkout",
       "/blog",
       "/hubs/agua-de-luna",
@@ -310,7 +324,7 @@ const App: React.FC = () => {
   // Fallback: Always finish loading after 5 seconds (in case hero image never loads)
   useEffect(() => {
     if (!shouldShowLoader) return;
-    
+
     if (!canFinishLoading) {
       const fallback = setTimeout(() => {
         setHeroImageLoaded(true);
@@ -340,7 +354,10 @@ const App: React.FC = () => {
   useEffect(() => {
     // Small delay to ensure DOM is ready
     const timer = setTimeout(() => {
-      if (scrollManager && typeof scrollManager.ensurePageStartsAtTop === "function") {
+      if (
+        scrollManager &&
+        typeof scrollManager.ensurePageStartsAtTop === "function"
+      ) {
         scrollManager.ensurePageStartsAtTop({ immediate: true, force: true });
       }
     }, 100);
@@ -373,13 +390,13 @@ const App: React.FC = () => {
             - Page navigation between routes
             - Any other page loading states
           */}
-                     {isLoading && shouldShowLoader && location.pathname === '/' && (
-             <Loader
-               onLoadingComplete={
-                 canFinishLoading ? handleLoaderComplete : undefined
-               }
-             />
-           )}
+          {isLoading && shouldShowLoader && location.pathname === "/" && (
+            <Loader
+              onLoadingComplete={
+                canFinishLoading ? handleLoaderComplete : undefined
+              }
+            />
+          )}
           {showTransition && (
             <PageTransition
               in={transitionIn}
@@ -419,6 +436,15 @@ const App: React.FC = () => {
                 path="/stewardship-nft"
                 element={
                   <StewardshipNFTPage
+                    {...pageProps}
+                    onHeroImageLoad={handleHeroImageLoad}
+                  />
+                }
+              />
+              <Route
+                path="/latest-campaign/:campaignId?/:referral?"
+                element={
+                  <LastestCampaign
                     {...pageProps}
                     onHeroImageLoad={handleHeroImageLoad}
                   />
