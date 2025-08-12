@@ -1,6 +1,7 @@
 /**
- * Font Preloader Utility
+ * Font Preloader Utility - LATIN ONLY
  * Preloads fonts using link tags for better reliability
+ * COMPLETELY ELIMINATES Cyrillic and Vietnamese fonts for maximum performance
  */
 
 interface FontPreloadConfig {
@@ -22,7 +23,7 @@ class FontPreloader {
   }
 
   /**
-   * Preload fonts using link tags
+   * Preload fonts using link tags - LATIN ONLY
    */
   preloadFonts(fonts: FontPreloadConfig[]): void {
     fonts.forEach(font => {
@@ -31,7 +32,7 @@ class FontPreloader {
   }
 
   /**
-   * Preload a single font
+   * Preload a single font - LATIN ONLY
    */
   private preloadFont(font: FontPreloadConfig): void {
     const fontKey = `${font.family}-${font.weight}-${font.style || 'normal'}`;
@@ -48,10 +49,10 @@ class FontPreloader {
       link.type = 'font/woff2';
       link.crossOrigin = 'anonymous';
       
-      // Generate font URL based on @fontsource structure
+      // Generate font URL based on our new font structure - LATIN ONLY
       const fontUrlName = font.family.toLowerCase().replace(/\s+/g, '-');
       const styleSuffix = font.style === 'italic' ? 'italic' : 'normal';
-      link.href = `/node_modules/@fontsource/${fontUrlName}/files/${fontUrlName}-latin-${font.weight}-${styleSuffix}.woff2`;
+      link.href = `/assets/fonts/${fontUrlName}-latin-${font.weight}-${styleSuffix}.woff2`;
       
       // Add font-display attribute
       link.setAttribute('data-font-display', font.display || 'swap');
@@ -62,29 +63,6 @@ class FontPreloader {
     } catch (error) {
       console.warn(`Failed to preload font ${font.family} ${font.weight}:`, error);
     }
-  }
-
-  /**
-   * Add font-display CSS for preloaded fonts
-   */
-  addFontDisplayCSS(): void {
-    const style = document.createElement('style');
-    style.textContent = `
-      /* Font display optimization for preloaded fonts */
-      @font-face {
-        font-family: 'Nunito Sans';
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'Montserrat';
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'Abel';
-        font-display: swap;
-      }
-    `;
-    document.head.appendChild(style);
   }
 
   /**
@@ -107,27 +85,24 @@ class FontPreloader {
 export const fontPreloader = FontPreloader.getInstance();
 
 /**
- * Initialize font preloading
+ * Initialize font preloading - LATIN ONLY
  */
 export function initializeFontPreloading(): void {
   const fonts: FontPreloadConfig[] = [
-    { family: 'Nunito Sans', weight: 400, display: 'swap' },
-    { family: 'Nunito Sans', weight: 600, display: 'swap' },
-    { family: 'Montserrat', weight: 400, display: 'swap' },
-    { family: 'Montserrat', weight: 700, display: 'swap' },
-    { family: 'Abel', weight: 400, display: 'swap' }
+    { family: 'Nunito Sans', weight: 400, display: 'swap' }, // LATIN ONLY
+    { family: 'Nunito Sans', weight: 600, display: 'swap' }, // LATIN ONLY
+    { family: 'Montserrat', weight: 400, display: 'swap' },  // LATIN ONLY
+    { family: 'Montserrat', weight: 700, display: 'swap' },  // LATIN ONLY
+    { family: 'Abel', weight: 400, display: 'swap' }         // LATIN ONLY
   ];
 
-  // Add font-display CSS
-  fontPreloader.addFontDisplayCSS();
-  
   // Preload fonts
   fontPreloader.preloadFonts(fonts);
 }
 
 /**
- * Alternative font loading strategy using Google Fonts CDN
- * This can be used as a fallback if @fontsource fails
+ * Alternative font loading strategy using Google Fonts CDN - LATIN ONLY
+ * This can be used as a fallback if local fonts fail
  */
 export function loadFontsFromGoogleCDN(): void {
   const googleFontsLink = document.createElement('link');
@@ -143,6 +118,7 @@ export function loadFontsFromGoogleCDN(): void {
 
   const fontStylesheet = document.createElement('link');
   fontStylesheet.rel = 'stylesheet';
-  fontStylesheet.href = 'https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,600;1,400&family=Montserrat:ital,wght@0,400;0,700;1,400&family=Abel&display=swap';
+  // LATIN ONLY - No Cyrillic or Vietnamese
+  fontStylesheet.href = 'https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,600;1,400&family=Montserrat:ital,wght@0,400;0,700;1,400&family=Abel&display=swap&subset=latin';
   document.head.appendChild(fontStylesheet);
 } 

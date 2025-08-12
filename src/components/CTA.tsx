@@ -133,7 +133,7 @@ const CTA: React.FC = () => {
                 </h3>
                 {/* Buttons */}
                 <div className="mt-8 md:mt-12 flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-                  {/* Primary Button (Orange) */}
+                  {/* Primary Button */}
                   <button
                     onClick={() => (window.location.href = "/hubs/nuiyanzhi")}
                     className="mt-0 flex items-center h-[4.2rem] bg-[var(--color-accent)] hover:bg-[var(--color-green-soft)] text-light hover:text-secondary rounded-button backdrop-blur-sm transition-all duration-200 group no-underline"

@@ -152,7 +152,7 @@ const Checkout: React.FC<CheckoutProps> = ({ membershipId, onPageReady }) => {
                     You gain lifelong stewardship and utility rights over a tokenized real-world land.
                   </td>
                   <td className="py-3 px-6 text-center align-top" rowSpan={2}>
-                    {/* Orange checked box SVG */}
+                    {/* Primary checked box SVG */}
                     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" className="mx-auto">
                       <rect x="2" y="2" width="24" height="24" rx="2" fill="#E2EDD3" stroke="#D57300" strokeWidth="2.5"/>
                       <path d="M8 14.5L12 18L20 10" stroke="#D57300" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>

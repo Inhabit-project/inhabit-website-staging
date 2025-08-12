@@ -18,7 +18,6 @@ export default {
         background: 'var(--color-background)',
         accent: 'var(--color-accent)',
         text: 'var(--color-text)',
-        orange: 'var(--color-orange)',
       },
       keyframes: {
         videoPulse: {
@@ -29,8 +28,8 @@ export default {
           },
           '50%': {
             transform: 'scale3d(1.1, 1.1, 1)',
-            backgroundColor: 'rgba(255, 166, 0, 0.2)',
-            borderColor: 'rgb(255, 166, 0)',
+            backgroundColor: 'rgba(213, 115, 0, 0.2)',
+            borderColor: 'rgb(213, 115, 0)',
           },
         },
         dropIn: {

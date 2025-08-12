@@ -99,10 +99,10 @@ const ProjectsVideoSection: React.FC = () => {
           ease: "back.out(1.7)"
         }, "-=0.5");
 
-      // Add attention-grabbing pulse animation to video container
+              // Add attention-grabbing pulse animation to video container
       if (videoContainerRef.current) {
         gsap.to(videoContainerRef.current, {
-          boxShadow: "0 0 30px rgba(255, 166, 0, 0.3)",
+          boxShadow: "0 0 30px rgba(213, 115, 0, 0.3)",
           duration: 2,
           repeat: -1,
           yoyo: true,
@@ -119,8 +119,8 @@ const ProjectsVideoSection: React.FC = () => {
             ease: "power2.out"
           });
           gsap.to(playCircleRef.current, {
-            backgroundColor: "rgba(255, 166, 0, 0.2)",
-            borderColor: "rgb(255, 166, 0)",
+            backgroundColor: "rgba(213, 115, 0, 0.2)",
+            borderColor: "rgb(213, 115, 0)",
             duration: 0.3
           });
         });
@@ -145,8 +145,8 @@ const ProjectsVideoSection: React.FC = () => {
             ease: "power2.out"
           });
           gsap.to(playCircleRef.current, {
-            backgroundColor: "rgba(255, 166, 0, 0.2)",
-            borderColor: "rgb(255, 166, 0)",
+            backgroundColor: "rgba(213, 115, 0, 0.2)",
+            borderColor: "rgb(213, 115, 0)",
             duration: 0.3
           });
         }
@@ -265,12 +265,12 @@ const ProjectsVideoSection: React.FC = () => {
                 {/* Outer circle with animation */}
                 <div 
                   ref={playCircleRef}
-                  className="w-[40px] md:w-[50px] h-[40px] md:h-[50px] rounded-full backdrop-blur-[4.125px] border border-white flex items-center justify-center animate-videoPulse hover:bg-orange-500/20 transition-all duration-300"
+                  className="w-[40px] md:w-[50px] h-[40px] md:h-[50px] rounded-full backdrop-blur-[4.125px] border border-white flex items-center justify-center animate-videoPulse hover:bg-primary/20 transition-all duration-300"
                   aria-hidden="true"
                 >
                   {/* Play triangle */}
                   <div 
-                    className="w-0 h-0 border-t-[8px] md:border-t-[10px] border-t-transparent border-l-[12px] md:border-l-[15px] border-l-white border-b-[8px] md:border-b-[10px] border-b-transparent ml-1 group-hover:border-l-orange-500 transition-colors duration-300"
+                    className="w-0 h-0 border-t-[8px] md:border-t-[10px] border-t-transparent border-l-[12px] md:border-l-[15px] border-l-white border-b-[8px] md:border-b-[10px] border-b-transparent ml-1 group-hover:border-l-primary transition-colors duration-300"
                     aria-hidden="true"
                   />
                 </div>
@@ -301,8 +301,8 @@ const ProjectsVideoSection: React.FC = () => {
             aria-label={t('mainPage.projectsVideo.closeVideo')}
           >
             <div className="relative w-4 h-4" aria-hidden="true">
-              <div className="absolute top-1/2 left-0 w-4 h-[2px] bg-white rotate-45 group-hover:bg-orange-500 transition-colors duration-300" />
-              <div className="absolute top-1/2 left-0 w-4 h-[2px] bg-white -rotate-45 group-hover:bg-orange-500 transition-colors duration-300" />
+              <div className="absolute top-1/2 left-0 w-4 h-[2px] bg-white rotate-45 group-hover:bg-primary transition-colors duration-300" />
+              <div className="absolute top-1/2 left-0 w-4 h-[2px] bg-white -rotate-45 group-hover:bg-primary transition-colors duration-300" />
             </div>
           </button>
           <div className="relative w-full h-full max-w-[100vw] max-h-[98vh] aspect-video">

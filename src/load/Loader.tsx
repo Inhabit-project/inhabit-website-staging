@@ -50,6 +50,7 @@ const Loader: React.FC<LoaderProps> = ({ onLoadingComplete }) => {
           alt="Earth loader" 
           className="w-full h-full object-cover animate-loaderPulse"
           loading="eager"
+          fetchPriority="high"
         />
       </div>
       <div 

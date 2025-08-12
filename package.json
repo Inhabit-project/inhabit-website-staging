@@ -4,14 +4,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc && vite build && node scripts/generateSitemap.js",
+    "build": "node scripts/copyFonts.js && tsc && vite build && node scripts/generateSitemap.js",
     "preview": "vite preview",
-    "start:dev": "vite --mode dev",
-    "start:staging": "vite --mode staging",
-    "start:prod": "vite --mode prod",
-    "serve:dev": "vite build --mode dev && vite preview --mode dev --port 5174",
-    "serve:staging": "vite build --mode staging && vite preview --mode staging --port 5174",
-    "serve:prod": "vite build --mode prod && vite preview --mode prod --port 5173"
+    "start:dev": "node scripts/copyFonts.js && vite --mode dev",
+    "start:staging": "node scripts/copyFonts.js && vite --mode staging",
+    "start:prod": "node scripts/copyFonts.js && vite --mode prod",
+    "serve:dev": "node scripts/copyFonts.js && vite build --mode dev && vite preview --mode dev --port 5174",
+    "serve:staging": "node scripts/copyFonts.js && vite build --mode staging && vite preview --mode staging --port 5174",
+    "serve:prod": "node scripts/copyFonts.js && vite build --mode prod && vite preview --mode prod --port 5173",
+    "copy-fonts": "node scripts/copyFonts.js"
   },
   "dependencies": {
     "@dynamic-labs/ethereum": "^4.25.9",

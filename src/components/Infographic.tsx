@@ -173,9 +173,9 @@ const Infographic: React.FC = () => {
         .to(pointsRef.current ? Array.from(pointsRef.current.children) : [], {
           opacity: 1,
           scale: 1,
-          duration: 0.3,
+          duration: 0.1,
           ease: 'power2.out',
-          stagger: 0.15
+          stagger: 0.08
         }, '-=0.1');
 
       // Refresh ScrollTrigger

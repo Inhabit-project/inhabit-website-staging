@@ -45,22 +45,76 @@
     <link rel="preconnect" href="https://inhabit.one">
     <link rel="dns-prefetch" href="https://inhabit.one">
     
-    <!-- Font preloading for critical fonts -->
-    <!-- Preload Nunito Sans (most used font) -->
-    <link rel="preload" href="/node_modules/@fontsource/nunito-sans/files/nunito-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/node_modules/@fontsource/nunito-sans/files/nunito-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <!-- Critical Font Preloading - LATIN ONLY -->
+    <!-- COMPLETELY ELIMINATED: Cyrillic and Vietnamese fonts for maximum performance -->
+    <!-- Preload critical Latin fonts with font-display: swap -->
+    <link rel="preload" href="/assets/fonts/nunito-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/nunito-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/montserrat-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/montserrat-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/abel-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
     
-    <!-- Preload Montserrat (headings) -->
-    <link rel="preload" href="/node_modules/@fontsource/montserrat/files/montserrat-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/node_modules/@fontsource/montserrat/files/montserrat-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <!-- Critical Image Preloading for LCP Optimization -->
+    <!-- Preload Earth loader image with high priority to eliminate lazy loading -->
+    <link rel="preload" href="/assets/small-earth.webp" as="image" fetchpriority="high">
     
-    <!-- Preload Abel (buttons/nav) -->
-    <link rel="preload" href="/node_modules/@fontsource/abel/files/abel-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-    
+    <!-- Font Display Optimization CSS - LATIN ONLY -->
     <style>
       :root {
         --color-light: #f6ffea;
         --color-secondary: #1c3625;
+      }
+      
+      /* Critical font loading optimization - LATIN ONLY */
+      /* COMPLETELY ELIMINATED: Cyrillic and Vietnamese font variants */
+      @font-face {
+        font-family: 'Nunito Sans';
+        src: url('/assets/fonts/nunito-sans-latin-400-normal.woff2') format('woff2');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+        font-preload: true;
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      
+      @font-face {
+        font-family: 'Nunito Sans';
+        src: url('/assets/fonts/nunito-sans-latin-600-normal.woff2') format('woff2');
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+        font-preload: true;
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      
+      @font-face {
+        font-family: 'Montserrat';
+        src: url('/assets/fonts/montserrat-latin-400-normal.woff2') format('woff2');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+        font-preload: true;
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      
+      @font-face {
+        font-family: 'Montserrat';
+        src: url('/assets/fonts/montserrat-latin-700-normal.woff2') format('woff2');
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+        font-preload: true;
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      
+      @font-face {
+        font-family: 'Abel';
+        src: url('/assets/fonts/abel-latin-400-normal.woff2') format('woff2');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+        font-preload: true;
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
       }
       
       /* Optimized font loading with fallbacks */

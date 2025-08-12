@@ -30,6 +30,9 @@ class ScrollManager {
     immediate?: boolean;
     offset?: number;
   }) {
+    // First, force scroll to top to ensure we're at the beginning
+    window.scrollTo({ top: 0, behavior: "auto" });
+    
     // Try multiple selectors to find the hero section, prioritizing aria-label
     const heroSelectors = [
       'section[aria-label*="hero"]', // Section with hero in aria-label (most specific)
@@ -67,6 +70,13 @@ class ScrollManager {
     immediate?: boolean;
     force?: boolean;
   }) {
+    // Always force scroll to top first
+    window.scrollTo({ top: 0, behavior: "auto" });
+    
+    // Also reset body and document scroll positions
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    
     // If force is true or we're at the top, scroll to hero
     if (options?.force || window.scrollY === 0) {
       this.scrollToHero({ immediate: options?.immediate ?? true });

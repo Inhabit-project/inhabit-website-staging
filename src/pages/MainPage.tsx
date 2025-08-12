@@ -83,6 +83,13 @@ function MainPage(props: Props) {
   // Ensure page always starts at hero section
   useEffect(() => {
     if (loaderDone && !scrollToSection) {
+      // Force scroll to top first
+      window.scrollTo({ top: 0, behavior: "auto" });
+      
+      // Also reset body and document scroll positions
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      
       // Small delay to ensure DOM is ready
       const timer = setTimeout(() => {
         if (scrollManager && typeof scrollManager.scrollToHero === "function") {

@@ -48,7 +48,13 @@ export default defineConfig(({ mode }) => {
           // Generate hashed filenames for better caching
           entryFileNames: "assets/[name]-[hash].js",
           chunkFileNames: "assets/[name]-[hash].js",
-          assetFileNames: "assets/[name]-[hash].[ext]",
+          assetFileNames: (assetInfo) => {
+            // Special handling for fonts to preserve their names for preloading
+            if (assetInfo.name && assetInfo.name.match(/\.(woff2?|ttf|otf)$/)) {
+              return "assets/fonts/[name].[ext]";
+            }
+            return "assets/[name]-[hash].[ext]";
+          },
         },
       },
       // Optimize chunk size
@@ -56,6 +62,8 @@ export default defineConfig(({ mode }) => {
       // Enable source maps for debugging (disable in production)
       sourcemap: mode === "development",
       emptyOutDir: true, // limpia la carpeta dist antes del build
+      // Asset optimization
+      assetsInlineLimit: 4096, // Inline assets smaller than 4KB
     },
     preview: {
       allowedHosts: [domain],
@@ -67,6 +75,14 @@ export default defineConfig(({ mode }) => {
       host,
       port,
       strictPort: true,
+    },
+    // Optimize font loading
+    optimizeDeps: {
+      include: ['react', 'react-dom'],
+    },
+    // CSS optimization
+    css: {
+      devSourcemap: mode === "development",
     },
   };
 });
