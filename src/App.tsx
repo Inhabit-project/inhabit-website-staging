@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect, Suspense } from "react";
+import React, { useState, createContext, useEffect, Suspense, memo, useCallback } from "react";
 
 import "@/i18n";
 import "@/utils/gsap";
@@ -41,11 +41,17 @@ export const LoadingContext = createContext<boolean>(false);
 // Create a context for page animations that should work regardless of loader state
 export const PageAnimationContext = createContext<boolean>(false);
 
-const App: React.FC = () => {
+// Loading fallback component for route transitions
+const RouteLoadingFallback = () => {
+  // Disabled: Return null to eliminate the spinning circle loader
+  return null;
+};
+
+const App: React.FC = memo(() => {
   const location = useLocation();
 
   // Only show loader on main page reload - NEVER for internal pages or navigation
-  const isMainPageReload = () => {
+  const isMainPageReload = useCallback(() => {
     // STRICT: Only main page path allowed
     if (location.pathname !== "/") return false;
 
@@ -68,7 +74,7 @@ const App: React.FC = () => {
     return (
       !document.referrer || !document.referrer.includes(window.location.origin)
     );
-  };
+  }, [location.pathname]);
 
   // CRITICAL: This should ONLY be true for main page hero loading
   // Never for InternalPagesHero or page navigation
@@ -82,6 +88,7 @@ const App: React.FC = () => {
   const [minLoaderTimeElapsed, setMinLoaderTimeElapsed] = useState(false);
   const [canFinishLoading, setCanFinishLoading] = useState(false);
   const [pendingLocation, setPendingLocation] = useState(location);
+  const [newPageReady, setNewPageReady] = useState(false);
 
   // Initialize IndexedDB cache on app startup
   useEffect(() => {
@@ -257,17 +264,17 @@ const App: React.FC = () => {
     }
   }, [transitionIn, pageReady, location.pathname]);
 
-  const handleTransitionComplete = () => {
+  const handleTransitionComplete = useCallback(() => {
     // No-op: scroll now handled in useEffect above
-  };
+  }, []);
 
   // Called when the hero image is loaded
-  const handleHeroImageLoad = () => {
+  const handleHeroImageLoad = useCallback(() => {
     setHeroImageLoaded(true);
-  };
+  }, []);
 
   // Called when Loader finishes its progress animation
-  const handleLoaderComplete = () => {
+  const handleLoaderComplete = useCallback(() => {
     setIsLoading(false);
     // Refresh ScrollTrigger after loader disappears with longer delay
     setTimeout(() => {
@@ -282,13 +289,16 @@ const App: React.FC = () => {
         }
       });
     }, 300); // Increased delay to avoid conflicts
-  };
+  }, []);
 
   // Helper to pass onPageReady to all pages
   const pageProps = {
-    onPageReady: () => {
+    onPageReady: useCallback(() => {
       setPageReady(true);
-    },
+    }, []),
+    onPageStart: useCallback(() => {
+      setPageReady(false);
+    }, []),
   };
 
   // Add this useEffect after your other useEffects
@@ -319,7 +329,49 @@ const App: React.FC = () => {
     ) {
       setHeroImageLoaded(true);
     }
-  }, [location]);
+
+    // Handle page transitions for route changes
+    if (location !== pendingLocation) {
+      // Set transitioning state to true
+      setIsTransitioning(true);
+      
+      // Reset page ready state for new page
+      setPageReady(false);
+      
+      // Update pending location immediately so new page loads
+      setPendingLocation(location);
+      
+      // Reset new page ready state
+      setNewPageReady(false);
+      
+      // Start transition overlay on top of the new page
+      setShowTransition(true);
+      setTransitionIn(false);
+      
+      // Wait for new page to be ready, then start transition in
+      const checkPageReady = () => {
+        if (pageReady) {
+          setNewPageReady(true);
+          // Start transition in after page is ready
+          setTransitionIn(true);
+          
+          // After transition in completes, hide the transition and reset state
+          const revealTimer = setTimeout(() => {
+            setShowTransition(false);
+            setIsTransitioning(false);
+          }, 1500); // Match the CSS animation duration
+          
+          return () => clearTimeout(revealTimer);
+        } else {
+          // Check again in 50ms
+          setTimeout(checkPageReady, 50);
+        }
+      };
+      
+      // Start checking for page readiness
+      checkPageReady();
+    }
+  }, [location, pendingLocation, pageReady]);
 
   // Fallback: Always finish loading after 5 seconds (in case hero image never loads)
   useEffect(() => {
@@ -333,11 +385,6 @@ const App: React.FC = () => {
       return () => clearTimeout(fallback);
     }
   }, [canFinishLoading, shouldShowLoader]);
-
-  // Scroll to top on initial mount (page refresh) - REMOVED: redundant with transition logic
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
 
   // Ensure scroll position is reset before page unload (for browser scroll restoration)
   useEffect(() => {
@@ -365,20 +412,9 @@ const App: React.FC = () => {
     return () => clearTimeout(timer);
   }, [location.pathname]);
 
-  // REMOVED: Redundant scroll to top after loader - handled by transition logic
-  // useEffect(() => {
-  //   if (!isLoading && shouldShowLoader) {
-  //     setTimeout(() => {
-  //       window.scrollTo(0, 0);
-  //     }, 10);
-  //   }
-  // }, [isLoading, shouldShowLoader]);
-
   return (
     <LoadingContext.Provider value={isLoading}>
       <PageAnimationContext.Provider value={transitionIn}>
-        {/* REMOVED: ScrollToTop component - redundant and causes conflicts */}
-        {/* <ScrollToTop /> */}
         <div
           className={`app-container ${isTransitioning ? "transitioning" : ""}`}
         >
@@ -403,8 +439,8 @@ const App: React.FC = () => {
               onComplete={handleTransitionComplete}
             />
           )}
-          <Suspense fallback={null}>
-            <Routes location={pendingLocation}>
+          <Suspense fallback={<RouteLoadingFallback />}>
+            <Routes location={location}>
               <Route
                 path="/"
                 element={
@@ -507,6 +543,8 @@ const App: React.FC = () => {
       </PageAnimationContext.Provider>
     </LoadingContext.Provider>
   );
-};
+});
+
+App.displayName = 'App';
 
 export default App;

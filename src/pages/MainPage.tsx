@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, memo, useCallback, Suspense, lazy } from "react";
 import Menu from "../components/Menu";
 import Hero from "../components/Hero";
 import Video from "../components/Video";
@@ -20,11 +20,27 @@ import { useTranslation } from "react-i18next";
 import Cursor from "../utils/cursor";
 import { scrollManager } from "../utils/scrollManager";
 
+// Lazy load non-critical components for better initial page load
+const LazyPhoto = lazy(() => import("../components/Photo"));
+const LazyInfographic = lazy(() => import("../components/Infographic"));
+const LazyImpactCardsSection = lazy(() => import("../components/ImpactCardsSection"));
+const LazyTestimonials = lazy(() => import("../components/Testimonials"));
+const LazyCTA = lazy(() => import("../components/CTA"));
+const LazyBlog = lazy(() => import("../components/blog/Blog"));
+const LazyFAQ = lazy(() => import("../components/FAQ"));
+
 interface Props {
   onPageReady?: () => void;
   onHeroImageLoad?: () => void;
   scrollToSection?: string | null;
 }
+
+// Loading fallback component
+const LoadingFallback = () => (
+  <div className="w-full h-32 flex items-center justify-center">
+    <div className="animate-pulse bg-gray-200 rounded-lg h-8 w-48"></div>
+  </div>
+);
 
 function MainPage(props: Props) {
   const { onHeroImageLoad, onPageReady, scrollToSection } = props;
@@ -38,16 +54,21 @@ function MainPage(props: Props) {
   // Track when loader is finished
   const [loaderDone, setLoaderDone] = useState(false);
 
-  useEffect(() => {
+  const handleGetCampaigns = useCallback(() => {
     getCampaigns();
+  }, [getCampaigns]);
+
+  const handlePageReady = useCallback(() => {
     if (onPageReady) {
-      // Wrap onPageReady to also set loaderDone
       onPageReady();
-      setLoaderDone(true);
-    } else {
-      setLoaderDone(true);
     }
+    setLoaderDone(true);
   }, [onPageReady]);
+
+  useEffect(() => {
+    handleGetCampaigns();
+    handlePageReady();
+  }, [handleGetCampaigns, handlePageReady]);
 
   useEffect(() => {
     // Only scroll to NFT grid if explicitly requested and not on initial page load
@@ -120,12 +141,15 @@ function MainPage(props: Props) {
       </a>
       <Menu />
       <main id="main-content" tabIndex={-1} role="main">
+        {/* Critical above-the-fold content - load immediately */}
         <section className="no-scroll-snap hero" aria-label={t('sections.hero')}>
           <Hero
             scrollToRef={videoSectionRef}
             onHeroImageLoad={onHeroImageLoad}
           />
         </section>
+        
+        {/* High priority content - load after hero */}
         <section
           aria-label={t('sections.video')}
           className="scroll-container"
@@ -133,15 +157,19 @@ function MainPage(props: Props) {
         >
           <Video />
         </section>
+        
         <section aria-label={t('sections.hubs')}>
           <Hubs />
         </section>
+        
         <section aria-label={t('sections.stewardshipNFT')}>
           <StewardshipNFT />
         </section>
+        
         <section aria-label={t('sections.highlight')}>
           <Highlight />
         </section>
+        
         <section ref={nftGridRef} aria-label={t('sections.nftGrid')}>
           {!campaignsLoading &&
                           (!lastCampaign ? (
@@ -150,31 +178,53 @@ function MainPage(props: Props) {
               <NFTGrid key={lastCampaign.id} campaign={lastCampaign} />
             ))}
         </section>
-        <section aria-label={t('sections.photo')}>
-          <Photo />
-        </section>
-        <section aria-label={t('sections.infographic')}>
-          <Infographic />
-        </section>
-        <section aria-label={t('sections.impactCards')}>
-          <ImpactCardsSection />
-        </section>
-        <section aria-label={t('sections.testimonials')}>
-          <Testimonials />
-        </section>
-        <section aria-label={t('sections.cta')}>
-          <CTA />
-        </section>
-        <section aria-label={t('sections.blog')}>
-          <Blog />
-        </section>
-        <section aria-label={t('sections.faq')}>
-          <FAQ />
-        </section>
+        
+        {/* Lazy load below-the-fold content for better performance */}
+        <Suspense fallback={<LoadingFallback />}>
+          <section aria-label={t('sections.photo')}>
+            <LazyPhoto />
+          </section>
+        </Suspense>
+        
+        <Suspense fallback={<LoadingFallback />}>
+          <section aria-label={t('sections.infographic')}>
+            <LazyInfographic />
+          </section>
+        </Suspense>
+        
+        <Suspense fallback={<LoadingFallback />}>
+          <section aria-label={t('sections.impactCards')}>
+            <LazyImpactCardsSection />
+          </section>
+        </Suspense>
+        
+        <Suspense fallback={<LoadingFallback />}>
+          <section aria-label={t('sections.testimonials')}>
+            <LazyTestimonials />
+          </section>
+        </Suspense>
+        
+        <Suspense fallback={<LoadingFallback />}>
+          <section aria-label={t('sections.cta')}>
+            <LazyCTA />
+          </section>
+        </Suspense>
+        
+        <Suspense fallback={<LoadingFallback />}>
+          <section aria-label={t('sections.blog')}>
+            <LazyBlog />
+          </section>
+        </Suspense>
+        
+        <Suspense fallback={<LoadingFallback />}>
+          <section aria-label={t('sections.faq')}>
+            <LazyFAQ />
+          </section>
+        </Suspense>
       </main>
       <Footer />
     </>
   );
 }
 
-export default MainPage;
+export default memo(MainPage);

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/copyFonts.js && tsc && vite build && node scripts/generateSitemap.js",
+    "build:optimized": "node scripts/copyFonts.js && tsc && vite build --mode production && node scripts/generateSitemap.js",
     "preview": "vite preview",
     "start:dev": "node scripts/copyFonts.js && vite --mode dev",
     "start:staging": "node scripts/copyFonts.js && vite --mode staging",
@@ -22,6 +23,7 @@
     "@fontsource/nunito-sans": "^5.2.6",
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.2.1",
+    "@million/lint": "^1.0.14",
     "@rainbow-me/rainbowkit": "2.2.8",
     "@tanstack/react-query": "^5.83.0",
     "axios": "^1.10.0",
@@ -30,6 +32,7 @@
     "i18next": "^25.3.2",
     "i18next-browser-languagedetector": "^8.2.0",
     "js-cookie": "^3.0.5",
+    "million": "^3.1.11",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.60.0",

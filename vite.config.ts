@@ -78,7 +78,7 @@ export default defineConfig(({ mode }) => {
     },
     // Optimize font loading
     optimizeDeps: {
-      include: ['react', 'react-dom'],
+      include: ["react", "react-dom"],
     },
     // CSS optimization
     css: {

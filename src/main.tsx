@@ -10,6 +10,9 @@ import { HelmetProvider } from "react-helmet-async";
 // Optimized font loading
 import { initializeOptimizedFontLoading } from "./utils/optimizedFontLoader";
 
+// Performance optimization
+import { mainPageOptimizer } from "./utils/performanceOptimizer";
+
 // Fonts are now loaded via HTML head with optimal preloading
 // No need for CSS imports that could block rendering
 
@@ -18,6 +21,9 @@ import { BrowserRouter } from "react-router";
 
 // Initialize optimized font loading
 initializeOptimizedFontLoading();
+
+// Initialize performance optimization
+mainPageOptimizer.optimizeInitialLoad();
 
 // Initialize smooth scrolling
 scrollManager.init();

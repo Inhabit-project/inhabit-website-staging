@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import Menu from "./Menu";
 import { scrollManager } from "../utils/scrollManager";
@@ -14,7 +14,7 @@ interface HeroProps {
   onHeroImageLoad?: () => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
+const Hero: React.FC<HeroProps> = memo(({ scrollToRef, onHeroImageLoad }) => {
   const { t, i18n } = useTranslation();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
@@ -27,14 +27,14 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
   const isLoading = useContext(LoadingContext);
   const animationRef = useRef<gsap.core.Timeline | null>(null);
 
-  const handleScrollClick = () => {
+  const handleScrollClick = useCallback(() => {
     if (scrollToRef?.current) {
       scrollManager.scrollTo(scrollToRef.current, { duration: 1.2 });
     }
-  };
+  }, [scrollToRef]);
 
   // Reset animation state
-  const resetAnimationState = () => {
+  const resetAnimationState = useCallback(() => {
     // Clear previous animation
     if (animationRef.current) {
       animationRef.current.kill();
@@ -78,10 +78,10 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
         opacity: 0,
       });
     }
-  };
+  }, []);
 
   // Setup title words
-  const setupTitleWords = () => {
+  const setupTitleWords = useCallback(() => {
     if (!titleRef.current) return;
 
     // Reset title content
@@ -131,10 +131,10 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
     };
 
     wrapWordsInSpans(wrapper);
-  };
+  }, [t]);
 
   // Setup animations
-  const setupAnimations = () => {
+  const setupAnimations = useCallback(() => {
     if (animationRef.current) return;
 
     // Don't block animations if loader is active - let them start when ready
@@ -224,7 +224,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
         }
       };
     }
-  };
+  }, []);
 
   // Handle initial setup and language changes
   useGSAP(() => {
@@ -238,7 +238,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
       {/* Background Image with Overlay */}
       <div ref={backgroundRef} className="absolute inset-0 w-full h-full">
         <picture>
-          <source media="(max-width: 768px)" srcSet="/assets/hero-mobile.webp"/>
+          <source media="(max-width: 768px)" srcSet="/assets/hero-mobile.webp" />
           <img
             ref={backgroundImageRef}
             src="/assets/hero.avif"
@@ -246,6 +246,8 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
             className="absolute inset-0 w-full h-full object-cover"
             onLoad={onHeroImageLoad}
             loading="eager"
+            fetchPriority="high"
+            decoding="async"
           />
         </picture>
         {/* Gradient Overlay */}
@@ -293,6 +295,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
                     src="/icons/mouse-icon.svg"
                     alt="Mouse"
                     className="w-4 h-4 hero-mouse-icon"
+                    loading="lazy"
                   />
                   <span className="button-text text-sm tracking-[0.02em] uppercase">
                     {t("hero.scrollButton")}
@@ -321,6 +324,8 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
       </div>
     </div>
   );
-};
+});
+
+Hero.displayName = 'Hero';
 
 export default Hero;

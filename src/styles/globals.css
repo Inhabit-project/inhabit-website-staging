@@ -1117,24 +1117,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0a1a0a;
-  /* fallback background, adjust as needed */
+  background: transparent;
+  /* completely transparent background to clearly see new page elements */
 }
 
 .page-transition-mask {
-  width: 320px;
-  height: 320px;
-  background: #f6ffea;
+  width: 100%;
+  height: 100%;
+  background: #0a1a0a;
   /* color revealed by the mask, adjust as needed */
   will-change: transform, opacity;
 }
 
-@media (max-width: 600px) {
-  .page-transition-mask {
-    width: 180px;
-    height: 180px;
-  }
+/* Page transition specific nature transition styles */
+.page-transition-mask.nature-transition {
+  -webkit-mask-size: 2300% 100%;
+  mask-size: 2300% 100%;
+  background: #0a1a0a;
+  width: 100% !important;
+  height: 100% !important;
 }
+
+.page-transition-mask.transition-in {
+  -webkit-animation: nature-ani 1.5s steps(22) forwards;
+  animation: nature-ani 1.5s steps(22) forwards;
+}
+
+.page-transition-mask.transition-out {
+  -webkit-animation: nature-ani2 1.5s steps(22) forwards;
+  animation: nature-ani2 1.5s steps(22) forwards;
+}
+
+
 
 .nature-btn {
   position: relative;
@@ -1699,4 +1713,64 @@
 
 .dropdown-content .language-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Nature Sprite Transition Effect */
+.nature-transition {
+  -webkit-mask: url("https://raw.githubusercontent.com/robin-dela/css-mask-animation/master/img/nature-sprite.png");
+  mask: url("https://raw.githubusercontent.com/robin-dela/css-mask-animation/master/img/nature-sprite.png");
+  -webkit-mask-size: 2300% 100%;
+  mask-size: 2300% 100%;
+  -webkit-animation: nature-ani2 0.7s steps(22) forwards;
+  animation: nature-ani2 0.7s steps(22) forwards;
+  cursor: pointer;
+}
+
+.nature-transition:hover {
+  -webkit-animation: nature-ani 0.7s steps(22) forwards;
+  animation: nature-ani 0.7s steps(22) forwards;
+}
+
+@-webkit-keyframes nature-ani {
+  from {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+  to {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+}
+
+@keyframes nature-ani {
+  from {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+  to {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+}
+
+@-webkit-keyframes nature-ani2 {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+  to {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+}
+
+@keyframes nature-ani2 {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+  to {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
 }
