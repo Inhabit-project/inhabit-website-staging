@@ -241,7 +241,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToRef, onHeroImageLoad }) => {
           <source media="(max-width: 768px)" srcSet="/assets/hero-mobile.webp"/>
           <img
             ref={backgroundImageRef}
-            src="/assets/hero.webp"
+            src="/assets/hero.avif"
             alt=""
             className="absolute inset-0 w-full h-full object-cover"
             onLoad={onHeroImageLoad}

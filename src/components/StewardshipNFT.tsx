@@ -103,7 +103,7 @@ const StewardshipNFT: React.FC = () => {
           {/* Image */}
           <div ref={imageRef} className="self-center relative overflow-hidden">
             <img
-              src="/assets/stewardship-nft.webp"
+              src="/assets/stewardship-nft.avif"
               alt="Stewardship NFT illustration"
               className="w-full h-full object-cover"
               fetchPriority="high"
