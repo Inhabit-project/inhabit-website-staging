@@ -205,7 +205,7 @@ const MeetOurTeam: React.FC = () => {
   return (
     <section 
       ref={sectionRef}
-      className="w-full py-20 px-4 background-gradient-light scroll-container"
+      className="w-full py-20 px-4 background-gradient-light "
       aria-labelledby="team-title"
     >
       <div className="container">

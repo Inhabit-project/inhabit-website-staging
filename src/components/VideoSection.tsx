@@ -185,7 +185,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({
 
   return (
     <>
-      <section ref={sectionRef} className="relative w-full background-gradient-dark flex flex-col items-center scroll-container">
+      <section ref={sectionRef} className="relative w-full background-gradient-dark flex flex-col items-center ">
         {/* Background with decorative elements */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           <img 

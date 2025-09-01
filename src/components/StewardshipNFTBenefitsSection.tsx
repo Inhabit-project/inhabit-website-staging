@@ -126,7 +126,7 @@ const StewardshipNFTBenefitsSection: React.FC = () => {
   return (
     <div
       ref={sectionRef}
-      className="w-full py-24 px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col items-center scroll-container background-gradient-light"
+      className="w-full py-24 px-[clamp(1.5rem,5vw,6.25rem)] flex flex-col items-center  background-gradient-light"
       style={{ background: 'var(--background-gradient-light)' }}
       aria-labelledby="benefits-title"
     >

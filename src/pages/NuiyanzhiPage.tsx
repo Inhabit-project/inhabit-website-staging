@@ -64,10 +64,11 @@ export default function NuiyanzhiPage(props: Props): JSX.Element {
   useEffect(() => {
     if (!scrollToSection) {
       // Small delay to ensure DOM is ready
-      const timer = setTimeout(() => {
-        if (scrollManager && typeof scrollManager.scrollToHero === "function") {
-          scrollManager.scrollToHero({ immediate: true });
-        } else {
+      const timer = setTimeout(async () => {
+        try {
+          await scrollManager.scrollToHero({ immediate: true });
+        } catch (error) {
+          console.warn('Scroll to hero failed, using fallback:', error);
           window.scrollTo({ top: 0, behavior: "auto" });
         }
       }, 100);

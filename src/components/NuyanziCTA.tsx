@@ -96,7 +96,7 @@ const NuyanziCTA: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen w-full overflow-hidden scroll-container"
+      className="relative min-h-screen w-full overflow-hidden "
       aria-label={t("nuiyanzhiPage.cta.title")}
     >
       {/* Background Image */}

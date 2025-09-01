@@ -28,6 +28,20 @@ mainPageOptimizer.optimizeInitialLoad();
 // Initialize smooth scrolling
 scrollManager.init();
 
+// Cleanup function for scroll manager
+const cleanupScrollManager = () => {
+  scrollManager.destroy();
+};
+
+// Add cleanup on page unload
+window.addEventListener('beforeunload', cleanupScrollManager);
+
+// Remove problematic scroll-snap CSS injection
+// The scroll-snap behavior is now handled more carefully in the scrollManager
+// to prevent unwanted scroll positioning
+
+const queryClient = new QueryClient();
+
 function isSafari() {
   // This will match Safari but not Chrome or Edge
   return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -57,8 +71,6 @@ if (CSS.supports("scroll-snap-type: y mandatory")) {
 } else {
   document.documentElement.classList.remove("supports-scroll-snap");
 }
-
-const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

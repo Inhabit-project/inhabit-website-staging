@@ -1,4 +1,4 @@
-import React, { useRef, useContext, memo, useCallback } from "react";
+import React, { useRef, useContext, memo, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Menu from "./Menu";
 import { scrollManager } from "../utils/scrollManager";
@@ -29,7 +29,21 @@ const Hero: React.FC<HeroProps> = memo(({ scrollToRef, onHeroImageLoad }) => {
 
   const handleScrollClick = useCallback(() => {
     if (scrollToRef?.current) {
-      scrollManager.scrollTo(scrollToRef.current, { duration: 1.2 });
+      try {
+        scrollManager.scrollTo(scrollToRef.current, { duration: 1.2 });
+      } catch (error) {
+        console.warn('Scroll to ref failed:', error);
+      }
+    }
+  }, [scrollToRef]);
+
+  useEffect(() => {
+    if (scrollToRef?.current) {
+      try {
+        scrollManager.scrollTo(scrollToRef.current, { duration: 1.2 });
+      } catch (error) {
+        console.warn('Scroll to ref failed:', error);
+      }
     }
   }, [scrollToRef]);
 

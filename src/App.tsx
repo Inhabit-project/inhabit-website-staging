@@ -106,6 +106,14 @@ const App: React.FC = memo(() => {
     };
 
     initializeCache();
+    
+    // Add class to disable scroll-snap during initial page load
+    document.body.classList.add('page-load');
+    
+    return () => {
+      // Cleanup: remove page-load class
+      document.body.classList.remove('page-load');
+    };
   }, []);
 
   // Only allow loader to finish when both hero image and timer are done (and if loader should be shown)
@@ -200,7 +208,10 @@ const App: React.FC = memo(() => {
         setShowTransition(false);
       }, 1200); // Wait for reveal animation to complete
 
-      requestAnimationFrame(() => {
+      requestAnimationFrame(async () => {
+        // Wait for any current scroll operations to complete
+        await scrollManager.waitForScrollComplete();
+        
         // List of routes that do NOT use a hero image
         const noHeroRoutes = [
           "/membership",
@@ -223,28 +234,18 @@ const App: React.FC = memo(() => {
             location.pathname.startsWith(route + "/")
         );
 
-        if (isNoHeroRoute) {
-          // For pages without hero, scroll to top
-          if (scrollManager && typeof scrollManager.scrollTo === "function") {
-            scrollManager.scrollTo(0, { immediate: true });
+        try {
+          if (isNoHeroRoute) {
+            // For pages without hero, scroll to top
+            await scrollManager.scrollTo(0, { immediate: true });
           } else {
-            window.scrollTo({ top: 0, behavior: "auto" });
+            // For pages with hero, scroll to hero section
+            await scrollManager.scrollToHero({ immediate: true });
           }
-        } else {
-          // For pages with hero, scroll to hero section
-          if (
-            scrollManager &&
-            typeof scrollManager.scrollToHero === "function"
-          ) {
-            scrollManager.scrollToHero({ immediate: true });
-          } else if (
-            scrollManager &&
-            typeof scrollManager.scrollTo === "function"
-          ) {
-            scrollManager.scrollTo(0, { immediate: true });
-          } else {
-            window.scrollTo({ top: 0, behavior: "auto" });
-          }
+        } catch (error) {
+          console.warn('Scroll operation failed, using fallback:', error);
+          // Fallback to immediate scroll to top
+          window.scrollTo({ top: 0, behavior: "auto" });
         }
 
         // Delay ScrollTrigger refresh to avoid conflicts with animations
@@ -399,17 +400,26 @@ const App: React.FC = memo(() => {
 
   // Ensure page always starts at hero section on initial load and navigation
   useEffect(() => {
-    // Small delay to ensure DOM is ready
-    const timer = setTimeout(() => {
-      if (
-        scrollManager &&
-        typeof scrollManager.ensurePageStartsAtTop === "function"
-      ) {
-        scrollManager.ensurePageStartsAtTop({ immediate: true, force: true });
-      }
-    }, 100);
+    // Only run scroll management for pages that actually need it
+    // Skip for pages that should maintain their scroll position
+    const shouldManageScroll = !location.pathname.includes('/contact') && 
+                              !location.pathname.includes('/blog') &&
+                              !location.pathname.includes('/terms') &&
+                              !location.pathname.includes('/privacy');
+    
+    if (shouldManageScroll) {
+      // Small delay to ensure DOM is ready
+      const timer = setTimeout(() => {
+        if (
+          scrollManager &&
+          typeof scrollManager.ensurePageStartsAtTop === "function"
+        ) {
+          scrollManager.ensurePageStartsAtTop({ immediate: true, force: true });
+        }
+      }, 100);
 
-    return () => clearTimeout(timer);
+      return () => clearTimeout(timer);
+    }
   }, [location.pathname]);
 
   return (
@@ -435,7 +445,6 @@ const App: React.FC = memo(() => {
           )}
           {showTransition && (
             <PageTransition
-              in={transitionIn}
               onComplete={handleTransitionComplete}
             />
           )}

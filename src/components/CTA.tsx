@@ -98,7 +98,7 @@ const CTA: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen w-full overflow-hidden scroll-container"
+      className="relative min-h-screen w-full overflow-hidden "
       aria-label={t("mainPage.cta.title")}
     >
       {/* Background Image */}

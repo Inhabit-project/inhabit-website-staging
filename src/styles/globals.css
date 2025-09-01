@@ -1421,12 +1421,6 @@
     --animation-stagger: 0.1s;
   }
   
-  /* Prevent jumping during scroll animations */
-  .scroll-container {
-    contain: layout style;
-    will-change: scroll-position;
-  }
-  
   /* Optimize for reduced motion preference */
   @media (prefers-reduced-motion: reduce) {
     .grid > * {
