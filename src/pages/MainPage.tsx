@@ -112,11 +112,10 @@ function MainPage(props: Props) {
       document.documentElement.scrollTop = 0;
       
       // Small delay to ensure DOM is ready
-      const timer = setTimeout(async () => {
-        try {
-          await scrollManager.scrollToHero({ immediate: true });
-        } catch (error) {
-          console.warn('Scroll to hero failed, using fallback:', error);
+      const timer = setTimeout(() => {
+        if (scrollManager && typeof scrollManager.scrollToHero === "function") {
+          scrollManager.scrollToHero({ immediate: true });
+        } else {
           window.scrollTo({ top: 0, behavior: "auto" });
         }
       }, 100);
@@ -153,7 +152,7 @@ function MainPage(props: Props) {
         {/* High priority content - load after hero */}
         <section
           aria-label={t('sections.video')}
-          className=""
+          className="scroll-container"
           ref={videoSectionRef}
         >
           <Video />

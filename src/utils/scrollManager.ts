@@ -9,6 +9,43 @@ class ScrollManager {
     this.isDestroyed = false;
   }
 
+  // Detect Safari browser
+  private isSafari(): boolean {
+    return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  }
+
+  // Safari-specific scroll handling
+  private async safariScrollToTop(): Promise<void> {
+    return new Promise((resolve) => {
+      // Safari needs multiple approaches to ensure scroll to top works
+      try {
+        // Method 1: Direct scroll to top
+        window.scrollTo({ top: 0, behavior: "auto" });
+        
+        // Method 2: Reset body and document scroll positions
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+        
+        // Method 3: Use scrollIntoView on body
+        document.body.scrollIntoView({ behavior: "auto", block: "start" });
+        
+        // Method 4: Force layout recalculation
+        document.body.offsetHeight;
+        
+        // Method 5: Additional scroll reset after a brief delay
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: "auto" });
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+          resolve();
+        }, 50);
+      } catch (error) {
+        console.warn('Safari scroll to top failed:', error);
+        resolve();
+      }
+    });
+  }
+
   private async executeScroll(scrollOperation: () => void): Promise<void> {
     if (this.isDestroyed) return;
 
@@ -97,17 +134,26 @@ class ScrollManager {
     });
   }
 
-  // New method to ensure page always loads at hero section
+  // Enhanced method to ensure page always loads at hero section
   async scrollToHero(options?: {
     immediate?: boolean;
     offset?: number;
   }): Promise<void> {
     if (this.isDestroyed) return;
 
-    return this.executeScroll(() => {
+    return this.executeScroll(async () => {
       try {
-        // First, force scroll to top to ensure we're at the beginning
-        window.scrollTo({ top: 0, behavior: "auto" });
+        // Safari-specific handling for scroll to top
+        if (this.isSafari()) {
+          await this.safariScrollToTop();
+        } else {
+          // First, force scroll to top to ensure we're at the beginning
+          window.scrollTo({ top: 0, behavior: "auto" });
+          
+          // Also reset body and document scroll positions
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+        }
         
         // Try multiple selectors to find the hero section, prioritizing aria-label
         const heroSelectors = [
@@ -136,12 +182,20 @@ class ScrollManager {
           window.scrollTo({ top, behavior });
         } else {
           // Fallback to top of page
-          window.scrollTo({ top: 0, behavior: "auto" });
+          if (this.isSafari()) {
+            await this.safariScrollToTop();
+          } else {
+            window.scrollTo({ top: 0, behavior: "auto" });
+          }
         }
       } catch (error) {
         console.warn('Error in scrollToHero:', error);
         // Fallback to immediate scroll to top
-        window.scrollTo({ top: 0, behavior: "auto" });
+        if (this.isSafari()) {
+          await this.safariScrollToTop();
+        } else {
+          window.scrollTo({ top: 0, behavior: "auto" });
+        }
       }
     });
   }
@@ -153,24 +207,33 @@ class ScrollManager {
   }): Promise<void> {
     if (this.isDestroyed) return;
 
-    return this.executeScroll(() => {
+    return this.executeScroll(async () => {
       try {
-        // Always force scroll to top first
-        window.scrollTo({ top: 0, behavior: "auto" });
-        
-        // Also reset body and document scroll positions
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
+        // Safari-specific handling
+        if (this.isSafari()) {
+          await this.safariScrollToTop();
+        } else {
+          // Always force scroll to top first
+          window.scrollTo({ top: 0, behavior: "auto" });
+          
+          // Also reset body and document scroll positions
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+        }
         
         // If force is true or we're at the top, scroll to hero
         if (options?.force || window.scrollY === 0) {
           // Use the existing scrollToHero method
-          this.scrollToHero({ immediate: options?.immediate ?? true });
+          await this.scrollToHero({ immediate: options?.immediate ?? true });
         }
       } catch (error) {
         console.warn('Error in ensurePageStartsAtTop:', error);
         // Fallback to immediate scroll to top
-        window.scrollTo({ top: 0, behavior: "auto" });
+        if (this.isSafari()) {
+          await this.safariScrollToTop();
+        } else {
+          window.scrollTo({ top: 0, behavior: "auto" });
+        }
       }
     });
   }
@@ -319,3 +382,4 @@ export function useMenuScrollHide(
     };
   }, [onVisibilityChange, threshold, options]);
 }
+
