@@ -3,7 +3,7 @@ import { useStore } from "@/store";
 import confetti from "canvas-confetti";
 import { JSX, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAccount, useSignMessage, useWalletClient } from "wagmi";
+import { useSignMessage } from "wagmi";
 import usdcImage from "../../../assets/images/tokens/USDC.svg";
 import usdtImage from "../../../assets/images/tokens/USDT.svg";
 import { useResendKycEmail } from "@/hooks/useKycEmail";
@@ -17,6 +17,8 @@ import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
 import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
 import { t } from "i18next";
 import Cookies from "js-cookie";
+import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
+import { Address } from "thirdweb";
 
 interface Props {
   availableSupply: number;
@@ -45,25 +47,26 @@ export function VoucherStep(props: Props): JSX.Element {
   // external hooks
   const { campaignId } = useParams();
 
-  const { address, chainId } = useAccount();
-  const { data: walletClient } = useWalletClient();
   const { signMessageAsync } = useSignMessage();
 
-  const { buyNFT: buyNFTHook } = useInhabit(walletClient);
+  const account = useActiveAccount();
+  const chain = useActiveWalletChain();
+
+  const { buyNFT: buyNFTHook } = useInhabit(account);
 
   const {
     balance: usdcBalance,
     allowance: usdcAllowance,
     refetch: refetchUsdc,
     approve: { mutate: approveUsdc },
-  } = useUsdc(price, walletClient);
+  } = useUsdc(price, account);
 
   const {
     balance: usdtBalance,
     allowance: usdtAllowance,
     refetch: refetchUsdt,
     approve: { mutate: approveUsdt },
-  } = useUsdt(price, walletClient);
+  } = useUsdt(price, account);
 
   const { mutate: buyNFT } = buyNFTHook;
   const { mutate: fetchNonce, isPending: isNoncePending } = useNonce();
@@ -91,6 +94,11 @@ export function VoucherStep(props: Props): JSX.Element {
       balance: usdtBalance,
     },
   ];
+
+  useEffect(() => {
+    usdc.setAccount(account);
+    usdt.setAccount(account);
+  }, [account, usdc]);
 
   // effects
   useEffect(() => {
@@ -122,19 +130,19 @@ export function VoucherStep(props: Props): JSX.Element {
 
   // functions
   const onResendKycEMail = async () => {
-    if (!address || !chainId) return;
+    if (!account || !account?.address || !chain) return;
 
-    fetchNonce(address, {
+    fetchNonce(account.address, {
       onSuccess: async (nonce) => {
         if (!nonce) return;
 
-        const message = generateSiweMessage(chainId, address, nonce);
+        const message = generateSiweMessage(chain.id, account.address, nonce);
         const signature = await signMessageAsync({ message });
         const dto: ResendKycDto = {
           message,
           signature,
           nonce,
-          address,
+          address: account.address,
           kycType,
         };
 
@@ -166,7 +174,14 @@ export function VoucherStep(props: Props): JSX.Element {
   };
 
   const handlePurchase = async () => {
-    if (!address || !collection || !campaignId || !selectedCoin) return;
+    if (
+      !account ||
+      !account.address ||
+      !collection ||
+      !campaignId ||
+      !selectedCoin
+    )
+      return;
 
     const isUSDC = selectedCoin === COIN.USDC;
     const approve = isUSDC ? approveUsdc : approveUsdt;
@@ -202,9 +217,9 @@ export function VoucherStep(props: Props): JSX.Element {
         buyNFT(
           {
             campaignId: Number(campaignId),
-            collectionAddress: collection.address,
+            collectionAddress: collection.address as Address,
             referral,
-            token: tokenAddr,
+            token: tokenAddr as Address,
           },
           {
             onSuccess: async () => {
@@ -261,20 +276,26 @@ export function VoucherStep(props: Props): JSX.Element {
         </div>
         {/* TODO: add to i18n */}
         {/* TODO: add styles */}
-        {address && isKycHardCompleted && !hasSufficientBalance && (
-          <label className="text-center p-3 body-S text-light">
-            {t(
-              "membership.voucher.You don't have enough balance to buy this membership"
-            )}
-          </label>
-        )}
-        {address && !requiresHardKyc && !hasSufficientBalance && (
-          <label className="text-center p-3 body-S text-light">
-            {t(
-              "membership.voucher.You don't have enough balance to buy this membership"
-            )}
-          </label>
-        )}
+        {account &&
+          account.address &&
+          isKycHardCompleted &&
+          !hasSufficientBalance && (
+            <label className="text-center p-3 body-S text-light">
+              {t(
+                "membership.voucher.You don't have enough balance to buy this membership"
+              )}
+            </label>
+          )}
+        {account &&
+          account.address &&
+          !requiresHardKyc &&
+          !hasSufficientBalance && (
+            <label className="text-center p-3 body-S text-light">
+              {t(
+                "membership.voucher.You don't have enough balance to buy this membership"
+              )}
+            </label>
+          )}
         {/* <div className="flex justify-between text-secondary font-bold text-lg">
               <span className="body-M text-secondary">
                 Total taxes included

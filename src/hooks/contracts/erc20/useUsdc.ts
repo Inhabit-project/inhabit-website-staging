@@ -1,28 +1,22 @@
 import { useEffect, useState } from "react";
 import { INHABIT_JSON } from "@/config/const";
-import { Address, WalletClient } from "viem";
-import { useAccount } from "wagmi";
 import { useStore } from "@/store";
 import { useApprove } from "./useApprove";
+import { Account } from "thirdweb/wallets";
 
-export function useUsdc(price: number, walletClient?: WalletClient) {
+export function useUsdc(price: number, account?: Account) {
   const [balance, setBalance] = useState<number>(0);
   const [allowance, setAllowance] = useState<number>(0);
   const [hasSufficientBalance, setHasSufficientBalance] =
     useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { address } = useAccount();
   const { usdc } = useStore();
 
-  if (walletClient) {
-    usdc.setWalletClient(walletClient);
-  }
-
-  const approveMutation = useApprove(usdc);
+  const approveMutation = useApprove(usdc, account);
 
   const load = async () => {
-    if (!price || !address) {
+    if (!price || !account || !account.address) {
       setBalance(0);
       setAllowance(0);
       setHasSufficientBalance(false);
@@ -32,8 +26,8 @@ export function useUsdc(price: number, walletClient?: WalletClient) {
     setIsLoading(true);
 
     const [fetchedBalance, fetchedAllowance] = await Promise.all([
-      usdc.getBalance(address),
-      usdc.allowance(address, INHABIT_JSON.proxy as Address),
+      usdc.getBalance(account.address),
+      usdc.allowance(account.address, INHABIT_JSON.proxy),
     ]);
 
     setBalance(fetchedBalance);
@@ -44,7 +38,7 @@ export function useUsdc(price: number, walletClient?: WalletClient) {
 
   useEffect(() => {
     load();
-  }, [address, price]);
+  }, [account, price]);
 
   return {
     balance,

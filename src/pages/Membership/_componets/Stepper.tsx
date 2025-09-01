@@ -3,13 +3,15 @@ import { Checkout } from "./Checkout";
 import { useAccount, useWalletClient } from "wagmi";
 import { useStore } from "../../../store";
 import { MUST_DO_KYC_HARD } from "../../../config/const";
-import { ConnectButton } from "../../../ui/ConnectButton";
+// import { ConnectButton } from "../../../ui/ConnectButton";
 import { COIN, KYC_TYPE } from "../../../config/enums";
 
 import { Indicator } from "./Indicator";
 import { VoucherStep } from "./Voucher";
 import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
 import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
+import { LoginButton } from "./LoginButton";
+import { useActiveAccount } from "thirdweb/react";
 
 export type Props = {
   availableSupply: number;
@@ -26,7 +28,7 @@ export default function Stepper(props: Props): JSX.Element {
   const [selectedCoin, setSelectedCoin] = useState<COIN>();
 
   // external hooks
-  const { address } = useAccount();
+  const account = useActiveAccount();
   const { data: walletClient } = useWalletClient();
 
   const { balance: usdcBalance } = useUsdc(price, walletClient);
@@ -57,16 +59,16 @@ export default function Stepper(props: Props): JSX.Element {
   }, [price, selectedCoin, usdcBalance, usdtBalance]);
 
   useEffect(() => {
-    if (!address) return;
+    if (!account || !account.address) return;
 
     Promise.all([
-      getHasSentKyc(address, KYC_TYPE.HARD),
-      getHasSentKyc(address, KYC_TYPE.SOFT),
+      getHasSentKyc(account.address, KYC_TYPE.HARD),
+      getHasSentKyc(account.address, KYC_TYPE.SOFT),
     ]);
-  }, [address]);
+  }, [account]);
 
   useEffect(() => {
-    if (!address) return;
+    if (!account || !account.address) return;
 
     if (hasSentKycSoft || hasSentKycHard) {
       goNext();
@@ -75,14 +77,15 @@ export default function Stepper(props: Props): JSX.Element {
     }
 
     if (requiresHardKyc && !isKycHardCompleted) {
-      startKycPolling(address, requiresHardKyc);
+      startKycPolling(account.address, requiresHardKyc);
     }
-  }, [price, address, hasSentKycHard, hasSentKycSoft, isKycHardCompleted]);
+  }, [price, account, hasSentKycHard, hasSentKycSoft, isKycHardCompleted]);
 
   return (
     <div className="w-full lg:max-w-lg lg:self-start lg:sticky lg:top-8 background-gradient-dark backdrop-blur-lg rounded-3xl shadow-xl border border-green-soft p-8 flex flex-col gap-6">
       <Indicator step={step} />
-      <ConnectButton />
+      {/* <ConnectButton /> */}
+      <LoginButton />
       {step === 1 && (
         <Checkout
           membershipContract={membershipContract}

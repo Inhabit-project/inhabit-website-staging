@@ -1,31 +1,35 @@
 import {
-  Abi,
-  Address,
-  WalletClient,
-  createPublicClient,
   getContract,
-  http,
-} from "viem";
+  readContract,
+  prepareContractCall,
+  sendTransaction,
+  waitForReceipt,
+  type ThirdwebClient,
+} from "thirdweb";
+import type { Address, Chain } from "thirdweb";
+import { Account } from "thirdweb/wallets";
+import { chain, client } from "@/config/const";
+import { Abi } from "viem";
 
-import { estimateFeesPerGas } from "viem/actions";
-import { CHAIN, HTTP_TRANSPORT } from "@/config/const";
+export type ContractJson = {
+  proxy: Address;
+  implementation: Address;
+  abi: Abi;
+};
 
 export class BaseContract {
   private address: Address;
   private abi: Abi;
-  private publicClient: ReturnType<typeof createPublicClient>;
-  private walletClient: WalletClient | null;
+  private client: ThirdwebClient;
+  private chain: Chain;
+  private account?: Account;
 
-  constructor(contractJson: any, walletClient?: WalletClient) {
-    this.address = contractJson.proxy as Address;
+  constructor(contractJson: ContractJson, account?: Account) {
+    this.address = contractJson.proxy;
     this.abi = contractJson.abi;
-
-    this.publicClient = createPublicClient({
-      chain: CHAIN,
-      transport: http(HTTP_TRANSPORT),
-    });
-
-    this.walletClient = walletClient ?? null;
+    this.client = client;
+    this.chain = chain;
+    this.account = account;
   }
 
   // =========================
@@ -33,66 +37,79 @@ export class BaseContract {
   // =========================
 
   public getAddress() {
-    if (!this.address) {
-      throw new Error("Contract address not set. Please set it first.");
-    }
     return this.address;
   }
 
-  public getPublicClient() {
-    return this.publicClient;
+  public getClient() {
+    return this.client;
   }
 
-  public getWalletClient() {
-    return this.walletClient;
+  public getChain() {
+    return this.chain;
+  }
+
+  public getAccount() {
+    return this.account;
   }
 
   // =========================
   //         SETTERS
   // =========================
 
-  public setWalletClient(walletClient: WalletClient) {
-    this.walletClient = walletClient;
+  public setAccount(account?: Account) {
+    this.account = account;
   }
 
   // =========================
-  //       PUBLIC METHODS
+  //         PROTECTED
   // =========================
 
-  // =========================
-  //     PROTECTED METHODS
-  // =========================
+  protected async read<T = unknown>(method: string, params: unknown[] = []) {
+    const contract = this.getContractInstance();
+    return readContract({
+      contract,
+      method,
+      params,
+    }) as Promise<T>;
+  }
 
-  protected async getFees() {
-    if (!this.walletClient) {
-      throw new Error("walletClient not set. Call setWalletClient() first.");
+  protected async write(method: string, params: unknown[] = []) {
+    if (!this.account) {
+      throw new Error("Wallet not connected");
     }
 
-    return await estimateFeesPerGas(this.walletClient);
-  }
+    const contract = this.getContractInstance();
 
-  protected getReadContract() {
-    return getContract({
-      address: this.address,
-      abi: this.abi,
-      client: {
-        public: this.publicClient,
-      },
+    const tx = prepareContractCall({
+      contract,
+      method,
+      params,
     });
+
+    const { transactionHash } = await sendTransaction({
+      account: this.account,
+      transaction: tx,
+    });
+
+    await waitForReceipt({
+      client: this.client,
+      chain: this.chain,
+      transactionHash,
+    });
+
+    return transactionHash;
   }
 
-  protected getWriteContract() {
-    if (!this.walletClient) {
-      throw new Error("walletClient not set. Call setWalletClient() first.");
-    }
+  // =========================
+  //         PRIVATE
+  // =========================
 
+  private getContractInstance() {
     return getContract({
+      client: this.client,
+      chain: this.chain,
       address: this.address,
       abi: this.abi,
-      client: {
-        public: this.publicClient,
-        wallet: this.walletClient,
-      },
     });
   }
 }

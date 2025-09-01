@@ -1,4 +1,4 @@
-import { Address, Hex, WalletClient } from "viem";
+import { Address, Hex } from "viem";
 
 import { USDC_JSON } from "../../../../config/const";
 import {
@@ -8,10 +8,11 @@ import {
 import { parseContractError } from "@/config/contract.config";
 import { ServiceResult } from "@/models/api.model";
 import { BaseContract } from "../../base-contract";
+import { Account } from "thirdweb/wallets";
 
 export class UsdcContract extends BaseContract {
-  constructor(walletClient?: WalletClient) {
-    super(USDC_JSON, walletClient);
+  constructor(account?: Account) {
+    super(USDC_JSON, account);
   }
 
   // =========================
@@ -20,8 +21,7 @@ export class UsdcContract extends BaseContract {
 
   async getBalance(address: Address): Promise<number> {
     try {
-      const contract = this.getReadContract();
-      const balance = (await contract.read.balanceOf([address])) as bigint;
+      const balance = await this.read<bigint>("balanceOf", [address]);
       return formatUsdcToUsd(balance);
     } catch (error) {
       console.error("❌", error);
@@ -31,12 +31,8 @@ export class UsdcContract extends BaseContract {
 
   async allowance(owner: Address, spender: Address): Promise<number> {
     try {
-      const contract = this.getReadContract();
-      const allowance = (await contract.read.allowance([
-        owner,
-        spender,
-      ])) as bigint;
-      return formatUsdcToUsd(allowance);
+      const value = await this.read<bigint>("allowance", [owner, spender]);
+      return formatUsdcToUsd(value);
     } catch (error) {
       console.error("❌", error);
       return 0;
@@ -49,16 +45,11 @@ export class UsdcContract extends BaseContract {
 
   async approve(spender: Address, amount: number): Promise<ServiceResult<Hex>> {
     try {
-      const publicClient = this.getPublicClient();
-      const contract = this.getWriteContract();
-      const hash = await contract.write.approve([
+      const hash = await this.write("approve", [
         spender,
         parseUsdToUsdc(amount),
       ]);
-
-      await publicClient.waitForTransactionReceipt({ hash });
-
-      return { success: true, data: hash };
+      return { success: true, data: hash as Hex };
     } catch (error) {
       const parsedError = parseContractError(error, "approve");
       console.error("❌", parsedError);
