@@ -12,13 +12,21 @@ import { useNonce } from "@/hooks/useNonce";
 import { ResendKycDto } from "@/services/dtos/resend-kyc.dto";
 import { COOKIE_REFERRAL, COOLDOWN_KEY } from "@/config/const";
 import { useInhabit } from "@/hooks/contracts/inhabit";
-import { Hex, keccak256, toBytes } from "viem";
+import { encodeFunctionData, Hex, keccak256, toBytes } from "viem";
 import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
 import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
 import { t } from "i18next";
 import Cookies from "js-cookie";
-import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
+import { TransactionWidget } from "thirdweb/react";
+import { chain as thirdwebChain, client } from "@/config/const";
+import {
+  useActiveAccount,
+  useActiveWallet,
+  useActiveWalletChain,
+} from "thirdweb/react";
 import { Address } from "thirdweb";
+import { parseUsdToUsdc } from "@/utils/usdc-format.utils";
+import { celo } from "thirdweb/chains";
 
 interface Props {
   availableSupply: number;
@@ -43,6 +51,7 @@ export function VoucherStep(props: Props): JSX.Element {
   // hooks
   const [isProcessing, setIsProcessing] = useState(false);
   const [cooldown, setCooldown] = useState<number>(0);
+  const [showCreditCardModal, setShowCreditCardModal] = useState(false);
 
   // external hooks
   const { campaignId } = useParams();
@@ -51,6 +60,7 @@ export function VoucherStep(props: Props): JSX.Element {
 
   const account = useActiveAccount();
   const chain = useActiveWalletChain();
+  const wallet = useActiveWallet();
 
   const { buyNFT: buyNFTHook } = useInhabit(account);
 
@@ -93,7 +103,14 @@ export function VoucherStep(props: Props): JSX.Element {
       symbol: COIN.USDT,
       balance: usdtBalance,
     },
+    {
+      symbol: "CREDIT CARD",
+      balance: 0,
+    },
   ];
+
+  const cookieReferral = Cookies.get(COOKIE_REFERRAL) as Hex | undefined;
+  const referral = cookieReferral ? cookieReferral : keccak256(toBytes(""));
 
   useEffect(() => {
     usdc.setAccount(account);
@@ -136,8 +153,12 @@ export function VoucherStep(props: Props): JSX.Element {
       onSuccess: async (nonce) => {
         if (!nonce) return;
 
-        const message = generateSiweMessage(chain.id, account.address, nonce);
-        const signature = await signMessageAsync({ message });
+        const message = generateSiweMessage(
+          chain.id,
+          account?.address as string,
+          nonce
+        );
+        const signature = await account.signMessage({ message });
         const dto: ResendKycDto = {
           message,
           signature,
@@ -188,10 +209,6 @@ export function VoucherStep(props: Props): JSX.Element {
     const refetch = isUSDC ? refetchUsdc : refetchUsdt;
     const tokenAddr = isUSDC ? usdc.getAddress() : usdt.getAddress();
 
-    const cookieReferral = Cookies.get(COOKIE_REFERRAL) as Hex | undefined;
-
-    const referral = cookieReferral ? cookieReferral : keccak256(toBytes(""));
-
     try {
       setIsProcessing(true);
 
@@ -236,6 +253,30 @@ export function VoucherStep(props: Props): JSX.Element {
       console.error("❌", error);
     } finally {
       setIsProcessing(false);
+    }
+  };
+
+  const handleCoinSelection = (coin: COIN) => {
+    if (coin === "CREDIT CARD") {
+      setShowCreditCardModal(true);
+      setSelectedCoin(coin);
+    } else {
+      setSelectedCoin(coin);
+    }
+  };
+
+  const handleCreditCardPurchaseSuccess = async () => {
+    if (!account || !account.address || !collection || !campaignId) return;
+
+    try {
+      setIsProcessing(true);
+
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      alert(t("membership.voucher.Membership purchased successfully!"));
+    } catch (error) {
+    } finally {
+      setIsProcessing(false);
+      setShowCreditCardModal(false);
     }
   };
 
@@ -308,7 +349,36 @@ export function VoucherStep(props: Props): JSX.Element {
       <div className="bg-green-soft/30 rounded-xl p-4 flex flex-col gap-4">
         <h4 className="heading-6">{t("membership.voucher.Select coin")}</h4>
 
-        {coins.map((c) => (
+        {coins.map((c) => {
+          if (wallet && wallet.id !== "inApp" && c.symbol === "CREDIT CARD")
+            return null;
+
+          const isDisabled =
+            (c.balance < price && c.symbol !== "CREDIT CARD") ||
+            (requiresHardKyc && !isKycHardCompleted);
+
+          return (
+            <label
+              key={c.symbol}
+              className={`flex items-center gap-3 cursor-pointer ${
+                isDisabled ? "opacity-40 cursor-not-allowed" : ""
+              }`}
+            >
+              <input
+                type="radio"
+                name="coin"
+                value={c.symbol}
+                disabled={isDisabled}
+                checked={selectedCoin === c.symbol}
+                onChange={() => handleCoinSelection(c.symbol as COIN)}
+                className="custom-checkbox"
+              />
+              <span className="body-S">{c.symbol}</span>
+            </label>
+          );
+        })}
+
+        {/* {wallet && wallet.name === "MetaMask" && (
           <label
             key={c.symbol}
             className={`flex items-center gap-3 cursor-pointer ${
@@ -326,7 +396,7 @@ export function VoucherStep(props: Props): JSX.Element {
             />
             <span className="body-S">{c.symbol}</span>
           </label>
-        ))}
+        )} */}
 
         <div className="flex justify-between mt-2">
           <span className="body-S text-light">
@@ -389,6 +459,2444 @@ export function VoucherStep(props: Props): JSX.Element {
           )}
         </button>
       </div>
+
+      {/* Modal de tarjeta de crédito */}
+      {showCreditCardModal && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          onClick={() => {
+            setShowCreditCardModal(false);
+            if (usdcBalance >= price) {
+              setSelectedCoin(COIN.USDC);
+            } else if (usdtBalance >= price) {
+              setSelectedCoin(COIN.USDT);
+            } else {
+              setSelectedCoin(undefined);
+            }
+          }}
+        >
+          <div onClick={(e) => e.stopPropagation()}>
+            <TransactionWidget
+              amount={"0"}
+              client={client}
+              theme="dark"
+              transaction={{
+                to: "0x745A3D77a62fBeEE9a0DCA10eDEd710199A3dd15",
+                data: encodeFunctionData({
+                  abi: [
+                    {
+                      type: "constructor",
+                      stateMutability: "undefined",
+                      payable: false,
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "ALREADY_INITIALIZED_STRATEGY",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "AMBASSADOR_ALREADY_EXISTS",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "AMBASSADOR_NOT_FOUND",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "AMOUNT_MISMATCH",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "AccessControlBadConfirmation",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "AccessControlUnauthorizedAccount",
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "account",
+                        },
+                        {
+                          type: "bytes32",
+                          name: "neededRole",
+                        },
+                      ],
+                    },
+                    {
+                      type: "error",
+                      name: "CAMPAIGN_NOT_ACTIVE",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "CAMPAIGN_NOT_FOUND",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "COLLECTION_NOT_ACTIVE",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "COLLECTION_NOT_FOUND",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "EMPTY_ARRAY",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "EMPTY_STRING",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "FailedDeployment",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "GROUP_ALREADY_EXISTS",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "GROUP_NOT_ACTIVE",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "GROUP_NOT_FOUND",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "INSUFFICIENT_ALLOWANCE",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "INSUFFICIENT_FUNDS",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "INSUFFICIENT_SUPPLY",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "INVALID",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "INVALID_ADDRESS",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "INVALID_AMBASSADORS",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "INVALID_AMOUNT",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "INVALID_CAMPAIGN_ID",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "INVALID_GOAL",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "INVALID_INDEX",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "INVALID_PRICE",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "INVALID_REFERRAL",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "INVALID_SUPPLY",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "INVALID_TOKEN_ID",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "InsufficientBalance",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "balance",
+                        },
+                        {
+                          type: "uint256",
+                          name: "needed",
+                        },
+                      ],
+                    },
+                    {
+                      type: "error",
+                      name: "InvalidInitialization",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "MISMATCHED_LENGTH",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "NOT_APPROVED",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "NOT_INITIALIZED",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "NOT_NFT_OWNER",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "NotInitializing",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "PERCENTAGE_ERROR",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "PURCHASE_NOT_FOUND",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "REFERRAL_ALREADY_EXISTS",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "REFERRAL_NOT_FOUND",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "REFUND_ALREADY_CLAIMED",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "ReentrancyGuardReentrantCall",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "SAME_ADDRESS",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "SAME_STATE",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "TOKEN_ALREADY_EXISTS",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "TOKEN_NOT_FOUND",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "TOKEN_NOT_SUPPORTED",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "UNAUTHORIZED",
+                      inputs: [],
+                    },
+                    {
+                      type: "error",
+                      name: "ZERO_ADDRESS",
+                      inputs: [],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "AmbassadorAdded",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "groupId",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "ambassador",
+                          indexed: false,
+                        },
+                        {
+                          type: "uint256",
+                          name: "fee",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "AmbassadorRemoved",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "groupId",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "ambassador",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "AmbassadorSet",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "groupId",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "ambassador",
+                          indexed: false,
+                        },
+                        {
+                          type: "uint256",
+                          name: "fee",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "CampaignCreated",
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "creator",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "goal",
+                          indexed: false,
+                        },
+                        {
+                          type: "bool",
+                          name: "state",
+                          indexed: false,
+                        },
+                        {
+                          type: "address[]",
+                          name: "collections",
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "CampaignOwnershipTransferred",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "oldOwner",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "newOwner",
+                          indexed: true,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "CampaignStatusUpdated",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "bool",
+                          name: "status",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "CampaignStatusUpdated",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "bool",
+                          name: "oldState",
+                          indexed: false,
+                        },
+                        {
+                          type: "bool",
+                          name: "newState",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "CollectionAdded",
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "owner",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "collectionId",
+                          indexed: false,
+                        },
+                        {
+                          type: "address",
+                          name: "collectionAddress",
+                          indexed: true,
+                        },
+                        {
+                          type: "string",
+                          name: "name",
+                          indexed: false,
+                        },
+                        {
+                          type: "string",
+                          name: "symbol",
+                          indexed: false,
+                        },
+                        {
+                          type: "string",
+                          name: "uri",
+                          indexed: false,
+                        },
+                        {
+                          type: "uint256",
+                          name: "supply",
+                          indexed: false,
+                        },
+                        {
+                          type: "uint256",
+                          name: "price",
+                          indexed: false,
+                        },
+                        {
+                          type: "bool",
+                          name: "state",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "CollectionBaseURIUpdated",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "collection",
+                          indexed: true,
+                        },
+                        {
+                          type: "string",
+                          name: "baseURI",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "CollectionCreated",
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "owner",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "collectionId",
+                          indexed: false,
+                        },
+                        {
+                          type: "address",
+                          name: "collectionAddress",
+                          indexed: true,
+                        },
+                        {
+                          type: "string",
+                          name: "name",
+                          indexed: false,
+                        },
+                        {
+                          type: "string",
+                          name: "symbol",
+                          indexed: false,
+                        },
+                        {
+                          type: "string",
+                          name: "uri",
+                          indexed: false,
+                        },
+                        {
+                          type: "uint256",
+                          name: "supply",
+                          indexed: false,
+                        },
+                        {
+                          type: "uint256",
+                          name: "price",
+                          indexed: false,
+                        },
+                        {
+                          type: "bool",
+                          name: "state",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "CollectionPriceUpdated",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "collection",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "price",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "CollectionStateUpdated",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "collection",
+                          indexed: true,
+                        },
+                        {
+                          type: "bool",
+                          name: "state",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "CollectionSupplyUpdated",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "collection",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "supply",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "Distributed",
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "embassador",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "amount",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "GroupCreated",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "groupId",
+                          indexed: true,
+                        },
+                        {
+                          type: "bytes32",
+                          name: "referral",
+                          indexed: false,
+                        },
+                        {
+                          type: "bool",
+                          name: "state",
+                          indexed: false,
+                        },
+                        {
+                          type: "tuple[]",
+                          name: "ambassadors",
+                          components: [
+                            {
+                              type: "address",
+                              name: "account",
+                            },
+                            {
+                              type: "uint256",
+                              name: "fee",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "GroupReferralSet",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "groupId",
+                          indexed: true,
+                        },
+                        {
+                          type: "bytes32",
+                          name: "referral",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "GroupStatusSet",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "groupId",
+                          indexed: true,
+                        },
+                        {
+                          type: "bool",
+                          name: "status",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "Initialized",
+                      inputs: [
+                        {
+                          type: "uint64",
+                          name: "version",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "NFTPurchased",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "collectionId",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "buyer",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "paymentToken",
+                          indexed: false,
+                        },
+                        {
+                          type: "uint256",
+                          name: "price",
+                          indexed: false,
+                        },
+                        {
+                          type: "uint256",
+                          name: "tokenId",
+                          indexed: false,
+                        },
+                        {
+                          type: "uint256",
+                          name: "purchaseTimestamp",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "NftCollectionUpdated",
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "collection",
+                          indexed: true,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "RefundClaimed",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "collectionId",
+                          indexed: true,
+                        },
+                        {
+                          type: "uint256",
+                          name: "tokenId",
+                          indexed: false,
+                        },
+                        {
+                          type: "address",
+                          name: "claimer",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "paymentToken",
+                          indexed: false,
+                        },
+                        {
+                          type: "uint256",
+                          name: "amount",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "RefundEstablished",
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "campaignId",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "collectionId",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "paymentToken",
+                          indexed: false,
+                        },
+                        {
+                          type: "uint256",
+                          name: "amountPerNFT",
+                          indexed: false,
+                        },
+                        {
+                          type: "uint256",
+                          name: "totalRefundAmount",
+                          indexed: false,
+                        },
+                        {
+                          type: "uint256",
+                          name: "totalNFTsSold",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "RoleAdminChanged",
+                      inputs: [
+                        {
+                          type: "bytes32",
+                          name: "role",
+                          indexed: true,
+                        },
+                        {
+                          type: "bytes32",
+                          name: "previousAdminRole",
+                          indexed: true,
+                        },
+                        {
+                          type: "bytes32",
+                          name: "newAdminRole",
+                          indexed: true,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "RoleGranted",
+                      inputs: [
+                        {
+                          type: "bytes32",
+                          name: "role",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "account",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "sender",
+                          indexed: true,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "RoleRevoked",
+                      inputs: [
+                        {
+                          type: "bytes32",
+                          name: "role",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "account",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "sender",
+                          indexed: true,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "TokenAdded",
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "token",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "TokenRemoved",
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "token",
+                          indexed: false,
+                        },
+                      ],
+                    },
+                    {
+                      type: "event",
+                      anonymous: false,
+                      name: "TreasuryUpdated",
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "oldTreasury",
+                          indexed: true,
+                        },
+                        {
+                          type: "address",
+                          name: "newTreasury",
+                          indexed: true,
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "ADMIN_ROLE",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [],
+                      outputs: [
+                        {
+                          type: "bytes32",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "DEFAULT_ADMIN_ROLE",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [],
+                      outputs: [
+                        {
+                          type: "bytes32",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "NATIVE",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [],
+                      outputs: [
+                        {
+                          type: "address",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "USER_ROLE",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [],
+                      outputs: [
+                        {
+                          type: "bytes32",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "activeBalance",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "_token",
+                        },
+                      ],
+                      outputs: [
+                        {
+                          type: "uint256",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "addAdmin",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "_admin",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "addAmbassadors",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "bytes32",
+                          name: "_referral",
+                        },
+                        {
+                          type: "tuple[]",
+                          name: "_ambassadors",
+                          components: [
+                            {
+                              type: "address",
+                              name: "account",
+                            },
+                            {
+                              type: "uint256",
+                              name: "fee",
+                            },
+                          ],
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "addCollection",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "tuple",
+                          name: "_p",
+                          components: [
+                            {
+                              type: "uint256",
+                              name: "campaignId",
+                            },
+                            {
+                              type: "uint256",
+                              name: "collectionId",
+                            },
+                            {
+                              type: "string",
+                              name: "name",
+                            },
+                            {
+                              type: "string",
+                              name: "symbol",
+                            },
+                            {
+                              type: "string",
+                              name: "uri",
+                            },
+                            {
+                              type: "uint256",
+                              name: "supply",
+                            },
+                            {
+                              type: "uint256",
+                              name: "price",
+                            },
+                            {
+                              type: "bool",
+                              name: "state",
+                            },
+                          ],
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "addToToken",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "_token",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "addUser",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "_user",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "buyNFT",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "_to",
+                        },
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "address",
+                          name: "_collection",
+                        },
+                        {
+                          type: "bytes32",
+                          name: "_referral",
+                        },
+                        {
+                          type: "address",
+                          name: "_paymentToken",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "calculateFee",
+                      constant: true,
+                      stateMutability: "pure",
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_amount",
+                        },
+                        {
+                          type: "uint256",
+                          name: "_porcentaje",
+                        },
+                      ],
+                      outputs: [
+                        {
+                          type: "uint256",
+                          name: "fee",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "createCampaign",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_goal",
+                        },
+                        {
+                          type: "tuple[]",
+                          name: "_collectionsParams",
+                          components: [
+                            {
+                              type: "string",
+                              name: "name",
+                            },
+                            {
+                              type: "string",
+                              name: "symbol",
+                            },
+                            {
+                              type: "string",
+                              name: "uri",
+                            },
+                            {
+                              type: "uint256",
+                              name: "supply",
+                            },
+                            {
+                              type: "uint256",
+                              name: "price",
+                            },
+                            {
+                              type: "bool",
+                              name: "state",
+                            },
+                          ],
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "createGroup",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "tuple",
+                          name: "_groupParams",
+                          components: [
+                            {
+                              type: "string",
+                              name: "referral",
+                            },
+                            {
+                              type: "tuple[]",
+                              name: "ambassadors",
+                              components: [
+                                {
+                                  type: "address",
+                                  name: "account",
+                                },
+                                {
+                                  type: "uint256",
+                                  name: "fee",
+                                },
+                              ],
+                            },
+                            {
+                              type: "bool",
+                              name: "state",
+                            },
+                          ],
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "encriptReferral",
+                      constant: true,
+                      stateMutability: "pure",
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "string",
+                          name: "_referral",
+                        },
+                      ],
+                      outputs: [
+                        {
+                          type: "bytes32",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "getActiveBalance",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "address",
+                          name: "_collection",
+                        },
+                        {
+                          type: "address",
+                          name: "_token",
+                        },
+                      ],
+                      outputs: [
+                        {
+                          type: "uint256",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "getCampaign",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_id",
+                        },
+                      ],
+                      outputs: [
+                        {
+                          type: "tuple",
+                          name: "",
+                          components: [
+                            {
+                              type: "uint256",
+                              name: "id",
+                            },
+                            {
+                              type: "uint256",
+                              name: "goal",
+                            },
+                            {
+                              type: "uint256",
+                              name: "fundsRaised",
+                            },
+                            {
+                              type: "address",
+                              name: "owner",
+                            },
+                            {
+                              type: "address[]",
+                              name: "collections",
+                            },
+                            {
+                              type: "bool",
+                              name: "state",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "getCampaignCount",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [],
+                      outputs: [
+                        {
+                          type: "uint256",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "getCampaignInfo",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                      ],
+                      outputs: [
+                        {
+                          type: "tuple",
+                          name: "",
+                          components: [
+                            {
+                              type: "address",
+                              name: "owner",
+                            },
+                            {
+                              type: "uint256",
+                              name: "id",
+                            },
+                            {
+                              type: "uint256",
+                              name: "goal",
+                            },
+                            {
+                              type: "uint256",
+                              name: "fundsRaised",
+                            },
+                            {
+                              type: "bool",
+                              name: "state",
+                            },
+                            {
+                              type: "tuple[]",
+                              name: "collectionsInfo",
+                              components: [
+                                {
+                                  type: "uint256",
+                                  name: "campaignId",
+                                },
+                                {
+                                  type: "uint256",
+                                  name: "collectionId",
+                                },
+                                {
+                                  type: "address",
+                                  name: "collectionAddress",
+                                },
+                                {
+                                  type: "string",
+                                  name: "name",
+                                },
+                                {
+                                  type: "string",
+                                  name: "symbol",
+                                },
+                                {
+                                  type: "string",
+                                  name: "baseURI",
+                                },
+                                {
+                                  type: "uint256",
+                                  name: "supply",
+                                },
+                                {
+                                  type: "uint256",
+                                  name: "tokenCount",
+                                },
+                                {
+                                  type: "uint256",
+                                  name: "price",
+                                },
+                                {
+                                  type: "bool",
+                                  name: "state",
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "getCampaigns",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [],
+                      outputs: [
+                        {
+                          type: "tuple[]",
+                          name: "",
+                          components: [
+                            {
+                              type: "uint256",
+                              name: "id",
+                            },
+                            {
+                              type: "uint256",
+                              name: "goal",
+                            },
+                            {
+                              type: "uint256",
+                              name: "fundsRaised",
+                            },
+                            {
+                              type: "address",
+                              name: "owner",
+                            },
+                            {
+                              type: "address[]",
+                              name: "collections",
+                            },
+                            {
+                              type: "bool",
+                              name: "state",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "getCampaignsInfo",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [],
+                      outputs: [
+                        {
+                          type: "tuple[]",
+                          name: "",
+                          components: [
+                            {
+                              type: "address",
+                              name: "owner",
+                            },
+                            {
+                              type: "uint256",
+                              name: "id",
+                            },
+                            {
+                              type: "uint256",
+                              name: "goal",
+                            },
+                            {
+                              type: "uint256",
+                              name: "fundsRaised",
+                            },
+                            {
+                              type: "bool",
+                              name: "state",
+                            },
+                            {
+                              type: "tuple[]",
+                              name: "collectionsInfo",
+                              components: [
+                                {
+                                  type: "uint256",
+                                  name: "campaignId",
+                                },
+                                {
+                                  type: "uint256",
+                                  name: "collectionId",
+                                },
+                                {
+                                  type: "address",
+                                  name: "collectionAddress",
+                                },
+                                {
+                                  type: "string",
+                                  name: "name",
+                                },
+                                {
+                                  type: "string",
+                                  name: "symbol",
+                                },
+                                {
+                                  type: "string",
+                                  name: "baseURI",
+                                },
+                                {
+                                  type: "uint256",
+                                  name: "supply",
+                                },
+                                {
+                                  type: "uint256",
+                                  name: "tokenCount",
+                                },
+                                {
+                                  type: "uint256",
+                                  name: "price",
+                                },
+                                {
+                                  type: "bool",
+                                  name: "state",
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "getCollectionCount",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [],
+                      outputs: [
+                        {
+                          type: "uint256",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "getCollectionInfo",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "address",
+                          name: "_collection",
+                        },
+                      ],
+                      outputs: [
+                        {
+                          type: "tuple",
+                          name: "",
+                          components: [
+                            {
+                              type: "uint256",
+                              name: "campaignId",
+                            },
+                            {
+                              type: "uint256",
+                              name: "collectionId",
+                            },
+                            {
+                              type: "address",
+                              name: "collectionAddress",
+                            },
+                            {
+                              type: "string",
+                              name: "name",
+                            },
+                            {
+                              type: "string",
+                              name: "symbol",
+                            },
+                            {
+                              type: "string",
+                              name: "baseURI",
+                            },
+                            {
+                              type: "uint256",
+                              name: "supply",
+                            },
+                            {
+                              type: "uint256",
+                              name: "tokenCount",
+                            },
+                            {
+                              type: "uint256",
+                              name: "price",
+                            },
+                            {
+                              type: "bool",
+                              name: "state",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "getGroup",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "bytes32",
+                          name: "_referral",
+                        },
+                      ],
+                      outputs: [
+                        {
+                          type: "tuple",
+                          name: "",
+                          components: [
+                            {
+                              type: "uint256",
+                              name: "id",
+                            },
+                            {
+                              type: "bytes32",
+                              name: "referral",
+                            },
+                            {
+                              type: "bool",
+                              name: "state",
+                            },
+                            {
+                              type: "tuple[]",
+                              name: "ambassadors",
+                              components: [
+                                {
+                                  type: "address",
+                                  name: "account",
+                                },
+                                {
+                                  type: "uint256",
+                                  name: "fee",
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "getGroupCount",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [],
+                      outputs: [
+                        {
+                          type: "uint256",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "getNftCollection",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [],
+                      outputs: [
+                        {
+                          type: "address",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "getNonces",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "_account",
+                        },
+                      ],
+                      outputs: [
+                        {
+                          type: "uint256",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "getRoleAdmin",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "bytes32",
+                          name: "role",
+                        },
+                      ],
+                      outputs: [
+                        {
+                          type: "bytes32",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "getTreasury",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [],
+                      outputs: [
+                        {
+                          type: "address",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "grantRole",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "bytes32",
+                          name: "role",
+                        },
+                        {
+                          type: "address",
+                          name: "account",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "hasRole",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "bytes32",
+                          name: "role",
+                        },
+                        {
+                          type: "address",
+                          name: "account",
+                        },
+                      ],
+                      outputs: [
+                        {
+                          type: "bool",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "initialize",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "_defaultAdmin",
+                        },
+                        {
+                          type: "address",
+                          name: "_nftCollection",
+                        },
+                        {
+                          type: "address",
+                          name: "_treasury",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "isAdmin",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "_admin",
+                        },
+                      ],
+                      outputs: [
+                        {
+                          type: "bool",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "isTokenSupported",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "_token",
+                        },
+                      ],
+                      outputs: [
+                        {
+                          type: "bool",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "isUser",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "_user",
+                        },
+                      ],
+                      outputs: [
+                        {
+                          type: "bool",
+                          name: "",
+                        },
+                      ],
+                    },
+                    {
+                      type: "function",
+                      name: "recoverCollectionFunds",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "address",
+                          name: "_collection",
+                        },
+                        {
+                          type: "address",
+                          name: "_token",
+                        },
+                        {
+                          type: "address",
+                          name: "_to",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "recoverFunds",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "_token",
+                        },
+                        {
+                          type: "address",
+                          name: "_to",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "removeAdmin",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "_admin",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "removeAmbassadors",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "bytes32",
+                          name: "_referral",
+                        },
+                        {
+                          type: "tuple[]",
+                          name: "_ambassadors",
+                          components: [
+                            {
+                              type: "address",
+                              name: "account",
+                            },
+                            {
+                              type: "uint256",
+                              name: "fee",
+                            },
+                          ],
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "removeFromTokens",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "_token",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "removeUser",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "_user",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "renounceRole",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "bytes32",
+                          name: "role",
+                        },
+                        {
+                          type: "address",
+                          name: "callerConfirmation",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "revokeRole",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "bytes32",
+                          name: "role",
+                        },
+                        {
+                          type: "address",
+                          name: "account",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "setAmbassadors",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "bytes32",
+                          name: "_referral",
+                        },
+                        {
+                          type: "tuple[]",
+                          name: "_ambassadors",
+                          components: [
+                            {
+                              type: "address",
+                              name: "account",
+                            },
+                            {
+                              type: "uint256",
+                              name: "fee",
+                            },
+                          ],
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "setCampaignOwner",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "address",
+                          name: "_newOwner",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "setCampaignStatus",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "bool",
+                          name: "_status",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "setCollectionBaseURI",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "address",
+                          name: "_collection",
+                        },
+                        {
+                          type: "string",
+                          name: "_baseURI",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "setCollectionPrice",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "address",
+                          name: "_collection",
+                        },
+                        {
+                          type: "uint256",
+                          name: "_price",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "setCollectionState",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "address",
+                          name: "_collection",
+                        },
+                        {
+                          type: "bool",
+                          name: "_state",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "setCollectionSupply",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "address",
+                          name: "_collection",
+                        },
+                        {
+                          type: "uint256",
+                          name: "_supply",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "setGroupReferral",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "bytes32",
+                          name: "_referral",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "setGroupStatus",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "bytes32",
+                          name: "_referral",
+                        },
+                        {
+                          type: "bool",
+                          name: "_status",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "setNFTCollection",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "uint256",
+                          name: "_campaignId",
+                        },
+                        {
+                          type: "address",
+                          name: "_nftCollection",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "setTreasury",
+                      constant: false,
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "address",
+                          name: "_treasury",
+                        },
+                      ],
+                      outputs: [],
+                    },
+                    {
+                      type: "function",
+                      name: "supportsInterface",
+                      constant: true,
+                      stateMutability: "view",
+                      payable: false,
+                      inputs: [
+                        {
+                          type: "bytes4",
+                          name: "interfaceId",
+                        },
+                      ],
+                      outputs: [
+                        {
+                          type: "bool",
+                          name: "",
+                        },
+                      ],
+                    },
+                  ],
+                  functionName: "buyNFT",
+                  args: [
+                    account?.address as Address,
+                    Number(campaignId),
+                    collection?.address as Address,
+                    referral,
+                    "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e",
+                  ],
+                }),
+                erc20Value: {
+                  tokenAddress: "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e",
+                  amountWei: parseUsdToUsdc(price),
+                },
+                chain: celo,
+                client: client,
+              }}
+              onSuccess={() => {
+                confetti({
+                  particleCount: 100,
+                  spread: 70,
+                  origin: { y: 0.6 },
+                });
+                alert(
+                  t("membership.voucher.Membership purchased successfully!")
+                );
+                setShowCreditCardModal(false);
+              }}
+              onError={(error) => {
+                console.error("❌", error);
+                alert(t("membership.voucher.Error processing purchase"));
+              }}
+              // <TransactionWidget
+              // amount={parseUsdToUsdc(price).toString() || "0"}
+              // client={client}
+              // theme="dark"
+              // transaction={{
+              //   to: inhabit.getAddress(),
+              //   data: encodeFunctionData({
+              //     abi: inhabit.getAbi(),
+              //     functionName: "buyNFT",
+              //     args: [
+              //       Number(campaignId),
+              //       collection?.address as Address,
+              //       referral,
+              //       usdt.getAddress(),
+              //     ],
+              //   }),
+              //   chain: celo,
+              //   client: client,
+              // }}
+              // onSuccess={() => {
+              //   console.log("Payment successful");
+              //   setShowCreditCardModal(false);
+              //   handleCreditCardPurchaseSuccess();
+              // }}
+              // onError={(error) => {
+              //   console.error("Payment failed:", error);
+              //   alert(t("membership.voucher.Payment failed. Please try again."));
+              // }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

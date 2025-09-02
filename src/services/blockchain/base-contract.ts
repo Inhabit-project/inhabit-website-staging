@@ -40,6 +40,10 @@ export class BaseContract {
     return this.address;
   }
 
+  public getAbi() {
+    return this.abi;
+  }
+
   public getClient() {
     return this.client;
   }
@@ -50,6 +54,10 @@ export class BaseContract {
 
   public getAccount() {
     return this.account;
+  }
+
+  public getContract() {
+    return this.getContractInstance();
   }
 
   // =========================

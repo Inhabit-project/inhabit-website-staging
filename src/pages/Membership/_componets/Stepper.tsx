@@ -29,10 +29,9 @@ export default function Stepper(props: Props): JSX.Element {
 
   // external hooks
   const account = useActiveAccount();
-  const { data: walletClient } = useWalletClient();
 
-  const { balance: usdcBalance } = useUsdc(price, walletClient);
-  const { balance: usdtBalance } = useUsdt(price, walletClient);
+  const { balance: usdcBalance } = useUsdc(price, account);
+  const { balance: usdtBalance } = useUsdt(price, account);
 
   const {
     isKycHardCompleted,

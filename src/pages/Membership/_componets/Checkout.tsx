@@ -162,9 +162,6 @@ export function Checkout(props: Props): JSX.Element {
   const account = useActiveAccount();
   const chain = useActiveWalletChain();
 
-  // const { chainId } = useAccount();
-  // const { signMessageAsync } = useSignMessage();
-
   const { mutate: fetchNonce, isPending: isNoncePending } = useNonce();
   const { mutate: sendKycEmail, isPending: isKycPending } = useSendKycEmail();
 
@@ -220,7 +217,6 @@ export function Checkout(props: Props): JSX.Element {
           nonce
         );
         const signature = await account.signMessage({ message });
-        // const signature = await signMessageAsync({ message });
         const dto = mapUserToUserDto({
           address: account.address,
           message,
