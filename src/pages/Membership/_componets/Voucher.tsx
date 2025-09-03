@@ -459,7 +459,7 @@ export function VoucherStep(props: Props): JSX.Element {
               client={client}
               chain={thirdwebChain}
               amount={price.toString()}
-              tokenAddress={usdc.getAddress()}
+              tokenAddress={usdt.getAddress()}
               paymentMethods={["card"]}
               currency="USD"
               onSuccess={() => {
