@@ -8,6 +8,9 @@ import usdtAlfajoresJson from "../../assets/json/contracts/celo-alfajores/USDT.j
 import { celo, celoAlfajores } from "viem/chains";
 import { SiweMessage } from "siwe";
 import { Address, zeroAddress } from "viem";
+import { createThirdwebClient } from "thirdweb";
+import { celo as thierdwebCelo, celoAlfajoresTestnet } from "thirdweb/chains";
+import { ContractJson } from "@/services/blockchain/base-contract";
 
 export const ENV: string = ensureEnvVar(import.meta.env.VITE_ENV, "VITE_ENV");
 
@@ -28,11 +31,30 @@ export const HTTP_TRANSPORT =
     : "https://alfajores-forno.celo-testnet.org";
 
 export const INHABIT_JSON =
-  ENV === "prod" ? InhabitCeloJson : InhabitAlfajoresJson;
+  ENV === "prod"
+    ? (InhabitCeloJson as ContractJson)
+    : (InhabitAlfajoresJson as ContractJson);
 
-export const USDC_JSON = ENV === "prod" ? usdcCeloJson : usdcAlfajoresJson;
+export const USDC_JSON =
+  ENV === "prod"
+    ? (usdcCeloJson as ContractJson)
+    : (usdcAlfajoresJson as ContractJson);
 
-export const USDT_JSON = ENV === "prod" ? usdtCeloJson : usdtAlfajoresJson;
+export const USDT_JSON =
+  ENV === "prod"
+    ? (usdtCeloJson as ContractJson)
+    : (usdtAlfajoresJson as ContractJson);
+
+// Thirdweb
+
+export const client = createThirdwebClient({
+  clientId: ensureEnvVar(
+    import.meta.env.VITE_THIRDWEB_CLIENT_ID,
+    "VITE_THIRDWEB_CLIENT_ID"
+  ),
+});
+
+export const chain = ENV === "prod" ? thierdwebCelo : celoAlfajoresTestnet;
 
 // SiweMessage
 

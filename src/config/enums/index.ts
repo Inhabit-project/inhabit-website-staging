@@ -11,4 +11,5 @@ export enum KYC_TYPE {
 export enum COIN {
   USDC = "USDC",
   USDT = "USDT",
+  CREDIT_CARD = "CREDIT CARD",
 }

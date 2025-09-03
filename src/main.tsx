@@ -43,6 +43,7 @@ FontLoadingUtils.applyFallbacks();
 
 import { RainbowKitProviderConfig } from "./config/rainbow-kit.config";
 import { BrowserRouter } from "react-router";
+import { ThirdwebProvider } from "thirdweb/react";
 
 // Initialize font optimization, loading, and preloading
 initializeFontOptimization();
@@ -87,13 +88,15 @@ const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <HelmetProvider>
-      <RainbowKitProviderConfig>
-        <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </QueryClientProvider>
-      </RainbowKitProviderConfig>
+      <ThirdwebProvider>
+        <RainbowKitProviderConfig>
+          <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </QueryClientProvider>
+        </RainbowKitProviderConfig>
+      </ThirdwebProvider>
     </HelmetProvider>
   </React.StrictMode>
 );
