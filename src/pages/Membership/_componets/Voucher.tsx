@@ -34,6 +34,7 @@ interface Props {
   price: number;
   requiresHardKyc: boolean;
   selectedCoin?: COIN;
+  onWalletDisconnect: () => void;
   setSelectedCoin: (coin: COIN) => void;
 }
 
@@ -45,6 +46,7 @@ export function VoucherStep(props: Props): JSX.Element {
     selectedCoin,
     requiresHardKyc,
     kycType,
+    onWalletDisconnect,
     setSelectedCoin,
   } = props;
 
@@ -143,6 +145,15 @@ export function VoucherStep(props: Props): JSX.Element {
     }
     return () => clearTimeout(timer);
   }, [cooldown]);
+
+  /// Reset to step 1 if wallet is disconnected
+  useEffect(() => {
+    if (!account) {
+      if (onWalletDisconnect) {
+        onWalletDisconnect();
+      }
+    }
+  }, [account, onWalletDisconnect]);
 
   // functions
   const onResendKycEMail = async () => {

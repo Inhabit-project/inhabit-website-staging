@@ -20,14 +20,14 @@ export type Props = {
 };
 
 export default function Stepper(props: Props): JSX.Element {
-  // props
+  /// props
   const { availableSupply, membershipContract, price } = props;
 
-  // hooks
+  /// hooks
   const [step, setStep] = useState<1 | 2>(1);
   const [selectedCoin, setSelectedCoin] = useState<COIN>();
 
-  // external hooks
+  /// external hooks
   const account = useActiveAccount();
 
   const { balance: usdcBalance } = useUsdc(price, account);
@@ -41,15 +41,16 @@ export default function Stepper(props: Props): JSX.Element {
     startKycPolling,
   } = useStore();
 
-  // variables
+  /// variables
   const requiresHardKyc = MUST_DO_KYC_HARD(price);
   const kycType = requiresHardKyc ? KYC_TYPE.HARD : KYC_TYPE.SOFT;
 
-  // functions
+  /// functions
   const goNext = () => setStep((s) => (s === 1 ? 2 : s));
   const goPrev = () => setStep((s) => (s === 2 ? 1 : s));
 
-  // effects
+  /// effects
+  // Select coin according to the balance
   useEffect(() => {
     if (selectedCoin) return;
 
@@ -57,6 +58,7 @@ export default function Stepper(props: Props): JSX.Element {
     if (usdtBalance >= price && usdcBalance < price) setSelectedCoin(COIN.USDT);
   }, [price, selectedCoin, usdcBalance, usdtBalance]);
 
+  // Get account KYC status
   useEffect(() => {
     if (!account || !account.address) return;
 
@@ -66,6 +68,7 @@ export default function Stepper(props: Props): JSX.Element {
     ]);
   }, [account]);
 
+  // According to the KYC status, go next or prev and start KYC hard polling
   useEffect(() => {
     if (!account || !account.address) return;
 
@@ -101,6 +104,7 @@ export default function Stepper(props: Props): JSX.Element {
           price={price}
           selectedCoin={selectedCoin}
           requiresHardKyc={requiresHardKyc}
+          onWalletDisconnect={() => setStep(1)}
           setSelectedCoin={setSelectedCoin}
         />
       )}
