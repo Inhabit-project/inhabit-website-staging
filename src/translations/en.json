@@ -637,6 +637,8 @@
     "voucher": {
       "Balance": "Balance",
       "Click here to resend KYC request": "Click here to resend KYC request",
+      "CREDIT CARD": "CREDIT CARD",
+      "Error charging wallet": "Error charging wallet",
       "Error sending KYC request. Please try again": "Error sending KYC request. Please try again.",
       "Error signing message. Please try again.": "Error signing message. Please try again.",
       "KYC request sent successfully!": "KYC request sent successfully!",
@@ -650,6 +652,7 @@
       "USDT": "USDT",
       "Wait": "Wait",
       "Waiting for nonce...": "Waiting for nonce...",
+      "Wallet charged successfully": "Wallet charged successfully",
       "You don't have enough balance to buy this membership": "You don't have enough balance to buy this membership.",
       "You need to pass the KYC to purchase this NFT.": "You need to pass the KYC to purchase this NFT.",
       "to resend": "to resend"

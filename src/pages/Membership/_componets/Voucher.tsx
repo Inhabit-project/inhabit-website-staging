@@ -17,7 +17,7 @@ import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
 import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
 import { t } from "i18next";
 import Cookies from "js-cookie";
-import { TransactionWidget } from "thirdweb/react";
+import { BuyWidget, TransactionWidget } from "thirdweb/react";
 import { chain as thirdwebChain, client } from "@/config/const";
 import {
   useActiveAccount,
@@ -56,8 +56,6 @@ export function VoucherStep(props: Props): JSX.Element {
   // external hooks
   const { campaignId } = useParams();
 
-  const { signMessageAsync } = useSignMessage();
-
   const account = useActiveAccount();
   const chain = useActiveWalletChain();
   const wallet = useActiveWallet();
@@ -86,14 +84,6 @@ export function VoucherStep(props: Props): JSX.Element {
   const { collection, isKycHardCompleted, inhabit, usdc, usdt } = useStore();
 
   // variables
-  const selectedBalance = useMemo(() => {
-    if (!selectedCoin) return 0;
-    return selectedCoin === COIN.USDC ? usdcBalance : usdtBalance;
-  }, [selectedCoin, usdcBalance, usdtBalance]);
-
-  const hasSufficientBalance = selectedBalance >= price;
-  const isAvailable = availableSupply > 0;
-
   const coins = [
     {
       symbol: COIN.USDC,
@@ -103,21 +93,30 @@ export function VoucherStep(props: Props): JSX.Element {
       symbol: COIN.USDT,
       balance: usdtBalance,
     },
-    {
-      symbol: "CREDIT CARD",
-      balance: 0,
-    },
   ];
 
   const cookieReferral = Cookies.get(COOKIE_REFERRAL) as Hex | undefined;
   const referral = cookieReferral ? cookieReferral : keccak256(toBytes(""));
 
+  const selectedBalance = useMemo(() => {
+    if (usdcBalance >= price) {
+      return usdcBalance;
+    } else if (usdtBalance >= price) {
+      return usdtBalance;
+    } else {
+      return 0;
+    }
+  }, [selectedCoin, usdcBalance, usdtBalance]);
+
+  const hasSufficientBalance = selectedBalance >= price;
+  const isAvailable = availableSupply > 0;
+
+  // effects
   useEffect(() => {
     usdc.setAccount(account);
     usdt.setAccount(account);
   }, [account, usdc]);
 
-  // effects
   useEffect(() => {
     const saved = localStorage.getItem(COOLDOWN_KEY);
     if (saved) {
@@ -256,27 +255,11 @@ export function VoucherStep(props: Props): JSX.Element {
     }
   };
 
-  const handleCoinSelection = (coin: COIN) => {
+  const handleCoinSelection = (coin: COIN | "CREDIT CARD") => {
     if (coin === "CREDIT CARD") {
       setShowCreditCardModal(true);
-      setSelectedCoin(coin);
     } else {
       setSelectedCoin(coin);
-    }
-  };
-
-  const handleCreditCardPurchaseSuccess = async () => {
-    if (!account || !account.address || !collection || !campaignId) return;
-
-    try {
-      setIsProcessing(true);
-
-      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-      alert(t("membership.voucher.Membership purchased successfully!"));
-    } catch (error) {
-    } finally {
-      setIsProcessing(false);
-      setShowCreditCardModal(false);
     }
   };
 
@@ -287,6 +270,7 @@ export function VoucherStep(props: Props): JSX.Element {
         <div className="flex justify-between font-semibold">
           <h4 className="heading-6">{t("membership.voucher.Balance")}</h4>
         </div>
+        {/* USDC */}
         <div className="flex justify-between font-semibold">
           <span className="body-S text-light">
             {t("membership.voucher.USDC")}
@@ -300,6 +284,7 @@ export function VoucherStep(props: Props): JSX.Element {
             />
           </div>
         </div>
+        {/* USDT */}
         <div className="flex justify-between font-semibold">
           <span className="body-S text-light">
             {t("membership.voucher.USDT")}
@@ -314,9 +299,24 @@ export function VoucherStep(props: Props): JSX.Element {
               className="inline-block w-9 h-9 ml-1"
             />
           </div>
+          {/* Credit Card */}
         </div>
-        {/* TODO: add to i18n */}
-        {/* TODO: add styles */}
+        <label
+          key="CREDIT CARD"
+          className={`flex items-center gap-3 cursor-pointer ${
+            wallet?.id !== "inApp" ? "opacity-40 cursor-not-allowed" : ""
+          }`}
+        >
+          <button
+            type="button"
+            name="coin"
+            value="CREDIT CARD"
+            disabled={wallet?.id !== "inApp"}
+            onClick={() => handleCoinSelection("CREDIT CARD" as COIN)}
+            className="custom-checkbox"
+          />
+          <span className="body-S">{t("membership.voucher.CREDIT CARD")}</span>
+        </label>
         {account &&
           account.address &&
           isKycHardCompleted &&
@@ -337,25 +337,13 @@ export function VoucherStep(props: Props): JSX.Element {
               )}
             </label>
           )}
-        {/* <div className="flex justify-between text-secondary font-bold text-lg">
-              <span className="body-M text-secondary">
-                Total taxes included
-              </span>
-              <span className="body-M text-secondary">
-                $ {membership.valueUSD} USD
-              </span>
-            </div> */}
       </div>
       <div className="bg-green-soft/30 rounded-xl p-4 flex flex-col gap-4">
         <h4 className="heading-6">{t("membership.voucher.Select coin")}</h4>
 
         {coins.map((c) => {
-          if (wallet && wallet.id !== "inApp" && c.symbol === "CREDIT CARD")
-            return null;
-
           const isDisabled =
-            (c.balance < price && c.symbol !== "CREDIT CARD") ||
-            (requiresHardKyc && !isKycHardCompleted);
+            c.balance < price || (requiresHardKyc && !isKycHardCompleted);
 
           return (
             <label
@@ -377,26 +365,6 @@ export function VoucherStep(props: Props): JSX.Element {
             </label>
           );
         })}
-
-        {/* {wallet && wallet.name === "MetaMask" && (
-          <label
-            key={c.symbol}
-            className={`flex items-center gap-3 cursor-pointer ${
-              c.balance < price && "opacity-40 cursor-not-allowed"
-            }`}
-          >
-            <input
-              type="radio"
-              name="coin"
-              value={c.symbol}
-              disabled={c.balance < price}
-              checked={selectedCoin === c.symbol}
-              onChange={() => setSelectedCoin(c.symbol as COIN)}
-              className="custom-checkbox"
-            />
-            <span className="body-S">{c.symbol}</span>
-          </label>
-        )} */}
 
         <div className="flex justify-between mt-2">
           <span className="body-S text-light">
@@ -460,7 +428,7 @@ export function VoucherStep(props: Props): JSX.Element {
         </button>
       </div>
 
-      {/* Modal de tarjeta de crédito */}
+      {/* Modal to purchase with credit card */}
       {showCreditCardModal && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -476,7 +444,36 @@ export function VoucherStep(props: Props): JSX.Element {
           }}
         >
           <div onClick={(e) => e.stopPropagation()}>
-            <TransactionWidget
+            <BuyWidget
+              client={client}
+              chain={thirdwebChain}
+              amount={price.toString()}
+              tokenAddress={usdc.getAddress()}
+              paymentMethods={["card"]}
+              currency="USD"
+              onSuccess={() => {
+                alert(t("membership.voucher.Wallet charged successfully"));
+                setShowCreditCardModal(false);
+                refetchUsdc();
+                refetchUsdt();
+              }}
+              onError={(error) => {
+                console.error("❌", error);
+                alert(t("membership.voucher.Error charging wallet"));
+              }}
+              onCancel={() => {
+                setShowCreditCardModal(false);
+              }}
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+{
+  /* <TransactionWidget
               amount={"0"}
               client={client}
               theme="dark"
@@ -2893,10 +2890,5 @@ export function VoucherStep(props: Props): JSX.Element {
               //   console.error("Payment failed:", error);
               //   alert(t("membership.voucher.Payment failed. Please try again."));
               // }}
-            />
-          </div>
-        </div>
-      )}
-    </div>
-  );
+            /> */
 }
