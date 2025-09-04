@@ -6,6 +6,7 @@ import { Address, Hex } from "thirdweb";
 import { ServiceResult } from "@/models/api.model";
 
 type BuyParams = {
+  to: Address;
   campaignId: number;
   collectionAddress: Address;
   referral: Hex;
@@ -14,13 +15,20 @@ type BuyParams = {
 
 export function useInhabit(account?: Account) {
   const buyNFT = useMutation<Hex, any, BuyParams>({
-    mutationFn: async ({ campaignId, collectionAddress, referral, token }) => {
+    mutationFn: async ({
+      to,
+      campaignId,
+      collectionAddress,
+      referral,
+      token,
+    }) => {
       if (!account) {
         throw new Error("Account not connected");
       }
 
       const inhabit = new InhabitContract(account);
       const result: ServiceResult<Hex> = await inhabit.buyNFT(
+        to,
         campaignId,
         collectionAddress,
         referral,

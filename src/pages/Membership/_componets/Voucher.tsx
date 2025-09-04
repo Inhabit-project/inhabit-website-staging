@@ -243,6 +243,7 @@ export function VoucherStep(props: Props): JSX.Element {
       await new Promise<void>((resolve, reject) => {
         buyNFT(
           {
+            to: account.address as Address,
             campaignId: Number(campaignId),
             collectionAddress: collection.address as Address,
             referral,
