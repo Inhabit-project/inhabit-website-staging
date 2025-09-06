@@ -176,13 +176,13 @@ export function VoucherStep(props: Props): JSX.Element {
   const onResendKycEMail = async () => {
     if (!account || !account?.address || !chain) return;
 
-    fetchNonce(account.address, {
+    fetchNonce(account.address as Address, {
       onSuccess: async (nonce) => {
         if (!nonce) return;
 
         const message = generateSiweMessage(
           chain.id,
-          account?.address as string,
+          account?.address as Address,
           nonce
         );
         const signature = await account.signMessage({ message });
@@ -190,7 +190,7 @@ export function VoucherStep(props: Props): JSX.Element {
           message,
           signature,
           nonce,
-          address: account.address,
+          address: account.address as Address,
           kycType,
         };
 

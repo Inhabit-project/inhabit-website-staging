@@ -53,14 +53,36 @@ export const CUSD_JSON =
     : (cusdAlfajoresJson as ContractJson);
 
 // Thirdweb
+import { defineChain } from "thirdweb/chains";
+
+// Define a chain with custom RPC
+const customCeloAlfajores = defineChain({
+  id: 44787,
+  rpc: "https://alfajores-forno.celo-testnet.org",
+  name: "Celo Alfajores Testnet",
+  nativeCurrency: {
+    name: "Celo",
+    symbol: "CELO",
+    decimals: 18,
+  },
+  blockExplorers: [
+    {
+      name: "CeloScan",
+      url: "https://alfajores.celoscan.io",
+    },
+  ],
+  testnet: true,
+});
+
+// Use the custom chain
+export const chain = ENV === "prod" ? thierdwebCelo : customCeloAlfajores;
+
 export const client = createThirdwebClient({
   clientId: ensureEnvVar(
     import.meta.env.VITE_THIRDWEB_CLIENT_ID,
     "VITE_THIRDWEB_CLIENT_ID"
   ),
 });
-
-export const chain = ENV === "prod" ? thierdwebCelo : celoAlfajoresTestnet;
 
 // SiweMessage
 

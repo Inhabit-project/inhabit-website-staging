@@ -89,35 +89,12 @@ export const useStore = create<Store>((set, get) => {
       }
     },
 
-    getCampaignCollections: async (campaignId: number) => {
-      const collections = await get().inhabit.getCampaignCollections(
-        campaignId
-      );
-      set({ collections });
-      return collections;
-    },
-
     getCampaigns: async () => {
       set({ campaignsLoading: true });
       const campaigns = await get().inhabit.getCampaigns();
       const lastCampaign = campaigns[campaigns.length - 1];
       set({ campaigns, campaignsLoading: false, lastCampaign });
       return campaigns;
-    },
-
-    isCampaignReferral: async (campaignId: number, referral: string) => {
-      const referralEncripted = keccak256(toBytes(referral));
-      return await get().inhabit.isCampaignReferralSupported(
-        campaignId,
-        referralEncripted
-      );
-    },
-
-    getGroup: async (campaignId: number, referral: string) => {
-      set({ groupsLoading: true });
-      const group = await get().inhabit.getGroup(campaignId, referral);
-      set({ group, groupsLoading: false });
-      return group;
     },
 
     getIsKycCompleted: async (address: Address, kycType: KYC_TYPE) => {
@@ -167,10 +144,6 @@ export const useStore = create<Store>((set, get) => {
       } else {
         console.warn(`${ERROR.UNKNOWN_KYC_TYPE}: ${kycType}`);
       }
-    },
-
-    setWalletClient: (walletClient: WalletClient) => {
-      get().inhabit.setWalletClient(walletClient);
     },
 
     startKycPolling: async (address, requiresHardKyc) => {

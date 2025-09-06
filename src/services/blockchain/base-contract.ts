@@ -30,6 +30,14 @@ export class BaseContract {
     this.client = client;
     this.chain = chain;
     this.account = account;
+
+    console.log("BaseContract initialized:", {
+      address: this.address,
+      abi: this.abi,
+      client: this.client,
+      chain: this.chain,
+      account: this.account,
+    });
   }
 
   // =========================

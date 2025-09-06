@@ -1,8 +1,7 @@
-import { client, ENV } from "@/config/const";
+import { client, ENV, chain } from "@/config/const";
 import { ConnectButton } from "thirdweb/react";
 import { darkTheme } from "thirdweb/react";
 import { inAppWallet, createWallet } from "thirdweb/wallets";
-import { celo, celoAlfajoresTestnet } from "thirdweb/chains";
 
 const wallets = [
   inAppWallet({
@@ -44,7 +43,7 @@ export function LoginButton(): JSX.Element {
         },
       })}
       wallets={wallets}
-      chain={ENV === "prod" ? celo : celoAlfajoresTestnet}
+      chain={chain}
     />
   );
 }
