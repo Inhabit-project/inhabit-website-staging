@@ -5,6 +5,8 @@ import usdcCeloJson from "../../assets/json/contracts/celo/USDC.json";
 import usdcAlfajoresJson from "../../assets/json/contracts/celo-alfajores/USDC.json";
 import usdtCeloJson from "../../assets/json/contracts/celo/USDT.json";
 import usdtAlfajoresJson from "../../assets/json/contracts/celo-alfajores/USDT.json";
+import cusdCeloJson from "../../assets/json/contracts/celo/cUSD.json";
+import cusdAlfajoresJson from "../../assets/json/contracts/celo-alfajores/cUSD.json";
 import { celo, celoAlfajores } from "viem/chains";
 import { SiweMessage } from "siwe";
 import { Address, zeroAddress } from "viem";
@@ -45,8 +47,12 @@ export const USDT_JSON =
     ? (usdtCeloJson as ContractJson)
     : (usdtAlfajoresJson as ContractJson);
 
-// Thirdweb
+export const CUSD_JSON =
+  ENV === "prod"
+    ? (cusdCeloJson as ContractJson)
+    : (cusdAlfajoresJson as ContractJson);
 
+// Thirdweb
 export const client = createThirdwebClient({
   clientId: ensureEnvVar(
     import.meta.env.VITE_THIRDWEB_CLIENT_ID,

@@ -8,6 +8,7 @@ import { Campaign } from "../models/campaign.model";
 import { userServices } from "../services/rest/user";
 import { ERROR, KYC_TYPE } from "../config/enums";
 import { Group } from "@/models/group.model";
+import { CusdContract } from "@/services/blockchain/contracts/cusd";
 
 type Store = {
   campaign: Campaign | null;
@@ -25,6 +26,7 @@ type Store = {
   inhabit: InhabitContract;
   isPollingKyc: boolean;
   lastCampaign: Campaign | null;
+  cusd: CusdContract;
   usdc: UsdcContract;
   usdt: UsdtContract;
   getCampaign: (campaignId: number) => Promise<Campaign | null>;
@@ -49,6 +51,7 @@ export const useStore = create<Store>((set, get) => {
     userServices();
 
   const inhabit = new InhabitContract();
+  const cusd = new CusdContract();
   const usdc = new UsdcContract();
   const usdt = new UsdtContract();
 
@@ -69,6 +72,7 @@ export const useStore = create<Store>((set, get) => {
     inhabit,
     isPollingKyc: false,
     lastCampaign: null,
+    cusd,
     usdc,
     usdt,
 

@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { useSignMessage } from "wagmi";
 import usdcImage from "../../../assets/images/tokens/USDC.svg";
 import usdtImage from "../../../assets/images/tokens/USDT.svg";
+import cusdImage from "../../../assets/images/tokens/cUSD.svg";
 import { useResendKycEmail } from "@/hooks/useKycEmail";
 import { generateSiweMessage } from "@/utils/generate-siwe-message.util";
 import { useNonce } from "@/hooks/useNonce";
@@ -27,6 +28,7 @@ import {
 import { Address } from "thirdweb";
 import { parseUsdToUsdc } from "@/utils/usdc-format.utils";
 import { celo } from "thirdweb/chains";
+import { useCusd } from "@/hooks/contracts/erc20/useCusd";
 
 interface Props {
   availableSupply: number;
@@ -78,15 +80,27 @@ export function VoucherStep(props: Props): JSX.Element {
     approve: { mutate: approveUsdt },
   } = useUsdt(price, account);
 
+  const {
+    balance: cusdBalance,
+    allowance: cusdAllowance,
+    refetch: refetchCusd,
+    approve: { mutate: approveCusd },
+  } = useCusd(price, account);
+
   const { mutate: buyNFT } = buyNFTHook;
   const { mutate: fetchNonce, isPending: isNoncePending } = useNonce();
   const { mutate: resendKycEmail, isPending: isResendingKyc } =
     useResendKycEmail();
 
-  const { collection, isKycHardCompleted, inhabit, usdc, usdt } = useStore();
+  const { collection, isKycHardCompleted, inhabit, usdc, usdt, cusd } =
+    useStore();
 
   // variables
   const coins = [
+    {
+      symbol: COIN.CUSD,
+      balance: cusdBalance,
+    },
     {
       symbol: COIN.USDC,
       balance: usdcBalance,
@@ -105,10 +119,12 @@ export function VoucherStep(props: Props): JSX.Element {
       return usdcBalance;
     } else if (usdtBalance >= price) {
       return usdtBalance;
+    } else if (cusdBalance >= price) {
+      return cusdBalance;
     } else {
       return 0;
     }
-  }, [selectedCoin, usdcBalance, usdtBalance]);
+  }, [selectedCoin, usdcBalance, usdtBalance, cusdBalance]);
 
   const hasSufficientBalance = selectedBalance >= price;
   const isAvailable = availableSupply > 0;
@@ -117,6 +133,7 @@ export function VoucherStep(props: Props): JSX.Element {
   useEffect(() => {
     usdc.setAccount(account);
     usdt.setAccount(account);
+    cusd.setAccount(account);
   }, [account, usdc]);
 
   useEffect(() => {
@@ -215,15 +232,25 @@ export function VoucherStep(props: Props): JSX.Element {
       return;
 
     const isUSDC = selectedCoin === COIN.USDC;
-    const approve = isUSDC ? approveUsdc : approveUsdt;
-    const refetch = isUSDC ? refetchUsdc : refetchUsdt;
-    const tokenAddr = isUSDC ? usdc.getAddress() : usdt.getAddress();
+    const isUSDT = selectedCoin === COIN.USDT;
+    const isCUSD = selectedCoin === COIN.CUSD;
+    const approve = isUSDC ? approveUsdc : isUSDT ? approveUsdt : approveCusd;
+    const refetch = isUSDC ? refetchUsdc : isUSDT ? refetchUsdt : refetchCusd;
+    const tokenAddr = isUSDC
+      ? usdc.getAddress()
+      : isUSDT
+      ? usdt.getAddress()
+      : cusd.getAddress();
 
     try {
       setIsProcessing(true);
 
       await refetch();
-      const allowance = isUSDC ? usdcAllowance : usdtAllowance;
+      const allowance = isUSDC
+        ? usdcAllowance
+        : isUSDT
+        ? usdtAllowance
+        : cusdAllowance;
 
       if (allowance < price) {
         await new Promise<void>((resolve, reject) => {
@@ -281,6 +308,20 @@ export function VoucherStep(props: Props): JSX.Element {
         <div className="flex justify-between font-semibold">
           <h4 className="heading-6">{t("membership.voucher.Balance")}</h4>
         </div>
+        {/* CUSD */}
+        <div className="flex justify-between font-semibold">
+          <span className="body-S text-light">
+            {t("membership.voucher.CUSD")}
+          </span>
+          <div className="flex items-center space-x-3">
+            <span className="body-S text-light">${cusdBalance.toFixed(2)}</span>
+            <img
+              src={cusdImage}
+              alt="CUSD"
+              className="inline-block w-9 h-9 ml-1"
+            />
+          </div>
+        </div>
         {/* USDC */}
         <div className="flex justify-between font-semibold">
           <span className="body-S text-light">
@@ -306,7 +347,7 @@ export function VoucherStep(props: Props): JSX.Element {
             </span>
             <img
               src={usdtImage}
-              alt="USDC"
+              alt="USDT"
               className="inline-block w-9 h-9 ml-1"
             />
           </div>
@@ -449,6 +490,8 @@ export function VoucherStep(props: Props): JSX.Element {
               setSelectedCoin(COIN.USDC);
             } else if (usdtBalance >= price) {
               setSelectedCoin(COIN.USDT);
+            } else if (cusdBalance >= price) {
+              setSelectedCoin(COIN.CUSD);
             } else {
               setSelectedCoin(undefined);
             }

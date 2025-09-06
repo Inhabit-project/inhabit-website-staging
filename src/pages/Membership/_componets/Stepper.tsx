@@ -12,6 +12,7 @@ import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
 import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
 import { LoginButton } from "./LoginButton";
 import { useActiveAccount } from "thirdweb/react";
+import { useCusd } from "@/hooks/contracts/erc20/useCusd";
 
 export type Props = {
   availableSupply: number;
@@ -32,6 +33,7 @@ export default function Stepper(props: Props): JSX.Element {
 
   const { balance: usdcBalance } = useUsdc(price, account);
   const { balance: usdtBalance } = useUsdt(price, account);
+  const { balance: cusdBalance } = useCusd(price, account);
 
   const {
     isKycHardCompleted,
@@ -56,7 +58,9 @@ export default function Stepper(props: Props): JSX.Element {
 
     if (usdcBalance >= price && usdtBalance < price) setSelectedCoin(COIN.USDC);
     if (usdtBalance >= price && usdcBalance < price) setSelectedCoin(COIN.USDT);
-  }, [price, selectedCoin, usdcBalance, usdtBalance]);
+    if (cusdBalance >= price && usdcBalance < price) setSelectedCoin(COIN.CUSD);
+    if (cusdBalance >= price && usdtBalance < price) setSelectedCoin(COIN.CUSD);
+  }, [price, selectedCoin, usdcBalance, usdtBalance, cusdBalance]);
 
   // Get account KYC status
   useEffect(() => {

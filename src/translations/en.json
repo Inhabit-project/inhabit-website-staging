@@ -636,6 +636,7 @@
     },
     "voucher": {
       "Balance": "Balance",
+      "CUSD": "CUSD",
       "Click here to resend KYC request": "Click here to resend KYC request",
       "CREDIT CARD": "CREDIT CARD",
       "Error charging wallet": "Error charging wallet",

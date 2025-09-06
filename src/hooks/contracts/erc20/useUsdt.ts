@@ -3,6 +3,7 @@ import { INHABIT_JSON } from "@/config/const";
 import { useStore } from "@/store";
 import { useApprove } from "./useApprove";
 import { Account } from "thirdweb/wallets";
+import { Address } from "thirdweb";
 
 export function useUsdt(price: number, account?: Account) {
   const [balance, setBalance] = useState<number>(0);
@@ -26,8 +27,8 @@ export function useUsdt(price: number, account?: Account) {
     setIsLoading(true);
 
     const [fetchedBalance, fetchedAllowance] = await Promise.all([
-      usdt.getBalance(account.address),
-      usdt.allowance(account.address, INHABIT_JSON.proxy),
+      usdt.getBalance(account.address as Address),
+      usdt.allowance(account.address as Address, INHABIT_JSON.proxy),
     ]);
 
     setBalance(fetchedBalance);

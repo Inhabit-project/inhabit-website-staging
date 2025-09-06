@@ -6,7 +6,6 @@ import { mapCollectionDtoToCollection } from "./mapColletionDtoToCollection";
 export async function mapCampaignDtoToCampaign(
   dto: CampaignDto
 ): Promise<Campaign> {
-  console.log("dto", dto);
   return {
     id: Number(dto.id),
     state: dto.state,

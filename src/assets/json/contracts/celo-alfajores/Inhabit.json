@@ -1,6 +1,10 @@
 {
   "proxy": "0x9c6464c7a925304d366677Bb0237eCA676a0b2de",
+<<<<<<< Updated upstream
   "implementation": "0x2239c631dBaFAa6C3f909137CC1422119B557836",
+=======
+  "implementation": "0x328232B19eEda0B1c4078DE8cb114700304D59aB",
+>>>>>>> Stashed changes
   "abi": [
     {
       "type": "constructor",
