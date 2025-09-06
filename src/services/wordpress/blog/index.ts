@@ -72,11 +72,16 @@ export function blogServices() {
     const featuredPostsToSkip = 4;
 
     // Create cache key
-    const cacheKey = `blog_list_${currentLanguage}_${per_page}_${page}_${skipFeatured ? 'skip' : 'all'}`;
+    const cacheKey = `blog_list_${currentLanguage}_${per_page}_${page}_${
+      skipFeatured ? "skip" : "all"
+    }`;
 
     try {
       // Try to get from cache first
-      const cached = await indexedDBCache.getBlogList(cacheKey, currentLanguage);
+      const cached = await indexedDBCache.getBlogList(
+        cacheKey,
+        currentLanguage
+      );
       if (cached) {
         return cached;
       }
@@ -86,6 +91,8 @@ export function blogServices() {
       url.searchParams.append("per_page", per_page.toString());
       url.searchParams.append("lang", currentLanguage);
       url.searchParams.append("fields", "id,date,title,excerpt,_embedded");
+      url.searchParams.append("orderby", "date");
+      url.searchParams.append("order", "desc");
 
       if (skipFeatured) {
         const offset = featuredPostsToSkip + (page - 1) * per_page;
@@ -107,7 +114,9 @@ export function blogServices() {
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
+        throw new Error(
+          `HTTP error! status: ${response.status} - ${response.statusText}`
+        );
       }
 
       const totalPosts = parseInt(
@@ -163,12 +172,12 @@ export function blogServices() {
       return result;
     } catch (error) {
       console.error("Error fetching WordPress posts:", error);
-      
+
       // Re-throw AbortError for timeout handling
-      if (error instanceof Error && error.name === 'AbortError') {
+      if (error instanceof Error && error.name === "AbortError") {
         throw error;
       }
-      
+
       return { posts: [], totalPages: 0 };
     }
   };
@@ -207,26 +216,70 @@ export function blogServices() {
   const fetchPost = async (postId: string): Promise<ProcessedPost | null> => {
     const currentLanguage = i18n.language;
 
+    // Try to get the base language if it's a compound language code
+    const baseLanguage = currentLanguage.split("-")[0];
+
+    console.log("🌐 Language configuration:", {
+      fullLanguage: currentLanguage,
+      baseLanguage,
+      i18nLanguage: i18n.language,
+    });
+
     try {
-      const url = `${host}/wp-json/wp/v2/posts?_embed&include[]=${postId}&lang=${currentLanguage}`;
-      
       // Create AbortController for timeout
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout for bad connections
-      
-      const response = await fetch(url, {
-        signal: controller.signal,
+
+      // First try with base language (e.g., 'es' instead of 'es-US')
+      let url = `${host}/wp-json/wp/v2/posts?_embed&include[]=${postId}&lang=${baseLanguage}`;
+
+      console.log("🔍 Fetching WordPress post:", {
+        postId,
+        baseLanguage,
+        url,
       });
-      
+
+      let response = await fetch(url, { signal: controller.signal });
+      let posts: WordPressPost[] = [];
+
+      if (response.ok) {
+        posts = await response.json();
+      }
+
+      // If no posts found with language, try without language restriction
+      if (!posts.length) {
+        console.log(
+          "🔄 No posts found with language, trying without language restriction"
+        );
+        url = `${host}/wp-json/wp/v2/posts?_embed&include[]=${postId}`;
+        response = await fetch(url, { signal: controller.signal });
+
+        if (response.ok) {
+          posts = await response.json();
+          console.log(
+            "📄 Posts found without language restriction:",
+            posts.length
+          );
+
+          // If we found posts without language, log a warning but continue
+          if (posts.length > 0) {
+            console.warn(
+              "⚠️ Post found without language restriction. This might indicate a language configuration issue in WordPress."
+            );
+          }
+        }
+      }
+
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
+        throw new Error(
+          `HTTP error! status: ${response.status} - ${response.statusText}`
+        );
       }
 
-      const posts: WordPressPost[] = await response.json();
-
       if (!posts.length) {
+        console.log("❌ No posts found for ID:", postId);
         return null;
       }
 
@@ -280,12 +333,12 @@ export function blogServices() {
       };
     } catch (error) {
       console.error("Error fetching single WordPress post:", error);
-      
+
       // Re-throw AbortError for timeout handling
-      if (error instanceof Error && error.name === 'AbortError') {
+      if (error instanceof Error && error.name === "AbortError") {
         throw error;
       }
-      
+
       return null;
     }
   };
@@ -311,22 +364,34 @@ export function blogServices() {
     postId: string
   ): Promise<PostNavigation> => {
     const currentLanguage = i18n.language;
-    const cacheKey = `blog_post_${postId}_${currentLanguage}`;
+    const baseLanguage = currentLanguage.split("-")[0];
+    const cacheKey = `blog_post_${postId}_${baseLanguage}`;
+
+    console.log("🚀 fetchPostWithNavigation called:", {
+      postId,
+      baseLanguage,
+      cacheKey,
+    });
 
     try {
       // Try to get from cache first
-      const cached = await indexedDBCache.getBlogPost(cacheKey, currentLanguage);
+      const cached = await indexedDBCache.getBlogPost(
+        cacheKey,
+        currentLanguage
+      );
       if (cached) {
         return {
           current: cached.post,
           next: cached.next,
-          previous: cached.previous
+          previous: cached.previous,
         };
       }
 
+      console.log("🔄 No cache found, fetching from WordPress:", postId);
       const current = await fetchPost(postId);
 
       if (current == null) {
+        console.log("❌ Post not found in WordPress:", postId);
         throw new Error(`Post with ID ${postId} not found`);
       }
 
@@ -339,12 +404,16 @@ export function blogServices() {
 
       // Cache the result
       try {
-        await indexedDBCache.setBlogPost(cacheKey, {
-          post: current,
-          next,
-          previous,
-          timestamp: Date.now()
-        }, currentLanguage);
+        await indexedDBCache.setBlogPost(
+          cacheKey,
+          {
+            post: current,
+            next,
+            previous,
+            timestamp: Date.now(),
+          },
+          currentLanguage
+        );
       } catch (err) {
         console.warn("Failed to cache blog post:", err);
       }
@@ -383,6 +452,7 @@ export function blogServices() {
     "id" | "title" | "content" | "date" | "image"
   > | null> => {
     const currentLanguage = i18n.language;
+    const baseLanguage = currentLanguage.split("-")[0];
 
     if (!date || !isValidDate(date)) {
       return null;
@@ -391,14 +461,14 @@ export function blogServices() {
     // Create AbortController for timeout
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 25000); // 25 second timeout for adjacent posts
-    
+
     const response = await fetch(
-      `${host}/wp-json/wp/v2/posts?${direction}=${date}&per_page=1&order=${order}&_embed&lang=${currentLanguage}`,
+      `${host}/wp-json/wp/v2/posts?${direction}=${date}&per_page=1&order=${order}&_embed&lang=${baseLanguage}`,
       {
         signal: controller.signal,
       }
     );
-    
+
     clearTimeout(timeoutId);
     const data = await response.json();
     return data.length > 0 ? formatPost(data[0]) : null;

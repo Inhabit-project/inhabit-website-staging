@@ -6,5 +6,8 @@ export function getHost() {
     "VITE_WORDPRESS_HOST"
   );
 
-  return { host };
+  // Remove trailing slash to prevent double slashes
+  const cleanHost = host.endsWith('/') ? host.slice(0, -1) : host;
+
+  return { host: cleanHost };
 }

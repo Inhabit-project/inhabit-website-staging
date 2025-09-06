@@ -5,9 +5,9 @@ import { BlogPost, BlogProps as ImportedBlogProps } from "@/types/wordpress";
 import { truncateHtml } from "@/utils/html";
 import { Link, useLocation } from "react-router-dom";
 import SubLoader from "@/load/SubLoader";
-import { LoadingContext } from '../../App';
-import { gsap, ScrollTrigger } from '../../utils/gsap';
-import { useGSAP } from '@gsap/react';
+import { LoadingContext } from "../../App";
+import { gsap, ScrollTrigger } from "../../utils/gsap";
+import { useGSAP } from "@gsap/react";
 
 // Register the hook to avoid React version discrepancies
 gsap.registerPlugin(useGSAP);
@@ -38,11 +38,16 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
-  // Cache key for localStorage
-  const getCacheKey = () => `blog_posts_${i18n.language}_${isMainPage ? 'main' : 'all'}`;
+  // Cache key for localStorage - use base language to match WordPress service
+  const getCacheKey = () =>
+    `blog_posts_${i18n.language.split("-")[0]}_${isMainPage ? "main" : "all"}`;
 
   // Load posts with timeout and retry logic
   const loadPosts = async (useCache = true) => {
+    const currentLanguage = i18n.language;
+    const baseLanguage = i18n.language.split("-")[0];
+    const cacheKey = getCacheKey();
+
     setIsLoadingPosts(true);
     setError(null);
 
@@ -58,10 +63,15 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
             setPosts(cachedPosts);
             setIsLoadingPosts(false);
             return;
+          } else {
+            console.log("⏰ Cache expired:", {
+              cacheKey,
+              cacheAge: Math.round(cacheAge / 1000) + "s",
+            });
           }
         }
       } catch (err) {
-        console.warn('Failed to load from cache:', err);
+        console.warn("Failed to load from cache:", err);
       }
     }
 
@@ -79,23 +89,31 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
 
       // Cache the results
       try {
-        localStorage.setItem(getCacheKey(), JSON.stringify({
-          posts,
-          timestamp: Date.now()
-        }));
+        localStorage.setItem(
+          getCacheKey(),
+          JSON.stringify({
+            posts,
+            timestamp: Date.now(),
+          })
+        );
       } catch (err) {
-        console.warn('Failed to cache posts:', err);
+        console.warn("Failed to cache posts:", err);
       }
+
+      console.log("🔄 Fetched fresh posts from WordPress:", {
+        postsCount: posts.length,
+        posts: posts.map((p) => ({ id: p.id, title: p.title, date: p.date })),
+      });
 
       setPosts(posts);
       setRetryCount(0);
     } catch (err) {
       console.error("Error loading blog posts:", err);
-      
-      if (err instanceof Error && err.name === 'AbortError') {
+
+      if (err instanceof Error && err.name === "AbortError") {
         setError(t("mainPage.blog.timeout"));
       } else if (retryCount < 2) {
-        setRetryCount(prev => prev + 1);
+        setRetryCount((prev) => prev + 1);
         // Retry after 2 seconds
         setTimeout(() => loadPosts(false), 2000);
         return;
@@ -133,67 +151,81 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   }, [isLoading]);
 
   // Set initial states and handle animations with useGSAP
-  useGSAP(() => {
-    // Set initial states immediately
-    gsap.set([titleRef.current, descriptionRef.current], {
-      opacity: 0,
-      y: 100
-    });
-
-    // Set initial state for content (only when posts are loaded)
-    if (contentRef.current && posts.length > 0) {
-      gsap.set(contentRef.current, {
+  useGSAP(
+    () => {
+      // Set initial states immediately
+      gsap.set([titleRef.current, descriptionRef.current], {
         opacity: 0,
-        y: 50
+        y: 100,
       });
-    }
 
-    // Only create animations if we can animate
-    if (!canAnimate) return;
-
-    // Clean up previous ScrollTrigger and timeline if they exist
-    if (scrollTriggerRef.current) {
-      scrollTriggerRef.current.kill();
-      scrollTriggerRef.current = null;
-    }
-    if (timelineRef.current) {
-      timelineRef.current.kill();
-      timelineRef.current = null;
-    }
-
-    timelineRef.current = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top center",
-        end: "center center",
-        toggleActions: "play none none reverse"
+      // Set initial state for content (only when posts are loaded)
+      if (contentRef.current && posts.length > 0) {
+        gsap.set(contentRef.current, {
+          opacity: 0,
+          y: 50,
+        });
       }
-    });
 
-    timelineRef.current
-      .to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        ease: "power3.out"
-      })
-      .to(descriptionRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        ease: "power3.out"
-      }, "-=0.4");
+      // Only create animations if we can animate
+      if (!canAnimate) return;
 
-    // Animate content only when posts are loaded and not loading
-    if (contentRef.current && posts.length > 0 && !isLoadingPosts) {
-      timelineRef.current.to(contentRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: "power3.out"
-      }, "-=0.2");
+      // Clean up previous ScrollTrigger and timeline if they exist
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        scrollTriggerRef.current = null;
+      }
+      if (timelineRef.current) {
+        timelineRef.current.kill();
+        timelineRef.current = null;
+      }
+
+      timelineRef.current = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top center",
+          end: "center center",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      timelineRef.current
+        .to(titleRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: "power3.out",
+        })
+        .to(
+          descriptionRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power3.out",
+          },
+          "-=0.4"
+        );
+
+      // Animate content only when posts are loaded and not loading
+      if (contentRef.current && posts.length > 0 && !isLoadingPosts) {
+        timelineRef.current.to(
+          contentRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "power3.out",
+          },
+          "-=0.2"
+        );
+      }
+    },
+    {
+      scope: sectionRef,
+      dependencies: [canAnimate, posts.length, isLoadingPosts],
     }
-  }, { scope: sectionRef, dependencies: [canAnimate, posts.length, isLoadingPosts] });
+  );
 
   // Cleanup on unmount
   useEffect(() => {
@@ -211,12 +243,12 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
   useEffect(() => {
     const handleBeforeUnload = () => {
       // Store current scroll position
-      sessionStorage.setItem('blogScrollPosition', window.scrollY.toString());
+      sessionStorage.setItem("blogScrollPosition", window.scrollY.toString());
     };
 
     const handleLoad = () => {
       // Check if we're returning from a refresh and scroll to position if needed
-      const savedPosition = sessionStorage.getItem('blogScrollPosition');
+      const savedPosition = sessionStorage.getItem("blogScrollPosition");
       if (savedPosition) {
         const position = parseInt(savedPosition, 10);
         // Only scroll if the position is significant
@@ -224,23 +256,26 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
           setTimeout(() => {
             window.scrollTo(0, position);
             // Clear the stored position
-            sessionStorage.removeItem('blogScrollPosition');
+            sessionStorage.removeItem("blogScrollPosition");
           }, 100);
         }
       }
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    window.addEventListener('load', handleLoad);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("load", handleLoad);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      window.removeEventListener('load', handleLoad);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("load", handleLoad);
     };
   }, []);
 
   return (
-    <section ref={sectionRef} className="background-gradient-light w-full min-h-screen">
+    <section
+      ref={sectionRef}
+      className="background-gradient-light w-full min-h-screen"
+    >
       <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24 background-gradient-light">
         <div className="flex flex-col items-start gap-12">
           {/* Header section */}
@@ -250,7 +285,9 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
               className="heading-2 text-secondary max-w-[40.9375rem]"
               style={{ color: "var(--color-secondary)" }}
             >
-              <span dangerouslySetInnerHTML={{ __html: t("mainPage.blog.title") }} />
+              <span
+                dangerouslySetInnerHTML={{ __html: t("mainPage.blog.title") }}
+              />
             </h2>
             <p
               ref={descriptionRef}
@@ -262,9 +299,9 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
           </div>
 
           {/* Blog content with improved loading */}
-          <div className={`relative${isLoadingPosts ? ' min-h-80' : ''}`}>
+          <div className={`relative${isLoadingPosts ? " min-h-80" : ""}`}>
             {isLoadingPosts && <SubLoader isLoading={isLoadingPosts} />}
-            
+
             {!isLoadingPosts && (
               <div ref={contentRef}>
                 {error && (
@@ -310,7 +347,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                             {mainPost.date}
                           </span>
                           <h2
-                            className="heading-4"
+                            className="heading-4 font-semibold"
                             style={{ color: "var(--color-secondary)" }}
                           >
                             {mainPost.title}
@@ -331,7 +368,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                               style={{ color: "var(--color-primary)" }}
                               onClick={() => {}}
                             >
-                              {t('common.readMore')}
+                              {t("common.readMore")}
                             </button>
                           </Link>
                         </div>
@@ -359,7 +396,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                                 {post.date}
                               </span>
                               <h3
-                                className="heading-5"
+                                className="heading-5 font-semibold"
                                 style={{ color: "var(--color-secondary)" }}
                               >
                                 {post.title}
@@ -380,7 +417,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                                   style={{ color: "var(--color-primary)" }}
                                   onClick={() => {}}
                                 >
-                                  {t('common.readMore')}
+                                  {t("common.readMore")}
                                 </button>
                               </Link>
                             </div>

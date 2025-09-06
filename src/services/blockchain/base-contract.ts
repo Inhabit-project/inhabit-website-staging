@@ -29,8 +29,6 @@ export class BaseContract {
     this.abi = contractJson.abi;
     this.client = client;
     this.chain = chain;
-    console.log("client", this.client);
-    console.log("chain", this.chain);
     this.account = account;
   }
 

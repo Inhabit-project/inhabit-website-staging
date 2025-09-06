@@ -143,9 +143,6 @@ const App: React.FC = () => {
   // Handle page transitions
   useEffect(() => {
     if (location !== pendingLocation) {
-      console.log("Location changed to:", location.pathname);
-      console.log("Location state:", location.state);
-
       // Check if skipTransition is set in the location state
       const shouldSkipTransition =
         (location.state as any)?.skipTransition === true;

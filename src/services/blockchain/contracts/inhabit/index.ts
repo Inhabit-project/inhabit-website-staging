@@ -46,6 +46,7 @@ export class InhabitContract extends BaseContract {
   // =========================
 
   async buyNFT(
+    to: Address,
     campaignId: number,
     collection: Address,
     referral: Hex,
@@ -53,6 +54,7 @@ export class InhabitContract extends BaseContract {
   ) {
     try {
       const hash = await this.write("buyNFT", [
+        to,
         BigInt(campaignId),
         collection,
         referral,
