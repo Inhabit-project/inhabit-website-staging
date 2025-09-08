@@ -4,20 +4,20 @@ import { darkTheme } from "thirdweb/react";
 import { inAppWallet, createWallet } from "thirdweb/wallets";
 
 const wallets = [
-  inAppWallet({
-    auth: {
-      options: [
-        "google",
-        "discord",
-        "telegram",
-        "farcaster",
-        "email",
-        "x",
-        "passkey",
-        "phone",
-      ],
-    },
-  }),
+  // inAppWallet({
+  //   auth: {
+  //     options: [
+  //       "google",
+  //       "discord",
+  //       "telegram",
+  //       "farcaster",
+  //       "email",
+  //       "x",
+  //       "passkey",
+  //       "phone",
+  //     ],
+  //   },
+  // }),
   createWallet("io.metamask"),
   createWallet("com.coinbase.wallet"),
   createWallet("me.rainbow"),

@@ -13,6 +13,7 @@ import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
 import { LoginButton } from "./LoginButton";
 import { useActiveAccount } from "thirdweb/react";
 import { useCusd } from "@/hooks/contracts/erc20/useCusd";
+import { Address } from "thirdweb";
 
 export type Props = {
   availableSupply: number;
@@ -67,8 +68,8 @@ export default function Stepper(props: Props): JSX.Element {
     if (!account || !account.address) return;
 
     Promise.all([
-      getHasSentKyc(account.address, KYC_TYPE.HARD),
-      getHasSentKyc(account.address, KYC_TYPE.SOFT),
+      getHasSentKyc(account.address as Address, KYC_TYPE.HARD),
+      getHasSentKyc(account.address as Address, KYC_TYPE.SOFT),
     ]);
   }, [account]);
 
@@ -83,7 +84,7 @@ export default function Stepper(props: Props): JSX.Element {
     }
 
     if (requiresHardKyc && !isKycHardCompleted) {
-      startKycPolling(account.address, requiresHardKyc);
+      startKycPolling(account.address as Address, requiresHardKyc);
     }
   }, [price, account, hasSentKycHard, hasSentKycSoft, isKycHardCompleted]);
 
