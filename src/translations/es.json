@@ -723,6 +723,7 @@
       "Error signing message. Please try again.": "Error al firmar el mensaje. Por favor, inténtalo de nuevo.",
       "KYC request sent successfully!": "¡Solicitud de KYC enviada con éxito!",
       "Membership purchased successfully!": "¡Membresía comprada con éxito!",
+      "Pay with credit card": "Pagar con tarjeta de crédito",
       "Processing…": "Procesando…",
       "Purchase Membership": "Comprar membresía",
       "Resending KYC request...": "Reenviando solicitud de KYC...",
@@ -733,7 +734,7 @@
       "Wait": "Espera",
       "Waiting for nonce...": "Esperando nonce...",
       "Wallet charged successfully": "Billetera cargada con éxito",
-      "You don't have enough balance to buy this membership": "No tienes suficiente saldo para comprar esta membresía.",
+      "You don't have enough balance to purchase this membership. Please recharge your wallet using a credit card or cryptocurrency.": "No tienes saldo suficiente para comprar esta membresía. Recarga tu billetera con una tarjeta de crédito o con criptomonedas.",
       "You need to pass the KYC to purchase this NFT.": "Debes completar el KYC para poder comprar este NFT.",
       "to resend": "para reenviar"
     }

@@ -16,6 +16,8 @@ import { useInhabit } from "@/hooks/contracts/inhabit";
 import { encodeFunctionData, Hex, keccak256, toBytes } from "viem";
 import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
 import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
+import mastercardImage from "../../../assets/images/cards/mastercard.svg";
+import visaImage from "../../../assets/images/cards/visa.svg";
 import { t } from "i18next";
 import Cookies from "js-cookie";
 import { BuyWidget, TransactionWidget } from "thirdweb/react";
@@ -361,14 +363,29 @@ export function VoucherStep(props: Props): JSX.Element {
           }`}
         >
           <button
+            className="flex items-center justify-center bg-white rounded-full p-2"
             type="button"
             name="coin"
             value="CREDIT CARD"
             disabled={wallet?.id !== "inApp"}
             onClick={() => handleCoinSelection("CREDIT CARD" as COIN)}
-            className="custom-checkbox"
-          />
-          <span className="body-S">{t("membership.voucher.CREDIT CARD")}</span>
+          >
+            <img
+              src={mastercardImage}
+              alt="mastercard"
+              className="w-9 h-9 ml-1"
+            />
+            <img src={visaImage} alt="visa" className="w-9 h-9 ml-1" />
+          </button>
+          <span
+            className={`body-S ${
+              wallet?.id !== "inApp"
+                ? "cursor-default hover:no-underline"
+                : "hover:text-[#D57300] hover:underline"
+            }`}
+          >
+            {t("membership.voucher.Pay with credit card")}
+          </span>
         </label>
         {account &&
           account.address &&
@@ -376,7 +393,7 @@ export function VoucherStep(props: Props): JSX.Element {
           !hasSufficientBalance && (
             <label className="text-center p-3 body-S text-light">
               {t(
-                "membership.voucher.You don't have enough balance to buy this membership"
+                "membership.voucher.You don't have enough balance to purchase this membership. Please recharge your wallet using a credit card or cryptocurrency."
               )}
             </label>
           )}
@@ -386,7 +403,7 @@ export function VoucherStep(props: Props): JSX.Element {
           !hasSufficientBalance && (
             <label className="text-center p-3 body-S text-light">
               {t(
-                "membership.voucher.You don't have enough balance to buy this membership"
+                "membership.voucher.You don't have enough balance to purchase this membership. Please recharge your wallet using a credit card or cryptocurrency."
               )}
             </label>
           )}
