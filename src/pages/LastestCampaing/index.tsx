@@ -35,23 +35,14 @@ export default function LastestCampaign(props: Props): JSX.Element {
   // effects
   useEffect(() => {
     const validateSlugs = async () => {
-      console.log("🔍 Validating slugs:", { campaignId, referral });
-
       if (!referral) {
-        console.log("✅ No referral, setting valid");
         setIsReferralValid(true);
         return;
       }
 
-      console.log("🔍 Getting group for:", {
-        campaignId: Number(campaignId),
-        referral,
-      });
       const group = await inhabit.getGroup(Number(campaignId), referral as Hex);
-      console.log("🔍 Group result:", group);
 
       if (!group) {
-        console.log("❌ Group not found, navigating to 404");
         navigate("/404");
         return;
       }

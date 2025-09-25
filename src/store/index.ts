@@ -85,7 +85,6 @@ export const useStore = create<Store>((set, get) => {
     getCampaigns: async () => {
       set({ campaignsLoading: true });
       const campaigns = await get().inhabit.getCampaigns();
-      console.log("campaigns", campaigns);
       const lastCampaign = campaigns[campaigns.length - 1];
       set({ campaigns, campaignsLoading: false, lastCampaign });
       return campaigns;

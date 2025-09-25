@@ -37,22 +37,15 @@ export class InhabitContract extends BaseContract {
 
   async getGroup(campaignId: number, referral: Hex) {
     try {
-      console.log("🔍 Contract getGroup called with:", {
-        campaignId,
-        referral,
-      });
       const dto = await this.read<GroupDto>("getGroup", [
         BigInt(campaignId),
         referral,
       ]);
-      console.log("🔍 Contract getGroup response:", dto);
 
       if (dto.id === 0n) {
-        console.log("❌ Group not found (id === 0n)");
         return null;
       }
       const mappedGroup = mapGroupDtoToGroup(dto);
-      console.log("✅ Group mapped successfully:", mappedGroup);
       return mappedGroup;
     } catch (error) {
       console.error("❌ Error in getGroup:", error);
