@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Address, WalletClient } from "viem";
+import { Address, Hex, keccak256, toBytes, WalletClient } from "viem";
 import { InhabitContract } from "../services/blockchain/contracts/inhabit";
 import { Collection } from "../models/collection.model";
 import { Campaign } from "../models/campaign.model";
@@ -7,7 +7,7 @@ import { userServices } from "../services/rest/user";
 import { ERROR, KYC_TYPE } from "../config/enums";
 import { Group } from "@/models/group.model";
 import { ERC20Contract } from "@/services/blockchain/contracts/erc20";
-import { CCOP_JSON, USDC_JSON, USDT_JSON } from "@/config/const";
+import { CCOP_JSON, CUSD_JSON, USDC_JSON, USDT_JSON } from "@/config/const";
 
 type Store = {
   campaign: Campaign | null;
@@ -26,11 +26,12 @@ type Store = {
   isPollingKyc: boolean;
   lastCampaign: Campaign | null;
   ccop: ERC20Contract;
-  // cusd: ERC20Contract;
+  cusd: ERC20Contract;
   usdc: ERC20Contract;
   usdt: ERC20Contract;
   getCampaign: (campaignId: number) => Promise<Campaign | null>;
   getCampaigns: () => Promise<Campaign[]>;
+  getGroup: (campaignId: number, referral: Hex) => Promise<Group | null>;
   getHasSentKyc: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
   getIsKycCompleted: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
   isCampaignReferral: (
@@ -51,7 +52,7 @@ export const useStore = create<Store>((set, get) => {
 
   const inhabit = new InhabitContract();
   const ccop = new ERC20Contract(CCOP_JSON);
-  // const cusd = new ERC20Contract(CUSD_JSON);
+  const cusd = new ERC20Contract(CUSD_JSON);
   const usdc = new ERC20Contract(USDC_JSON);
   const usdt = new ERC20Contract(USDT_JSON);
 
@@ -73,16 +74,25 @@ export const useStore = create<Store>((set, get) => {
     isPollingKyc: false,
     lastCampaign: null,
     ccop,
-    // cusd,
+    cusd,
     usdc,
     usdt,
+
+    getCampaign: async (campaignId: number) => {
+      return await get().inhabit.getCampaign(campaignId);
+    },
 
     getCampaigns: async () => {
       set({ campaignsLoading: true });
       const campaigns = await get().inhabit.getCampaigns();
+      console.log("campaigns", campaigns);
       const lastCampaign = campaigns[campaigns.length - 1];
       set({ campaigns, campaignsLoading: false, lastCampaign });
       return campaigns;
+    },
+
+    getGroup: async (campaignId: number, referral: Hex) => {
+      return await get().inhabit.getGroup(campaignId, referral);
     },
 
     getIsKycCompleted: async (address: Address, kycType: KYC_TYPE) => {

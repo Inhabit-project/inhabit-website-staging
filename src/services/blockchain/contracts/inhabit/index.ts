@@ -6,6 +6,8 @@ import { CampaignDto } from "@/services/dtos/campaing.dto";
 import { mapCampaignDtoToCampaign } from "@/services/mapping/mapCampaignDtoToCampaign";
 import { parseContractError } from "@/config/contract.config";
 import { parseUsdToUsdc } from "@/utils/usdc-format.utils";
+import { GroupDto } from "@/services/dtos/group.dto";
+import { mapGroupDtoToGroup } from "@/services/mapping/mapGroupDtoToGroup";
 
 export class InhabitContract extends BaseContract {
   constructor(account?: Account) {
@@ -30,6 +32,31 @@ export class InhabitContract extends BaseContract {
     } catch (error) {
       console.error("❌", error);
       return 0;
+    }
+  }
+
+  async getGroup(campaignId: number, referral: Hex) {
+    try {
+      console.log("🔍 Contract getGroup called with:", {
+        campaignId,
+        referral,
+      });
+      const dto = await this.read<GroupDto>("getGroup", [
+        BigInt(campaignId),
+        referral,
+      ]);
+      console.log("🔍 Contract getGroup response:", dto);
+
+      if (dto.id === 0n) {
+        console.log("❌ Group not found (id === 0n)");
+        return null;
+      }
+      const mappedGroup = mapGroupDtoToGroup(dto);
+      console.log("✅ Group mapped successfully:", mappedGroup);
+      return mappedGroup;
+    } catch (error) {
+      console.error("❌ Error in getGroup:", error);
+      return null;
     }
   }
 

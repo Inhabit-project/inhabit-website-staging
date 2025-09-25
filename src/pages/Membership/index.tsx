@@ -48,6 +48,7 @@ export default function Membership(props: Props): JSX.Element {
   useEffect(() => {
     const loadCampaign = async () => {
       try {
+        console.log("flag 1");
         if (state?.collection && state?.campaign) {
           setCollection(state.collection);
           setCollectionStore(state.collection);
@@ -55,26 +56,32 @@ export default function Membership(props: Props): JSX.Element {
           return;
         }
 
+        console.log("flag 2");
         const loadedCampaign = await getCampaign(Number(campaignId));
-
+        console.log("flag 2.1");
         if (!loadedCampaign) {
           navigate("/404");
           return;
         }
 
+        console.log("flag 3");
         const found = loadedCampaign.collections.find(
           (c) => c.id === Number(collectionId)
         );
 
+        console.log("flag 4");
         if (!found) {
           navigate("/404");
           return;
         }
 
+        console.log("flag 5");
         setCollection(found);
         setCollectionStore(found);
         setCampaign(loadedCampaign);
       } catch (error) {
+        console.log("error", error);
+        console.log("flag 6");
         navigate("/404");
       }
     };
