@@ -124,6 +124,7 @@ export function VoucherStep(props: Props): JSX.Element {
   const selectedBalance = useMemo(() => {
     if (usdcBalance >= price) return usdcBalance;
     if (usdtBalance >= price) return usdtBalance;
+    if (ccopBalance >= price) return ccopBalance;
     // if (cusdBalance >= price) return cusdBalance;
     return 0;
   }, [selectedCoin, usdcBalance, usdtBalance /*cusdBalance*/]);
