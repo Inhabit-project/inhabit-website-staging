@@ -1,14 +1,13 @@
 import { create } from "zustand";
-import { Address, keccak256, toBytes, WalletClient } from "viem";
+import { Address, WalletClient } from "viem";
 import { InhabitContract } from "../services/blockchain/contracts/inhabit";
-import { UsdcContract } from "../services/blockchain/contracts/usdc";
-import { UsdtContract } from "../services/blockchain/contracts/usdt";
 import { Collection } from "../models/collection.model";
 import { Campaign } from "../models/campaign.model";
 import { userServices } from "../services/rest/user";
 import { ERROR, KYC_TYPE } from "../config/enums";
 import { Group } from "@/models/group.model";
-import { CusdContract } from "@/services/blockchain/contracts/cusd";
+import { ERC20Contract } from "@/services/blockchain/contracts/erc20";
+import { CCOP_JSON, USDC_JSON, USDT_JSON } from "@/config/const";
 
 type Store = {
   campaign: Campaign | null;
@@ -26,11 +25,11 @@ type Store = {
   inhabit: InhabitContract;
   isPollingKyc: boolean;
   lastCampaign: Campaign | null;
-  cusd: CusdContract;
-  usdc: UsdcContract;
-  usdt: UsdtContract;
+  ccop: ERC20Contract;
+  // cusd: ERC20Contract;
+  usdc: ERC20Contract;
+  usdt: ERC20Contract;
   getCampaign: (campaignId: number) => Promise<Campaign | null>;
-  getCampaignCollections: (campaignId: number) => Promise<Collection[]>;
   getCampaigns: () => Promise<Campaign[]>;
   getHasSentKyc: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
   getIsKycCompleted: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
@@ -51,9 +50,10 @@ export const useStore = create<Store>((set, get) => {
     userServices();
 
   const inhabit = new InhabitContract();
-  const cusd = new CusdContract();
-  const usdc = new UsdcContract();
-  const usdt = new UsdtContract();
+  const ccop = new ERC20Contract(CCOP_JSON);
+  // const cusd = new ERC20Contract(CUSD_JSON);
+  const usdc = new ERC20Contract(USDC_JSON);
+  const usdt = new ERC20Contract(USDT_JSON);
 
   return {
     campaign: null,
@@ -72,22 +72,10 @@ export const useStore = create<Store>((set, get) => {
     inhabit,
     isPollingKyc: false,
     lastCampaign: null,
-    cusd,
+    ccop,
+    // cusd,
     usdc,
     usdt,
-
-    getCampaign: async (campaignId: number) => {
-      try {
-        set({ campaignLoading: true });
-        const campaign = await get().inhabit.getCampaign(campaignId);
-        set({ campaign, campaignLoading: false });
-        return campaign;
-      } catch (error) {
-        console.error("Error in getCampaign:", error);
-        set({ campaignLoading: false });
-        return null;
-      }
-    },
 
     getCampaigns: async () => {
       set({ campaignsLoading: true });

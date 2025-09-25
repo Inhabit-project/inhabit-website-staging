@@ -7,6 +7,8 @@ import usdtCeloJson from "../../assets/json/contracts/celo/USDT.json";
 import usdtAlfajoresJson from "../../assets/json/contracts/celo-alfajores/USDT.json";
 import cusdCeloJson from "../../assets/json/contracts/celo/cUSD.json";
 import cusdAlfajoresJson from "../../assets/json/contracts/celo-alfajores/cUSD.json";
+import ccopCeloJson from "../../assets/json/contracts/celo/cCOP.json";
+import ccopAlfajoresJson from "../../assets/json/contracts/celo-alfajores/cCOP.json";
 import { celo, celoAlfajores } from "viem/chains";
 import { SiweMessage } from "siwe";
 import { Address, zeroAddress } from "viem";
@@ -51,6 +53,11 @@ export const CUSD_JSON =
   ENV === "prod"
     ? (cusdCeloJson as ContractJson)
     : (cusdAlfajoresJson as ContractJson);
+
+export const CCOP_JSON =
+  ENV === "prod"
+    ? (ccopCeloJson as ContractJson)
+    : (ccopAlfajoresJson as ContractJson);
 
 // Thirdweb
 import { defineChain } from "thirdweb/chains";

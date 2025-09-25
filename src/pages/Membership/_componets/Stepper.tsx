@@ -12,7 +12,8 @@ import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
 import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
 import { LoginButton } from "./LoginButton";
 import { useActiveAccount } from "thirdweb/react";
-import { useCusd } from "@/hooks/contracts/erc20/useCusd";
+// import { useCusd } from "@/hooks/contracts/erc20/useCusd";
+import { useCcop } from "@/hooks/contracts/erc20/useCcop";
 import { Address } from "thirdweb";
 
 export type Props = {
@@ -34,7 +35,8 @@ export default function Stepper(props: Props): JSX.Element {
 
   const { balance: usdcBalance } = useUsdc(price, account);
   const { balance: usdtBalance } = useUsdt(price, account);
-  const { balance: cusdBalance } = useCusd(price, account);
+  // const { balance: cusdBalance } = useCusd(price, account);
+  const { balance: ccopBalance } = useCcop(price, account);
 
   const {
     isKycHardCompleted,
@@ -59,9 +61,16 @@ export default function Stepper(props: Props): JSX.Element {
 
     if (usdcBalance >= price && usdtBalance < price) setSelectedCoin(COIN.USDC);
     if (usdtBalance >= price && usdcBalance < price) setSelectedCoin(COIN.USDT);
-    if (cusdBalance >= price && usdcBalance < price) setSelectedCoin(COIN.CUSD);
-    if (cusdBalance >= price && usdtBalance < price) setSelectedCoin(COIN.CUSD);
-  }, [price, selectedCoin, usdcBalance, usdtBalance, cusdBalance]);
+    // if (cusdBalance >= price && usdcBalance < price) setSelectedCoin(COIN.CUSD);
+    if (ccopBalance >= price && usdcBalance < price) setSelectedCoin(COIN.CCOP);
+    if (ccopBalance >= price && usdtBalance < price) setSelectedCoin(COIN.CCOP);
+  }, [
+    price,
+    selectedCoin,
+    usdcBalance,
+    usdtBalance,
+    /*cusdBalance,*/ ccopBalance,
+  ]);
 
   // Get account KYC status
   useEffect(() => {

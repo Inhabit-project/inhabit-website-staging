@@ -27,7 +27,7 @@ export function useCusd(price: number, account?: Account) {
     setIsLoading(true);
 
     const [fetchedBalance, fetchedAllowance] = await Promise.all([
-      cusd.getBalance(account.address as Address),
+      cusd.balanceOf(account.address as Address),
       cusd.allowance(account.address as Address, INHABIT_JSON.proxy),
     ]);
 

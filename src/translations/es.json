@@ -716,6 +716,7 @@
     "voucher": {
       "Balance": "Saldo",
       "CUSD": "CUSD",
+      "CCOP": "CCOP",
       "Click here to resend KYC request": "Haz clic aquí para reenviar la solicitud de KYC",
       "CREDIT CARD": "TARJETA DE CRÉDITO",
       "Error charging wallet": "Error al cargar la billetera",

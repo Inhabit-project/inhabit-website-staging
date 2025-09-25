@@ -1,5 +1,5 @@
 // hooks/useInhabitTw.ts
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { InhabitContract } from "@/services/blockchain/contracts/inhabit";
 import { Account } from "thirdweb/wallets";
 import { Address, Hex } from "thirdweb";
@@ -10,29 +10,51 @@ type BuyParams = {
   campaignId: number;
   collectionAddress: Address;
   referral: Hex;
-  token: Address;
+  paymentToken: Address;
+  paymentAmount: number;
 };
 
 export function useInhabit(account?: Account) {
+  const inhabit = new InhabitContract(account);
+
+  // =========================
+  //        READ METHODS
+  // =========================
+
+  function calculateTokenAmount(paymentToken: Address, priceUsd: number) {
+    return useQuery({
+      queryKey: ["calculateTokenAmount", paymentToken, priceUsd],
+      enabled: !!paymentToken && !!priceUsd && priceUsd > 0,
+      queryFn: () => inhabit.calculateTokenAmount(paymentToken, priceUsd),
+      staleTime: 30000,
+      refetchOnWindowFocus: false,
+    });
+  }
+
+  // =========================
+  //        WRITE METHODS
+  // =========================
+
   const buyNFT = useMutation<Hex, any, BuyParams>({
     mutationFn: async ({
       to,
       campaignId,
       collectionAddress,
       referral,
-      token,
+      paymentToken,
+      paymentAmount,
     }) => {
       if (!account) {
         throw new Error("Account not connected");
       }
 
-      const inhabit = new InhabitContract(account);
       const result: ServiceResult<Hex> = await inhabit.buyNFT(
         to,
         campaignId,
         collectionAddress,
         referral,
-        token
+        paymentToken,
+        paymentAmount
       );
 
       if (!result.success) throw result.error;
@@ -42,5 +64,6 @@ export function useInhabit(account?: Account) {
 
   return {
     buyNFT,
+    calculateTokenAmount,
   };
 }

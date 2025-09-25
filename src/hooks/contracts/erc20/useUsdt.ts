@@ -27,7 +27,7 @@ export function useUsdt(price: number, account?: Account) {
     setIsLoading(true);
 
     const [fetchedBalance, fetchedAllowance] = await Promise.all([
-      usdt.getBalance(account.address as Address),
+      usdt.balanceOf(account.address as Address),
       usdt.allowance(account.address as Address, INHABIT_JSON.proxy),
     ]);
 
