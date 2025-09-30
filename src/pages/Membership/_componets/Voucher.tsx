@@ -12,7 +12,12 @@ import { useResendKycEmail } from "@/hooks/useKycEmail";
 import { generateSiweMessage } from "@/utils/generate-siwe-message.util";
 import { useNonce } from "@/hooks/useNonce";
 import { ResendKycDto } from "@/services/dtos/resend-kyc.dto";
-import { COOKIE_REFERRAL, COOLDOWN_KEY, INHABIT_JSON } from "@/config/const";
+import {
+  chain,
+  COOKIE_REFERRAL,
+  COOLDOWN_KEY,
+  INHABIT_JSON,
+} from "@/config/const";
 import { useInhabit } from "@/hooks/contracts/inhabit";
 import { encodeFunctionData, formatUnits, Hex, keccak256, toBytes } from "viem";
 import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
@@ -29,11 +34,12 @@ import {
   useActiveWallet,
   useActiveWalletChain,
 } from "thirdweb/react";
-import { Address } from "thirdweb";
+import { Address, prepareContractCall } from "thirdweb";
 import { parseUsdToUsdc } from "@/utils/usdc-format.utils";
 import { celo } from "thirdweb/chains";
 // import { useCusd } from "@/hooks/contracts/erc20/useCusd";
 import { formatCcopToCop } from "@/utils/format-ccop-to-cop";
+import { getContract } from "thirdweb";
 
 interface Props {
   availableSupply: number;
@@ -64,7 +70,6 @@ export function VoucherStep(props: Props): JSX.Element {
   // external
   const { campaignId } = useParams();
   const account = useActiveAccount();
-  const chain = useActiveWalletChain();
   const wallet = useActiveWallet();
 
   // store
@@ -139,6 +144,26 @@ export function VoucherStep(props: Props): JSX.Element {
     // cusd.setAccount(account);
     ccop.setAccount(account);
   }, [account, usdc, usdt, /*cusd,*/ ccop]);
+
+  const contract = getContract({
+    client: client as any,
+    address: inhabit.getAddress(),
+    chain: chain,
+    abi: inhabit.getAbi(),
+  });
+
+  const transaction = prepareContractCall({
+    contract,
+    method: "buyNFT",
+    params: [
+      account?.address as Address,
+      Number(campaignId),
+      collection?.address as Address,
+      referral,
+      "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e",
+      parseUsdToUsdc(price),
+    ],
+  });
 
   // cooldown
   useEffect(() => {
@@ -392,7 +417,7 @@ export function VoucherStep(props: Props): JSX.Element {
         <label
           key="CREDIT CARD"
           className={`flex items-center gap-3 cursor-pointer ${
-            wallet?.id !== "inApp" || true // TODO: remove this
+            wallet?.id !== "inApp" || false // TODO: remove this
               ? "opacity-40 cursor-not-allowed"
               : ""
           }`}
@@ -400,7 +425,7 @@ export function VoucherStep(props: Props): JSX.Element {
           <button
             className="flex items-center justify-center bg-white rounded-full p-2"
             type="button"
-            disabled={wallet?.id !== "inApp" || true} // TODO: remove this
+            disabled={wallet?.id !== "inApp" || false} // TODO: remove this
             onClick={() => handleCoinSelection("CREDIT CARD")}
           >
             <img
@@ -412,7 +437,7 @@ export function VoucherStep(props: Props): JSX.Element {
           </button>
           <span
             className={`body-S ${
-              wallet?.id !== "inApp" || true // TODO: remove this
+              wallet?.id !== "inApp" || false // TODO: remove this
                 ? "cursor-default hover:no-underline"
                 : "hover:text-[#D57300] hover:underline"
             }`}
@@ -593,28 +618,17 @@ export function VoucherStep(props: Props): JSX.Element {
           <div onClick={(e) => e.stopPropagation()}>
             <TransactionWidget
               amount={"0"}
-              client={client}
+              client={client as any}
               theme="dark"
-              transaction={{
-                to: "0x745A3D77a62fBeEE9a0DCA10eDEd710199A3dd15",
-                data: encodeFunctionData({
-                  abi: INHABIT_JSON.abi,
-                  functionName: "buyNFT",
-                  args: [
-                    account?.address as Address,
-                    Number(campaignId),
-                    collection?.address as Address,
-                    referral,
-                    "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e",
-                  ],
-                }),
-                erc20Value: {
-                  tokenAddress: "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e",
-                  amountWei: parseUsdToUsdc(price),
-                },
-                chain: celo,
-                client: client,
-              }}
+              transaction={
+                {
+                  ...transaction,
+                  erc20Value: {
+                    tokenAddress: "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e",
+                    amountWei: parseUsdToUsdc(price),
+                  },
+                } as any
+              }
               onSuccess={async () => {
                 // Refetch all token balances
                 await Promise.all([
