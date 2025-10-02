@@ -715,11 +715,16 @@
     },
     "voucher": {
       "Balance": "Saldo",
+      "CUSD": "CUSD",
+      "CCOP": "CCOP",
       "Click here to resend KYC request": "Haz clic aquí para reenviar la solicitud de KYC",
+      "CREDIT CARD": "TARJETA DE CRÉDITO",
+      "Error charging wallet": "Error al cargar la billetera",
       "Error sending KYC request. Please try again": "Error al enviar la solicitud de KYC. Por favor, inténtalo de nuevo.",
       "Error signing message. Please try again.": "Error al firmar el mensaje. Por favor, inténtalo de nuevo.",
       "KYC request sent successfully!": "¡Solicitud de KYC enviada con éxito!",
       "Membership purchased successfully!": "¡Membresía comprada con éxito!",
+      "Pay with credit card": "Pagar con tarjeta de crédito",
       "Processing…": "Procesando…",
       "Purchase Membership": "Comprar membresía",
       "Resending KYC request...": "Reenviando solicitud de KYC...",
@@ -729,7 +734,8 @@
       "USDT": "USDT",
       "Wait": "Espera",
       "Waiting for nonce...": "Esperando nonce...",
-      "You don't have enough balance to buy this membership": "No tienes suficiente saldo para comprar esta membresía.",
+      "Wallet charged successfully": "Billetera cargada con éxito",
+      "You don't have enough balance to purchase this membership. Please recharge your wallet using a credit card or cryptocurrency.": "No tienes saldo suficiente para comprar esta membresía. Recarga tu billetera con una tarjeta de crédito o con criptomonedas.",
       "You need to pass the KYC to purchase this NFT.": "Debes completar el KYC para poder comprar este NFT.",
       "to resend": "para reenviar"
     }

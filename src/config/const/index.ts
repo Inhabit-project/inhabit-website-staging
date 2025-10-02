@@ -5,9 +5,16 @@ import usdcCeloJson from "../../assets/json/contracts/celo/USDC.json";
 import usdcAlfajoresJson from "../../assets/json/contracts/celo-alfajores/USDC.json";
 import usdtCeloJson from "../../assets/json/contracts/celo/USDT.json";
 import usdtAlfajoresJson from "../../assets/json/contracts/celo-alfajores/USDT.json";
+import cusdCeloJson from "../../assets/json/contracts/celo/cUSD.json";
+import cusdAlfajoresJson from "../../assets/json/contracts/celo-alfajores/cUSD.json";
+import ccopCeloJson from "../../assets/json/contracts/celo/cCOP.json";
+import ccopAlfajoresJson from "../../assets/json/contracts/celo-alfajores/cCOP.json";
 import { celo, celoAlfajores } from "viem/chains";
 import { SiweMessage } from "siwe";
 import { Address, zeroAddress } from "viem";
+import { createThirdwebClient } from "thirdweb";
+import { celo as thierdwebCelo, celoAlfajoresTestnet } from "thirdweb/chains";
+import { ContractJson } from "@/services/blockchain/base-contract";
 
 export const ENV: string = ensureEnvVar(import.meta.env.VITE_ENV, "VITE_ENV");
 
@@ -28,11 +35,61 @@ export const HTTP_TRANSPORT =
     : "https://alfajores-forno.celo-testnet.org";
 
 export const INHABIT_JSON =
-  ENV === "prod" ? InhabitCeloJson : InhabitAlfajoresJson;
+  ENV === "prod"
+    ? (InhabitCeloJson as ContractJson)
+    : (InhabitAlfajoresJson as ContractJson);
 
-export const USDC_JSON = ENV === "prod" ? usdcCeloJson : usdcAlfajoresJson;
+export const USDC_JSON =
+  ENV === "prod"
+    ? (usdcCeloJson as ContractJson)
+    : (usdcAlfajoresJson as ContractJson);
 
-export const USDT_JSON = ENV === "prod" ? usdtCeloJson : usdtAlfajoresJson;
+export const USDT_JSON =
+  ENV === "prod"
+    ? (usdtCeloJson as ContractJson)
+    : (usdtAlfajoresJson as ContractJson);
+
+export const CUSD_JSON =
+  ENV === "prod"
+    ? (cusdCeloJson as ContractJson)
+    : (cusdAlfajoresJson as ContractJson);
+
+export const CCOP_JSON =
+  ENV === "prod"
+    ? (ccopCeloJson as ContractJson)
+    : (ccopAlfajoresJson as ContractJson);
+
+// Thirdweb
+import { defineChain } from "thirdweb/chains";
+
+// Define a chain with custom RPC
+const customCeloAlfajores = defineChain({
+  id: 44787,
+  rpc: "https://alfajores-forno.celo-testnet.org",
+  name: "Celo Alfajores Testnet",
+  nativeCurrency: {
+    name: "Celo",
+    symbol: "CELO",
+    decimals: 18,
+  },
+  blockExplorers: [
+    {
+      name: "CeloScan",
+      url: "https://alfajores.celoscan.io",
+    },
+  ],
+  testnet: true,
+});
+
+// Use the custom chain
+export const chain = ENV === "prod" ? thierdwebCelo : customCeloAlfajores;
+
+export const client = createThirdwebClient({
+  clientId: ensureEnvVar(
+    import.meta.env.VITE_THIRDWEB_CLIENT_ID,
+    "VITE_THIRDWEB_CLIENT_ID"
+  ),
+});
 
 // SiweMessage
 

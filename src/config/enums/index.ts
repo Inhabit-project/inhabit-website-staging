@@ -9,6 +9,9 @@ export enum KYC_TYPE {
 }
 
 export enum COIN {
+  CCOP = "CCOP",
+  // CUSD = "CUSD",
   USDC = "USDC",
   USDT = "USDT",
+  CREDIT_CARD = "CREDIT CARD",
 }

@@ -5,16 +5,16 @@ import { useApprove } from "./useApprove";
 import { Account } from "thirdweb/wallets";
 import { Address } from "thirdweb";
 
-export function useUsdc(price: number, account?: Account) {
+export function useCcop(price: number, account?: Account) {
   const [balance, setBalance] = useState<number>(0);
   const [allowance, setAllowance] = useState<number>(0);
   const [hasSufficientBalance, setHasSufficientBalance] =
     useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { usdc } = useStore();
+  const { ccop } = useStore();
 
-  const approveMutation = useApprove(usdc, account);
+  const approveMutation = useApprove(ccop, account);
 
   const load = async () => {
     if (!price || !account || !account.address) {
@@ -27,8 +27,8 @@ export function useUsdc(price: number, account?: Account) {
     setIsLoading(true);
 
     const [fetchedBalance, fetchedAllowance] = await Promise.all([
-      usdc.balanceOf(account.address as Address),
-      usdc.allowance(account.address as Address, INHABIT_JSON.proxy),
+      ccop.balanceOf(account.address as Address),
+      ccop.allowance(account.address as Address, INHABIT_JSON.proxy),
     ]);
 
     setBalance(fetchedBalance);

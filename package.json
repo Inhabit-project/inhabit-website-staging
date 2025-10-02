@@ -16,8 +16,6 @@
     "copy-fonts": "node scripts/copyFonts.js"
   },
   "dependencies": {
-    "@dynamic-labs/ethereum": "^4.25.9",
-    "@dynamic-labs/sdk-react-core": "^4.25.9",
     "@fontsource/abel": "^5.2.6",
     "@fontsource/montserrat": "^5.2.6",
     "@fontsource/nunito-sans": "^5.2.6",
@@ -40,6 +38,7 @@
     "react-router-dom": "^7.6.3",
     "react-svg": "^16.3.0",
     "siwe": "^3.0.0",
+    "thirdweb": "^5.105.41",
     "viem": "^2.31.7",
     "wagmi": "^2.15.6",
     "zod": "^4.0.5",

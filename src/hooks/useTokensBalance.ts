@@ -30,9 +30,9 @@ export function useTokenBalance(price: number) {
 
     const [usdcBalance, usdcAllowance, usdtBalance, usdtAllowance] =
       await Promise.all([
-        usdc.getBalance(address),
+        usdc.balanceOf(address),
         usdc.allowance(address, INHABIT_JSON.proxy as Address),
-        usdt.getBalance(address),
+        usdt.balanceOf(address),
         usdt.allowance(address, INHABIT_JSON.proxy as Address),
       ]);
 

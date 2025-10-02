@@ -1,6 +1,6 @@
 {
-  "proxy": "0xE3d3903F65f2bbF7C55619B83ee28C7A88EB6777",
-  "implementation": "0x8005ED476A04093040C679e7e3183A6C9E010465",
+  "proxy": "0xf55feBB4084cE9Db562eaeC7b166Cf8993B15c06",
+  "implementation": "0xe6330a36D6b74e33d7F2a15B8B6472F22b716c14",
   "abi": [
     {
       "type": "constructor",
@@ -114,12 +114,31 @@
     },
     {
       "type": "error",
+      "name": "INSUFFICIENT_USD_VALUE",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "paymentToken"
+        },
+        {
+          "type": "uint256",
+          "name": "paymentAmount"
+        }
+      ]
+    },
+    {
+      "type": "error",
       "name": "INVALID",
       "inputs": []
     },
     {
       "type": "error",
       "name": "INVALID_ADDRESS",
+      "inputs": []
+    },
+    {
+      "type": "error",
+      "name": "INVALID_AGGREGATOR",
       "inputs": []
     },
     {
@@ -165,6 +184,11 @@
     {
       "type": "error",
       "name": "INVALID_TOKEN_ID",
+      "inputs": []
+    },
+    {
+      "type": "error",
+      "name": "INVALID_USD_VALUE",
       "inputs": []
     },
     {
@@ -275,6 +299,57 @@
       "type": "error",
       "name": "ZERO_ADDRESS",
       "inputs": []
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "AggregatorAdded",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "token",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "aggregator",
+          "indexed": true
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "AggregatorRemoved",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "token",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "aggregator",
+          "indexed": true
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "AggregatorSet",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "token",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "aggregator",
+          "indexed": true
+        }
+      ]
     },
     {
       "type": "event",
@@ -817,6 +892,23 @@
     {
       "type": "event",
       "anonymous": false,
+      "name": "PriceSet",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "token",
+          "indexed": true
+        },
+        {
+          "type": "uint256",
+          "name": "price",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
       "name": "RefundClaimed",
       "inputs": [
         {
@@ -996,6 +1088,18 @@
       ]
     },
     {
+      "type": "event",
+      "anonymous": false,
+      "name": "UsdTokenSet",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "token",
+          "indexed": true
+        }
+      ]
+    },
+    {
       "type": "function",
       "name": "ADMIN_ROLE",
       "constant": true,
@@ -1072,6 +1176,36 @@
     },
     {
       "type": "function",
+      "name": "addAdmin",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_admin"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "addAggregator",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_token"
+        },
+        {
+          "type": "address",
+          "name": "_aggregator"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
       "name": "addAmbassadors",
       "constant": false,
       "payable": false,
@@ -1124,6 +1258,10 @@
               "name": "collectionId"
             },
             {
+              "type": "address",
+              "name": "paymentToken"
+            },
+            {
               "type": "string",
               "name": "name"
             },
@@ -1167,10 +1305,27 @@
     },
     {
       "type": "function",
+      "name": "addUser",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_user"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
       "name": "buyNFT",
       "constant": false,
       "payable": false,
       "inputs": [
+        {
+          "type": "address",
+          "name": "_to"
+        },
         {
           "type": "uint256",
           "name": "_campaignId"
@@ -1186,6 +1341,10 @@
         {
           "type": "address",
           "name": "_paymentToken"
+        },
+        {
+          "type": "uint256",
+          "name": "_paymentAmount"
         }
       ],
       "outputs": []
@@ -1215,6 +1374,29 @@
     },
     {
       "type": "function",
+      "name": "calculateUsdTokenPriceInPaymentToken",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_paymentToken"
+        },
+        {
+          "type": "uint256",
+          "name": "_nftPriceInUsdToken"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": "priceInPaymentToken"
+        }
+      ]
+    },
+    {
+      "type": "function",
       "name": "createCampaign",
       "constant": false,
       "payable": false,
@@ -1227,6 +1409,10 @@
           "type": "tuple[]",
           "name": "_collectionsParams",
           "components": [
+            {
+              "type": "address",
+              "name": "paymentToken"
+            },
             {
               "type": "string",
               "name": "name"
@@ -1345,6 +1531,25 @@
     },
     {
       "type": "function",
+      "name": "getAggregator",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_aggregator"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "address",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
       "name": "getCampaign",
       "constant": true,
       "stateMutability": "view",
@@ -1454,6 +1659,10 @@
                 {
                   "type": "address",
                   "name": "collectionAddress"
+                },
+                {
+                  "type": "address",
+                  "name": "paymentToken"
                 },
                 {
                   "type": "string",
@@ -1578,6 +1787,10 @@
                   "name": "collectionAddress"
                 },
                 {
+                  "type": "address",
+                  "name": "paymentToken"
+                },
+                {
                   "type": "string",
                   "name": "name"
                 },
@@ -1657,6 +1870,10 @@
             {
               "type": "address",
               "name": "collectionAddress"
+            },
+            {
+              "type": "address",
+              "name": "paymentToken"
             },
             {
               "type": "string",
@@ -1823,6 +2040,20 @@
     },
     {
       "type": "function",
+      "name": "getUsdToken",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "address",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
       "name": "grantRole",
       "constant": false,
       "payable": false,
@@ -1884,6 +2115,25 @@
     },
     {
       "type": "function",
+      "name": "isAdmin",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_admin"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
       "name": "isTokenSupported",
       "constant": true,
       "stateMutability": "view",
@@ -1892,6 +2142,25 @@
         {
           "type": "address",
           "name": "_token"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "isUser",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_user"
         }
       ],
       "outputs": [
@@ -1945,7 +2214,33 @@
     },
     {
       "type": "function",
-      "name": "removeAmbassadors",
+      "name": "removeAdmin",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_admin"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "removeAggregator",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_token"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "removeAmbassador",
       "constant": false,
       "payable": false,
       "inputs": [
@@ -1958,18 +2253,8 @@
           "name": "_referral"
         },
         {
-          "type": "tuple[]",
-          "name": "_ambassadors",
-          "components": [
-            {
-              "type": "address",
-              "name": "account"
-            },
-            {
-              "type": "uint256",
-              "name": "fee"
-            }
-          ]
+          "type": "address",
+          "name": "_ambassador"
         }
       ],
       "outputs": []
@@ -1983,6 +2268,19 @@
         {
           "type": "address",
           "name": "_token"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "removeUser",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_user"
         }
       ],
       "outputs": []
@@ -2023,7 +2321,7 @@
     },
     {
       "type": "function",
-      "name": "setAmbassadors",
+      "name": "setAmbassador",
       "constant": false,
       "payable": false,
       "inputs": [
@@ -2036,8 +2334,8 @@
           "name": "_referral"
         },
         {
-          "type": "tuple[]",
-          "name": "_ambassadors",
+          "type": "tuple",
+          "name": "_ambassador",
           "components": [
             {
               "type": "address",
@@ -2240,6 +2538,19 @@
     },
     {
       "type": "function",
+      "name": "setUsdToken",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_usdToken"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
       "name": "supportsInterface",
       "constant": true,
       "stateMutability": "view",
@@ -2258,8 +2569,8 @@
       ]
     }
   ],
-  "transactionHash": "0xc3b11db6043ea900110edbd25e7610cc98e59f9094d9481972bef2d9322c1c84",
-  "blockNumber": 41931346,
+  "transactionHash": "0x2baa15bbdc7743a7e4173142319eda5db7a68d96d7abb6699ae47dcfb64938fc",
+  "blockNumber": 46932274,
   "deployer": "0x9EEF8282Ff8C5203590e747A0FeC1796Ed39c37b",
-  "bytecode": "0x608060405261000c61000e565b005b7f000000000000000000000000be7b31c8f4e5a9ff33b717b50f4aa7a55a74865f6001600160a01b0316330361007b576000356001600160e01b03191663278f794360e11b14610071576040516334ad5dbb60e21b815260040160405180910390fd5b610079610083565b565b6100796100b2565b6000806100933660048184610312565b8101906100a09190610352565b915091506100ae82826100c2565b5050565b6100796100bd61011d565b610155565b6100cb82610179565b6040516001600160a01b038316907fbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b90600090a28051156101155761011082826101f5565b505050565b6100ae61026b565b60006101507f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc546001600160a01b031690565b905090565b3660008037600080366000845af43d6000803e808015610174573d6000f35b3d6000fd5b806001600160a01b03163b6000036101b457604051634c9c8ce360e01b81526001600160a01b03821660048201526024015b60405180910390fd5b7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc80546001600160a01b0319166001600160a01b0392909216919091179055565b6060600080846001600160a01b031684604051610212919061042a565b600060405180830381855af49150503d806000811461024d576040519150601f19603f3d011682016040523d82523d6000602084013e610252565b606091505b509150915061026285838361028a565b95945050505050565b34156100795760405163b398979f60e01b815260040160405180910390fd5b60608261029f5761029a826102e9565b6102e2565b81511580156102b657506001600160a01b0384163b155b156102df57604051639996b31560e01b81526001600160a01b03851660048201526024016101ab565b50805b9392505050565b8051156102f95780518082602001fd5b60405163d6bda27560e01b815260040160405180910390fd5b6000808585111561032257600080fd5b8386111561032f57600080fd5b5050820193919092039150565b634e487b7160e01b600052604160045260246000fd5b6000806040838503121561036557600080fd5b82356001600160a01b038116811461037c57600080fd5b9150602083013567ffffffffffffffff81111561039857600080fd5b8301601f810185136103a957600080fd5b803567ffffffffffffffff8111156103c3576103c361033c565b604051601f8201601f19908116603f0116810167ffffffffffffffff811182821017156103f2576103f261033c565b60405281815282820160200187101561040a57600080fd5b816020840160208301376000602083830101528093505050509250929050565b6000825160005b8181101561044b5760208186018101518583015201610431565b50600092019182525091905056fea26469706673582212207014fe8caabcd79fb4cbc32f88e0702f3d89ad8a43781035478f80dc4ed160e564736f6c634300081d0033"
+  "bytecode": "0x608060405261000c61000e565b005b7f000000000000000000000000efb699ed09eaadd2c2406e6c4e2880c7ce02da466001600160a01b0316330361007b576000356001600160e01b03191663278f794360e11b14610071576040516334ad5dbb60e21b815260040160405180910390fd5b610079610083565b565b6100796100b2565b6000806100933660048184610312565b8101906100a09190610352565b915091506100ae82826100c2565b5050565b6100796100bd61011d565b610155565b6100cb82610179565b6040516001600160a01b038316907fbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b90600090a28051156101155761011082826101f5565b505050565b6100ae61026b565b60006101507f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc546001600160a01b031690565b905090565b3660008037600080366000845af43d6000803e808015610174573d6000f35b3d6000fd5b806001600160a01b03163b6000036101b457604051634c9c8ce360e01b81526001600160a01b03821660048201526024015b60405180910390fd5b7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc80546001600160a01b0319166001600160a01b0392909216919091179055565b6060600080846001600160a01b031684604051610212919061042a565b600060405180830381855af49150503d806000811461024d576040519150601f19603f3d011682016040523d82523d6000602084013e610252565b606091505b509150915061026285838361028a565b95945050505050565b34156100795760405163b398979f60e01b815260040160405180910390fd5b60608261029f5761029a826102e9565b6102e2565b81511580156102b657506001600160a01b0384163b155b156102df57604051639996b31560e01b81526001600160a01b03851660048201526024016101ab565b50805b9392505050565b8051156102f95780518082602001fd5b60405163d6bda27560e01b815260040160405180910390fd5b6000808585111561032257600080fd5b8386111561032f57600080fd5b5050820193919092039150565b634e487b7160e01b600052604160045260246000fd5b6000806040838503121561036557600080fd5b82356001600160a01b038116811461037c57600080fd5b9150602083013567ffffffffffffffff81111561039857600080fd5b8301601f810185136103a957600080fd5b803567ffffffffffffffff8111156103c3576103c361033c565b604051601f8201601f19908116603f0116810167ffffffffffffffff811182821017156103f2576103f261033c565b60405281815282820160200187101561040a57600080fd5b816020840160208301376000602083830101528093505050509250929050565b6000825160005b8181101561044b5760208186018101518583015201610431565b50600092019182525091905056fea26469706673582212207014fe8caabcd79fb4cbc32f88e0702f3d89ad8a43781035478f80dc4ed160e564736f6c634300081d0033"
 }

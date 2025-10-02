@@ -1,5 +1,5 @@
 import { JSX, useEffect, useRef, useState } from "react";
-import { useAccount, useSignMessage } from "wagmi";
+// import { useAccount, useSignMessage } from "wagmi";
 import { Indicator, indicators } from "../../../assets/json/form/indicators";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ import { KYC_TYPE } from "../../../config/enums";
 import { mapUserToUserDto } from "../../../services/mapping/mapUserToUserDto";
 import { useStore } from "../../../store";
 import { useTranslation } from "react-i18next";
+import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
 
 type Props = {
   membershipContract: string;
@@ -158,8 +159,8 @@ export function Checkout(props: Props): JSX.Element {
     mode: "onChange",
   });
 
-  const { address, chainId } = useAccount();
-  const { signMessageAsync } = useSignMessage();
+  const account = useActiveAccount();
+  const chain = useActiveWalletChain();
 
   const { mutate: fetchNonce, isPending: isNoncePending } = useNonce();
   const { mutate: sendKycEmail, isPending: isKycPending } = useSendKycEmail();
@@ -168,7 +169,7 @@ export function Checkout(props: Props): JSX.Element {
 
   // variables
   const formDisabled =
-    !address ||
+    !account?.address ||
     isKycPending ||
     (requiresHardKyc && hasSentKycHard && !isKycHardCompleted);
 
@@ -204,16 +205,20 @@ export function Checkout(props: Props): JSX.Element {
   }, [isDropdownOpen]);
 
   const onSubmit = (data: Form) => {
-    if (!address || !chainId) return;
+    if (!account || !account.address || !chain) return;
 
-    fetchNonce(address, {
+    fetchNonce(account.address, {
       onSuccess: async (nonce) => {
         if (!nonce) return;
 
-        const message = generateSiweMessage(chainId, address, nonce);
-        const signature = await signMessageAsync({ message });
+        const message = generateSiweMessage(
+          chain.id,
+          account?.address as string,
+          nonce
+        );
+        const signature = await account.signMessage({ message });
         const dto = mapUserToUserDto({
-          address,
+          address: account.address,
           message,
           signature,
           nonce,

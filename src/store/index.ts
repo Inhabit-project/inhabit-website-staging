@@ -1,13 +1,13 @@
 import { create } from "zustand";
-import { Address, keccak256, toBytes, WalletClient } from "viem";
+import { Address, Hex, keccak256, toBytes, WalletClient } from "viem";
 import { InhabitContract } from "../services/blockchain/contracts/inhabit";
-import { UsdcContract } from "../services/blockchain/contracts/usdc";
-import { UsdtContract } from "../services/blockchain/contracts/usdt";
 import { Collection } from "../models/collection.model";
 import { Campaign } from "../models/campaign.model";
 import { userServices } from "../services/rest/user";
 import { ERROR, KYC_TYPE } from "../config/enums";
 import { Group } from "@/models/group.model";
+import { ERC20Contract } from "@/services/blockchain/contracts/erc20";
+import { CCOP_JSON, CUSD_JSON, USDC_JSON, USDT_JSON } from "@/config/const";
 
 type Store = {
   campaign: Campaign | null;
@@ -25,11 +25,13 @@ type Store = {
   inhabit: InhabitContract;
   isPollingKyc: boolean;
   lastCampaign: Campaign | null;
-  usdc: UsdcContract;
-  usdt: UsdtContract;
+  ccop: ERC20Contract;
+  cusd: ERC20Contract;
+  usdc: ERC20Contract;
+  usdt: ERC20Contract;
   getCampaign: (campaignId: number) => Promise<Campaign | null>;
-  getCampaignCollections: (campaignId: number) => Promise<Collection[]>;
   getCampaigns: () => Promise<Campaign[]>;
+  getGroup: (campaignId: number, referral: Hex) => Promise<Group | null>;
   getHasSentKyc: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
   getIsKycCompleted: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
   isCampaignReferral: (
@@ -49,8 +51,10 @@ export const useStore = create<Store>((set, get) => {
     userServices();
 
   const inhabit = new InhabitContract();
-  const usdc = new UsdcContract();
-  const usdt = new UsdtContract();
+  const ccop = new ERC20Contract(CCOP_JSON);
+  const cusd = new ERC20Contract(CUSD_JSON);
+  const usdc = new ERC20Contract(USDC_JSON);
+  const usdt = new ERC20Contract(USDT_JSON);
 
   return {
     campaign: null,
@@ -69,28 +73,13 @@ export const useStore = create<Store>((set, get) => {
     inhabit,
     isPollingKyc: false,
     lastCampaign: null,
+    ccop,
+    cusd,
     usdc,
     usdt,
 
     getCampaign: async (campaignId: number) => {
-      try {
-        set({ campaignLoading: true });
-        const campaign = await get().inhabit.getCampaign(campaignId);
-        set({ campaign, campaignLoading: false });
-        return campaign;
-      } catch (error) {
-        console.error("Error in getCampaign:", error);
-        set({ campaignLoading: false });
-        return null;
-      }
-    },
-
-    getCampaignCollections: async (campaignId: number) => {
-      const collections = await get().inhabit.getCampaignCollections(
-        campaignId
-      );
-      set({ collections });
-      return collections;
+      return await get().inhabit.getCampaign(campaignId);
     },
 
     getCampaigns: async () => {
@@ -101,19 +90,8 @@ export const useStore = create<Store>((set, get) => {
       return campaigns;
     },
 
-    isCampaignReferral: async (campaignId: number, referral: string) => {
-      const referralEncripted = keccak256(toBytes(referral));
-      return await get().inhabit.isCampaignReferralSupported(
-        campaignId,
-        referralEncripted
-      );
-    },
-
-    getGroup: async (campaignId: number, referral: string) => {
-      set({ groupsLoading: true });
-      const group = await get().inhabit.getGroup(campaignId, referral);
-      set({ group, groupsLoading: false });
-      return group;
+    getGroup: async (campaignId: number, referral: Hex) => {
+      return await get().inhabit.getGroup(campaignId, referral);
     },
 
     getIsKycCompleted: async (address: Address, kycType: KYC_TYPE) => {
@@ -163,10 +141,6 @@ export const useStore = create<Store>((set, get) => {
       } else {
         console.warn(`${ERROR.UNKNOWN_KYC_TYPE}: ${kycType}`);
       }
-    },
-
-    setWalletClient: (walletClient: WalletClient) => {
-      get().inhabit.setWalletClient(walletClient);
     },
 
     startKycPolling: async (address, requiresHardKyc) => {

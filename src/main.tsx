@@ -18,6 +18,7 @@ import { mainPageOptimizer } from "./utils/performanceOptimizer";
 
 import { RainbowKitProviderConfig } from "./config/rainbow-kit.config";
 import { BrowserRouter } from "react-router";
+import { ThirdwebProvider } from "thirdweb/react";
 
 // Initialize optimized font loading
 initializeOptimizedFontLoading();
@@ -75,13 +76,15 @@ if (CSS.supports("scroll-snap-type: y mandatory")) {
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <HelmetProvider>
-      <RainbowKitProviderConfig>
-        <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </QueryClientProvider>
-      </RainbowKitProviderConfig>
+      <ThirdwebProvider>
+        <RainbowKitProviderConfig>
+          <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </QueryClientProvider>
+        </RainbowKitProviderConfig>
+      </ThirdwebProvider>
     </HelmetProvider>
   </React.StrictMode>
 );

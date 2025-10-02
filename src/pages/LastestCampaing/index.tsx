@@ -6,7 +6,7 @@ import SEOHead from "@/components/SEOHead";
 import { useNavigate, useParams } from "react-router-dom";
 import NFTGrid from "@/components/NFTGrid";
 import Cookies from "js-cookie";
-import { keccak256, toBytes } from "viem";
+import { Hex, keccak256, toBytes } from "viem";
 import { COOKIE_REFERRAL } from "@/config/const";
 
 interface Props {
@@ -40,7 +40,7 @@ export default function LastestCampaign(props: Props): JSX.Element {
         return;
       }
 
-      const group = await inhabit.getGroup(Number(campaignId), referral);
+      const group = await inhabit.getGroup(Number(campaignId), referral as Hex);
 
       if (!group) {
         navigate("/404");

@@ -56,7 +56,6 @@ export default function Membership(props: Props): JSX.Element {
         }
 
         const loadedCampaign = await getCampaign(Number(campaignId));
-
         if (!loadedCampaign) {
           navigate("/404");
           return;
@@ -75,6 +74,7 @@ export default function Membership(props: Props): JSX.Element {
         setCollectionStore(found);
         setCampaign(loadedCampaign);
       } catch (error) {
+        console.log("error", error);
         navigate("/404");
       }
     };
