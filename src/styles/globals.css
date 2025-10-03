@@ -208,6 +208,7 @@
     -moz-osx-font-smoothing: grayscale;
     height: 100%;
     font-display: swap; /* Ensure swap for all fonts */
+    overscroll-behavior-y: none;
   }
 
   body {
