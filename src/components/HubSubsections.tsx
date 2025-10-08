@@ -97,7 +97,7 @@ const HubSubsections: React.FC<HubSubsectionsProps> = ({
 
   return (
     <section 
-      className="relative w-full min-h-screen flex flex-col md:flex-row items-center overflow-hidden scroll-container"
+      className="relative w-full min-h-screen flex flex-col md:flex-row items-center overflow-hidden "
       aria-labelledby={`hub-${title.toLowerCase().replace(/\s+/g, '-')}-title`}
     >
       {/* Background image slider - hidden on mobile */}

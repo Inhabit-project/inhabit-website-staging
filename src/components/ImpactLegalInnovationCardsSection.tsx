@@ -88,7 +88,7 @@ const ImpactLegalInnovationCardsSection: React.FC = () => {
   return (
     <section 
       ref={sectionRef}
-      className="w-full flex flex-col items-center background-gradient-light py-24 px-[clamp(1.5rem,5vw,6.25rem)] scroll-container"
+      className="w-full flex flex-col items-center background-gradient-light py-24 px-[clamp(1.5rem,5vw,6.25rem)] "
     >
       <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full max-w-[120rem] mx-auto mb-[2.5rem]">
         <h2 

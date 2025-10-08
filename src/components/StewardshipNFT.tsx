@@ -77,7 +77,7 @@ const StewardshipNFT: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full background-gradient-dark flex flex-col items-center scroll-container"
+      className="relative w-full background-gradient-dark flex flex-col items-center"
     >
       <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
         <div className="flex flex-col items-start gap-6">
@@ -103,7 +103,7 @@ const StewardshipNFT: React.FC = () => {
           {/* Image */}
           <div ref={imageRef} className="self-center relative overflow-hidden">
             <img
-              src="/assets/stewardship-nft.webp"
+              src="/assets/stewardship-nft.avif"
               alt="Stewardship NFT illustration"
               className="w-full h-full object-cover"
               fetchPriority="high"

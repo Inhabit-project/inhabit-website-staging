@@ -319,7 +319,7 @@ export default function NFTGrid(props: Props): JSX.Element {
     return (
       <section
         ref={sectionRef}
-        className="relative w-full background-gradient-dark mt-0 scroll-container"
+        className="relative w-full background-gradient-dark mt-0 "
         aria-labelledby="nft-grid-title"
       >
         <div className="max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
@@ -332,7 +332,7 @@ export default function NFTGrid(props: Props): JSX.Element {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full background-gradient-dark mt-0 scroll-container"
+      className="relative w-full background-gradient-dark mt-0 "
       aria-labelledby="nft-grid-title"
     >
       <div className="max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">

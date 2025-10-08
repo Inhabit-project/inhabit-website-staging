@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
-import { useTranslation } from "react-i18next";
+import SubLoader from "@/load/SubLoader";
 import { blogServices } from "@/services/wordpress/blog";
 import { BlogPost, BlogProps as ImportedBlogProps } from "@/types/wordpress";
 import { truncateHtml } from "@/utils/html";
+import { useGSAP } from "@gsap/react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
-import SubLoader from "@/load/SubLoader";
 import { LoadingContext } from "../../App";
 import { gsap, ScrollTrigger } from "../../utils/gsap";
-import { useGSAP } from "@gsap/react";
 
 // Register the hook to avoid React version discrepancies
 gsap.registerPlugin(useGSAP);
@@ -347,7 +347,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                             {mainPost.date}
                           </span>
                           <h2
-                            className="heading-4 font-semibold"
+                            className="heading-4"
                             style={{ color: "var(--color-secondary)" }}
                           >
                             {mainPost.title}
@@ -396,7 +396,7 @@ const Blog: React.FC<BlogProps> = ({ isMainPage = false, onReady }) => {
                                 {post.date}
                               </span>
                               <h3
-                                className="heading-5 font-semibold"
+                                className="heading-5"
                                 style={{ color: "var(--color-secondary)" }}
                               >
                                 {post.title}

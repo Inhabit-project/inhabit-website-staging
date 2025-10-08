@@ -267,7 +267,7 @@ const NewsletterCTA: React.FC = () => {
             </button>
           </form>
           {errors.email && (
-            <div className="text-orange-400 text-xs">
+            <div className="text-primary text-xs">
               {errors.email.message}
             </div>
           )}

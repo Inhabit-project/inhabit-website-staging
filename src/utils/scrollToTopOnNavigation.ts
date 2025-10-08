@@ -7,10 +7,16 @@ export const useScrollToTopOnNavigation = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (scrollManager && typeof scrollManager.scrollTo === "function") {
-      scrollManager.scrollTo(0, { immediate: true });
-    } else {
-      window.scrollTo({ top: 0, behavior: "auto" });
-    }
+    const handleScroll = async () => {
+      try {
+        await scrollManager.scrollTo(0, { immediate: true });
+      } catch (error) {
+        console.warn('Scroll to top failed, using fallback:', error);
+        // Fallback to immediate scroll to top
+        window.scrollTo({ top: 0, behavior: "auto" });
+      }
+    };
+
+    handleScroll();
   }, [pathname]);
 };

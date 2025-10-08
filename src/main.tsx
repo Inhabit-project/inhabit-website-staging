@@ -7,51 +7,41 @@ import "./styles/globals.css";
 import "./utils/gsap";
 import { HelmetProvider } from "react-helmet-async";
 
-// Font optimization utilities
-import { initializeFontOptimization } from "./utils/fontOptimization";
-import { initializeFontLoading, FontLoadingUtils } from "./utils/fontLoading";
-import { initializeFontPreloading } from "./utils/fontPreloader";
+// Optimized font loading
+import { initializeOptimizedFontLoading } from "./utils/optimizedFontLoader";
 
-// Optimized font imports with font-display: swap
-// @fontsource packages only include latin subset by default. No cyrillic or vietnamese fonts are included.
-import "@fontsource/montserrat/400.css"; // Regular
-import "@fontsource/montserrat/700.css"; // Bold
-import "@fontsource/nunito-sans/400.css"; // Regular
-import "@fontsource/nunito-sans/600.css"; // SemiBold
-import "@fontsource/abel/400.css"; // Regular
+// Performance optimization
+import { mainPageOptimizer } from "./utils/performanceOptimizer";
 
-// Add font-display: swap CSS override and optimization
-const fontDisplayStyle = document.createElement("style");
-fontDisplayStyle.textContent = `
-  @font-face {
-    font-family: 'Montserrat';
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Nunito Sans';
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Abel';
-    font-display: swap;
-  }
-`;
-document.head.appendChild(fontDisplayStyle);
-
-// Apply fallback fonts immediately
-FontLoadingUtils.applyFallbacks();
+// Fonts are now loaded via HTML head with optimal preloading
+// No need for CSS imports that could block rendering
 
 import { RainbowKitProviderConfig } from "./config/rainbow-kit.config";
 import { BrowserRouter } from "react-router";
 import { ThirdwebProvider } from "thirdweb/react";
 
-// Initialize font optimization, loading, and preloading
-initializeFontOptimization();
-initializeFontLoading();
-initializeFontPreloading();
+// Initialize optimized font loading
+initializeOptimizedFontLoading();
+
+// Initialize performance optimization
+mainPageOptimizer.optimizeInitialLoad();
 
 // Initialize smooth scrolling
 scrollManager.init();
+
+// Cleanup function for scroll manager
+const cleanupScrollManager = () => {
+  scrollManager.destroy();
+};
+
+// Add cleanup on page unload
+window.addEventListener('beforeunload', cleanupScrollManager);
+
+// Remove problematic scroll-snap CSS injection
+// The scroll-snap behavior is now handled more carefully in the scrollManager
+// to prevent unwanted scroll positioning
+
+const queryClient = new QueryClient();
 
 function isSafari() {
   // This will match Safari but not Chrome or Edge
@@ -82,8 +72,6 @@ if (CSS.supports("scroll-snap-type: y mandatory")) {
 } else {
   document.documentElement.classList.remove("supports-scroll-snap");
 }
-
-const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

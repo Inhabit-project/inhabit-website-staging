@@ -229,7 +229,7 @@ const Footer: React.FC = () => {
                         {...register("email")}
                       />
                       {errors.email && (
-                        <div className="text-orange-400 text-xs">
+                        <div className="text-primary text-xs">
                           {errors.email.message}
                         </div>
                       )}
@@ -246,7 +246,7 @@ const Footer: React.FC = () => {
                         </span>
                       </label>
                       {errors.privacy && (
-                        <div className="text-orange-400 text-xs">
+                        <div className="text-primary text-xs">
                           {errors.privacy.message}
                         </div>
                       )}

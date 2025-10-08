@@ -321,7 +321,7 @@ const LogosSection: React.FC<LogosSectionProps> = ({ showAllies, showBuilders, s
   return (
     <section 
       ref={sectionRef}
-      className="background-gradient-dark py-8 md:py-16 lg:py-[6.5rem] px-4 md:px-8 lg:px-[6.25rem] overflow-x-hidden flex flex-col gap-8 md:gap-16 lg:gap-[3.75rem] scroll-container"
+      className="background-gradient-dark py-8 md:py-16 lg:py-[6.5rem] px-4 md:px-8 lg:px-[6.25rem] overflow-x-hidden flex flex-col gap-8 md:gap-16 lg:gap-[3.75rem] "
       aria-label="Partners and collaborators"
       style={{
         willChange: 'auto',

@@ -187,8 +187,8 @@ const InfoCard: React.FC<InfoCardProps> = ({ title, subtitle = '', logoSrc, logo
             aria-label="Close news popup"
           >
             <div className="relative w-4 h-4">
-              <div className="absolute top-1/2 left-0 w-4 h-[2px] bg-white rotate-45 group-hover:bg-orange-500 transition-colors duration-300" />
-              <div className="absolute top-1/2 left-0 w-4 h-[2px] bg-white -rotate-45 group-hover:bg-orange-500 transition-colors duration-300" />
+              <div className="absolute top-1/2 left-0 w-4 h-[2px] bg-white rotate-45 group-hover:bg-primary transition-colors duration-300" />
+              <div className="absolute top-1/2 left-0 w-4 h-[2px] bg-white -rotate-45 group-hover:bg-primary transition-colors duration-300" />
             </div>
           </button>
           <div className="popup-content">

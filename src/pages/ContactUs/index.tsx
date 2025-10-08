@@ -104,7 +104,7 @@ export default function ContactPage(props: Props) {
     <div ref={mainRef} className="min-h-screen background-gradient-light">
       <Menu />
       <main
-        className="w-full flex flex-col items-center justify-center py-20 md:py-32 pt-32 background-gradient-light"
+        className="w-full flex flex-col items-center justify-center py-20 md:py-32 pt-32 background-gradient-light min-h-screen"
         aria-labelledby="contact-title"
       >
         <div className="w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)]">
