@@ -458,7 +458,7 @@
           },
           {
             "question": "Is using blockchain environmentally sustainable for INHABIT?",
-            "answer": "Yes, INHABIT uses CELO, a carbon-negative blockchain designed for climate-friendly projects.<br /><br />Minting all the NFTs needed to finance an INHABIT Hub produces less CO₂ than brewing a single cup of coffee.<br /><br />Each NFT uses just 0.00001 kWh and emits only 5 mg of CO₂, less than a Google search.<br /><br />In comparison:<ul><li>Ethereum (pre-merge) = 15,000× more emissions</li><li>Bitcoin = 100,000× more</li></ul>Plus, CELO runs a built-in carbon offset program: a portion of every transaction fee funds verified projects that remove CO₂ from the atmosphere. This makes CELO carbon-negative, meaning it offsets more than it emits, so even our NFTs end up being carbon-negative, turning blockchain into a tool for climate regeneration."
+            "answer": "Yes, INHABIT is built on Celo, a carbon-negative Ethereum Layer-2 launched on Earth Day 2020 and designed to create the conditions of prosperity for all."
           }
         ]
       },

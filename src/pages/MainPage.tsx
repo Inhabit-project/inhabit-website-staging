@@ -1,22 +1,15 @@
-import React, { useRef, useEffect, useState, memo, useCallback, Suspense, lazy } from "react";
-import Menu from "../components/Menu";
-import Hero from "../components/Hero";
-import Video from "../components/Video";
-import Hubs from "../components/Hubs";
-import StewardshipNFT from "../components/StewardshipNFT";
-import Highlight from "../components/Highlight";
-import NFTGrid from "../components/NFTGrid";
-import Photo from "../components/Photo";
-import Infographic from "../components/Infographic";
-import ImpactCardsSection from "../components/ImpactCardsSection";
-import Testimonials from "../components/Testimonials";
-import CTA from "../components/CTA";
-import Blog from "../components/blog/Blog";
-import FAQ from "../components/FAQ";
-import Footer from "../components/Footer";
-import { useStore } from "../store";
 import SEOHead from "@/components/SEOHead";
+import { Suspense, lazy, memo, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import Footer from "../components/Footer";
+import Hero from "../components/Hero";
+import Highlight from "../components/Highlight";
+import Hubs from "../components/Hubs";
+import Menu from "../components/Menu";
+import NFTGrid from "../components/NFTGrid";
+import StewardshipNFT from "../components/StewardshipNFT";
+import Video from "../components/Video";
+import { useStore } from "../store";
 import Cursor from "../utils/cursor";
 import { scrollManager } from "../utils/scrollManager";
 
@@ -161,13 +154,12 @@ function MainPage(props: Props) {
         <section aria-label={t('sections.hubs')}>
           <Hubs />
         </section>
-        
-        <section aria-label={t('sections.stewardshipNFT')}>
-          <StewardshipNFT />
-        </section>
-        
         <section aria-label={t('sections.highlight')}>
           <Highlight />
+        </section>
+
+        <section aria-label={t('sections.stewardshipNFT')}>
+          <StewardshipNFT />
         </section>
         
         <section ref={nftGridRef} aria-label={t('sections.nftGrid')}>
