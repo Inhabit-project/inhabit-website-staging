@@ -154,15 +154,15 @@ function MainPage(props: Props) {
         <section aria-label={t('sections.hubs')}>
           <Hubs />
         </section>
-        <section aria-label={t('sections.highlight')}>
+        <section aria-label={t('sections.highlight')} className="sticky top-0 z-0">
           <Highlight />
         </section>
 
-        <section aria-label={t('sections.stewardshipNFT')}>
+        <section aria-label={t('sections.stewardshipNFT')} className="relative z-10 bg-[var(--color-light)]">
           <StewardshipNFT />
         </section>
         
-        <section ref={nftGridRef} aria-label={t('sections.nftGrid')}>
+        <section ref={nftGridRef} aria-label={t('sections.nftGrid')} className="relative z-10 bg-[var(--color-light)]">
           {!campaignsLoading &&
                           (!lastCampaign ? (
                 <p className="text-lg text-gray-500">{t('common.noCampaignsAvailable')}</p>
@@ -173,43 +173,43 @@ function MainPage(props: Props) {
         
         {/* Lazy load below-the-fold content for better performance */}
         <Suspense fallback={<LoadingFallback />}>
-          <section aria-label={t('sections.photo')}>
+          <section aria-label={t('sections.photo')} className="relative z-10 bg-[var(--color-light)]">
             <LazyPhoto />
           </section>
         </Suspense>
         
         <Suspense fallback={<LoadingFallback />}>
-          <section aria-label={t('sections.infographic')}>
+          <section aria-label={t('sections.infographic')} className="relative z-10 bg-[var(--color-light)]">
             <LazyInfographic />
           </section>
         </Suspense>
         
         <Suspense fallback={<LoadingFallback />}>
-          <section aria-label={t('sections.impactCards')}>
+          <section aria-label={t('sections.impactCards')} className="relative z-10 bg-[var(--color-light)]">
             <LazyImpactCardsSection />
           </section>
         </Suspense>
         
         <Suspense fallback={<LoadingFallback />}>
-          <section aria-label={t('sections.testimonials')}>
+          <section aria-label={t('sections.testimonials')} className="relative z-10 bg-[var(--color-light)]">
             <LazyTestimonials />
           </section>
         </Suspense>
         
         <Suspense fallback={<LoadingFallback />}>
-          <section aria-label={t('sections.cta')}>
+          <section aria-label={t('sections.cta')} className="relative z-10 bg-[var(--color-light)]">
             <LazyCTA />
           </section>
         </Suspense>
         
         <Suspense fallback={<LoadingFallback />}>
-          <section aria-label={t('sections.blog')}>
+          <section aria-label={t('sections.blog')} className="relative z-10 bg-[var(--color-light)]">
             <LazyBlog />
           </section>
         </Suspense>
         
         <Suspense fallback={<LoadingFallback />}>
-          <section aria-label={t('sections.faq')}>
+          <section aria-label={t('sections.faq')} className="relative z-10 bg-[var(--color-light)]">
             <LazyFAQ />
           </section>
         </Suspense>

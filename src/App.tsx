@@ -88,7 +88,6 @@ const App: React.FC = memo(() => {
   const [minLoaderTimeElapsed, setMinLoaderTimeElapsed] = useState(false);
   const [canFinishLoading, setCanFinishLoading] = useState(false);
   const [pendingLocation, setPendingLocation] = useState(location);
-  const [newPageReady, setNewPageReady] = useState(false);
 
   // Initialize IndexedDB cache on app startup
   useEffect(() => {
@@ -163,7 +162,6 @@ const App: React.FC = memo(() => {
         (location.state as any)?.skipTransition === true;
 
       if (shouldSkipTransition) {
-        console.log("Skipping transition for:", location.pathname);
         // Skip transition entirely
         setPendingLocation(location);
         setPageReady(false);
@@ -183,7 +181,15 @@ const App: React.FC = memo(() => {
       setTimeout(() => {
         setPendingLocation(location);
         setTransitionIn(true); // Reveal
-      }, 1200); // match animation duration (1.2s)
+      }, 800); // match animation duration (0.8s)
+
+      // Fallback: if page doesn't call onPageReady within 2 seconds, force it
+      const fallbackTimer = setTimeout(() => {
+        console.log("Page transition fallback triggered for:", location.pathname);
+        setPageReady(true);
+      }, 2000);
+
+      return () => clearTimeout(fallbackTimer);
     }
   }, [location, pendingLocation]);
 
@@ -201,9 +207,9 @@ const App: React.FC = memo(() => {
   useEffect(() => {
     if (transitionIn && pageReady) {
       // Hide transition after reveal is complete
-      setTimeout(() => {
+      const hideTimer = setTimeout(() => {
         setShowTransition(false);
-      }, 1200); // Wait for reveal animation to complete
+      }, 800); // Wait for reveal animation to complete (0.8s)
 
       requestAnimationFrame(async () => {
         // Wait for any current scroll operations to complete
@@ -217,18 +223,19 @@ const App: React.FC = memo(() => {
           "/hubs/agua-de-luna",
           "/hubs/tierrakilwa",
           "/lastest-campaign",
+          "/latest-campaign",
           "/terms",
           "/privacy",
-          "/projects",
           "/contact",
           "/blog/article", // match base for dynamic article routes
         ];
 
         // Check if current route is a no-hero route
+        // IMPORTANT: Use pendingLocation.pathname to match what Routes actually renders
         const isNoHeroRoute = noHeroRoutes.some(
           (route) =>
-            location.pathname === route ||
-            location.pathname.startsWith(route + "/")
+            pendingLocation.pathname === route ||
+            pendingLocation.pathname.startsWith(route + "/")
         );
 
         try {
@@ -259,8 +266,10 @@ const App: React.FC = memo(() => {
           });
         }, 200); // Increased delay to avoid conflicts
       });
+
+      return () => clearTimeout(hideTimer);
     }
-  }, [transitionIn, pageReady, location.pathname]);
+  }, [transitionIn, pageReady, pendingLocation.pathname]);
 
   const handleTransitionComplete = useCallback(() => {
     // No-op: scroll now handled in useEffect above
@@ -289,87 +298,51 @@ const App: React.FC = memo(() => {
     }, 300); // Increased delay to avoid conflicts
   }, []);
 
-  // Helper to pass onPageReady to all pages
+  // Helper to pass onPageReady to all pages - STABLE callbacks
+  const handlePageReadyCallback = useCallback(() => {
+    setPageReady(true);
+  }, []);
+
+  const handlePageStartCallback = useCallback(() => {
+    setPageReady(false);
+  }, []);
+
   const pageProps = {
-    onPageReady: useCallback(() => {
-      setPageReady(true);
-    }, []),
-    onPageStart: useCallback(() => {
-      setPageReady(false);
-    }, []),
+    onPageReady: handlePageReadyCallback,
+    onPageStart: handlePageStartCallback,
   };
 
-  // Add this useEffect after your other useEffects
+  // Auto-mark hero as loaded for routes without hero images
   useEffect(() => {
     // List of routes that do NOT use a hero image
     const noHeroRoutes = [
       "/membership",
       "/lastest-campaign",
+      "/latest-campaign",
       "/checkout",
       "/blog",
       "/hubs/agua-de-luna",
       "/hubs/tierrakilwa",
       "/terms",
       "/privacy",
-      "/projects",
       "/contact",
       "/blog/article", // match base for dynamic article routes
-      // Add any other routes that don't use a hero image
     ];
 
+    // Reset heroImageLoaded when route changes
+    setHeroImageLoaded(false);
+
     // If the current route matches any no-hero route, set heroImageLoaded to true
-    if (
-      noHeroRoutes.some(
-        (route) =>
-          location.pathname === route ||
-          location.pathname.startsWith(route + "/")
-      )
-    ) {
+    const isNoHeroRoute = noHeroRoutes.some(
+      (route) =>
+        pendingLocation.pathname === route ||
+        pendingLocation.pathname.startsWith(route + "/")
+    );
+
+    if (isNoHeroRoute) {
       setHeroImageLoaded(true);
     }
-
-    // Handle page transitions for route changes
-    if (location !== pendingLocation) {
-      // Set transitioning state to true
-      setIsTransitioning(true);
-      
-      // Reset page ready state for new page
-      setPageReady(false);
-      
-      // Update pending location immediately so new page loads
-      setPendingLocation(location);
-      
-      // Reset new page ready state
-      setNewPageReady(false);
-      
-      // Start transition overlay on top of the new page
-      setShowTransition(true);
-      setTransitionIn(false);
-      
-      // Wait for new page to be ready, then start transition in
-      const checkPageReady = () => {
-        if (pageReady) {
-          setNewPageReady(true);
-          // Start transition in after page is ready
-          setTransitionIn(true);
-          
-          // After transition in completes, hide the transition and reset state
-          const revealTimer = setTimeout(() => {
-            setShowTransition(false);
-            setIsTransitioning(false);
-          }, 1500); // Match the CSS animation duration
-          
-          return () => clearTimeout(revealTimer);
-        } else {
-          // Check again in 50ms
-          setTimeout(checkPageReady, 50);
-        }
-      };
-      
-      // Start checking for page readiness
-      checkPageReady();
-    }
-  }, [location, pendingLocation, pageReady]);
+  }, [pendingLocation.pathname]);
 
   // Fallback: Always finish loading after 5 seconds (in case hero image never loads)
   useEffect(() => {
@@ -395,8 +368,14 @@ const App: React.FC = memo(() => {
     };
   }, []);
 
-  // Ensure page always starts at hero section on initial load and navigation
+  // Ensure page always starts at hero section on initial load ONLY
+  // This should NOT run during page transitions (showTransition = true)
   useEffect(() => {
+    // Skip if a transition is in progress - scroll is handled by the other useEffect
+    if (showTransition) {
+      return;
+    }
+    
     // Only run scroll management for pages that actually need it
     // Skip for pages that should maintain their scroll position
     const shouldManageScroll = !location.pathname.includes('/contact') && 
@@ -417,7 +396,7 @@ const App: React.FC = memo(() => {
 
       return () => clearTimeout(timer);
     }
-  }, [location.pathname]);
+  }, [location.pathname, showTransition]);
 
   return (
     <LoadingContext.Provider value={isLoading}>
@@ -443,10 +422,11 @@ const App: React.FC = memo(() => {
           {showTransition && (
             <PageTransition
               onComplete={handleTransitionComplete}
+              transitionIn={transitionIn}
             />
           )}
           <Suspense fallback={<RouteLoadingFallback />}>
-            <Routes location={location}>
+            <Routes location={pendingLocation}>
               <Route
                 path="/"
                 element={

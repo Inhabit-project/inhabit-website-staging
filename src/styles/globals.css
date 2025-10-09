@@ -1132,6 +1132,8 @@
 
 /* Page transition specific nature transition styles */
 .page-transition-mask.nature-transition {
+  -webkit-mask: url("https://raw.githubusercontent.com/robin-dela/css-mask-animation/master/img/nature-sprite.png");
+  mask: url("https://raw.githubusercontent.com/robin-dela/css-mask-animation/master/img/nature-sprite.png");
   -webkit-mask-size: 2300% 100%;
   mask-size: 2300% 100%;
   background: #0a1a0a;
@@ -1140,13 +1142,13 @@
 }
 
 .page-transition-mask.transition-in {
-  -webkit-animation: nature-ani 1.5s steps(22) forwards;
-  animation: nature-ani 1.5s steps(22) forwards;
+  -webkit-animation: nature-ani 0.8s steps(22) forwards;
+  animation: nature-ani 0.8s steps(22) forwards;
 }
 
 .page-transition-mask.transition-out {
-  -webkit-animation: nature-ani2 1.5s steps(22) forwards;
-  animation: nature-ani2 1.5s steps(22) forwards;
+  -webkit-animation: nature-ani2 0.8s steps(22) forwards;
+  animation: nature-ani2 0.8s steps(22) forwards;
 }
 
 

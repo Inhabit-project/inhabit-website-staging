@@ -28,6 +28,7 @@ const allies: Logo[] = [
   { logo: '/assets/logos/ally-logo-3.webp', name: 'Ally 3' },
   { logo: '/assets/logos/ally-logo-4.svg', name: 'Ally 4' },
   { logo: '/assets/logos/ally-logo-5.webp', name: 'Ally 5' },
+  { logo: '/assets/logos/partner-logo-7.svg', name: 'Celo' },
 ];
 
 const builders: Logo[] = [
@@ -38,6 +39,7 @@ const builders: Logo[] = [
   { logo: '/assets/logos/ally-logo-5.webp', name: 'Builder 5' },
   { logo: '/assets/logos/builder-logo-6.svg', name: 'Builder 6' },
   { logo: '/assets/logos/builder-logo-7.webp', name: 'Builder 7' },
+  { logo: '/assets/logos/partner-logo-7.svg', name: 'Celo' },
 ];
 
 const partners: Logo[] = [
@@ -47,6 +49,7 @@ const partners: Logo[] = [
   { logo: '/assets/logos/partner-logo-4.png', name: 'Partner 4' },
   { logo: '/assets/logos/partner-logo-5.png', name: 'Partner 5' },
   { logo: '/assets/logos/partner-logo-6.svg', name: 'Partner 6' },
+  { logo: '/assets/logos/partner-logo-7.svg', name: 'Celo' },
 ];
 
 // Marquee component for infinite scrolling logos

@@ -464,7 +464,7 @@ export const FAQWhite: React.FC<{ faqItems?: { question: string; answer: string 
                     {item.question}
                   </h3>
                   <button 
-                    className={`w-8 h-8 rounded-full bg-secondary/10 backdrop-blur-[7.5px] border border-[#1B3A2B]/50 flex items-center justify-center transition-all duration-300 group-hover:border-secondary group-hover:bg-secondary/20 ${openIndex === index ? 'rotate-45' : ''}`}
+                    className={`min-w-8 min-h-8 w-8 h-8 aspect-square rounded-full bg-secondary/10 backdrop-blur-[7.5px] border border-[#1B3A2B]/50 flex items-center justify-center transition-all duration-300 group-hover:border-secondary group-hover:bg-secondary/20 ${openIndex === index ? 'rotate-45' : ''}`}
                   >
                     <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M8 3.333v9.334M3.333 8h9.334" stroke="#1B3A2B" strokeWidth="2" strokeLinecap="round"/>

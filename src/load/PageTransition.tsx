@@ -1,39 +1,27 @@
 import React, { useEffect } from 'react';
-import { scrollManager } from '../utils/scrollManager';
 
 interface PageTransitionProps {
   onComplete?: () => void;
+  transitionIn?: boolean;
 }
 
-const PageTransition: React.FC<PageTransitionProps> = ({ onComplete }) => {
+const PageTransition: React.FC<PageTransitionProps> = ({ onComplete, transitionIn = false }) => {
   useEffect(() => {
-    // Use a timeout to match the CSS animation duration (1.5s)
-    const timer = setTimeout(async () => {
-      try {
-        // Ensure page is properly positioned at top/hero after transition
-        // This is especially important for Safari
-        await scrollManager.ensurePageStartsAtTop({ immediate: true, force: true });
-        
-        if (onComplete) {
-          onComplete();
-        }
-      } catch (error) {
-        console.warn('PageTransition scroll positioning failed:', error);
-        // Fallback: ensure we're at least at the top
-        window.scrollTo({ top: 0, behavior: "auto" });
-        
-        if (onComplete) {
-          onComplete();
-        }
+    // Use a timeout to match the CSS animation duration (0.8s)
+    const timer = setTimeout(() => {
+      if (onComplete) {
+        onComplete();
       }
-    }, 1500);
+    }, 800);
 
     return () => clearTimeout(timer);
   }, [onComplete]);
 
   return (
     <div className="page-transition-overlay">
-      <div className="page-transition-mask nature-transition transition-in" />
+      <div 
+        className={`page-transition-mask nature-transition ${transitionIn ? 'transition-in' : 'transition-out'}`} 
+      />
     </div>
   );
 };

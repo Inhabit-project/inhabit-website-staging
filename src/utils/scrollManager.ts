@@ -175,7 +175,6 @@ class ScrollManager {
         }
 
         if (heroElement) {
-          // Use the existing scrollTo method for consistency
           const offset = options?.offset ?? 0;
           const top = Math.max(0, heroElement.getBoundingClientRect().top + window.pageYOffset + offset);
           const behavior = options?.immediate ? "auto" : "smooth";
