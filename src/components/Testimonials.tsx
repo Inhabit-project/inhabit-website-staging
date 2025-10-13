@@ -134,7 +134,11 @@ const Testimonials: React.FC = () => {
         {/* Testimonial */}
         <div 
           ref={testimonialCardRef}
-          className="bg-[#162F08] rounded-2xl shadow-lg backdrop-blur-6xl p-6 md:p-8 lg:p-[3.4rem] w-full"
+          className=" rounded-2xl shadow-lg backdrop-blur-6xl p-6 md:p-8 lg:p-[3.4rem] w-full"
+          style={{
+            background: "var(--color-bright-green)",
+            border: "0.5px solid #3A8F54",
+          }}
           role="article"
         >
           <div className="flex flex-col md:flex-row gap-6 md:gap-[3.4rem] w-full">

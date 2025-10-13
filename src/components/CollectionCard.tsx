@@ -58,6 +58,7 @@ export default function CollectionCard({
       style={{
         background: "var(--color-bright-green)",
         borderRadius: "var(--radius-lg)",
+        border: "0.5px solid #3A8F54",
       }}
       role="listitem"
     >

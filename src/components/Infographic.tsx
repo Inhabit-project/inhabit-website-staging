@@ -294,10 +294,10 @@ const Infographic: React.FC = () => {
 
       {/* Interactive Card Modal */}
       {isCardOpen && activeSlideData && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-hidden">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-center p-4 overflow-y-auto">
           <div 
             ref={cardRef}
-            className="background-gradient-light rounded-2xl shadow-2xl w-[95vw] max-h-[95vh] overflow-hidden relative flex flex-col"
+            className="background-gradient-light rounded-2xl shadow-2xl w-[95vw] max-w-7xl my-8 overflow-hidden relative flex flex-col"
           >
             {/* Close Button - Always visible */}
             <button
@@ -312,20 +312,20 @@ const Infographic: React.FC = () => {
             </button>
 
             {/* Card Content - Scrollable */}
-            <div ref={cardContentRef} className="flex flex-col lg:flex-row h-full overflow-y-auto p-6 lg:p-12">
+            <div ref={cardContentRef} className="flex flex-col lg:flex-row items-center p-6 lg:p-12 gap-12">
               {/* Image Section */}
-              <div className="w-full lg:w-1/2 h-64 lg:h-auto flex-shrink-0">
+              <div className="w-full lg:w-2/5 flex-shrink-0 flex items-center justify-center">
                 <img 
                   ref={cardImageRef}
                   src={activeSlideData.image}
                   alt={activeSlideData.alt}
-                  className="w-full h-full object-contain"
+                  className="w-full max-h-[60vh] object-contain"
                   loading="lazy"
                 />
               </div>
 
               {/* Text Section */}
-              <div className="w-full lg:w-1/2 p-4 lg:p-8 flex flex-col justify-start">
+              <div className="w-full lg:w-3/5 p-4 lg:p-8 flex flex-col justify-center">
                 <h2 
                   ref={cardTitleRef}
                   className="heading-2 text-secondary mb-6 font-bold"

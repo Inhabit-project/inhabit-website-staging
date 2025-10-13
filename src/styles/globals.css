@@ -95,7 +95,7 @@
     --color-secondary: #1c3625;
     --color-light: #f6ffea;
     --color-green-soft: #dbeab2;
-    --color-bright-green: #162f08;
+    --color-bright-green: linear-gradient( 90deg, #003D15 2.26%, #2e4f22 154900%, #003D15 99.01%);
     --color-background: var(--color-secondary);
     --color-accent: var(--color-primary);
     --color-text: var(--color-light);
@@ -105,19 +105,14 @@
       #f6ffea 50.64%,
       #deedcb 99.01%
     );
-    --dark-gradient: linear-gradient(
-      90deg,
-      #1c3625 2.26%,
-      #2e4f22 50.64%,
-      #1c3625 99.01%
-    );
+    --dark-gradient: #003310;
     --background-gradient-light: var(
       --light-gradient,
       linear-gradient(90deg, #deedcb 2.26%, #f6ffea 50.64%, #deedcb 99.01%)
     );
     --background-gradient-dark: var(
       --dark-gradient,
-      linear-gradient(90deg, #1c3625 2.26%, #2e4f22 50.64%, #1c3625 99.01%)
+      linear-gradient(90deg,  #003D15 2.26%, #2e4f22 154900%, #003D15 99.01%)
     );
     /* Spacing */
     --spacing-xs: clamp(0.5rem, 0.5vw + 0.25rem, 0.75rem);
