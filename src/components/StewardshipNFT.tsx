@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { gsap, ScrollTrigger } from "../utils/gsap";
 import { LoadingContext } from "../App";
 import { useGSAP } from '@gsap/react';
+import StewardshipNFTCard from "./StewardshipNFTCard";
 
 // Register the hook to avoid React version discrepancies
 gsap.registerPlugin(useGSAP);
@@ -80,34 +81,12 @@ const StewardshipNFT: React.FC = () => {
       className="relative w-full background-gradient-dark flex flex-col items-center"
     >
       <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
-        <div className="flex flex-col items-start gap-6">
-          {/* Header section */}
-          <div className="flex flex-col md:flex-row items-start justify-between responsive-gap w-full">
-            <h2
-              ref={titleRef}
-              className="heading-2 text-light max-w-[40.9375rem]"
-            >
-              {t("mainPage.stewardshipNFT.title")}
-              <br />
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: t("mainPage.stewardshipNFT.subtitle"),
-                }}
-              />
-            </h2>
-            <p ref={descriptionRef} className="body-M text-light max-w-[35rem]">
-              {t("mainPage.stewardshipNFT.description")}
-            </p>
-          </div>
+        <div className="items-start gap-6">
+        
 
-          {/* Image */}
-          <div ref={imageRef} className="self-center relative overflow-hidden">
-            <img
-              src="/assets/stewardship-nft.avif"
-              alt="Stewardship NFT illustration"
-              className="w-full h-full object-cover"
-              fetchPriority="high"
-            />
+          {/* Stewardship NFT Card */}
+          <div className="self-center mt-16">
+            <StewardshipNFTCard />
           </div>
         </div>
       </div>
