@@ -9,19 +9,19 @@ const StewardshipNFTCard: React.FC = () => {
         <div className="flip-card w-full h-full relative transform-style-preserve-3d transition-transform duration-700 ease-in-out">
           
           {/* Front Card */}
-          <div className="card-front absolute inset-0 bg-white rounded-[57px] border-2 border-[#3A8F54] overflow-hidden backface-hidden z-10 flex flex-col items-center justify-center">
+          <div className="card-front absolute inset-0 bg-white rounded-[2rem] border border-[#3A8F54] overflow-hidden backface-hidden z-10 flex flex-col items-center justify-center ">
             {/* Background Gradient */}
             <div 
               className="absolute inset-0"
               style={{
                 background: 'linear-gradient(90deg, rgba(0, 61, 21, 1) 2%, rgba(21, 73, 0, 1) 51%, rgba(0, 58, 20, 1) 99%)'
-              }}
+              }} 
             />
             
             {/* Content */}
-            <div className="relative z-10 p-8 flex flex-col items-center h-full justify-center">
+            <div className="relative z-10 flex flex-col items-center h-full justify-between">
               {/* Header Text */}
-              <div className="flex flex-col items-center gap-2 mb-6">
+              <div className="flex flex-col items-center gap-2 pt-16 px-8">
                 <h3 className="text-[#F6FFEA] font-abel eyebrow font-normal uppercase tracking-[0.07em] text-center">
                   STEWARDSHIP
                 </h3>
@@ -31,23 +31,25 @@ const StewardshipNFTCard: React.FC = () => {
               </div>
 
               {/* NFT Illustration */}
-              <div className="relative w-full max-w-[400px] mb-6">
+              <div className="relative w-full flex-1 flex items-center justify-center">
                 <img
                   src="/assets/stewardship-nft.avif"
                   alt="Stewardship NFT illustration"
-                  className="w-full h-full object-cover rounded-lg"
+                  className="w-full h-auto max-h-[350px] object-cover"
                 />
               </div>
 
               {/* Description Text */}
-              <p className="text-[#F6FFEA] font-nunito-sans body-M font-light leading-[1.3em] text-left max-w-[500px]">
-                Your digital key to lifelong stewardship of unique ecosystems. Each NFT represents a direct connection to a specific conservation area, granting you rights and exclusive access to biocultural experiences.
-              </p>
+              <div className="flex items-center justify-center px-8 pb-16">
+                <p className="text-[#F6FFEA] font-nunito-sans text-base font-light leading-[1.3em] text-left max-w-[500px]">
+                  Your digital key to lifelong stewardship of unique ecosystems. Each NFT represents a direct connection to a specific conservation area, granting you rights and exclusive access to biocultural experiences.
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Back Card */}
-          <div className="card-back absolute inset-0 bg-white rounded-[57px] border-2 border-[#3A8F54] overflow-hidden backface-hidden z-0 rotate-y-180 flex flex-col items-center justify-center">
+          <div className="card-back absolute inset-0 bg-white rounded-[2rem] border border-[#3A8F54] overflow-hidden backface-hidden z-0 rotate-y-180 flex flex-col items-center justify-center">
             {/* Background Gradient */}
             <div 
               className="absolute inset-0"
@@ -60,19 +62,19 @@ const StewardshipNFTCard: React.FC = () => {
             <div className="relative z-10 p-8 flex flex-col items-start w-full h-full justify-center overflow-y-auto">
               {/* Header Text */}
               <div className="mb-4">
-                <h3 className="text-[#F6FFEA] font-abel text-sm font-normal uppercase tracking-[0.07em] text-left mb-1">
+                <h3 className="text-[#F6FFEA] font-abel text-sm font-normal uppercase tracking-[0.07em] text-center mb-1">
                   STEWARDSHIP
                 </h3>
-                <h2 className="text-[#F6FFEA] font-montserrat text-lg font-normal leading-[1em] text-left">
+                <h2 className="text-[#F6FFEA] font-montserrat text-2xl font-normal leading-[1em] text-center mb-14">
                   Rights and Benefits
                 </h2>
               </div>
 
               {/* Benefits List */}
-              <div className="space-y-4">
+              <div className="space-y-8">
                 {/* Land rights and protector */}
                 <div>
-                  <h4 className="text-[#F6FFEA] font-montserrat text-base font-semibold mb-1">
+                  <h4 className="text-[#F6FFEA] font-montserrat body-M font-semibold mb-1">
                     Land rights and protector
                   </h4>
                   <p className="text-[#F6FFEA] font-nunito-sans text-sm font-light leading-[1.3em]">
@@ -82,7 +84,7 @@ const StewardshipNFTCard: React.FC = () => {
 
                 {/* Exclusive Access */}
                 <div>
-                  <h4 className="text-[#F6FFEA] font-montserrat text-base font-semibold mb-1">
+                  <h4 className="text-[#F6FFEA] font-montserrat body-M font-semibold mb-1">
                     Exclusive Access
                   </h4>
                   <p className="text-[#F6FFEA] font-nunito-sans text-sm font-light leading-[1.3em]">
@@ -92,7 +94,7 @@ const StewardshipNFTCard: React.FC = () => {
 
                 {/* Impact Monitoring */}
                 <div>
-                  <h4 className="text-[#F6FFEA] font-montserrat text-base font-semibold mb-1">
+                  <h4 className="text-[#F6FFEA] font-montserrat body-M font-semibold mb-1">
                     Impact Monitoring
                   </h4>
                   <p className="text-[#F6FFEA] font-nunito-sans text-sm font-light leading-[1.3em]">
@@ -102,7 +104,7 @@ const StewardshipNFTCard: React.FC = () => {
 
                 {/* Stewardship by proxy */}
                 <div>
-                  <h4 className="text-[#F6FFEA] font-montserrat text-base font-semibold mb-1">
+                  <h4 className="text-[#F6FFEA] font-montserrat body-M font-semibold mb-1">
                     Stewardship by proxy
                   </h4>
                   <p className="text-[#F6FFEA] font-nunito-sans text-sm font-light leading-[1.3em]">
