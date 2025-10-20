@@ -9,7 +9,6 @@ import StewardshipNFTCard from "./StewardshipNFTCard";
 gsap.registerPlugin(useGSAP);
 
 const StewardshipNFT: React.FC = () => {
-  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
@@ -78,17 +77,11 @@ const StewardshipNFT: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full background-gradient-dark flex flex-col items-center"
+      className="relative w-full background-gradient-dark flex flex-col items-center min-h-screen"
     >
-      <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-24">
-        <div className="items-start gap-6">
-        
-
-          {/* Stewardship NFT Card */}
-          <div className="self-center mt-16">
-            <StewardshipNFTCard />
-          </div>
-        </div>
+      <div className="relative z-10 w-full max-w-[120rem] mx-auto px-[clamp(1.5rem,5vw,6.25rem)] py-8 md:py-24 flex flex-col items-center justify-center min-h-full">
+        {/* Stewardship NFT Card */}
+        <StewardshipNFTCard />
       </div>
     </section>
   );

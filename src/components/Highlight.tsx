@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from 'react';
+import { useRef, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gsap, ScrollTrigger } from '../utils/gsap';
 import { LoadingContext } from '../App';
@@ -85,7 +85,7 @@ const Highlight = () => {
   }, { scope: contentRef, dependencies: [isLoading] });
 
   return (
-    <div className="relative w-full h-screen background-gradient-dark flex items-center justify-center overflow-hidden">
+    <div className="relative w-full h-screen background-gradient-dark flex items-center justify-center overflow-hidden min-h-screen">
       <div ref={svgRef} className="absolute inset-0 opacity-0 topographic-map mix-blend-overlay">
         <img src="/assets/topographic-map.webp" alt="Topographic map" className="w-full h-full object-cover" />
       </div>
@@ -123,23 +123,5 @@ const Highlight = () => {
   );
 };
 
-const LocationMarker = ({ name, coordinates }: { name: string, coordinates: string }) => {
-  return (
-    <div className="flex flex-col items-start">
-      <div className="flex items-center gap-2 mb-1">
-        <div className="relative">
-          <div className="w-4 h-4 rounded-full border border-green-soft" />
-          <div className="w-2 h-2 rounded-full bg-green-soft absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-        </div>
-        <div className="eyebrow text-green-soft">
-          {name}
-        </div>
-      </div>
-      <div className="eyebrow text-green-soft">
-        {coordinates}
-      </div>
-    </div>
-  );
-};
 
 export default Highlight; 

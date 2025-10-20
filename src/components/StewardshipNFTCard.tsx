@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 
 const StewardshipNFTCard: React.FC = () => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const handleCardClick = () => {
+    setIsFlipped(!isFlipped);
+  };
   return (
     <div className="relative w-full max-w-[27rem] mx-auto">
       {/* Flip Card Container */}
-      <div className="flip-card-container w-full max-w-[622px] h-[800px] perspective-1000">
+      <div 
+        className={`flip-card-container w-full max-w-[622px] h-[800px] mobile-h-screen perspective-1000 ${isFlipped ? 'flipped' : ''}`}
+        onClick={handleCardClick}
+      >
         {/* Flip Card */}
         <div className="flip-card w-full h-full relative transform-style-preserve-3d transition-transform duration-700 ease-in-out">
           
@@ -128,8 +136,25 @@ const StewardshipNFTCard: React.FC = () => {
           transition: transform 0.6s ease-in-out;
         }
         
-        .flip-card-container:hover .flip-card {
-          transform: rotateY(180deg);
+        /* Mobile height */
+        @media (max-width: 768px) {
+          .mobile-h-screen {
+            height: 85vh;
+          }
+        }
+        
+        /* Desktop hover behavior */
+        @media (hover: hover) and (pointer: fine) {
+          .flip-card-container:hover .flip-card {
+            transform: rotateY(180deg);
+          }
+        }
+        
+        /* Mobile click behavior */
+        @media (hover: none) and (pointer: coarse) {
+          .flip-card-container.flipped .flip-card {
+            transform: rotateY(180deg);
+          }
         }
         
         .card-front,
