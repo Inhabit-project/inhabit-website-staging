@@ -116,6 +116,11 @@ export const WOMPI_PUBLIC_KEY = ensureEnvVar(
   "VITE_WOMPI_PUBLIC_KEY"
 );
 
+export const WOMPI_INTEGRIDAD = ensureEnvVar(
+  import.meta.env.VITE_WOMPI_INTEGRIDAD,
+  "VITE_WOMPI_INTEGRIDAD"
+);
+
 // Exchangerate API
 
 export const EXCHANGERATE_API_KEY = ensureEnvVar(

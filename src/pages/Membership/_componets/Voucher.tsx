@@ -41,6 +41,7 @@ import { celo } from "thirdweb/chains";
 // import { useCusd } from "@/hooks/contracts/erc20/useCusd";
 import { formatCcopToCop } from "@/utils/format-ccop-to-cop";
 import { getContract } from "thirdweb";
+import { generateWompiSignature } from "@/utils/generate-wompi-signature.util";
 
 interface Props {
   availableSupply: number;
@@ -64,9 +65,13 @@ export function VoucherStep(props: Props): JSX.Element {
   } = props;
 
   // state
-  const [isProcessing, setIsProcessing] = useState(false);
   const [cooldown, setCooldown] = useState<number>(0);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [showCreditCardModal, setShowCreditCardModal] = useState(false);
+  const [wompiReference] = useState(() =>
+    crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase()
+  );
+  const [wompiSignature, setWompiSignature] = useState<string | null>(null);
 
   // external
   const { campaignId } = useParams();
@@ -173,6 +178,18 @@ export function VoucherStep(props: Props): JSX.Element {
   // });
 
   useEffect(() => {
+    if (!priceInCcopInCents || priceInCcopInCents <= 0) return;
+
+    (async () => {
+      const sig = await generateWompiSignature(
+        wompiReference,
+        priceInCcopInCents
+      );
+      setWompiSignature(sig);
+    })();
+  }, [priceInCcopInCents, wompiReference]);
+
+  useEffect(() => {
     // Validación: no crear widget si no hay precio válido
     if (!priceInCcopInCents || priceInCcopInCents <= 0) {
       return;
@@ -226,6 +243,47 @@ export function VoucherStep(props: Props): JSX.Element {
       }
     };
   }, [priceInCcopInCents]);
+
+  useEffect(() => {
+    // Necesitamos monto y firma listos
+    if (!priceInCcopInCents || priceInCcopInCents <= 0 || !wompiSignature) {
+      return;
+    }
+
+    const formContainer = document.getElementById("wompi-widget-form");
+    if (!formContainer) {
+      console.warn("Wompi widget form container not found");
+      return;
+    }
+
+    // Limpiar script anterior
+    const existingScript = document.getElementById("wompi-widget-script");
+    if (existingScript) existingScript.remove();
+    formContainer.innerHTML = "";
+
+    const script = document.createElement("script");
+    script.id = "wompi-widget-script";
+    script.src = "https://checkout.wompi.co/widget.js";
+    script.setAttribute("data-render", "button");
+    script.setAttribute("data-public-key", WOMPI_PUBLIC_KEY);
+    script.setAttribute("data-currency", "COP");
+    script.setAttribute("data-amount-in-cents", priceInCcopInCents.toString());
+    script.setAttribute("data-reference", wompiReference);
+    script.setAttribute("data-signature:integrity", wompiSignature);
+
+    script.onerror = () => {
+      console.error("Failed to load Wompi widget script");
+      formContainer.innerHTML = "";
+    };
+
+    formContainer.appendChild(script);
+
+    return () => {
+      const scriptToRemove = document.getElementById("wompi-widget-script");
+      if (scriptToRemove) scriptToRemove.remove();
+      formContainer.innerHTML = "";
+    };
+  }, [priceInCcopInCents, wompiSignature, wompiReference]);
 
   // cooldown
   useEffect(() => {
