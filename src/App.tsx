@@ -1,4 +1,11 @@
-import React, { useState, createContext, useEffect, Suspense, memo, useCallback } from "react";
+import React, {
+  useState,
+  createContext,
+  useEffect,
+  Suspense,
+  memo,
+  useCallback,
+} from "react";
 
 import "@/i18n";
 import "@/utils/gsap";
@@ -12,6 +19,8 @@ import CacheManager from "@/utils/cacheManager";
 
 import { Routes, Route } from "react-router-dom";
 import LastestCampaign from "./pages/LastestCampaing";
+import { CURRENCY } from "./config/enums";
+import { useStore } from "./store";
 
 // Lazy load pages for code splitting
 const MainPage = React.lazy(() => import("@/pages/MainPage"));
@@ -49,6 +58,9 @@ const RouteLoadingFallback = () => {
 
 const App: React.FC = memo(() => {
   const location = useLocation();
+
+  // store
+  const { getUsdToCopRate } = useStore();
 
   // Only show loader on main page reload - NEVER for internal pages or navigation
   const isMainPageReload = useCallback(() => {
@@ -105,13 +117,13 @@ const App: React.FC = memo(() => {
     };
 
     initializeCache();
-    
+
     // Add class to disable scroll-snap during initial page load
-    document.body.classList.add('page-load');
-    
+    document.body.classList.add("page-load");
+
     return () => {
       // Cleanup: remove page-load class
-      document.body.classList.remove('page-load');
+      document.body.classList.remove("page-load");
     };
   }, []);
 
@@ -185,7 +197,10 @@ const App: React.FC = memo(() => {
 
       // Fallback: if page doesn't call onPageReady within 2 seconds, force it
       const fallbackTimer = setTimeout(() => {
-        console.log("Page transition fallback triggered for:", location.pathname);
+        console.log(
+          "Page transition fallback triggered for:",
+          location.pathname
+        );
         setPageReady(true);
       }, 2000);
 
@@ -214,7 +229,7 @@ const App: React.FC = memo(() => {
       requestAnimationFrame(async () => {
         // Wait for any current scroll operations to complete
         await scrollManager.waitForScrollComplete();
-        
+
         // List of routes that do NOT use a hero image
         const noHeroRoutes = [
           "/membership",
@@ -247,7 +262,7 @@ const App: React.FC = memo(() => {
             await scrollManager.scrollToHero({ immediate: true });
           }
         } catch (error) {
-          console.warn('Scroll operation failed, using fallback:', error);
+          console.warn("Scroll operation failed, using fallback:", error);
           // Fallback to immediate scroll to top
           window.scrollTo({ top: 0, behavior: "auto" });
         }
@@ -375,14 +390,15 @@ const App: React.FC = memo(() => {
     if (showTransition) {
       return;
     }
-    
+
     // Only run scroll management for pages that actually need it
     // Skip for pages that should maintain their scroll position
-    const shouldManageScroll = !location.pathname.includes('/contact') && 
-                              !location.pathname.includes('/blog') &&
-                              !location.pathname.includes('/terms') &&
-                              !location.pathname.includes('/privacy');
-    
+    const shouldManageScroll =
+      !location.pathname.includes("/contact") &&
+      !location.pathname.includes("/blog") &&
+      !location.pathname.includes("/terms") &&
+      !location.pathname.includes("/privacy");
+
     if (shouldManageScroll) {
       // Small delay to ensure DOM is ready
       const timer = setTimeout(() => {
@@ -397,6 +413,10 @@ const App: React.FC = memo(() => {
       return () => clearTimeout(timer);
     }
   }, [location.pathname, showTransition]);
+
+  useEffect(() => {
+    getUsdToCopRate(CURRENCY.USD, CURRENCY.COP);
+  }, []);
 
   return (
     <LoadingContext.Provider value={isLoading}>
@@ -531,6 +551,6 @@ const App: React.FC = memo(() => {
   );
 });
 
-App.displayName = 'App';
+App.displayName = "App";
 
 export default App;

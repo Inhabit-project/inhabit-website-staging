@@ -17,6 +17,7 @@ import {
   COOKIE_REFERRAL,
   COOLDOWN_KEY,
   INHABIT_JSON,
+  WOMPI_PUBLIC_KEY,
 } from "@/config/const";
 import { useInhabit } from "@/hooks/contracts/inhabit";
 import { encodeFunctionData, formatUnits, Hex, keccak256, toBytes } from "viem";
@@ -79,6 +80,7 @@ export function VoucherStep(props: Props): JSX.Element {
     inhabit,
     usdc,
     usdt,
+    usdToCopRate,
     /*cusd,*/ ccop,
   } = useStore();
 
@@ -134,6 +136,11 @@ export function VoucherStep(props: Props): JSX.Element {
     return 0;
   }, [selectedCoin, usdcBalance, usdtBalance /*cusdBalance*/]);
 
+  const priceInCcopInCents = useMemo(() => {
+    const priceInCcop = price * usdToCopRate;
+    return Math.round(priceInCcop * 100);
+  }, [price, usdToCopRate]);
+
   const hasSufficientBalance = selectedBalance >= price;
   const isAvailable = availableSupply > 0;
 
@@ -152,18 +159,73 @@ export function VoucherStep(props: Props): JSX.Element {
     abi: inhabit.getAbi(),
   });
 
-  const transaction = prepareContractCall({
-    contract,
-    method: "buyNFT",
-    params: [
-      account?.address as Address,
-      Number(campaignId),
-      collection?.address as Address,
-      referral,
-      "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e",
-      parseUsdToUsdc(price),
-    ],
-  });
+  // const transaction = prepareContractCall({
+  //   contract,
+  //   method: "buyNFT",
+  //   params: [
+  //     account?.address as Address,
+  //     Number(campaignId),
+  //     collection?.address as Address,
+  //     referral,
+  //     "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e",
+  //     parseUsdToUsdc(price),
+  //   ],
+  // });
+
+  useEffect(() => {
+    // Validación: no crear widget si no hay precio válido
+    if (!priceInCcopInCents || priceInCcopInCents <= 0) {
+      return;
+    }
+
+    // Verificar que el contenedor exista antes de continuar
+    const formContainer = document.getElementById("wompi-widget-form");
+    if (!formContainer) {
+      console.warn("Wompi widget form container not found");
+      return;
+    }
+
+    // Limpiar script y contenido anteriores
+    const existingScript = document.getElementById("wompi-widget-script");
+    if (existingScript) {
+      existingScript.remove();
+    }
+    formContainer.innerHTML = "";
+
+    // Crear nuevo script
+    const script = document.createElement("script");
+    script.id = "wompi-widget-script";
+    script.src = "https://checkout.wompi.co/widget.js";
+    script.setAttribute("data-render", "button");
+    script.setAttribute("data-public-key", WOMPI_PUBLIC_KEY);
+    script.setAttribute("data-currency", "COP");
+    script.setAttribute("data-amount-in-cents", priceInCcopInCents.toString());
+    script.setAttribute("data-reference", "4XMPGKWWPKWQ");
+    script.setAttribute(
+      "data-signature-integrity",
+      "37c8407747e595535433ef8f6a811d853cd943046624a0ec04662b17bbf33bf5"
+    );
+
+    // Manejar errores de carga del script
+    script.onerror = () => {
+      console.error("Failed to load Wompi widget script");
+      formContainer.innerHTML = "";
+    };
+
+    // Agregar script al contenedor
+    formContainer.appendChild(script);
+
+    // Cleanup: eliminar el script creado en este efecto
+    return () => {
+      const scriptToRemove = document.getElementById("wompi-widget-script");
+      if (scriptToRemove) {
+        scriptToRemove.remove();
+      }
+      if (formContainer) {
+        formContainer.innerHTML = "";
+      }
+    };
+  }, [priceInCcopInCents]);
 
   // cooldown
   useEffect(() => {
@@ -422,20 +484,7 @@ export function VoucherStep(props: Props): JSX.Element {
               : ""
           }`}
         >
-          <button
-            className="flex items-center justify-center bg-white rounded-full p-2"
-            type="button"
-            disabled={wallet?.id !== "inApp" || false} // TODO: remove this
-            onClick={() => handleCoinSelection("CREDIT CARD")}
-          >
-            <img
-              src={mastercardImage}
-              alt="mastercard"
-              className="w-9 h-9 ml-1"
-            />
-            <img src={visaImage} alt="visa" className="w-9 h-9 ml-1" />
-          </button>
-          <span
+          {/* <span
             className={`body-S ${
               wallet?.id !== "inApp" || false // TODO: remove this
                 ? "cursor-default hover:no-underline"
@@ -443,7 +492,8 @@ export function VoucherStep(props: Props): JSX.Element {
             }`}
           >
             {t("membership.voucher.Pay with credit card")}
-          </span>
+          </span> */}
+          <form id="wompi-widget-form"></form>
         </label>
 
         {account?.address &&
@@ -615,7 +665,7 @@ export function VoucherStep(props: Props): JSX.Element {
             else setSelectedCoin(undefined);
           }}
         >
-          <div onClick={(e) => e.stopPropagation()}>
+          {/* <div onClick={(e) => e.stopPropagation()}>
             <TransactionWidget
               amount={"0"}
               client={client as any}
@@ -652,7 +702,7 @@ export function VoucherStep(props: Props): JSX.Element {
                 alert(t("membership.voucher.Error processing purchase"));
               }}
             />
-          </div>
+          </div> */}
         </div>
       )}
     </div>

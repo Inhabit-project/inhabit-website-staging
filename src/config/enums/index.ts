@@ -15,3 +15,8 @@ export enum COIN {
   USDT = "USDT",
   CREDIT_CARD = "CREDIT CARD",
 }
+
+export enum CURRENCY {
+  USD = "USD",
+  COP = "COP",
+}

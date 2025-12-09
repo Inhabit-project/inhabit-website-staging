@@ -4,10 +4,18 @@ import { InhabitContract } from "../services/blockchain/contracts/inhabit";
 import { Collection } from "../models/collection.model";
 import { Campaign } from "../models/campaign.model";
 import { userServices } from "../services/rest/user";
-import { ERROR, KYC_TYPE } from "../config/enums";
+import { CURRENCY, ERROR, KYC_TYPE } from "../config/enums";
 import { Group } from "@/models/group.model";
 import { ERC20Contract } from "@/services/blockchain/contracts/erc20";
-import { CCOP_JSON, CUSD_JSON, USDC_JSON, USDT_JSON } from "@/config/const";
+import {
+  CCOP_JSON,
+  CUSD_JSON,
+  USDC_JSON,
+  USDT_JSON,
+  VITE_COOKIE_RATE_EXCHANGE,
+} from "@/config/const";
+import Cookies from "js-cookie";
+import { currencyExchangeRatesService } from "@/services/rest/currency-exchange-rates";
 
 type Store = {
   campaign: Campaign | null;
@@ -29,11 +37,16 @@ type Store = {
   cusd: ERC20Contract;
   usdc: ERC20Contract;
   usdt: ERC20Contract;
+  usdToCopRate: number;
   getCampaign: (campaignId: number) => Promise<Campaign | null>;
   getCampaigns: () => Promise<Campaign[]>;
   getGroup: (campaignId: number, referral: Hex) => Promise<Group | null>;
   getHasSentKyc: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
   getIsKycCompleted: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
+  getUsdToCopRate: (
+    currencyFrom: CURRENCY,
+    currencyTo: CURRENCY
+  ) => Promise<number>;
   isCampaignReferral: (
     campaignId: number,
     referral: string
@@ -49,6 +62,8 @@ type Store = {
 export const useStore = create<Store>((set, get) => {
   const { isKycCompleted: isKycCompletedApi, hasSentKyc: hasSentKycApi } =
     userServices();
+
+  const { getExchangeRates } = currencyExchangeRatesService();
 
   const inhabit = new InhabitContract();
   const ccop = new ERC20Contract(CCOP_JSON);
@@ -77,7 +92,7 @@ export const useStore = create<Store>((set, get) => {
     cusd,
     usdc,
     usdt,
-
+    usdToCopRate: 0,
     getCampaign: async (campaignId: number) => {
       return await get().inhabit.getCampaign(campaignId);
     },
@@ -120,6 +135,41 @@ export const useStore = create<Store>((set, get) => {
       }
 
       return serviceResponse.data ?? false;
+    },
+
+    getUsdToCopRate: async (currencyFrom: CURRENCY, currencyTo: CURRENCY) => {
+      const cookieRateExchange = Cookies.get(VITE_COOKIE_RATE_EXCHANGE);
+      let usdToCopRate = Number(cookieRateExchange);
+
+      if (!cookieRateExchange) {
+        const serviceResponse = await getExchangeRates(
+          currencyFrom,
+          currencyTo
+        );
+
+        if (!serviceResponse.success) {
+          set({ usdToCopRate: 0 });
+          return 0;
+        }
+
+        const oneDayFromNow = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+        Cookies.set(
+          VITE_COOKIE_RATE_EXCHANGE,
+          serviceResponse.data?.toString() ?? "0",
+          {
+            expires: oneDayFromNow,
+            path: "/",
+            sameSite: "lax",
+            secure: true,
+          }
+        );
+
+        usdToCopRate = serviceResponse.data ?? 0;
+      }
+
+      console.log("usdToCopRate", usdToCopRate);
+      set({ usdToCopRate: usdToCopRate });
     },
 
     setCampaign: (campaign: Campaign) => {

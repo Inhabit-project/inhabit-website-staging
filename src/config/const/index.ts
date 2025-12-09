@@ -103,3 +103,22 @@ export const COOKIE_REFERRAL = ensureEnvVar(
   import.meta.env.VITE_COOKIE_REFERRAL,
   "VITE_COOKIE_REFERRAL"
 );
+
+export const VITE_COOKIE_RATE_EXCHANGE = ensureEnvVar(
+  import.meta.env.VITE_COOKIE_RATE_EXCHANGE,
+  "VITE_COOKIE_RATE_EXCHANGE"
+);
+
+// Wompi
+
+export const WOMPI_PUBLIC_KEY = ensureEnvVar(
+  import.meta.env.VITE_WOMPI_PUBLIC_KEY,
+  "VITE_WOMPI_PUBLIC_KEY"
+);
+
+// Exchangerate API
+
+export const EXCHANGERATE_API_KEY = ensureEnvVar(
+  import.meta.env.VITE_EXCHANGERATE_ACCESS_KEY,
+  "VITE_EXCHANGERATE_ACCESS_KEY"
+);
