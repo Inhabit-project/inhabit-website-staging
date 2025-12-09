@@ -1,5 +1,5 @@
 import { WagmiProvider } from "wagmi";
-import { celo, celoAlfajores } from "@wagmi/core/chains";
+import { celo, celoSepolia } from "@wagmi/core/chains";
 
 import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -24,7 +24,7 @@ export function RainbowKitProviderConfig({
   const config = getDefaultConfig({
     appName,
     projectId,
-    chains: [ENV === "prod" ? celo : celoAlfajores],
+    chains: [ENV === "prod" ? celo : celoSepolia],
     ssr: true,
   });
 

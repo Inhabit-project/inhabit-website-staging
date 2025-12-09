@@ -1,88 +1,68 @@
 import { ensureEnvVar } from "../..//utils/ensure-env-var.util";
 import InhabitCeloJson from "../../assets/json/contracts/celo/Inhabit.json";
-import InhabitAlfajoresJson from "../../assets/json/contracts/celo-alfajores/Inhabit.json";
+import InhabitSepoliaJson from "../../assets/json/contracts/celo-sepolia/Inhabit.json";
 import usdcCeloJson from "../../assets/json/contracts/celo/USDC.json";
-import usdcAlfajoresJson from "../../assets/json/contracts/celo-alfajores/USDC.json";
+import usdcSepoliaJson from "../../assets/json/contracts/celo-sepolia/USDC.json";
 import usdtCeloJson from "../../assets/json/contracts/celo/USDT.json";
-import usdtAlfajoresJson from "../../assets/json/contracts/celo-alfajores/USDT.json";
+import usdtSepoliaJson from "../../assets/json/contracts/celo-sepolia/USDT.json";
 import cusdCeloJson from "../../assets/json/contracts/celo/cUSD.json";
-import cusdAlfajoresJson from "../../assets/json/contracts/celo-alfajores/cUSD.json";
+import cusdSepoliaJson from "../../assets/json/contracts/celo-sepolia/cUSD.json";
 import ccopCeloJson from "../../assets/json/contracts/celo/cCOP.json";
-import ccopAlfajoresJson from "../../assets/json/contracts/celo-alfajores/cCOP.json";
-import { celo, celoAlfajores } from "viem/chains";
+import ccopSepoliaJson from "../../assets/json/contracts/celo-sepolia/cCOP.json";
+import { celo, celoSepolia } from "viem/chains";
 import { SiweMessage } from "siwe";
 import { Address, zeroAddress } from "viem";
 import { createThirdwebClient } from "thirdweb";
-import { celo as thierdwebCelo, celoAlfajoresTestnet } from "thirdweb/chains";
+import { celo as thierdwebCelo, celoSepoliaTestnet } from "thirdweb/chains";
 import { ContractJson } from "@/services/blockchain/base-contract";
 
 export const ENV: string = ensureEnvVar(import.meta.env.VITE_ENV, "VITE_ENV");
 
-export const CHAIN = ENV === "prod" ? celo : celoAlfajores;
+export const CHAIN = ENV === "prod" ? celo : celoSepolia;
 
-export const ALFAJORES_SCAN_URL = "https://alfajores.celoscan.io";
+export const SEPOLIA_SCAN_URL = "https://sepolia.celoscan.io";
 
 export const CELO_SCAN_URL = "https://explorer.celo.org";
 
 export const SCAN_URL = (address: Address) =>
   ENV === "prod"
     ? `${CELO_SCAN_URL}/address/${address}`
-    : `${ALFAJORES_SCAN_URL}/address/${address}`;
+    : `${SEPOLIA_SCAN_URL}/address/${address}`;
 
 export const HTTP_TRANSPORT =
   ENV === "prod"
-    ? "https://forno.celo.org"
-    : "https://alfajores-forno.celo-testnet.org";
+    ? celo.rpcUrls.default.http[0]
+    : celoSepolia.rpcUrls.default.http[0];
 
 export const INHABIT_JSON =
   ENV === "prod"
     ? (InhabitCeloJson as ContractJson)
-    : (InhabitAlfajoresJson as ContractJson);
+    : (InhabitSepoliaJson as ContractJson);
 
 export const USDC_JSON =
   ENV === "prod"
     ? (usdcCeloJson as ContractJson)
-    : (usdcAlfajoresJson as ContractJson);
+    : (usdcSepoliaJson as ContractJson);
 
 export const USDT_JSON =
   ENV === "prod"
     ? (usdtCeloJson as ContractJson)
-    : (usdtAlfajoresJson as ContractJson);
+    : (usdtSepoliaJson as ContractJson);
 
 export const CUSD_JSON =
   ENV === "prod"
     ? (cusdCeloJson as ContractJson)
-    : (cusdAlfajoresJson as ContractJson);
+    : (cusdSepoliaJson as ContractJson);
 
 export const CCOP_JSON =
   ENV === "prod"
     ? (ccopCeloJson as ContractJson)
-    : (ccopAlfajoresJson as ContractJson);
+    : (ccopSepoliaJson as ContractJson);
 
 // Thirdweb
-import { defineChain } from "thirdweb/chains";
 
 // Define a chain with custom RPC
-const customCeloAlfajores = defineChain({
-  id: 44787,
-  rpc: "https://alfajores-forno.celo-testnet.org",
-  name: "Celo Alfajores Testnet",
-  nativeCurrency: {
-    name: "Celo",
-    symbol: "CELO",
-    decimals: 18,
-  },
-  blockExplorers: [
-    {
-      name: "CeloScan",
-      url: "https://alfajores.celoscan.io",
-    },
-  ],
-  testnet: true,
-});
-
-// Use the custom chain
-export const chain = ENV === "prod" ? thierdwebCelo : customCeloAlfajores;
+export const chain = ENV === "prod" ? thierdwebCelo : celoSepoliaTestnet;
 
 export const client = createThirdwebClient({
   clientId: ensureEnvVar(
