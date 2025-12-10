@@ -43,9 +43,3 @@ function getHost(): string {
 
   return host;
 }
-
-function mapRateExchangeResponseToRate(
-  response: RateExchangeResponse
-): number | undefined {
-  return Object.values(response.quotes).find((rate) => rate > 0);
-}

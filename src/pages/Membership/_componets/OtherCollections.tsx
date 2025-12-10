@@ -1,9 +1,8 @@
-import { JSX, useState } from "react";
+import { JSX } from "react";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../../store";
 import { Collection } from "src/models/collection.model";
 import SubLoader from "../../../load/SubLoader";
-import { SCAN_URL } from "@/config/const";
 import CollectionCard from "../../../components/CollectionCard";
 
 type Props = {

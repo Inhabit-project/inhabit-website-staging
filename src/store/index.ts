@@ -9,6 +9,7 @@ import { Group } from "@/models/group.model";
 import { ERC20Contract } from "@/services/blockchain/contracts/erc20";
 import {
   CCOP_JSON,
+  CHAIN,
   CUSD_JSON,
   USDC_JSON,
   USDT_JSON,
@@ -16,6 +17,8 @@ import {
 } from "@/config/const";
 import Cookies from "js-cookie";
 import { currencyExchangeRatesService } from "@/services/rest/currency-exchange-rates";
+import { Nft } from "@/models/nft.model";
+import { thirdwebService } from "@/services/rest/thirdweb";
 
 type Store = {
   campaign: Campaign | null;
@@ -38,11 +41,13 @@ type Store = {
   usdc: ERC20Contract;
   usdt: ERC20Contract;
   usdToCopRate: number;
+  walletsNfts: Nft[];
   getCampaign: (campaignId: number) => Promise<Campaign | null>;
   getCampaigns: () => Promise<Campaign[]>;
   getGroup: (campaignId: number, referral: Hex) => Promise<Group | null>;
   getHasSentKyc: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
   getIsKycCompleted: (address: Address, kycType: KYC_TYPE) => Promise<boolean>;
+  getWalletNfts: (address: Address) => Promise<Nft[]>;
   getUsdToCopRate: (
     currencyFrom: CURRENCY,
     currencyTo: CURRENCY
@@ -64,6 +69,8 @@ export const useStore = create<Store>((set, get) => {
     userServices();
 
   const { getExchangeRates } = currencyExchangeRatesService();
+
+  const { getWalletNftsForContractAddresses } = thirdwebService();
 
   const inhabit = new InhabitContract();
   const ccop = new ERC20Contract(CCOP_JSON);
@@ -93,6 +100,7 @@ export const useStore = create<Store>((set, get) => {
     usdc,
     usdt,
     usdToCopRate: 0,
+    walletsNfts: [],
     getCampaign: async (campaignId: number) => {
       return await get().inhabit.getCampaign(campaignId);
     },
@@ -170,6 +178,54 @@ export const useStore = create<Store>((set, get) => {
 
       console.log("usdToCopRate", usdToCopRate);
       set({ usdToCopRate: usdToCopRate });
+    },
+
+    getWalletNfts: async (address: Address) => {
+      const campaigns = get().campaigns;
+
+      console.log("campaigns", campaigns);
+      console.log("campaigns.length", campaigns.length);
+
+      console.log(
+        "collections",
+        campaigns.map((campaign) => campaign.collections)
+      );
+
+      if (campaigns.length === 0) {
+        set({ walletsNfts: [] });
+        return [];
+      }
+
+      const collectionAddresses = campaigns
+        .map((campaign) =>
+          campaign.collections.map((collection) => collection.address)
+        )
+        .flat();
+
+      if (collectionAddresses.length === 0) {
+        set({ walletsNfts: [] });
+        return [];
+      }
+
+      const serviceResponse = await getWalletNftsForContractAddresses(
+        address,
+        collectionAddresses,
+        CHAIN.id
+      );
+
+      if (
+        !serviceResponse.success ||
+        !serviceResponse?.data ||
+        serviceResponse?.data.length === 0
+      ) {
+        set({ walletsNfts: [] });
+        return [];
+      }
+
+      console.log("serviceResponse.data", serviceResponse.data);
+
+      set({ walletsNfts: serviceResponse.data });
+      return serviceResponse.data;
     },
 
     setCampaign: (campaign: Campaign) => {

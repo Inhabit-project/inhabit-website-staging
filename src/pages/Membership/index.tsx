@@ -32,8 +32,11 @@ export default function Membership(props: Props): JSX.Element {
   };
 
   const {
+    campaigns,
     campaignLoading,
+    walletsNfts,
     getCampaign,
+    getCampaigns,
     setCampaign,
     setCollection: setCollectionStore,
   } = useStore();
@@ -68,6 +71,10 @@ export default function Membership(props: Props): JSX.Element {
         if (!found) {
           navigate("/404");
           return;
+        }
+
+        if (campaigns.length === 0) {
+          getCampaigns();
         }
 
         setCollection(found);

@@ -1,5 +1,8 @@
 import { client, ENV, chain } from "@/config/const";
-import { ConnectButton } from "thirdweb/react";
+import { useStore } from "@/store";
+import { useEffect } from "react";
+import { Address } from "thirdweb";
+import { ConnectButton, useActiveAccount } from "thirdweb/react";
 import { darkTheme } from "thirdweb/react";
 import { inAppWallet, createWallet } from "thirdweb/wallets";
 
@@ -26,6 +29,15 @@ const wallets = [
 ];
 
 export function LoginButton(): JSX.Element {
+  const account = useActiveAccount();
+  const { campaigns, collections, getWalletNfts } = useStore();
+
+  useEffect(() => {
+    if (account && campaigns.length > 0) {
+      getWalletNfts(account.address as Address);
+    }
+  }, [account, campaigns]);
+
   return (
     <ConnectButton
       client={client}

@@ -24,10 +24,10 @@ export const SEPOLIA_SCAN_URL = "https://sepolia.celoscan.io";
 
 export const CELO_SCAN_URL = "https://explorer.celo.org";
 
-export const SCAN_URL = (address: Address) =>
+export const SCAN_URL = (endpoint: string, slug: string) =>
   ENV === "prod"
-    ? `${CELO_SCAN_URL}/address/${address}`
-    : `${SEPOLIA_SCAN_URL}/address/${address}`;
+    ? `${CELO_SCAN_URL}/${endpoint}/${slug}`
+    : `${SEPOLIA_SCAN_URL}/${endpoint}/${slug}`;
 
 export const HTTP_TRANSPORT =
   ENV === "prod"
@@ -64,11 +64,13 @@ export const CCOP_JSON =
 // Define a chain with custom RPC
 export const chain = ENV === "prod" ? thierdwebCelo : celoSepoliaTestnet;
 
+export const THIRDWEB_CLIENT_ID = ensureEnvVar(
+  import.meta.env.VITE_THIRDWEB_CLIENT_ID,
+  "VITE_THIRDWEB_CLIENT_ID"
+);
+
 export const client = createThirdwebClient({
-  clientId: ensureEnvVar(
-    import.meta.env.VITE_THIRDWEB_CLIENT_ID,
-    "VITE_THIRDWEB_CLIENT_ID"
-  ),
+  clientId: THIRDWEB_CLIENT_ID,
 });
 
 // SiweMessage
