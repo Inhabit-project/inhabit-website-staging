@@ -2,12 +2,14 @@
 import { COIN, KYC_TYPE } from "@/config/enums";
 import { useStore } from "@/store";
 import confetti from "canvas-confetti";
-import { JSX, useEffect, useMemo, useState } from "react";
+import { JSX, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import usdcImage from "../../../assets/images/tokens/USDC.svg";
 import usdtImage from "../../../assets/images/tokens/USDT.svg";
 // import cusdImage from "../../../assets/images/tokens/cUSD.svg";
 import ccopImage from "../../../assets/images/tokens/cCOP.svg";
+import mastercardImage from "../../../assets/images/cards/mastercard.svg";
+import visaImage from "../../../assets/images/cards/visa.svg";
 import { useResendKycEmail } from "@/hooks/useKycEmail";
 import { generateSiweMessage } from "@/utils/generate-siwe-message.util";
 import { useNonce } from "@/hooks/useNonce";
@@ -16,31 +18,20 @@ import {
   chain,
   COOKIE_REFERRAL,
   COOLDOWN_KEY,
-  INHABIT_JSON,
   WOMPI_PUBLIC_KEY,
 } from "@/config/const";
 import { useInhabit } from "@/hooks/contracts/inhabit";
-import { encodeFunctionData, formatUnits, Hex, keccak256, toBytes } from "viem";
+import { formatUnits, Hex, keccak256, toBytes } from "viem";
 import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
 import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
 import { useCcop } from "@/hooks/contracts/erc20/useCcop";
-import mastercardImage from "../../../assets/images/cards/mastercard.svg";
-import visaImage from "../../../assets/images/cards/visa.svg";
 import { t } from "i18next";
 import Cookies from "js-cookie";
-import { TransactionWidget } from "thirdweb/react";
-import { client } from "@/config/const";
-import {
-  useActiveAccount,
-  useActiveWallet,
-  useActiveWalletChain,
-} from "thirdweb/react";
-import { Address, prepareContractCall } from "thirdweb";
-import { parseUsdToUsdc } from "@/utils/usdc-format.utils";
-import { celo } from "thirdweb/chains";
+import { useActiveAccount } from "thirdweb/react";
+import { Address } from "thirdweb";
 // import { useCusd } from "@/hooks/contracts/erc20/useCusd";
 import { formatCcopToCop } from "@/utils/format-ccop-to-cop";
-import { getContract } from "thirdweb";
+import { parseUsdToUsdc } from "@/utils/usdc-format.utils";
 import { generateWompiSignature } from "@/utils/generate-wompi-signature.util";
 
 interface Props {
@@ -64,19 +55,24 @@ export function VoucherStep(props: Props): JSX.Element {
     setSelectedCoin,
   } = props;
 
+  // ref
+  const checkoutRef = useRef<any | null>(null);
+
   // state
   const [cooldown, setCooldown] = useState<number>(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showCreditCardModal, setShowCreditCardModal] = useState(false);
+  const [wompiSignature, setWompiSignature] = useState<string>("");
   const [wompiReference] = useState(() =>
     crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase()
   );
-  const [wompiSignature, setWompiSignature] = useState<string | null>(null);
+  const [expandedPaymentMethod, setExpandedPaymentMethod] = useState<
+    string | null
+  >(null);
 
   // external
   const { campaignId } = useParams();
   const account = useActiveAccount();
-  const wallet = useActiveWallet();
 
   // store
   const {
@@ -149,20 +145,12 @@ export function VoucherStep(props: Props): JSX.Element {
   const hasSufficientBalance = selectedBalance >= price;
   const isAvailable = availableSupply > 0;
 
-  // set accounts en stores
-  useEffect(() => {
-    usdc.setAccount(account);
-    usdt.setAccount(account);
-    // cusd.setAccount(account);
-    ccop.setAccount(account);
-  }, [account, usdc, usdt, /*cusd,*/ ccop]);
-
-  const contract = getContract({
-    client: client as any,
-    address: inhabit.getAddress(),
-    chain: chain,
-    abi: inhabit.getAbi(),
-  });
+  // const contract = getContract({
+  //   client: client as any,
+  //   address: inhabit.getAddress(),
+  //   chain: chain,
+  //   abi: inhabit.getAbi(),
+  // });
 
   // const transaction = prepareContractCall({
   //   contract,
@@ -177,115 +165,76 @@ export function VoucherStep(props: Props): JSX.Element {
   //   ],
   // });
 
+  // effects
+  /// set accounts en stores
+  useEffect(() => {
+    usdc.setAccount(account);
+    usdt.setAccount(account);
+    // cusd.setAccount(account);
+    ccop.setAccount(account);
+  }, [account, usdc, usdt, /*cusd,*/ ccop]);
+
+  /// get and generate Wompi signature
   useEffect(() => {
     if (!priceInCcopInCents || priceInCcopInCents <= 0) return;
 
     (async () => {
-      const sig = await generateWompiSignature(
+      const signature = await generateWompiSignature(
         wompiReference,
         priceInCcopInCents
       );
-      setWompiSignature(sig);
+      console.log("signature", signature);
+      setWompiSignature(signature);
     })();
   }, [priceInCcopInCents, wompiReference]);
 
+  /// initialize Wompi WidgetCheckout for use with a custom button
   useEffect(() => {
-    // Validación: no crear widget si no hay precio válido
-    if (!priceInCcopInCents || priceInCcopInCents <= 0) {
+    if (!priceInCcopInCents || priceInCcopInCents <= 0 || !wompiSignature)
       return;
-    }
 
-    // Verificar que el contenedor exista antes de continuar
-    const formContainer = document.getElementById("wompi-widget-form");
-    if (!formContainer) {
-      console.warn("Wompi widget form container not found");
-      return;
-    }
+    if (typeof window === "undefined") return;
 
-    // Limpiar script y contenido anteriores
-    const existingScript = document.getElementById("wompi-widget-script");
-    if (existingScript) {
-      existingScript.remove();
-    }
-    formContainer.innerHTML = "";
-
-    // Crear nuevo script
-    const script = document.createElement("script");
-    script.id = "wompi-widget-script";
-    script.src = "https://checkout.wompi.co/widget.js";
-    script.setAttribute("data-render", "button");
-    script.setAttribute("data-public-key", WOMPI_PUBLIC_KEY);
-    script.setAttribute("data-currency", "COP");
-    script.setAttribute("data-amount-in-cents", priceInCcopInCents.toString());
-    script.setAttribute("data-reference", "4XMPGKWWPKWQ");
-    script.setAttribute(
-      "data-signature-integrity",
-      "37c8407747e595535433ef8f6a811d853cd943046624a0ec04662b17bbf33bf5"
-    );
-
-    // Manejar errores de carga del script
-    script.onerror = () => {
-      console.error("Failed to load Wompi widget script");
-      formContainer.innerHTML = "";
-    };
-
-    // Agregar script al contenedor
-    formContainer.appendChild(script);
-
-    // Cleanup: eliminar el script creado en este efecto
-    return () => {
-      const scriptToRemove = document.getElementById("wompi-widget-script");
-      if (scriptToRemove) {
-        scriptToRemove.remove();
+    const initCheckout = () => {
+      const W = (window as any).WidgetCheckout;
+      if (!W) {
+        console.error("WidgetCheckout no está disponible en window");
+        return;
       }
-      if (formContainer) {
-        formContainer.innerHTML = "";
-      }
-    };
-  }, [priceInCcopInCents]);
 
-  useEffect(() => {
-    // Necesitamos monto y firma listos
-    if (!priceInCcopInCents || priceInCcopInCents <= 0 || !wompiSignature) {
-      return;
-    }
-
-    const formContainer = document.getElementById("wompi-widget-form");
-    if (!formContainer) {
-      console.warn("Wompi widget form container not found");
-      return;
-    }
-
-    // Limpiar script anterior
-    const existingScript = document.getElementById("wompi-widget-script");
-    if (existingScript) existingScript.remove();
-    formContainer.innerHTML = "";
-
-    const script = document.createElement("script");
-    script.id = "wompi-widget-script";
-    script.src = "https://checkout.wompi.co/widget.js";
-    script.setAttribute("data-render", "button");
-    script.setAttribute("data-public-key", WOMPI_PUBLIC_KEY);
-    script.setAttribute("data-currency", "COP");
-    script.setAttribute("data-amount-in-cents", priceInCcopInCents.toString());
-    script.setAttribute("data-reference", wompiReference);
-    script.setAttribute("data-signature:integrity", wompiSignature);
-
-    script.onerror = () => {
-      console.error("Failed to load Wompi widget script");
-      formContainer.innerHTML = "";
+      checkoutRef.current = new W({
+        currency: "COP",
+        amountInCents: priceInCcopInCents,
+        reference: wompiReference,
+        publicKey: WOMPI_PUBLIC_KEY,
+        "signature:integrity": wompiSignature,
+      });
     };
 
-    formContainer.appendChild(script);
+    const existingScript = document.getElementById(
+      "wompi-checkout-script"
+    ) as HTMLScriptElement | null;
+
+    if (!existingScript) {
+      const script = document.createElement("script");
+      script.id = "wompi-checkout-script";
+      script.src = "https://checkout.wompi.co/widget.js";
+      script.async = true;
+      script.onload = initCheckout;
+      script.onerror = () => {
+        console.error("Error cargando el script de Wompi");
+      };
+      document.body.appendChild(script);
+    } else {
+      initCheckout();
+    }
 
     return () => {
-      const scriptToRemove = document.getElementById("wompi-widget-script");
-      if (scriptToRemove) scriptToRemove.remove();
-      formContainer.innerHTML = "";
+      checkoutRef.current = null;
     };
-  }, [priceInCcopInCents, wompiSignature, wompiReference]);
+  }, [priceInCcopInCents, wompiReference, wompiSignature]);
 
-  // cooldown
+  /// cooldown
   useEffect(() => {
     const saved = localStorage.getItem(COOLDOWN_KEY);
     if (!saved) return;
@@ -308,10 +257,29 @@ export function VoucherStep(props: Props): JSX.Element {
     return () => clearTimeout(timer);
   }, [cooldown]);
 
-  // reset por disconnect
+  /// reset por disconnect
   useEffect(() => {
     if (!account && onWalletDisconnect) onWalletDisconnect();
   }, [account, onWalletDisconnect]);
+
+  const handlePayWithCreditCard = () => {
+    if (!checkoutRef.current) {
+      alert(
+        t(
+          "membership.voucher.Payment gateway is loading. Please try again in a moment."
+        )
+      );
+      return;
+    }
+
+    checkoutRef.current.open((result: any) => {
+      const tx = result?.transaction;
+      console.log("Resultado Wompi:", tx);
+
+      // Aquí puedes, si quieres, mostrar un mensaje, o redirigir
+      // según tx.status === "APPROVED", etc.
+    });
+  };
 
   const paymentByCoin = useMemo(() => {
     const usdAmount = Number(parseUsdToUsdc(price.toString()));
@@ -511,99 +479,175 @@ export function VoucherStep(props: Props): JSX.Element {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Summary */}
-      <div className="bg-green-soft/30 rounded-xl p-4 flex flex-col gap-2 mt-2">
-        <div className="flex justify-between font-semibold">
-          <h4 className="heading-6">{t("membership.voucher.Balance")}</h4>
+      {/* Payment Methods Accordion */}
+      <div className="flex flex-col gap-4">
+        {/* Pay with Credit Card */}
+        <div className="bg-green-soft/30 rounded-xl overflow-hidden border border-green-soft/20">
+          <button
+            type="button"
+            onClick={handlePayWithCreditCard}
+            className="w-full px-4 py-4 flex items-center justify-between hover:bg-green-soft/20 transition-colors disabled:opacity-50"
+            disabled={
+              priceInCcopInCents <= 0 ||
+              (requiresHardKyc && !isKycHardCompleted)
+            }
+          >
+            <h4 className="heading-6 text-left">
+              {t("membership.voucher.Pay with card")}
+            </h4>
+          </button>
         </div>
-
-        {coins.map((c) => (
-          <div key={c.symbol} className="flex justify-between font-semibold">
-            <span className="body-S text-light">
-              {t(`membership.voucher.${c.symbol}`)}
-            </span>
-            <div className="flex items-center space-x-3">
-              <span className="body-S text-light">{c.toText(c.balance)}</span>
-              <img
-                src={c.icon}
-                alt={c.symbol}
-                className="inline-block w-9 h-9 ml-1"
-              />
+        {/* Pay with Crypto */}
+        <div className="bg-green-soft/30 rounded-xl overflow-hidden border border-green-soft/20">
+          <button
+            onClick={() =>
+              setExpandedPaymentMethod(
+                expandedPaymentMethod === "crypto" ? null : "crypto"
+              )
+            }
+            className="w-full px-4 py-4 flex items-center justify-between hover:bg-green-soft/20 transition-colors"
+          >
+            <h4 className="heading-6 text-left">Pay with crypto</h4>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
+                <img src={usdcImage} alt="USDC" className="w-6 h-6" />
+                <img src={usdtImage} alt="USDT" className="w-6 h-6" />
+                <img src={ccopImage} alt="CCOP" className="w-6 h-6" />
+              </div>
+              <svg
+                className={`w-5 h-5 text-white transition-transform duration-300 ${
+                  expandedPaymentMethod === "crypto" ? "rotate-180" : ""
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
             </div>
-          </div>
-        ))}
-
-        {/* Credit Card */}
-        <label
-          key="CREDIT CARD"
-          className={`flex items-center gap-3 cursor-pointer ${
-            wallet?.id !== "inApp" || false // TODO: remove this
-              ? "opacity-40 cursor-not-allowed"
-              : ""
-          }`}
-        >
-          {/* <span
-            className={`body-S ${
-              wallet?.id !== "inApp" || false // TODO: remove this
-                ? "cursor-default hover:no-underline"
-                : "hover:text-[#D57300] hover:underline"
+          </button>
+          <div
+            className={`overflow-hidden transition-all duration-300 ${
+              expandedPaymentMethod === "crypto"
+                ? "max-h-[500px] opacity-100"
+                : "max-h-0 opacity-0"
             }`}
           >
-            {t("membership.voucher.Pay with credit card")}
-          </span> */}
-          <form id="wompi-widget-form"></form>
-        </label>
+            <div className="px-4 pb-4 flex flex-col gap-4">
+              {/* Balance Section */}
+              <div className="flex flex-col gap-2">
+                <div className="flex justify-between font-semibold">
+                  <h4 className="heading-6">
+                    {t("membership.voucher.Balance")}
+                  </h4>
+                </div>
 
-        {account?.address &&
-          (!hasSufficientBalance ||
-            (!requiresHardKyc && !hasSufficientBalance)) && (
-            <label className="text-center p-3 body-S text-light">
-              {t(
-                "membership.voucher.You don't have enough balance to purchase this membership. Please recharge your wallet using a credit card or cryptocurrency."
-              )}
-            </label>
-          )}
-      </div>
+                {coins.map((c) => (
+                  <div
+                    key={c.symbol}
+                    className="flex justify-between font-semibold"
+                  >
+                    <span className="body-S text-light">
+                      {t(`membership.voucher.${c.symbol}`)}
+                    </span>
+                    <div className="flex items-center space-x-3">
+                      <span className="body-S text-light">
+                        {c.toText(c.balance)}
+                      </span>
+                      <img
+                        src={c.icon}
+                        alt={c.symbol}
+                        className="inline-block w-9 h-9 ml-1"
+                      />
+                    </div>
+                  </div>
+                ))}
 
-      <div className="bg-green-soft/30 rounded-xl p-4 flex flex-col gap-4">
-        <h4 className="heading-6">{t("membership.voucher.Select coin")}</h4>
+                {account?.address &&
+                  (!hasSufficientBalance ||
+                    (!requiresHardKyc && !hasSufficientBalance)) && (
+                    <label className="text-center p-3 body-S text-light">
+                      {t(
+                        "membership.voucher.You don't have enough balance to purchase this membership. Please recharge your wallet using a credit card or cryptocurrency."
+                      )}
+                    </label>
+                  )}
+              </div>
 
-        {coins.map((c) => {
-          const isDisabled =
-            c.balance < price || (requiresHardKyc && !isKycHardCompleted);
-          return (
-            <label
-              key={c.symbol}
-              className={`flex items-center gap-3 cursor-pointer ${
-                isDisabled ? "opacity-40 cursor-not-allowed" : ""
-              }`}
-            >
-              <input
-                type="radio"
-                name="coin"
-                value={c.symbol}
-                disabled={isDisabled}
-                checked={selectedCoin === c.symbol}
-                onChange={() => handleCoinSelection(c.symbol)}
-                className="custom-checkbox"
-              />
-              <span className="body-S">{c.symbol}</span>
-            </label>
-          );
-        })}
+              {/* Coin Selection */}
+              <div className="flex flex-col gap-4 pt-2 border-t border-green-soft/20">
+                <h4 className="heading-6">
+                  {t("membership.voucher.Select coin")}
+                </h4>
+                {coins.map((c) => {
+                  const isDisabled =
+                    c.balance < price ||
+                    (requiresHardKyc && !isKycHardCompleted);
+                  return (
+                    <label
+                      key={c.symbol}
+                      className={`flex items-center gap-3 cursor-pointer ${
+                        isDisabled ? "opacity-40 cursor-not-allowed" : ""
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="coin"
+                        value={c.symbol}
+                        disabled={isDisabled}
+                        checked={selectedCoin === c.symbol}
+                        onChange={() => handleCoinSelection(c.symbol)}
+                        className="custom-checkbox"
+                      />
+                      <span className="body-S">{c.symbol}</span>
+                    </label>
+                  );
+                })}
 
-        <div className="flex justify-between mt-2">
-          <span className="body-S text-light">
-            {t("membership.voucher.Total")}
-          </span>
-          <span className="body-S text-light">
-            $
-            {selectedCoin === COIN.CCOP && priceInCcop
-              ? formatCcopToCop(
-                  Number(formatUnits(BigInt(priceInCcop), ccop.decimals))
-                )
-              : price.toFixed(2)}
-          </span>
+                <div className="flex justify-between mt-2 pt-2 border-t border-green-soft/20">
+                  <span className="body-S text-light">
+                    {t("membership.voucher.Total")}
+                  </span>
+                  <span className="body-S text-light">
+                    $
+                    {selectedCoin === COIN.CCOP && priceInCcop
+                      ? formatCcopToCop(
+                          Number(
+                            formatUnits(BigInt(priceInCcop), ccop.decimals)
+                          )
+                        )
+                      : price.toFixed(2)}
+                  </span>
+                </div>
+
+                {/* Purchase Button */}
+                <div className="flex justify-center mt-4">
+                  <button
+                    className="btn-primary w-full"
+                    onClick={handlePurchase}
+                    disabled={
+                      !isAvailable ||
+                      !hasSufficientBalance ||
+                      !selectedCoin ||
+                      isProcessing ||
+                      (requiresHardKyc && !isKycHardCompleted)
+                    }
+                  >
+                    {isProcessing ? (
+                      <span>{t("membership.voucher.Processing…")}</span>
+                    ) : (
+                      t("membership.voucher.Purchase Membership")
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -689,26 +733,6 @@ export function VoucherStep(props: Props): JSX.Element {
           </label>
         </div>
       )}
-
-      <div className="flex justify-center mt-3">
-        <button
-          className="btn-primary"
-          onClick={handlePurchase}
-          disabled={
-            !isAvailable ||
-            !hasSufficientBalance ||
-            !selectedCoin ||
-            isProcessing ||
-            (requiresHardKyc && !isKycHardCompleted)
-          }
-        >
-          {isProcessing ? (
-            <span>{t("membership.voucher.Processing…")}</span>
-          ) : (
-            t("membership.voucher.Purchase Membership")
-          )}
-        </button>
-      </div>
 
       {/* Modal tarjeta */}
       {showCreditCardModal && (
