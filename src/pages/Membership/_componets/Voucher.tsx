@@ -63,7 +63,7 @@ export function VoucherStep(props: Props): JSX.Element {
   const [isProcessing, setIsProcessing] = useState(false);
   const [showCreditCardModal, setShowCreditCardModal] = useState(false);
   const [wompiSignature, setWompiSignature] = useState<string>("");
-  const [wompiReference] = useState(() =>
+  const [wompiReference, setWompiReference] = useState(() =>
     crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase()
   );
   const [expandedPaymentMethod, setExpandedPaymentMethod] = useState<
@@ -183,7 +183,7 @@ export function VoucherStep(props: Props): JSX.Element {
         wompiReference,
         priceInCcopInCents
       );
-      console.log("signature", signature);
+
       setWompiSignature(signature);
     })();
   }, [priceInCcopInCents, wompiReference]);
@@ -272,12 +272,29 @@ export function VoucherStep(props: Props): JSX.Element {
       return;
     }
 
-    checkoutRef.current.open((result: any) => {
-      const tx = result?.transaction;
-      console.log("Resultado Wompi:", tx);
+    checkoutRef.current.open(async (_result: any) => {
+      // const tx = result?.transaction;
+      setWompiSignature("");
+      setWompiReference(
+        crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase()
+      );
 
-      // Aquí puedes, si quieres, mostrar un mensaje, o redirigir
-      // según tx.status === "APPROVED", etc.
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
+      alert(t("membership.voucher.Membership purchased successfully!"));
+
+      setTimeout(async () => {
+        try {
+          await Promise.all([
+            refetchUsdc(),
+            refetchUsdt(),
+            refetchCcop(),
+            /*refetchCusd()*/
+          ]);
+        } catch (error) {
+          console.error("❌ Error refreshing balances after purchase:", error);
+        }
+      }, 500);
     });
   };
 
