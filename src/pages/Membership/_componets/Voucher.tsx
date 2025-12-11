@@ -8,8 +8,6 @@ import usdcImage from "../../../assets/images/tokens/USDC.svg";
 import usdtImage from "../../../assets/images/tokens/USDT.svg";
 // import cusdImage from "../../../assets/images/tokens/cUSD.svg";
 import ccopImage from "../../../assets/images/tokens/cCOP.svg";
-import mastercardImage from "../../../assets/images/cards/mastercard.svg";
-import visaImage from "../../../assets/images/cards/visa.svg";
 import { useResendKycEmail } from "@/hooks/useKycEmail";
 import { generateSiweMessage } from "@/utils/generate-siwe-message.util";
 import { useNonce } from "@/hooks/useNonce";
@@ -70,7 +68,7 @@ export function VoucherStep(props: Props): JSX.Element {
     string | null
   >(null);
 
-  // external
+  // external hooks
   const { campaignId } = useParams();
   const account = useActiveAccount();
 

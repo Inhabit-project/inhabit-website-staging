@@ -82,7 +82,7 @@ function mapWalletNftsResponseToNfts(response: WalletNftsResponse): Nft[] {
     name: nft.name,
     description: nft.description,
     imageUrl: nft.image_url,
-    scanUrl: `${SCAN_URL("nft", nft.contract.address as Address)}/token/${
+    scanUrl: `${SCAN_URL("nft", nft.contract.address as Address)}/${
       nft.token_id
     }`,
   }));

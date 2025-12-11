@@ -15,6 +15,7 @@ import { Address, zeroAddress } from "viem";
 import { createThirdwebClient } from "thirdweb";
 import { celo as thierdwebCelo, celoSepoliaTestnet } from "thirdweb/chains";
 import { ContractJson } from "@/services/blockchain/base-contract";
+import celoLogo from "../../assets/images/blockchains/celo.svg";
 
 export const ENV: string = ensureEnvVar(import.meta.env.VITE_ENV, "VITE_ENV");
 
@@ -23,6 +24,16 @@ export const CHAIN = ENV === "prod" ? celo : celoSepolia;
 export const SEPOLIA_SCAN_URL = "https://sepolia.celoscan.io";
 
 export const CELO_SCAN_URL = "https://explorer.celo.org";
+
+const blockchainsLogos = {
+  [celo.id]: celoLogo,
+  [celoSepolia.id]: celoLogo,
+};
+
+export const BLOCKCHAIN_LOGO_BY_CHAIN_ID = (
+  chainId: number
+): string | undefined =>
+  blockchainsLogos[chainId as keyof typeof blockchainsLogos];
 
 export const SCAN_URL = (endpoint: string, slug: string) =>
   ENV === "prod"

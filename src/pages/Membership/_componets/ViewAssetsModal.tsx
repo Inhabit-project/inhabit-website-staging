@@ -1,5 +1,6 @@
 import { JSX, useState, useEffect } from "react";
 import { Nft } from "@/models/nft.model";
+import { BLOCKCHAIN_LOGO_BY_CHAIN_ID } from "@/config/const";
 
 type Props = {
   isOpen: boolean;
@@ -9,8 +10,10 @@ type Props = {
 
 export function ViewAssetsModal(props: Props): JSX.Element {
   const { isOpen, onClose, nfts } = props;
+
+  // states
   const [selectedNft, setSelectedNft] = useState<Nft | null>(null);
-  const [transferAddress, setTransferAddress] = useState("");
+  const [transferAddress, setTransferAddress] = useState<string>("");
 
   // Reset when modal closes - always show grid when opening
   useEffect(() => {
@@ -86,7 +89,7 @@ export function ViewAssetsModal(props: Props): JSX.Element {
         </div>
 
         {/* Content */}
-        <div className="p-6 max-h-[60vh] overflow-y-auto">
+        <div className="px-6 py-8 max-h-[80vh] overflow-y-auto">
           {/* ----------------------------- */}
           {/*       NFT DETAIL VIEW         */}
           {/* ----------------------------- */}
@@ -94,7 +97,7 @@ export function ViewAssetsModal(props: Props): JSX.Element {
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Left Side Image */}
               <div className="w-full lg:w-1/2">
-                <div className="aspect-square rounded-xl overflow-hidden border border-green-soft bg-green-soft/10 shadow-sm">
+                <div className="aspect-square rounded-xl overflow-hidden border-[0.5px] border-green-soft bg-green-soft/10 shadow-sm">
                   <img
                     src={selectedNft.imageUrl}
                     alt={selectedNft.name}
@@ -147,6 +150,18 @@ export function ViewAssetsModal(props: Props): JSX.Element {
                   </section>
                 )}
 
+                {/* Chain ID */}
+                <section>
+                  <p className="body-S text-light/60 font-semibold mb-1">
+                    Chain
+                  </p>
+                  <img
+                    src={BLOCKCHAIN_LOGO_BY_CHAIN_ID(selectedNft.chainId)}
+                    alt={`Blockchain logo for chain ${selectedNft.chainId}`}
+                    className="w-9 h-9"
+                  />
+                </section>
+
                 {/* Contract Address */}
                 <section>
                   <p className="body-S text-light/60 font-semibold mb-1">
@@ -176,14 +191,6 @@ export function ViewAssetsModal(props: Props): JSX.Element {
                   </p>
                 </section>
 
-                {/* Chain ID */}
-                <section>
-                  <p className="body-S text-light/60 font-semibold mb-1">
-                    Chain
-                  </p>
-                  <p className="body-S text-light/80">{selectedNft.chainId}</p>
-                </section>
-
                 {/* Token Type */}
                 <section>
                   <p className="body-S text-light/60 font-semibold mb-1">
@@ -209,7 +216,7 @@ export function ViewAssetsModal(props: Props): JSX.Element {
                   <button
                     key={`${nft.contractAddress}-${nft.tokenId}`}
                     onClick={() => setSelectedNft(nft)}
-                    className="rounded-xl overflow-hidden border border-green-soft bg-green-soft/10 hover:bg-green-soft/20 transition-all shadow-sm"
+                    className="rounded-xl overflow-hidden border-[0.5px] border-green-soft bg-green-soft/10 hover:bg-green-soft/20 transition-all shadow-sm"
                   >
                     <div className="aspect-square">
                       <img
@@ -222,15 +229,9 @@ export function ViewAssetsModal(props: Props): JSX.Element {
                       <h3 className="body-M text-light font-medium">
                         {nft.name}
                       </h3>
-                      <a
-                        href={nft.scanUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#D57300] body-S hover:underline"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Explorer
-                      </a>
+                      <p className="text-[#D57300] body-S hover:underline">
+                        See more
+                      </p>
                     </div>
                   </button>
                 ))
