@@ -8,10 +8,11 @@ import { useActiveAccount } from "thirdweb/react";
 
 type Props = {
   selectedNft: Nft;
+  handleNftTransferred: (nft: Nft) => void;
 };
 
 function NftDetail(props: Props): JSX.Element {
-  const { selectedNft } = props;
+  const { selectedNft, handleNftTransferred } = props;
 
   const tokenId = useMemo(() => {
     return BigInt(selectedNft.tokenId) ?? BigInt(0);
@@ -102,6 +103,7 @@ function NftDetail(props: Props): JSX.Element {
           setTransferAddress(ZERO_ADDRESS);
 
           alert("NFT transferred successfully");
+          handleNftTransferred(selectedNft);
         },
         onError: (_error) => {},
       }
