@@ -71,6 +71,16 @@ export function VoucherStep(props: Props): JSX.Element {
   // external hooks
   const { campaignId } = useParams();
   const account = useActiveAccount();
+  // const wallet = useActiveWallet();
+
+  // console.log("account", account);
+  // console.log("wallet", wallet?.id); // <- aquí está la clave
+
+  // const isSocialLogin =
+  //   wallet?.id === "inApp" || wallet?.id === "embeddedWallet"; // depende de cómo lo definiste
+
+  // const isMetamask = wallet?.id === "io.metamask";
+  // const isWalletConnect = wallet?.id === "walletConnect";
 
   // store
   const {
