@@ -83,6 +83,7 @@ export function VoucherStep(props: Props): JSX.Element {
     usdt,
     usdToCopRate,
     /*cusd,*/ ccop,
+    getWalletNfts,
   } = useStore();
 
   // inhabit hook
@@ -410,6 +411,7 @@ export function VoucherStep(props: Props): JSX.Element {
                   refetchCcop(),
                   /*refetchCusd()*/
                 ]);
+                getWalletNfts(account!.address as Address);
                 resolve();
               } catch (error) {
                 console.error(

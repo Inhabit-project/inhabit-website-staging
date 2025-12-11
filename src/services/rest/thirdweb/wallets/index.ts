@@ -78,6 +78,7 @@ function mapWalletNftsResponseToNfts(response: WalletNftsResponse): Nft[] {
     chainId: nft.chain_id,
     contractAddress: nft.contract.address as Address,
     tokenType: nft.token_type,
+    tokenId: nft.token_id,
     name: nft.name,
     description: nft.description,
     imageUrl: nft.image_url,

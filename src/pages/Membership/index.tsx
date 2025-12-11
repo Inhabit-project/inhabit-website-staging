@@ -8,6 +8,7 @@ import RightsTable from "./_componets/RightsTable";
 import { Info } from "./_componets/Info";
 import OtherCollections from "./_componets/OtherCollections";
 import Stepper from "./_componets/Stepper";
+import { ViewAssetsModal } from "./_componets/ViewAssetsModal";
 
 type Props = {
   onHeroImageLoad?: VoidFunction;
@@ -20,6 +21,7 @@ export default function Membership(props: Props): JSX.Element {
 
   // hooks
   const [collection, setCollection] = useState<Collection | null>(null);
+  const [isViewAssetsModalOpen, setIsViewAssetsModalOpen] = useState(false);
 
   // external hooks
   const { campaignId, collectionId } = useParams();
@@ -51,6 +53,10 @@ export default function Membership(props: Props): JSX.Element {
   useEffect(() => {
     const loadCampaign = async () => {
       try {
+        if (campaigns.length === 0) {
+          getCampaigns();
+        }
+
         if (state?.collection && state?.campaign) {
           setCollection(state.collection);
           setCollectionStore(state.collection);
@@ -71,10 +77,6 @@ export default function Membership(props: Props): JSX.Element {
         if (!found) {
           navigate("/404");
           return;
-        }
-
-        if (campaigns.length === 0) {
-          getCampaigns();
         }
 
         setCollection(found);
@@ -125,9 +127,34 @@ export default function Membership(props: Props): JSX.Element {
     };
   }, []);
 
+  const lastNft =
+    walletsNfts.length > 0 ? walletsNfts[walletsNfts.length - 1] : null;
+
   return (
     <div className="min-h-screen background-gradient-light">
       <Menu />
+
+      {/* Last NFT Image - Fixed bottom right */}
+      {lastNft && (
+        <button
+          onClick={() => setIsViewAssetsModalOpen(true)}
+          className="fixed bottom-6 right-6 z-50 w-44 h-w-44 rounded-xl overflow-hidden border-2 border-green-soft/50 shadow-lg hover:border-green-soft hover:scale-105 transition-all duration-300"
+          aria-label="View Assets"
+        >
+          <img
+            src={lastNft.imageUrl}
+            alt={lastNft.name}
+            className="w-full h-full object-cover"
+          />
+        </button>
+      )}
+
+      {/* View Assets Modal */}
+      <ViewAssetsModal
+        isOpen={isViewAssetsModalOpen}
+        onClose={() => setIsViewAssetsModalOpen(false)}
+        nfts={walletsNfts}
+      />
       {campaignLoading ? (
         <div className="mt-8 w-full flex items-center justify-center min-h-[50vh]">
           <div className="text-center">
