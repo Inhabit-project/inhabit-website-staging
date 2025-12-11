@@ -1,6 +1,6 @@
 import { JSX, useState, useEffect } from "react";
 import { Nft } from "@/models/nft.model";
-import { BLOCKCHAIN_LOGO_BY_CHAIN_ID } from "@/config/const";
+import NftDetail from "./_componets/NftDetail";
 
 type Props = {
   isOpen: boolean;
@@ -13,13 +13,11 @@ export function ViewAssetsModal(props: Props): JSX.Element {
 
   // states
   const [selectedNft, setSelectedNft] = useState<Nft | null>(null);
-  const [transferAddress, setTransferAddress] = useState<string>("");
 
   // Reset when modal closes - always show grid when opening
   useEffect(() => {
     if (!isOpen) {
       setSelectedNft(null);
-      setTransferAddress("");
     }
   }, [isOpen]);
 
@@ -42,7 +40,6 @@ export function ViewAssetsModal(props: Props): JSX.Element {
               <button
                 onClick={() => {
                   setSelectedNft(null);
-                  setTransferAddress("");
                 }}
                 className="text-light hover:text-[#D57300] transition-colors"
                 aria-label="Back"
@@ -94,114 +91,7 @@ export function ViewAssetsModal(props: Props): JSX.Element {
           {/*       NFT DETAIL VIEW         */}
           {/* ----------------------------- */}
           {selectedNft ? (
-            <div className="flex flex-col lg:flex-row gap-8">
-              {/* Left Side Image */}
-              <div className="w-full lg:w-1/2">
-                <div className="aspect-square rounded-xl overflow-hidden border-[0.5px] border-green-soft bg-green-soft/10 shadow-sm">
-                  <img
-                    src={selectedNft.imageUrl}
-                    alt={selectedNft.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                {/* Transfer NFT */}
-                <div className="mt-6 pt-6 border-t border-green-soft/20">
-                  <label className="body-S text-light font-semibold mb-1">
-                    Transfer NFT
-                  </label>
-                  <div className="mt-2 flex flex-col gap-3">
-                    <input
-                      type="text"
-                      className="input-main"
-                      placeholder="Recipient address (0x...)"
-                      value={transferAddress}
-                      onChange={(e) => setTransferAddress(e.target.value)}
-                    />
-                    <button
-                      className="btn-primary w-full"
-                      disabled={!transferAddress || transferAddress.length < 42}
-                    >
-                      Transfer
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Side Details */}
-              <div className="flex-1 flex flex-col gap-6 pr-2">
-                {/* Name */}
-                <section>
-                  <p className="body-S text-light/60 font-semibold mb-1">
-                    Name
-                  </p>
-                  <p className="body-M text-light">{selectedNft.name}</p>
-                </section>
-
-                {/* Description */}
-                {selectedNft.description && (
-                  <section>
-                    <p className="body-S text-light/60 font-semibold mb-1">
-                      Description
-                    </p>
-                    <p className="body-S text-light/80 leading-relaxed whitespace-pre-line">
-                      {selectedNft.description}
-                    </p>
-                  </section>
-                )}
-
-                {/* Chain ID */}
-                <section>
-                  <p className="body-S text-light/60 font-semibold mb-1">
-                    Chain
-                  </p>
-                  <img
-                    src={BLOCKCHAIN_LOGO_BY_CHAIN_ID(selectedNft.chainId)}
-                    alt={`Blockchain logo for chain ${selectedNft.chainId}`}
-                    className="w-9 h-9"
-                  />
-                </section>
-
-                {/* Contract Address */}
-                <section>
-                  <p className="body-S text-light/60 font-semibold mb-1">
-                    Contract
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <span className="body-S text-light/80 font-mono break-all">
-                      {selectedNft.contractAddress}
-                    </span>
-                    <a
-                      href={selectedNft.scanUrl}
-                      target="_blank"
-                      className="text-[#D57300] hover:underline body-S whitespace-nowrap"
-                    >
-                      Explorer
-                    </a>
-                  </div>
-                </section>
-
-                {/* Token ID */}
-                <section>
-                  <p className="body-S text-light/60 font-semibold mb-1">
-                    Token ID
-                  </p>
-                  <p className="body-S text-light/80 font-mono">
-                    {selectedNft.tokenId}
-                  </p>
-                </section>
-
-                {/* Token Type */}
-                <section>
-                  <p className="body-S text-light/60 font-semibold mb-1">
-                    Type
-                  </p>
-                  <p className="body-S text-light/80">
-                    {selectedNft.tokenType}
-                  </p>
-                </section>
-              </div>
-            </div>
+            <NftDetail selectedNft={selectedNft} />
           ) : (
             /* ----------------------------- */
             /*         NFT GRID VIEW        */
