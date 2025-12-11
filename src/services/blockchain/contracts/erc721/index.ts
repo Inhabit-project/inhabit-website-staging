@@ -32,6 +32,17 @@ export class ERC721Contract extends BaseContract {
     }
   }
 
+  async name(): Promise<ServiceResult<string>> {
+    try {
+      const name = await this.read<string>("name", []);
+      return { success: true, data: name };
+    } catch (error) {
+      const parsedError = parseContractError(error, "name");
+      console.error("❌", parsedError);
+      return { success: false, error: parsedError };
+    }
+  }
+
   async ownerOf(tokenId: bigint): Promise<ServiceResult<Hex>> {
     try {
       const owner = await this.read<Address>("ownerOf", [tokenId]);

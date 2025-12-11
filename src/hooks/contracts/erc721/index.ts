@@ -33,6 +33,7 @@ export function useErc721(contractAddress: Address) {
 
   const QUERY_KEY = `${chain}-${contractAddress}`;
   const QUERY_KEY_GET_APPROVED = `${QUERY_KEY}-get-approved`;
+  const QUERY_KEY_NAME = `${QUERY_KEY}-name`;
   const QUERY_KEY_OWNER_OF = `${QUERY_KEY}-owner-of`;
 
   // =========================
@@ -51,6 +52,17 @@ export function useErc721(contractAddress: Address) {
       staleTime: 30000,
       refetchOnWindowFocus: false,
       placeholderData: (previous: Address | undefined) => previous,
+    });
+  };
+
+  const useName = (): UseQueryResult<string, Error> => {
+    return useQuery({
+      queryKey: [QUERY_KEY_NAME],
+      queryFn: async (): Promise<string> => {
+        const result = await erc721.name();
+        if (!result.success) throw result.error;
+        return result.data!;
+      },
     });
   };
 
@@ -100,10 +112,13 @@ export function useErc721(contractAddress: Address) {
 
   return {
     useGetApproved,
+    useName,
     useOwnerOf,
     useApprove,
     useTransferFrom,
     address: erc721.getAddress(),
+    QUERY_KEY_GET_APPROVED,
+    QUERY_KEY_NAME,
     QUERY_KEY_OWNER_OF,
   };
 }

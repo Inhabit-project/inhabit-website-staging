@@ -1,10 +1,19 @@
-import { BLOCKCHAIN_LOGO_BY_CHAIN_ID } from "@/config/const";
+import { BLOCKCHAIN_LOGO_BY_CHAIN_ID, chain } from "@/config/const";
 import { useErc721 } from "@/hooks/contracts/erc721";
 import { Nft } from "@/models/nft.model";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
 import { Address, getAddress, Hex, ZERO_ADDRESS } from "thirdweb";
-import { useActiveAccount } from "thirdweb/react";
+import { useActiveWallet } from "thirdweb/react";
+import {
+  encodeFunctionData,
+  erc721Abi,
+  GetTypesForEIP712DomainErrorType,
+  MessageDefinition,
+  TypedData,
+  TypedDataDomain,
+} from "viem";
+import { EIP712Domain } from "viem/zksync";
 
 type Props = {
   selectedNft: Nft;
@@ -19,7 +28,8 @@ function NftDetail(props: Props): JSX.Element {
   }, [selectedNft.tokenId]);
 
   // thirdweb
-  const account = useActiveAccount();
+  const wallet = useActiveWallet();
+  const account = useMemo(() => wallet?.getAccount(), [wallet]);
 
   // query client
   const queryClient = useQueryClient();
@@ -29,18 +39,15 @@ function NftDetail(props: Props): JSX.Element {
   const [transferAddressInput, setTransferAddressInput] = useState<string>("");
 
   // erc721 hook
-  const {
-    /*useGetApproved, */ useOwnerOf,
-    useTransferFrom,
-    QUERY_KEY_OWNER_OF,
-  } = useErc721(selectedNft.contractAddress);
+  const { useName, useOwnerOf, useTransferFrom, QUERY_KEY_OWNER_OF } =
+    useErc721(selectedNft.contractAddress);
 
-  /// get approved
-  // const { data: dataSpender } = useGetApproved(tokenId);
+  /// name
+  const { data: dataName } = useName();
 
-  // const spender = useMemo(() => {
-  //   return dataSpender ?? ZERO_ADDRESS;
-  // }, [dataSpender]);
+  const name = useMemo(() => {
+    return dataName ?? "";
+  }, [dataName]);
 
   /// owner of
   const { data: dataOwner } = useOwnerOf(tokenId);
@@ -60,6 +67,9 @@ function NftDetail(props: Props): JSX.Element {
     useTransferFrom;
 
   // validations
+  /// is social login
+  const isSocialLogin = useMemo(() => wallet?.id === "inApp", [wallet]);
+
   /// is owner
   const isOwner = useMemo(() => {
     return owner === account?.address;
@@ -90,24 +100,88 @@ function NftDetail(props: Props): JSX.Element {
     if (!isOwner || !isValidTransferAddress) return;
     if (owner === transferAddress) return;
 
-    transferFrom(
-      {
+    if (isSocialLogin) {
+      if (!account) return;
+
+      const callData = encodeFunctionData({
+        abi: erc721Abi,
+        functionName: "transferFrom",
+        args: [owner, transferAddress, BigInt(selectedNft.tokenId)],
+      });
+
+      const domain: TypedDataDomain = {
+        name,
+        version: "1",
+        chainId: chain.id,
+        verifyingContract: getAddress(ZERO_ADDRESS),
+      };
+
+      const primaryType = "ForwardRequest";
+
+      const types: TypedData = {
+        [primaryType]: [
+          { name: "from", type: "address" },
+          { name: "to", type: "address" },
+          { name: "value", type: "uint256" },
+          { name: "gas", type: "uint256" },
+          { name: "nonce", type: "uint256" },
+          { name: "deadline", type: "uint48" },
+          { name: "data", type: "bytes" },
+        ],
+      };
+
+      const forwardRequest: MessageDefinition = {
         from: owner,
         to: transferAddress,
-        tokenId: BigInt(selectedNft.tokenId),
-      },
-      {
-        onSuccess: (_hash: Hex) => {
-          refetchOwner();
-          setTransferAddressInput("");
-          setTransferAddress(ZERO_ADDRESS);
+        value: 0n,
+        gas: 300000n,
+        deadline: BigInt(Math.floor(Date.now() / 1000) + 60 * 30), // 30 minutes
+        data: callData,
+      };
 
-          alert("NFT transferred successfully");
-          handleNftTransferred(selectedNft);
+      // TODO: get nonce
+
+      account
+        .signTypedData({
+          domain,
+          types,
+          primaryType,
+          message: {
+            ...forwardRequest,
+            nonce: 0n,
+          },
+        })
+        .then((signature: Hex) => {
+          console.log("signature", signature);
+          // TODO: sent signature
+
+          // refetchOwner();
+          // setTransferAddressInput("");
+          // setTransferAddress(ZERO_ADDRESS);
+
+          // alert("NFT transferred successfully");
+          // handleNftTransferred(selectedNft);
+        });
+    } else {
+      transferFrom(
+        {
+          from: owner,
+          to: transferAddress,
+          tokenId: BigInt(selectedNft.tokenId),
         },
-        onError: (_error) => {},
-      }
-    );
+        {
+          onSuccess: (_hash: Hex) => {
+            refetchOwner();
+            setTransferAddressInput("");
+            setTransferAddress(ZERO_ADDRESS);
+
+            alert("NFT transferred successfully");
+            handleNftTransferred(selectedNft);
+          },
+          onError: (_error) => {},
+        }
+      );
+    }
   };
 
   return (
