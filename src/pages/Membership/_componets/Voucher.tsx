@@ -559,10 +559,10 @@ export function VoucherStep(props: Props): JSX.Element {
             </div>
           </button>
           <div
-            className={`overflow-hidden transition-all duration-300 ${
+            className={`transition-all duration-300 ${
               expandedPaymentMethod === "crypto"
-                ? "max-h-[500px] opacity-100"
-                : "max-h-0 opacity-0"
+                ? "max-h-[600px] overflow-y-auto opacity-100"
+                : "max-h-0 overflow-hidden opacity-0"
             }`}
           >
             <div className="px-4 pb-4 flex flex-col gap-4">
@@ -600,7 +600,7 @@ export function VoucherStep(props: Props): JSX.Element {
                     (!requiresHardKyc && !hasSufficientBalance)) && (
                     <label className="text-center p-3 body-S text-light">
                       {t(
-                        "membership.voucher.You don't have enough balance to purchase this membership. Please recharge your wallet using a credit card or cryptocurrency."
+                        "membership.voucher.You don't have enough balance to purchase this membership"
                       )}
                     </label>
                   )}

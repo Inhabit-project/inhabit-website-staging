@@ -736,6 +736,7 @@
       "Wait": "Espera",
       "Waiting for nonce...": "Esperando nonce...",
       "Wallet charged successfully": "Billetera cargada con éxito",
+      "You don't have enough balance to purchase this membership.": "No tienes saldo suficiente para comprar esta membresía.",
       "You don't have enough balance to purchase this membership. Please recharge your wallet using a credit card or cryptocurrency.": "No tienes saldo suficiente para comprar esta membresía. Recarga tu billetera con una tarjeta de crédito o con criptomonedas.",
       "You need to pass the KYC to purchase this NFT.": "Debes completar el KYC para poder comprar este NFT.",
       "to resend": "para reenviar"
