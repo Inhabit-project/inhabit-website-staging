@@ -1,19 +1,25 @@
-import { BLOCKCHAIN_LOGO_BY_CHAIN_ID, chain } from "@/config/const";
+import {
+  BLOCKCHAIN_LOGO_BY_CHAIN_ID,
+  emptyHex,
+  isEmptyHex,
+  VERSION,
+} from "@/config/const";
+import { useAccount } from "@/hooks/api/account";
+import { useRelay } from "@/hooks/api/relay";
 import { useErc721 } from "@/hooks/contracts/erc721";
+import { useForwarder } from "@/hooks/contracts/forwarder";
 import { Nft } from "@/models/nft.model";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Address, getAddress, Hex, ZERO_ADDRESS } from "thirdweb";
 import { useActiveWallet } from "thirdweb/react";
 import {
   encodeFunctionData,
   erc721Abi,
-  GetTypesForEIP712DomainErrorType,
   MessageDefinition,
   TypedData,
   TypedDataDomain,
 } from "viem";
-import { EIP712Domain } from "viem/zksync";
 
 type Props = {
   selectedNft: Nft;
@@ -29,14 +35,42 @@ function NftDetail(props: Props): JSX.Element {
 
   // thirdweb
   const wallet = useActiveWallet();
+  const chainId = useMemo(() => wallet?.getChain()?.id ?? 0, [wallet]);
   const account = useMemo(() => wallet?.getAccount(), [wallet]);
+  const accountAddress = useMemo(() => {
+    try {
+      return getAddress(account?.address as Address);
+    } catch (error) {
+      return ZERO_ADDRESS;
+    }
+  }, [account]);
 
   // query client
   const queryClient = useQueryClient();
 
   // states
+  const [signature, setSignature] = useState<Hex>(emptyHex);
   const [transferAddress, setTransferAddress] = useState<Address>(ZERO_ADDRESS);
   const [transferAddressInput, setTransferAddressInput] = useState<string>("");
+
+  // account hook
+  const { useGetSiweMessage } = useAccount(chainId, accountAddress);
+
+  const { data: dataSiweMessage, isPending: isGetSiweMessagePending } =
+    useGetSiweMessage();
+
+  const siweMessage = useMemo(() => {
+    return dataSiweMessage ?? "";
+  }, [dataSiweMessage]);
+
+  // forwarder hook
+  const { address: forwarderAddress, useNonces } = useForwarder();
+  const { data: dataNonce, isPending: isGetNoncePending } =
+    useNonces(accountAddress);
+
+  const nonce = useMemo(() => {
+    return dataNonce ?? 0n;
+  }, [dataNonce]);
 
   // erc721 hook
   const { useName, useOwnerOf, useTransferFrom, QUERY_KEY_OWNER_OF } =
@@ -82,8 +116,18 @@ function NftDetail(props: Props): JSX.Element {
 
   /// is loading
   const isInExecution = useMemo(() => {
-    return isTransferFromPending;
+    return isGetNoncePending || isTransferFromPending;
   }, [isTransferFromPending]);
+
+  // effects
+  /// get wallet auth token if
+  useEffect(() => {
+    (async () => {
+      if (!account || !isSocialLogin || !siweMessage) return;
+      const signature = await account.signMessage({ message: siweMessage });
+      setSignature(signature);
+    })();
+  }, [siweMessage]);
 
   // functions
   const handleTransferFrom = (address: string) => {
@@ -96,24 +140,24 @@ function NftDetail(props: Props): JSX.Element {
     }
   };
 
-  const onTransferFrom = () => {
+  const onTransferFrom = async () => {
     if (!isOwner || !isValidTransferAddress) return;
     if (owner === transferAddress) return;
 
     if (isSocialLogin) {
-      if (!account) return;
+      if (!account || !signature) return;
 
       const callData = encodeFunctionData({
         abi: erc721Abi,
         functionName: "transferFrom",
-        args: [owner, transferAddress, BigInt(selectedNft.tokenId)],
+        args: [owner, transferAddress, tokenId],
       });
 
       const domain: TypedDataDomain = {
         name,
-        version: "1",
-        chainId: chain.id,
-        verifyingContract: getAddress(ZERO_ADDRESS),
+        version: VERSION,
+        chainId,
+        verifyingContract: forwarderAddress,
       };
 
       const primaryType = "ForwardRequest";
@@ -130,7 +174,7 @@ function NftDetail(props: Props): JSX.Element {
         ],
       };
 
-      const forwardRequest: MessageDefinition = {
+      const forwardRequest = {
         from: owner,
         to: transferAddress,
         value: 0n,
@@ -139,35 +183,23 @@ function NftDetail(props: Props): JSX.Element {
         data: callData,
       };
 
-      // TODO: get nonce
+      const transferFromMessage: MessageDefinition = {
+        domain,
+        types,
+        primaryType,
+        message: {
+          ...forwardRequest,
+          nonce,
+        },
+      };
 
-      account
-        .signTypedData({
-          domain,
-          types,
-          primaryType,
-          message: {
-            ...forwardRequest,
-            nonce: 0n,
-          },
-        })
-        .then((signature: Hex) => {
-          console.log("signature", signature);
-          // TODO: sent signature
-
-          // refetchOwner();
-          // setTransferAddressInput("");
-          // setTransferAddress(ZERO_ADDRESS);
-
-          // alert("NFT transferred successfully");
-          // handleNftTransferred(selectedNft);
-        });
+      const signedMessage = await account.signTypedData(transferFromMessage);
     } else {
       transferFrom(
         {
           from: owner,
           to: transferAddress,
-          tokenId: BigInt(selectedNft.tokenId),
+          tokenId,
         },
         {
           onSuccess: (_hash: Hex) => {
@@ -211,7 +243,13 @@ function NftDetail(props: Props): JSX.Element {
                   : transferAddressInput
               }
               value={transferAddressInput}
-              disabled={!isOwner || isInExecution}
+              disabled={
+                !isOwner ||
+                isInExecution ||
+                (isSocialLogin &&
+                  isGetSiweMessagePending &&
+                  isEmptyHex(signature))
+              }
               onChange={(e) => handleTransferFrom(e.target.value)}
             />
             <button
@@ -219,7 +257,11 @@ function NftDetail(props: Props): JSX.Element {
               disabled={!isOwner || !isValidTransferAddress || isInExecution}
               onClick={onTransferFrom}
             >
-              {isInExecution ? "Transferring..." : "Transfer"}
+              {isSocialLogin && isGetSiweMessagePending && isEmptyHex(signature)
+                ? "Preparing transaction..."
+                : isInExecution
+                ? "Transferring..."
+                : "Transfer"}
             </button>
           </div>
         </div>
@@ -291,3 +333,8 @@ function NftDetail(props: Props): JSX.Element {
 }
 
 export default NftDetail;
+function signMessageAsync(arg0: {
+  message: string;
+}): `0x${string}` | PromiseLike<`0x${string}`> {
+  throw new Error("Function not implemented.");
+}

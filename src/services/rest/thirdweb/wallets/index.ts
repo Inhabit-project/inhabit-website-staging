@@ -20,6 +20,8 @@ export function walletsService(
   headers: RawAxiosRequestHeaders,
   endpoint: string
 ): WalletsService {
+  const url = `${host}/${endpoint}`;
+
   const getWalletNftsForContractAddresses = async (
     account: Address,
     contractAddresses: Address[],
@@ -39,7 +41,7 @@ export function walletsService(
       if (page) params.append("page", page.toString());
 
       const response = await axios.get<WalletNftsResponse>(
-        `${host}/${endpoint}/${account}/nfts`,
+        `${url}/${account}/nfts`,
         {
           headers,
           params,

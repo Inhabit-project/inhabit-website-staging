@@ -11,11 +11,13 @@ import ccopCeloJson from "../../assets/json/contracts/celo/cCOP.json";
 import ccopSepoliaJson from "../../assets/json/contracts/celo-sepolia/cCOP.json";
 import { celo, celoSepolia } from "viem/chains";
 import { SiweMessage } from "siwe";
-import { Address, zeroAddress } from "viem";
+import { Address, Hex, isHex, zeroAddress } from "viem";
 import { createThirdwebClient } from "thirdweb";
 import { celo as thierdwebCelo, celoSepoliaTestnet } from "thirdweb/chains";
 import { ContractJson } from "@/services/blockchain/base-contract";
 import celoLogo from "../../assets/images/blockchains/celo.svg";
+// import ForwarderCeloJson from "../../assets/json/contracts/celo/Forwarder.json";
+import ForwarderSepoliaJson from "../../assets/json/contracts/celo-sepolia/Forwarder.json";
 
 export const ENV: string = ensureEnvVar(import.meta.env.VITE_ENV, "VITE_ENV");
 
@@ -49,6 +51,11 @@ export const INHABIT_JSON =
   ENV === "prod"
     ? (InhabitCeloJson as ContractJson)
     : (InhabitSepoliaJson as ContractJson);
+
+export const FORWARDER_JSON =
+  ENV === "prod"
+    ? (ForwarderSepoliaJson as ContractJson)
+    : (ForwarderSepoliaJson as ContractJson);
 
 export const USDC_JSON =
   ENV === "prod"
@@ -91,7 +98,7 @@ export const DOMAIN = ensureEnvVar(import.meta.env.VITE_DOMAIN, "VITE_DOMAIN");
 export const URI = DOMAIN;
 
 // TODO: implement i18n support for the statement
-export const SIWE_MESSAGE = new SiweMessage({
+export const PARTIAL_SIWE_MESSAGE = new SiweMessage({
   domain: "INHABIT",
   address: zeroAddress,
   statement: "Authenticate with INHABIT and become a steward of this ecosystem",
@@ -140,3 +147,10 @@ export const EXCHANGERATE_API_KEY = ensureEnvVar(
   import.meta.env.VITE_EXCHANGERATE_ACCESS_KEY,
   "VITE_EXCHANGERATE_ACCESS_KEY"
 );
+
+// Empty Hex
+
+export const emptyHex = "0x" as Hex;
+export const isEmptyHex = (hex: Hex): boolean => isHex(hex) && hex === emptyHex;
+
+export const VERSION = "1";
