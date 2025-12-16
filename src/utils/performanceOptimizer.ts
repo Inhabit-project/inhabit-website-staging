@@ -1,5 +1,5 @@
-import React from 'react';
-import gsap from 'gsap';
+import React from "react";
+import gsap from "gsap";
 
 /**
  * Performance Optimization Utilities
@@ -29,15 +29,15 @@ class PerformanceOptimizer {
    */
   batchDOMReads<T>(readOperations: (() => T)[]): T[] {
     const results: T[] = [];
-    
+
     // Force a layout read to get all measurements at once
     document.body.offsetHeight; // Trigger layout
-    
+
     // Execute all read operations
-    readOperations.forEach(operation => {
+    readOperations.forEach((operation) => {
       results.push(operation());
     });
-    
+
     return results;
   }
 
@@ -45,21 +45,21 @@ class PerformanceOptimizer {
    * Optimize element for hardware acceleration
    */
   optimizeForHardwareAcceleration(element: HTMLElement): void {
-    element.style.transform = 'translateZ(0)';
-    element.style.backfaceVisibility = 'hidden';
-    element.style.willChange = 'auto';
+    element.style.transform = "translateZ(0)";
+    element.style.backfaceVisibility = "hidden";
+    element.style.willChange = "auto";
   }
 
   /**
    * Create optimized ResizeObserver
    */
   createOptimizedResizeObserver(
-    element: Element, 
+    element: Element,
     callback: () => void,
     debounceMs: number = 16
   ): ResizeObserver {
     let timeoutId: number | null = null;
-    
+
     const debouncedCallback = () => {
       if (timeoutId) {
         clearTimeout(timeoutId);
@@ -74,9 +74,9 @@ class PerformanceOptimizer {
 
     const observer = new ResizeObserver(debouncedCallback);
     observer.observe(element);
-    
+
     this.resizeObservers.set(element, observer);
-    
+
     return observer;
   }
 
@@ -107,7 +107,7 @@ class PerformanceOptimizer {
     gsap.set(elements, {
       ...properties,
       force3D: true,
-      transformOrigin: "center center"
+      transformOrigin: "center center",
     });
   }
 
@@ -119,7 +119,7 @@ class PerformanceOptimizer {
       trigger,
       fastScrollEnd: true,
       preventOverlaps: true,
-      ...config
+      ...config,
     };
   }
 
@@ -134,7 +134,7 @@ class PerformanceOptimizer {
     }
 
     // Clean up all ResizeObservers
-    this.resizeObservers.forEach(observer => {
+    this.resizeObservers.forEach((observer) => {
       observer.disconnect();
     });
     this.resizeObservers.clear();
@@ -184,11 +184,11 @@ export function useOptimizedMeasurements<T>(
 
     const measure = (): void => {
       if (!elementRef.current) return;
-      
+
       const measurements = performanceOptimizer.batchDOMReads([
-        () => measurementsFn(elementRef.current!)
+        () => measurementsFn(elementRef.current!),
       ]);
-      
+
       setResult(measurements[0]);
     };
 
@@ -226,7 +226,7 @@ export const GSAPOptimizer = {
         if (config.onUpdate) {
           config.onUpdate();
         }
-      }
+      },
     });
   },
 
@@ -234,7 +234,10 @@ export const GSAPOptimizer = {
    * Optimize ScrollTrigger
    */
   optimizeScrollTrigger(trigger: HTMLElement, config: any = {}) {
-    return performanceOptimizer.getOptimizedScrollTriggerConfig(trigger, config);
+    return performanceOptimizer.getOptimizedScrollTriggerConfig(
+      trigger,
+      config
+    );
   },
 
   /**
@@ -242,8 +245,8 @@ export const GSAPOptimizer = {
    */
   batchSet(elements: HTMLElement[], properties: gsap.TweenVars) {
     performanceOptimizer.batchGSAPSet(elements, properties);
-  }
-}; 
+  },
+};
 
 /**
  * Performance optimization utilities for better loading performance
@@ -251,10 +254,10 @@ export const GSAPOptimizer = {
 
 // Priority levels for different types of content
 export enum LoadingPriority {
-  CRITICAL = 'critical',      // Above-the-fold content (Hero, Menu)
-  HIGH = 'high',              // Important content (Video, Hubs, NFT)
-  MEDIUM = 'medium',          // Secondary content (Photo, Infographic)
-  LOW = 'low',                // Below-the-fold content (Blog, FAQ, Footer)
+  CRITICAL = "critical", // Above-the-fold content (Hero, Menu)
+  HIGH = "high", // Important content (Video, Hubs, NFT)
+  MEDIUM = "medium", // Secondary content (Photo, Infographic)
+  LOW = "low", // Below-the-fold content (Blog, FAQ, Footer)
 }
 
 // Component loading configuration
@@ -324,7 +327,7 @@ export class ResourcePreloader {
     return ResourcePreloader.instance;
   }
 
-  preloadImage(src: string, priority: 'high' | 'low' = 'low'): Promise<void> {
+  preloadImage(src: string, priority: "high" | "low" = "low"): Promise<void> {
     if (this.preloadedResources.has(src)) {
       return Promise.resolve();
     }
@@ -336,16 +339,16 @@ export class ResourcePreloader {
         resolve();
       };
       img.onerror = reject;
-      
-      if (priority === 'high') {
-        img.fetchPriority = 'high';
+
+      if (priority === "high") {
+        img.fetchPriority = "high";
       }
-      
+
       img.src = src;
     });
   }
 
-  preloadFont(family: string, weight: string = '400'): void {
+  preloadFont(family: string, weight: string = "400"): void {
     if (document.fonts) {
       document.fonts.load(`${weight} 16px ${family}`);
     }
@@ -353,13 +356,13 @@ export class ResourcePreloader {
 
   preloadCriticalResources(): void {
     // Preload critical images
-    this.preloadImage('/assets/hero.avif', 'high');
-    this.preloadImage('/assets/hero-mobile.webp', 'high');
-    
+    this.preloadImage("/assets/hero.avif", "high");
+    this.preloadImage("/assets/hero-mobile.webp", "high");
+
     // Preload critical fonts
-    this.preloadFont('Montserrat', '400');
-    this.preloadFont('Montserrat', '700');
-    this.preloadFont('Abel', '400');
+    this.preloadFont("Montserrat", "400");
+    this.preloadFont("Montserrat", "700");
+    this.preloadFont("Abel", "400");
   }
 }
 
@@ -381,16 +384,16 @@ export class LazyLoader {
     options: IntersectionObserverInit = {}
   ): string {
     const id = `observer_${Date.now()}_${Math.random()}`;
-    
+
     const observer = new IntersectionObserver(callback, {
-      rootMargin: '50px',
+      rootMargin: "50px",
       threshold: 0.1,
       ...options,
     });
-    
+
     observer.observe(element);
     this.observers.set(id, observer);
-    
+
     return id;
   }
 
@@ -403,7 +406,7 @@ export class LazyLoader {
   }
 
   disconnectAll(): void {
-    this.observers.forEach(observer => observer.disconnect());
+    this.observers.forEach((observer) => observer.disconnect());
     this.observers.clear();
   }
 }
@@ -429,71 +432,70 @@ export class MainPageOptimizer {
   }
 
   async optimizeInitialLoad(): Promise<void> {
-    this.performanceMonitor.startTimer('mainPageLoad');
-    
+    this.performanceMonitor.startTimer("mainPageLoad");
+
     try {
       // Preload critical resources
       this.resourcePreloader.preloadCriticalResources();
-      
+
       // Optimize font loading
       this.optimizeFontLoading();
-      
+
       // Optimize image loading
       this.optimizeImageLoading();
-      
+
       // Setup performance monitoring
       this.setupPerformanceMonitoring();
-      
     } catch (error) {
-      console.warn('Performance optimization failed:', error);
+      console.warn("Performance optimization failed:", error);
     }
   }
 
   private optimizeFontLoading(): void {
     // Use font-display: swap for better performance
-    if ('fonts' in document) {
+    if ("fonts" in document) {
       document.fonts.ready.then(() => {
-        console.log('Fonts loaded successfully');
+        console.log("Fonts loaded successfully");
       });
     }
   }
 
   private optimizeImageLoading(): void {
     // Set loading priorities for images
-    const images = document.querySelectorAll('img[data-loading-priority]');
-    images.forEach(img => {
-      const priority = img.getAttribute('data-loading-priority');
-      if (priority === 'high') {
-        (img as HTMLImageElement).fetchPriority = 'high';
+    const images = document.querySelectorAll("img[data-loading-priority]");
+    images.forEach((img) => {
+      const priority = img.getAttribute("data-loading-priority");
+      if (priority === "high") {
+        (img as HTMLImageElement).fetchPriority = "high";
       }
     });
   }
 
   private setupPerformanceMonitoring(): void {
     // Monitor Core Web Vitals
-    if ('PerformanceObserver' in window) {
+    if ("PerformanceObserver" in window) {
       try {
         const observer = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
-            if (entry.entryType === 'largest-contentful-paint') {
-              console.log('LCP:', entry.startTime);
+            if (entry.entryType === "largest-contentful-paint") {
             }
-            if (entry.entryType === 'first-input') {
+            if (entry.entryType === "first-input") {
               const firstInputEntry = entry as PerformanceEventTiming;
-              console.log('FID:', firstInputEntry.processingStart - firstInputEntry.startTime);
             }
           }
         });
-        
-        observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input'] });
+
+        observer.observe({
+          entryTypes: ["largest-contentful-paint", "first-input"],
+        });
       } catch (error) {
-        console.warn('Performance monitoring setup failed:', error);
+        console.warn("Performance monitoring setup failed:", error);
       }
     }
   }
 
   getLoadTime(): number {
-    return this.performanceMonitor.endTimer('mainPageLoad');
+    return this.performanceMonitor.endTimer("mainPageLoad");
   }
 
   cleanup(): void {
@@ -505,4 +507,4 @@ export class MainPageOptimizer {
 export const performanceMonitor = PerformanceMonitor.getInstance();
 export const resourcePreloader = ResourcePreloader.getInstance();
 export const lazyLoader = LazyLoader.getInstance();
-export const mainPageOptimizer = MainPageOptimizer.getInstance(); 
+export const mainPageOptimizer = MainPageOptimizer.getInstance();

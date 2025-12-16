@@ -176,20 +176,11 @@ export const useStore = create<Store>((set, get) => {
         usdToCopRate = serviceResponse.data ?? 0;
       }
 
-      console.log("usdToCopRate", usdToCopRate);
       set({ usdToCopRate: usdToCopRate });
     },
 
     getWalletNfts: async (address: Address) => {
       const campaigns = get().campaigns;
-
-      console.log("campaigns", campaigns);
-      console.log("campaigns.length", campaigns.length);
-
-      console.log(
-        "collections",
-        campaigns.map((campaign) => campaign.collections)
-      );
 
       if (campaigns.length === 0) {
         set({ walletsNfts: [] });
@@ -221,8 +212,6 @@ export const useStore = create<Store>((set, get) => {
         set({ walletsNfts: [] });
         return [];
       }
-
-      console.log("serviceResponse.data", serviceResponse.data);
 
       set({ walletsNfts: serviceResponse.data });
       return serviceResponse.data;
