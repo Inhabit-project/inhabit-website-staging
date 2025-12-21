@@ -25,13 +25,14 @@ import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
 import { useCcop } from "@/hooks/contracts/erc20/useCcop";
 import { t } from "i18next";
 import Cookies from "js-cookie";
-import { useActiveAccount, useActiveWallet } from "thirdweb/react";
+import { useActiveWallet } from "thirdweb/react";
 import { Address, ZERO_ADDRESS } from "thirdweb";
 // import { useCusd } from "@/hooks/contracts/erc20/useCusd";
 import { formatCcopToCop } from "@/utils/format-ccop-to-cop";
 import { parseUsdToUsdc } from "@/utils/usdc-format.utils";
 import { generateWompiSignature } from "@/utils/generate-wompi-signature.util";
 import { useAccount } from "@/hooks/api/account";
+import { APIError } from "@/models/api.model";
 
 interface Props {
   availableSupply: number;
@@ -68,6 +69,7 @@ export function VoucherStep(props: Props): JSX.Element {
   const [expandedPaymentMethod, setExpandedPaymentMethod] = useState<
     string | null
   >(null);
+  const [isWompiScriptLoaded, setIsWompiScriptLoaded] = useState(false);
 
   // external hooks
   const { campaignId, collectionId } = useParams();
@@ -103,15 +105,14 @@ export function VoucherStep(props: Props): JSX.Element {
   );
 
   /// get siwe message
-  const { data: dataSiweMessage, isPending: isGetSiweMessagePending } =
-    useGetSiweMessage();
+  const { data: dataSiweMessage } = useGetSiweMessage();
 
   const siweMessage = useMemo(() => {
     return dataSiweMessage ?? "";
   }, [dataSiweMessage]);
 
   /// save order
-  const { mutate: saveOrder, isPending: isSaveOrderPending } = useSaveOrder;
+  const { mutate: saveOrder } = useSaveOrder;
 
   // inhabit hook
   const { buyNFT: buyNFTHook, calculateTokenAmount: calcHook } =
@@ -224,8 +225,13 @@ export function VoucherStep(props: Props): JSX.Element {
       return;
     }
 
+    // Check if script already exists and WidgetCheckout is available
     const existingScript = document.getElementById("wompi-checkout-script");
     if (existingScript) {
+      // Script exists, check if WidgetCheckout is ready
+      if ((window as any).WidgetCheckout) {
+        setIsWompiScriptLoaded(true);
+      }
       return;
     }
 
@@ -233,23 +239,25 @@ export function VoucherStep(props: Props): JSX.Element {
     script.id = "wompi-checkout-script";
     script.src = "https://checkout.wompi.co/widget.js";
     script.async = true;
-    // script.onload = () => console.log("✅ [1] Script de Wompi CARGADO");
+    script.onload = () => {
+      setIsWompiScriptLoaded(true);
+    };
     script.onerror = () =>
-      console.error("❌ [1] Error cargando el script de Wompi");
+      console.error("❌ Error cargando el script de Wompi");
     document.body.appendChild(script);
   }, []);
 
   // 2. useEffect para inicializar el widget
   useEffect(() => {
+    if (!isWompiScriptLoaded) {
+      return;
+    }
+
     if (!priceInCcopInCents || priceInCcopInCents <= 0) {
       return;
     }
 
     if (!wompiSignature) {
-      return;
-    }
-
-    if (typeof window === "undefined") {
       return;
     }
 
@@ -270,7 +278,7 @@ export function VoucherStep(props: Props): JSX.Element {
     return () => {
       checkoutRef.current = null;
     };
-  }, [priceInCcopInCents, wompiReference, wompiSignature]);
+  }, [isWompiScriptLoaded, priceInCcopInCents, wompiReference, wompiSignature]);
 
   const handlePayWithCreditCard = async () => {
     const cfg = paymentByCoin[COIN.USDC];
@@ -332,8 +340,16 @@ export function VoucherStep(props: Props): JSX.Element {
               }, 500);
             });
           },
-          onError: (error: any) => {
-            console.error("❌", error);
+          onError: (error: APIError) => {
+            if (error.status === 409) {
+              setWompiReference(
+                crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase()
+              );
+
+              alert(
+                t("membership.voucher.Order already exists. Please try again.")
+              );
+            }
           },
         }
       );
