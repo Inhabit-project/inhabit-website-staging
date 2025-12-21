@@ -1,6 +1,5 @@
 import { JSX, useEffect, useState } from "react";
 import { Checkout } from "./Checkout";
-import { useAccount, useWalletClient } from "wagmi";
 import { useStore } from "../../../store";
 import { MUST_DO_KYC_HARD } from "../../../config/const";
 // import { ConnectButton } from "../../../ui/ConnectButton";

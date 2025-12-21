@@ -19,18 +19,19 @@ import {
   WOMPI_PUBLIC_KEY,
 } from "@/config/const";
 import { useInhabit } from "@/hooks/contracts/inhabit";
-import { formatUnits, Hex, keccak256, toBytes } from "viem";
+import { formatUnits, getAddress, Hex, keccak256, toBytes } from "viem";
 import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
 import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
 import { useCcop } from "@/hooks/contracts/erc20/useCcop";
 import { t } from "i18next";
 import Cookies from "js-cookie";
-import { useActiveAccount } from "thirdweb/react";
-import { Address } from "thirdweb";
+import { useActiveAccount, useActiveWallet } from "thirdweb/react";
+import { Address, ZERO_ADDRESS } from "thirdweb";
 // import { useCusd } from "@/hooks/contracts/erc20/useCusd";
 import { formatCcopToCop } from "@/utils/format-ccop-to-cop";
 import { parseUsdToUsdc } from "@/utils/usdc-format.utils";
 import { generateWompiSignature } from "@/utils/generate-wompi-signature.util";
+import { useAccount } from "@/hooks/api/account";
 
 interface Props {
   availableSupply: number;
@@ -69,8 +70,19 @@ export function VoucherStep(props: Props): JSX.Element {
   >(null);
 
   // external hooks
-  const { campaignId } = useParams();
-  const account = useActiveAccount();
+  const { campaignId, collectionId } = useParams();
+
+  // thirdweb
+  const wallet = useActiveWallet();
+  const chainId = useMemo(() => wallet?.getChain()?.id ?? 0, [wallet]);
+  const account = useMemo(() => wallet?.getAccount(), [wallet]);
+  const accountAddress = useMemo(() => {
+    try {
+      return getAddress(account?.address as Address);
+    } catch (error) {
+      return ZERO_ADDRESS;
+    }
+  }, [account]);
 
   // store
   const {
@@ -83,6 +95,23 @@ export function VoucherStep(props: Props): JSX.Element {
     /*cusd,*/ ccop,
     getWalletNfts,
   } = useStore();
+
+  // account hook
+  const { useGetSiweMessage, useSaveOrder } = useAccount(
+    chainId,
+    accountAddress
+  );
+
+  /// get siwe message
+  const { data: dataSiweMessage, isPending: isGetSiweMessagePending } =
+    useGetSiweMessage();
+
+  const siweMessage = useMemo(() => {
+    return dataSiweMessage ?? "";
+  }, [dataSiweMessage]);
+
+  /// save order
+  const { mutate: saveOrder, isPending: isSaveOrderPending } = useSaveOrder;
 
   // inhabit hook
   const { buyNFT: buyNFTHook, calculateTokenAmount: calcHook } =
@@ -126,7 +155,9 @@ export function VoucherStep(props: Props): JSX.Element {
     useResendKycEmail();
 
   const cookieReferral = Cookies.get(COOKIE_REFERRAL) as Hex | undefined;
-  const referral = cookieReferral ? cookieReferral : keccak256(toBytes(""));
+  const referral = useMemo(() => {
+    return cookieReferral ? cookieReferral : keccak256(toBytes(""));
+  }, [cookieReferral]);
 
   const selectedBalance = useMemo(() => {
     if (usdcBalance >= price) return usdcBalance;
@@ -187,51 +218,134 @@ export function VoucherStep(props: Props): JSX.Element {
     })();
   }, [priceInCcopInCents, wompiReference]);
 
-  /// initialize Wompi WidgetCheckout for use with a custom button
+  // 1. useEffect para cargar el script de Wompi
   useEffect(() => {
-    if (!priceInCcopInCents || priceInCcopInCents <= 0 || !wompiSignature)
+    if (typeof window === "undefined") {
       return;
-
-    if (typeof window === "undefined") return;
-
-    const initCheckout = () => {
-      const W = (window as any).WidgetCheckout;
-      if (!W) {
-        console.error("WidgetCheckout no está disponible en window");
-        return;
-      }
-
-      checkoutRef.current = new W({
-        currency: "COP",
-        amountInCents: priceInCcopInCents,
-        reference: wompiReference,
-        publicKey: WOMPI_PUBLIC_KEY,
-        "signature:integrity": wompiSignature,
-      });
-    };
-
-    const existingScript = document.getElementById(
-      "wompi-checkout-script"
-    ) as HTMLScriptElement | null;
-
-    if (!existingScript) {
-      const script = document.createElement("script");
-      script.id = "wompi-checkout-script";
-      script.src = "https://checkout.wompi.co/widget.js";
-      script.async = true;
-      script.onload = initCheckout;
-      script.onerror = () => {
-        console.error("Error cargando el script de Wompi");
-      };
-      document.body.appendChild(script);
-    } else {
-      initCheckout();
     }
+
+    const existingScript = document.getElementById("wompi-checkout-script");
+    if (existingScript) {
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.id = "wompi-checkout-script";
+    script.src = "https://checkout.wompi.co/widget.js";
+    script.async = true;
+    // script.onload = () => console.log("✅ [1] Script de Wompi CARGADO");
+    script.onerror = () =>
+      console.error("❌ [1] Error cargando el script de Wompi");
+    document.body.appendChild(script);
+  }, []);
+
+  // 2. useEffect para inicializar el widget
+  useEffect(() => {
+    if (!priceInCcopInCents || priceInCcopInCents <= 0) {
+      return;
+    }
+
+    if (!wompiSignature) {
+      return;
+    }
+
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const W = (window as any).WidgetCheckout;
+
+    if (!W) {
+      return;
+    }
+
+    checkoutRef.current = new W({
+      currency: "COP",
+      amountInCents: priceInCcopInCents,
+      reference: wompiReference,
+      publicKey: WOMPI_PUBLIC_KEY,
+      "signature:integrity": wompiSignature,
+    });
 
     return () => {
       checkoutRef.current = null;
     };
   }, [priceInCcopInCents, wompiReference, wompiSignature]);
+
+  const handlePayWithCreditCard = async () => {
+    const cfg = paymentByCoin[COIN.USDC];
+
+    if (
+      !campaignId ||
+      !collectionId ||
+      !cfg ||
+      !account ||
+      !siweMessage ||
+      !checkoutRef.current
+    ) {
+      alert(
+        t(
+          "membership.voucher.Payment gateway is loading. Please try again in a moment."
+        )
+      );
+      return;
+    }
+
+    try {
+      const signature = await account.signMessage({ message: siweMessage });
+
+      saveOrder(
+        {
+          chainId,
+          address: accountAddress,
+          message: siweMessage,
+          signature,
+          reference: wompiReference,
+          to: accountAddress,
+          referral,
+          campaignId,
+          collectionId,
+          paymentToken: cfg.address,
+          paymentAmount: cfg.amountToSpend,
+        },
+        {
+          onSuccess: (reference: string) => {
+            checkoutRef.current.open(async (_result: any) => {
+              setWompiSignature("");
+              setWompiReference(
+                crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase()
+              );
+
+              confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+              alert(t("membership.voucher.Membership purchased successfully!"));
+
+              setTimeout(async () => {
+                try {
+                  await Promise.all([
+                    refetchUsdc(),
+                    refetchUsdt(),
+                    refetchCcop(),
+                  ]);
+                } catch (error) {
+                  console.error("❌ Error refreshing balances:", error);
+                }
+              }, 500);
+            });
+          },
+          onError: (error: any) => {
+            console.error("❌", error);
+          },
+        }
+      );
+    } catch (error) {
+      console.error("❌ Error signing message:", error);
+    }
+  };
+
+  /// reset por disconnect
+  useEffect(() => {
+    if (!account && onWalletDisconnect) onWalletDisconnect();
+  }, [account, onWalletDisconnect]);
 
   /// cooldown
   useEffect(() => {
@@ -255,47 +369,6 @@ export function VoucherStep(props: Props): JSX.Element {
     }, 1000);
     return () => clearTimeout(timer);
   }, [cooldown]);
-
-  /// reset por disconnect
-  useEffect(() => {
-    if (!account && onWalletDisconnect) onWalletDisconnect();
-  }, [account, onWalletDisconnect]);
-
-  const handlePayWithCreditCard = () => {
-    if (!checkoutRef.current) {
-      alert(
-        t(
-          "membership.voucher.Payment gateway is loading. Please try again in a moment."
-        )
-      );
-      return;
-    }
-
-    checkoutRef.current.open(async (_result: any) => {
-      // const tx = result?.transaction;
-      setWompiSignature("");
-      setWompiReference(
-        crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase()
-      );
-
-      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-
-      alert(t("membership.voucher.Membership purchased successfully!"));
-
-      setTimeout(async () => {
-        try {
-          await Promise.all([
-            refetchUsdc(),
-            refetchUsdt(),
-            refetchCcop(),
-            /*refetchCusd()*/
-          ]);
-        } catch (error) {
-          console.error("❌ Error refreshing balances after purchase:", error);
-        }
-      }, 500);
-    });
-  };
 
   const paymentByCoin = useMemo(() => {
     const usdAmount = Number(parseUsdToUsdc(price.toString()));
