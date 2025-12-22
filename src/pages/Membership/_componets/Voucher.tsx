@@ -33,6 +33,8 @@ import { parseUsdToUsdc } from "@/utils/usdc-format.utils";
 import { generateWompiSignature } from "@/utils/generate-wompi-signature.util";
 import { useAccount } from "@/hooks/api/account";
 import { APIError } from "@/models/api.model";
+import visaImage from "@/assets/images/cards/visa.svg";
+import creditCardImage from "@/assets/images/cards/mastercard.svg";
 
 interface Props {
   availableSupply: number;
@@ -602,6 +604,14 @@ export function VoucherStep(props: Props): JSX.Element {
             <h4 className="heading-6 text-left">
               {t("membership.voucher.Pay with card")}
             </h4>
+            <div className="flex items-center gap-2">
+              <img
+                src={creditCardImage}
+                alt="Credit Card"
+                className="w-6 h-6"
+              />
+              <img src={visaImage} alt="Visa" className="w-6 h-6" />
+            </div>
           </button>
         </div>
         {/* Pay with Crypto */}

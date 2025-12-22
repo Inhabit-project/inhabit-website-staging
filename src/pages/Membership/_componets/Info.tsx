@@ -1,5 +1,10 @@
-import { JSX } from "react";
+import { JSX, useMemo } from "react";
 import { Collection } from "../../../models/collection.model";
+import { useErc721 } from "@/hooks/contracts/erc721";
+import { useAccount } from "@/hooks/api/account";
+import { useActiveWallet } from "thirdweb/react";
+import { Address, getAddress } from "viem";
+import { ZERO_ADDRESS } from "thirdweb";
 
 type Props = {
   collection: Collection;
@@ -7,14 +12,51 @@ type Props = {
 export function Info(props: Props): JSX.Element {
   const { collection } = props;
 
+  // thirdweb
+  const wallet = useActiveWallet();
+  const account = useMemo(() => wallet?.getAccount(), [wallet]);
+  const accountAddress = useMemo(() => {
+    try {
+      return getAddress(account?.address as Address);
+    } catch (error) {
+      return ZERO_ADDRESS;
+    }
+  }, [account]);
+
+  const { useBalanceOf } = useErc721(collection.address);
+
+  /// Get balance of owner
+  const { data: dataBalance } = useBalanceOf(accountAddress);
+
+  const rawBalance = useMemo(() => {
+    console.log("dataBalance", dataBalance);
+    return dataBalance ? dataBalance : 0;
+  }, [dataBalance]);
+
+  const balance = useMemo(() => {
+    return rawBalance ? Number(rawBalance) : 0;
+  }, [rawBalance]);
+
   return (
     <div className="flex-1 flex flex-col gap-8 mt-16 lg:mt-0">
       <div className="flex flex-col md:flex-row gap-8 items-start">
-        <img
-          src={collection.image}
-          alt={collection.symbol}
-          className="w-[320px] h-[320px] rounded-3xl object-cover border border-green-soft shadow-lg"
-        />
+        <div className="flex flex-col items-center gap-3">
+          <img
+            src={collection.image}
+            alt={collection.symbol}
+            className="w-[320px] h-[320px] rounded-3xl object-cover border border-green-soft shadow-lg"
+          />
+          {collection.membershipContract && balance > 0 && (
+            <button
+              className="btn-secondary text-sm px-4 py-2"
+              onClick={() => {
+                window.open(collection.membershipContract, "_blank");
+              }}
+            >
+              Download Contract
+            </button>
+          )}
+        </div>
         <div className="flex flex-col gap-2">
           <span className="eyebrow text-secondary">{collection.hub}</span>
           <h1 className="heading-2 text-secondary font-semibold">

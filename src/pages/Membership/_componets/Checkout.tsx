@@ -13,6 +13,7 @@ import { mapUserToUserDto } from "../../../services/mapping/mapUserToUserDto";
 import { useStore } from "../../../store";
 import { useTranslation } from "react-i18next";
 import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
+import { Address } from "viem";
 
 type Props = {
   membershipContract: string;
@@ -207,7 +208,7 @@ export function Checkout(props: Props): JSX.Element {
   const onSubmit = (data: Form) => {
     if (!account || !account.address || !chain) return;
 
-    fetchNonce(account.address, {
+    fetchNonce(account.address as Address, {
       onSuccess: async (nonce) => {
         if (!nonce) return;
 
@@ -218,7 +219,7 @@ export function Checkout(props: Props): JSX.Element {
         );
         const signature = await account.signMessage({ message });
         const dto = mapUserToUserDto({
-          address: account.address,
+          address: account.address as Address,
           message,
           signature,
           nonce,

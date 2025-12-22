@@ -32,6 +32,7 @@ export function useErc721(contractAddress: Address) {
   );
 
   const QUERY_KEY = `${chain}-${contractAddress}`;
+  const QUERY_KEY_BALANCE_OF = `${QUERY_KEY}-balance-of`;
   const QUERY_KEY_GET_APPROVED = `${QUERY_KEY}-get-approved`;
   const QUERY_KEY_NAME = `${QUERY_KEY}-name`;
   const QUERY_KEY_OWNER_OF = `${QUERY_KEY}-owner-of`;
@@ -60,6 +61,18 @@ export function useErc721(contractAddress: Address) {
       queryKey: [QUERY_KEY_NAME],
       queryFn: async (): Promise<string> => {
         const result = await erc721.name();
+        if (!result.success) throw result.error;
+        return result.data!;
+      },
+    });
+  };
+
+  const useBalanceOf = (owner: Address): UseQueryResult<bigint, Error> => {
+    return useQuery({
+      queryKey: [QUERY_KEY_BALANCE_OF, owner],
+      enabled: !!owner,
+      queryFn: async (): Promise<bigint> => {
+        const result = await erc721.balanceOf(owner);
         if (!result.success) throw result.error;
         return result.data!;
       },
@@ -114,11 +127,13 @@ export function useErc721(contractAddress: Address) {
     useGetApproved,
     useName,
     useOwnerOf,
+    useBalanceOf,
     useApprove,
     useTransferFrom,
     address: erc721.getAddress(),
     QUERY_KEY_GET_APPROVED,
     QUERY_KEY_NAME,
     QUERY_KEY_OWNER_OF,
+    QUERY_KEY_BALANCE_OF,
   };
 }

@@ -134,18 +134,22 @@ export default function Membership(props: Props): JSX.Element {
     <div className="min-h-screen background-gradient-light">
       <Menu />
 
-      {/* Last NFT Image - Fixed bottom right */}
       {lastNft && (
         <button
           onClick={() => setIsViewAssetsModalOpen(true)}
-          className="fixed bottom-6 right-6 z-50 w-44 h-w-44 rounded-xl overflow-hidden border-2 border-green-soft/50 shadow-lg hover:border-green-soft hover:scale-105 transition-all duration-300"
+          className="fixed bottom-6 right-6 z-50 group"
           aria-label="View Assets"
         >
-          <img
-            src={lastNft.imageUrl}
-            alt={lastNft.name}
-            className="w-full h-full object-cover"
-          />
+          <div className="w-36 h-36 rounded-xl overflow-hidden border-4 border-primary shadow-xl group-hover:scale-105 transition-transform duration-300">
+            <img
+              src={lastNft.imageUrl}
+              alt={lastNft.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <span className="block mt-2 text-secondary text-sm font-semibold uppercase tracking-wider text-center">
+            My Assets
+          </span>
         </button>
       )}
 

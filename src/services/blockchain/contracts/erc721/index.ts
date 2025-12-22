@@ -43,6 +43,17 @@ export class ERC721Contract extends BaseContract {
     }
   }
 
+  async balanceOf(owner: Address): Promise<ServiceResult<bigint>> {
+    try {
+      const balance = await this.read<bigint>("balanceOf", [owner]);
+      return { success: true, data: balance };
+    } catch (error) {
+      const parsedError = parseContractError(error, "balanceOf");
+      console.error("❌", parsedError);
+      return { success: false, error: parsedError };
+    }
+  }
+
   async ownerOf(tokenId: bigint): Promise<ServiceResult<Hex>> {
     try {
       const owner = await this.read<Address>("ownerOf", [tokenId]);

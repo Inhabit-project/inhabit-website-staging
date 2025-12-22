@@ -56,7 +56,7 @@ export function ViewAssetsModal(props: Props): JSX.Element {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-md"
+      className="fixed inset-0 z-[9999] flex items-center justify-center backdrop-blur-md"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -72,7 +72,7 @@ export function ViewAssetsModal(props: Props): JSX.Element {
                 onClick={() => {
                   setSelectedNft(null);
                 }}
-                className="text-light hover:text-[#D57300] transition-colors"
+                className=" text-light hover:text-[#D57300] transition-colors"
                 aria-label="Back"
               >
                 <svg
