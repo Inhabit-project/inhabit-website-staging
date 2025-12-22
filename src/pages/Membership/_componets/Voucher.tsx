@@ -19,7 +19,7 @@ import {
   WOMPI_PUBLIC_KEY,
 } from "@/config/const";
 import { useInhabit } from "@/hooks/contracts/inhabit";
-import { formatUnits, getAddress, Hex, keccak256, toBytes } from "viem";
+import { formatUnits, getAddress, Hex, zeroHash } from "viem";
 import { useUsdt } from "@/hooks/contracts/erc20/useUsdt";
 import { useUsdc } from "@/hooks/contracts/erc20/useUsdc";
 import { useCcop } from "@/hooks/contracts/erc20/useCcop";
@@ -156,8 +156,9 @@ export function VoucherStep(props: Props): JSX.Element {
     useResendKycEmail();
 
   const cookieReferral = Cookies.get(COOKIE_REFERRAL) as Hex | undefined;
+
   const referral = useMemo(() => {
-    return cookieReferral ? cookieReferral : keccak256(toBytes(""));
+    return cookieReferral ? cookieReferral : zeroHash; // ✅ 0x0000...0000
   }, [cookieReferral]);
 
   const selectedBalance = useMemo(() => {
@@ -312,7 +313,7 @@ export function VoucherStep(props: Props): JSX.Element {
           to: accountAddress,
           referral,
           campaignId,
-          collectionId,
+          collection: collection!.address as Address,
           paymentToken: cfg.address,
           paymentAmount: cfg.amountToSpend,
         },

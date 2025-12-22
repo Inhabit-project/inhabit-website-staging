@@ -18,7 +18,7 @@ type SaveOrderParams = {
   to: Address;
   referral: Hex;
   campaignId: string;
-  collectionId: string;
+  collection: Address;
   paymentToken: Address;
   paymentAmount: number;
 };
