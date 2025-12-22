@@ -740,6 +740,16 @@
       "You don't have enough balance to purchase this membership. Please recharge your wallet using a credit card or cryptocurrency.": "No tienes saldo suficiente para comprar esta membresía. Recarga tu billetera con una tarjeta de crédito o con criptomonedas.",
       "You need to pass the KYC to purchase this NFT.": "Debes completar el KYC para poder comprar este NFT.",
       "to resend": "para reenviar"
+    },
+    "info": {
+      "Membership": "Membresía",
+      "VALUE": "VALOR",
+      "Download Contract": "Descargar Contrato"
+    },
+    "index": {
+      "My Assets": "Mis Activos",
+      "Loading collection data...": "Cargando datos de la colección...",
+      "No collection data available": "No hay datos de colección disponibles"
     }
   },
   "nuiyanzhiPage": {

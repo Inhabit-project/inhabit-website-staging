@@ -662,6 +662,16 @@
       "You don't have enough balance to purchase this membership. Please recharge your wallet using a credit card or cryptocurrency.": "You don't have enough balance to purchase this membership. Please recharge your wallet using a credit card or cryptocurrency.",
       "You need to pass the KYC to purchase this NFT.": "You need to pass the KYC to purchase this NFT.",
       "to resend": "to resend"
+    },
+    "info": {
+      "Membership": "Membership",
+      "VALUE": "VALUE",
+      "Download Contract": "Download Contract"
+    },
+    "index": {
+      "My Assets": "My Assets",
+      "Loading collection data...": "Loading collection data...",
+      "No collection data available": "No collection data available"
     }
   },
   "nuiyanzhiPage": {

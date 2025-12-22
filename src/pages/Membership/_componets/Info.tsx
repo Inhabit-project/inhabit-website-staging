@@ -1,7 +1,7 @@
 import { JSX, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Collection } from "../../../models/collection.model";
 import { useErc721 } from "@/hooks/contracts/erc721";
-import { useAccount } from "@/hooks/api/account";
 import { useActiveWallet } from "thirdweb/react";
 import { Address, getAddress } from "viem";
 import { ZERO_ADDRESS } from "thirdweb";
@@ -11,6 +11,7 @@ type Props = {
 };
 export function Info(props: Props): JSX.Element {
   const { collection } = props;
+  const { t } = useTranslation();
 
   // thirdweb
   const wallet = useActiveWallet();
@@ -53,7 +54,7 @@ export function Info(props: Props): JSX.Element {
                 window.open(collection.membershipContract, "_blank");
               }}
             >
-              Download Contract
+              {t("membership.info.Download Contract")}
             </button>
           )}
         </div>
@@ -61,7 +62,7 @@ export function Info(props: Props): JSX.Element {
           <span className="eyebrow text-secondary">{collection.hub}</span>
           <h1 className="heading-2 text-secondary font-semibold">
             {collection.symbol} <br />
-            <span className="heading-2 text-secondary ">Membership</span>
+            <span className="heading-2 text-secondary ">{t("membership.info.Membership")}</span>
           </h1>
           <p className="body-S text-secondary max-w-xl whitespace-pre-line">
             {(() => {
@@ -83,7 +84,7 @@ export function Info(props: Props): JSX.Element {
             })()}
           </p>
           <div className="mt-4">
-            <span className="body-M text-secondary font-bold">VALUE</span>
+            <span className="body-M text-secondary font-bold">{t("membership.info.VALUE")}</span>
             <div className="heading-2 font-abel text-secondary">
               {`$ ${collection.price} USD`}
             </div>

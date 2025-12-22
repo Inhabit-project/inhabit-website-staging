@@ -1,4 +1,5 @@
 import { useEffect, useState, JSX } from "react";
+import { useTranslation } from "react-i18next";
 import Menu from "../../components/Menu";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Campaign } from "../../models/campaign.model";
@@ -22,6 +23,7 @@ export default function Membership(props: Props): JSX.Element {
   // hooks
   const [collection, setCollection] = useState<Collection | null>(null);
   const [isViewAssetsModalOpen, setIsViewAssetsModalOpen] = useState(false);
+  const { t } = useTranslation();
 
   // external hooks
   const { campaignId, collectionId } = useParams();
@@ -148,7 +150,7 @@ export default function Membership(props: Props): JSX.Element {
             />
           </div>
           <span className="block mt-2 text-secondary text-sm font-semibold uppercase tracking-wider text-center">
-            My Assets
+            {t("membership.index.My Assets")}
           </span>
         </button>
       )}
@@ -163,7 +165,7 @@ export default function Membership(props: Props): JSX.Element {
         <div className="mt-8 w-full flex items-center justify-center min-h-[50vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-secondary mx-auto mb-4"></div>
-            <p className="text-secondary">Loading collection data...</p>
+            <p className="text-secondary">{t("membership.index.Loading collection data...")}</p>
           </div>
         </div>
       ) : collection ? (
@@ -191,7 +193,7 @@ export default function Membership(props: Props): JSX.Element {
       ) : (
         <div className="mt-8 w-full flex items-center justify-center min-h-[50vh]">
           <div className="text-center">
-            <p className="text-secondary">No collection data available</p>
+            <p className="text-secondary">{t("membership.index.No collection data available")}</p>
           </div>
         </div>
       )}
