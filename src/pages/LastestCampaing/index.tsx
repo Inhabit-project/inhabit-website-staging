@@ -8,6 +8,7 @@ import NFTGrid from "@/components/NFTGrid";
 import Cookies from "js-cookie";
 import { Hex, keccak256, toBytes } from "viem";
 import { COOKIE_REFERRAL } from "@/config/const";
+import Menu from "@/components/Menu";
 
 interface Props {
   onPageReady?: () => void;
@@ -97,6 +98,7 @@ export default function LastestCampaign(props: Props): JSX.Element {
         {t("common.skipToMainContent")}
       </a>
       <div className="min-h-screen background-gradient-light">
+        <Menu />
         <main id="main-content" role="main" tabIndex={-1}>
           <section aria-label={t("sections.nftGrid")} ref={nftGridRef}>
             {!campaignsLoading &&
