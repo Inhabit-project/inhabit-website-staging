@@ -1,3 +1,12 @@
+export interface NftExtraMetadata {
+  symbol?: string;
+  membership_contract?: string;
+  image_high_resolution?: string;
+  image_original_url?: string;
+  image_url?: string;
+  rights?: unknown[];
+}
+
 export interface NftDto {
   chain_id: number;
   contract_address: string;
@@ -9,7 +18,7 @@ export interface NftDto {
   description: string;
   image_url: string;
   metadata_url: string;
-  extra_metadata: [string, any][];
+  extra_metadata: NftExtraMetadata;
   collection: NftCollectionDto;
   contract: NftContractDto;
 }

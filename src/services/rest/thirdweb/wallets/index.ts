@@ -2,6 +2,7 @@ import { SCAN_URL } from "@/config/const";
 import { APIError, ServiceResult } from "@/models/api.model";
 import { Nft } from "@/models/nft.model";
 import { WalletNftsResponse } from "@/services/dtos/wallets-nfts-response";
+import { sanitizeIpfsUri } from "@/utils/sanitize-ipfs-uri";
 import axios, { RawAxiosRequestHeaders } from "axios";
 import { Address } from "viem";
 
@@ -87,6 +88,12 @@ function mapWalletNftsResponseToNfts(response: WalletNftsResponse): Nft[] {
     scanUrl: `${SCAN_URL("nft", nft.contract.address as Address)}/${
       nft.token_id
     }`,
+    membershipContract: sanitizeIpfsUri(
+      nft.extra_metadata?.membership_contract || ""
+    ),
+    highResolutionImage: sanitizeIpfsUri(
+      nft.extra_metadata?.image_high_resolution || ""
+    ),
   }));
 
   return nfts;
