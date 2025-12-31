@@ -46,6 +46,7 @@ export function userServices() {
   // POST
   const sendKycEmail = async (dto: UserDto): Promise<ServiceResult<string>> => {
     try {
+      console.log("dto", dto);
       await axiosInstance.post<void>(`${host}/users/sendKyc`, dto);
       return { success: true };
     } catch (error) {

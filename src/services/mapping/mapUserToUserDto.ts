@@ -3,6 +3,7 @@ import { UserDto } from "../dtos/user.dto";
 
 export function mapUserToUserDto(user: User): UserDto {
   const dto: Partial<UserDto> = {
+    chainId: user.chainId,
     address: user.address,
     message: user.message,
     signature: user.signature,

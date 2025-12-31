@@ -2,6 +2,7 @@ import { KYC_TYPE } from "src/config/enums";
 import { Address, Hex } from "viem";
 
 export interface UserDto {
+  chainId: number;
   address: Address;
   message: string;
   signature: Hex;

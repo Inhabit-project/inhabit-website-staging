@@ -1,4 +1,4 @@
-import { JSX, useEffect, useRef, useState } from "react";
+import { JSX, useEffect, useMemo, useRef, useState } from "react";
 // import { useAccount, useSignMessage } from "wagmi";
 import { Indicator, indicators } from "../../../assets/json/form/indicators";
 import { z } from "zod";
@@ -12,8 +12,13 @@ import { KYC_TYPE } from "../../../config/enums";
 import { mapUserToUserDto } from "../../../services/mapping/mapUserToUserDto";
 import { useStore } from "../../../store";
 import { useTranslation } from "react-i18next";
-import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
-import { Address } from "viem";
+import {
+  useActiveAccount,
+  useActiveWallet,
+  useActiveWalletChain,
+} from "thirdweb/react";
+import { Address, getAddress } from "viem";
+import { ZERO_ADDRESS } from "thirdweb";
 
 type Props = {
   membershipContract: string;
@@ -149,6 +154,18 @@ export function Checkout(props: Props): JSX.Element {
   // props
   const { membershipContract, requiresHardKyc, kycType, goNext } = props;
 
+  // thirdweb
+  const wallet = useActiveWallet();
+  const chainId = useMemo(() => wallet?.getChain()?.id ?? 0, [wallet]);
+  const account = useMemo(() => wallet?.getAccount(), [wallet]);
+  const accountAddress = useMemo(() => {
+    try {
+      return getAddress(account?.address as Address);
+    } catch (error) {
+      return ZERO_ADDRESS;
+    }
+  }, [account]);
+
   // hooks
   const [selectedIndicator, setSelectedIndicator] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -159,9 +176,6 @@ export function Checkout(props: Props): JSX.Element {
     resolver: zodResolver(schema),
     mode: "onChange",
   });
-
-  const account = useActiveAccount();
-  const chain = useActiveWalletChain();
 
   const { mutate: fetchNonce, isPending: isNoncePending } = useNonce();
   const { mutate: sendKycEmail, isPending: isKycPending } = useSendKycEmail();
@@ -206,19 +220,20 @@ export function Checkout(props: Props): JSX.Element {
   }, [isDropdownOpen]);
 
   const onSubmit = (data: Form) => {
-    if (!account || !account.address || !chain) return;
+    if (!account || !account.address || !chainId) return;
 
-    fetchNonce(account.address as Address, {
+    fetchNonce(accountAddress, {
       onSuccess: async (nonce) => {
         if (!nonce) return;
 
         const message = generateSiweMessage(
-          chain.id,
+          chainId,
           account?.address as string,
           nonce
         );
         const signature = await account.signMessage({ message });
         const dto = mapUserToUserDto({
+          chainId,
           address: account.address as Address,
           message,
           signature,

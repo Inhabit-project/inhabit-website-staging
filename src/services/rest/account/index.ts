@@ -5,6 +5,7 @@ import axiosInstance from "@/config/axios.config";
 import { Address, Hex } from "viem";
 
 type AccountsService = {
+  getNonce: (chainIdaddress: Address) => ServiceResult<string>;
   getSiweMessage: (data: Partial<SiweMessage>) => ServiceResult<string>;
   saveOrder: (data: {
     chainId: number;
@@ -26,6 +27,19 @@ export function accountsService(): AccountsService {
   const endpoint = "accounts";
 
   const url = `${host}/${endpoint}`;
+
+  // GET
+  const getNonce = async (address: Address): Promise<ServiceResult<string>> => {
+    try {
+      const response = await axiosInstance.get<string>(
+        `${host}/accounts/getNonce/${address}`
+      );
+      return { success: true, data: response.data };
+    } catch (error) {
+      const apiError = error as APIError;
+      return { success: false, error: apiError };
+    }
+  };
 
   // POST
   const getSiweMessage = async (
@@ -61,6 +75,7 @@ export function accountsService(): AccountsService {
   };
 
   return {
+    getNonce: getNonce as unknown as AccountsService["getNonce"],
     getSiweMessage:
       getSiweMessage as unknown as AccountsService["getSiweMessage"],
     saveOrder: saveOrder as unknown as AccountsService["saveOrder"],

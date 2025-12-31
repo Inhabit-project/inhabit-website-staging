@@ -320,7 +320,7 @@ export function VoucherStep(props: Props): JSX.Element {
           paymentAmount: cfg.amountToSpend,
         },
         {
-          onSuccess: (reference: string) => {
+          onSuccess: (_reference: string) => {
             checkoutRef.current.open(async (_result: any) => {
               setWompiSignature("");
               setWompiReference(
@@ -785,7 +785,7 @@ export function VoucherStep(props: Props): JSX.Element {
               } body-S`}
               onClick={() => {
                 if (!account?.address || !chain) return;
-                fetchNonce(account.address as Address, {
+                fetchNonce(accountAddress, {
                   onSuccess: async (nonce) => {
                     if (!nonce) return;
                     const message = generateSiweMessage(
