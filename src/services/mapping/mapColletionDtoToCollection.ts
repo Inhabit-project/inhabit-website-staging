@@ -13,6 +13,7 @@ export async function mapCollectionDtoToCollection(
       image: "",
       rights: [],
       membershipContract: "",
+      highResolutionImage: "",
     }));
 
   const availableSupply =
@@ -37,5 +38,6 @@ export async function mapCollectionDtoToCollection(
     image: sanitizeIpfsUri(metadata.image),
     rights: metadata.rights,
     membershipContract: sanitizeIpfsUri(metadata.membership_contract),
+    highResolutionImage: sanitizeIpfsUri(metadata.image_high_resolution),
   };
 }

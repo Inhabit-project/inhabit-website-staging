@@ -664,9 +664,13 @@
       "to resend": "to resend"
     },
     "info": {
+      "Downloading": "Downloading",
+      "Downloading Contract": "Downloading Contract",
+      "Downloading High Resolution Image": "Downloading High Resolution Image",
       "Membership": "Membership",
       "VALUE": "VALUE",
-      "Download Contract": "Download Contract"
+      "Download Contract": "Download Contract",
+      "Download High Resolution Image": "Download High Resolution Image"
     },
     "index": {
       "My Assets": "My Assets",

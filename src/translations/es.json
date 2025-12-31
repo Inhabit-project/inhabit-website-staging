@@ -742,9 +742,13 @@
       "to resend": "para reenviar"
     },
     "info": {
+      "Downloading": "Descargando",
+      "Downloading Contract": "Descargando Contrato",
+      "Downloading High Resolution Image": "Descargando Imagen Alta Resolución",
       "Membership": "Membresía",
       "VALUE": "VALOR",
-      "Download Contract": "Descargar Contrato"
+      "Download Contract": "Descargar Contrato",
+      "Download High Resolution Image": "Descargar Imagen Alta Resolución"
     },
     "index": {
       "My Assets": "Mis Activos",

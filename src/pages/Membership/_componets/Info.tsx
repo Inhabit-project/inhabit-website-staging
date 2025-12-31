@@ -47,22 +47,14 @@ export function Info(props: Props): JSX.Element {
             alt={collection.symbol}
             className="w-[320px] h-[320px] rounded-3xl object-cover border border-green-soft shadow-lg"
           />
-          {collection.membershipContract && balance > 0 && (
-            <button
-              className="btn-secondary text-sm px-4 py-2"
-              onClick={() => {
-                window.open(collection.membershipContract, "_blank");
-              }}
-            >
-              {t("membership.info.Download Contract")}
-            </button>
-          )}
         </div>
         <div className="flex flex-col gap-2">
           <span className="eyebrow text-secondary">{collection.hub}</span>
           <h1 className="heading-2 text-secondary font-semibold">
             {collection.symbol} <br />
-            <span className="heading-2 text-secondary ">{t("membership.info.Membership")}</span>
+            <span className="heading-2 text-secondary ">
+              {t("membership.info.Membership")}
+            </span>
           </h1>
           <p className="body-S text-secondary max-w-xl whitespace-pre-line">
             {(() => {
@@ -84,7 +76,9 @@ export function Info(props: Props): JSX.Element {
             })()}
           </p>
           <div className="mt-4">
-            <span className="body-M text-secondary font-bold">{t("membership.info.VALUE")}</span>
+            <span className="body-M text-secondary font-bold">
+              {t("membership.info.VALUE")}
+            </span>
             <div className="heading-2 font-abel text-secondary">
               {`$ ${collection.price} USD`}
             </div>

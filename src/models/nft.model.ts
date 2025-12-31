@@ -9,4 +9,6 @@ export interface Nft {
   description: string;
   imageUrl: string;
   scanUrl: string;
+  membershipContract: string;
+  highResolutionImage: string;
 }

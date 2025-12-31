@@ -18,4 +18,5 @@ export interface Collection {
   image: string;
   rights: Right[];
   membershipContract: string;
+  highResolutionImage: string;
 }

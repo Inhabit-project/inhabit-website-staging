@@ -9,11 +9,14 @@ import { useRelay } from "@/hooks/api/relay";
 import { useErc721 } from "@/hooks/contracts/erc721";
 import { useForwarder } from "@/hooks/contracts/forwarder";
 import { Nft } from "@/models/nft.model";
+import { sanitizeIpfsUri } from "@/utils/sanitize-ipfs-uri";
+
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Address, Hex, ZERO_ADDRESS } from "thirdweb";
 import { useActiveWallet } from "thirdweb/react";
 import { encodeFunctionData, getAddress, TypedDataDomain } from "viem";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   selectedNft: Nft;
@@ -26,6 +29,14 @@ export default function NftDetail(props: Props): JSX.Element {
   const tokenId = useMemo(() => {
     return BigInt(selectedNft.tokenId) ?? BigInt(0);
   }, [selectedNft.tokenId]);
+
+  // i18n
+  const { t } = useTranslation();
+
+  // states
+  const [downloadingContract, setDownloadingContract] = useState(false);
+  const [downloadingHighResolutionImage, setDownloadingHighResolutionImage] =
+    useState(false);
 
   // thirdweb
   const wallet = useActiveWallet();
@@ -256,6 +267,46 @@ export default function NftDetail(props: Props): JSX.Element {
     }
   };
 
+  const downloadFile = useCallback(
+    async (
+      url: string,
+      filename: string,
+      mimeType: string,
+      setDownloading: (downloading: boolean) => void
+    ) => {
+      try {
+        setDownloading(true);
+        // Sanitize IPFS URL to HTTP gateway
+        const sanitizedUrl = sanitizeIpfsUri(url);
+
+        const response = await fetch(sanitizedUrl);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        console.log("Blob created, size:", blob.size);
+
+        const blobWithType = new Blob([blob], { type: mimeType });
+        const blobUrl = URL.createObjectURL(blobWithType);
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(blobUrl);
+      } catch (error) {
+        console.error("Error downloading file:", error);
+        alert(`Error descargando archivo: ${error}`);
+      } finally {
+        setDownloading(false);
+      }
+    },
+    []
+  );
+
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       {/* Left Side Image */}
@@ -305,6 +356,39 @@ export default function NftDetail(props: Props): JSX.Element {
                 ? "Transferring..."
                 : "Transfer"}
             </button>
+
+            <div className="flex flex-col gap-2">
+              <button
+                className="btn-secondary text-sm px-4 py-2"
+                disabled={!isOwner || downloadingContract}
+                onClick={() =>
+                  downloadFile(
+                    selectedNft.membershipContract,
+                    `${selectedNft.name}-contract.pdf`,
+                    "application/pdf",
+                    setDownloadingContract
+                  )
+                }
+              >
+                {downloadingContract ? "Downloading" : "Download Contract"}
+              </button>
+              <button
+                className="btn-secondary text-sm px-4 py-2!"
+                disabled={!isOwner || downloadingHighResolutionImage}
+                onClick={() =>
+                  downloadFile(
+                    selectedNft.highResolutionImage,
+                    `${selectedNft.name}-high-resolution.png`,
+                    "image/png",
+                    setDownloadingHighResolutionImage
+                  )
+                }
+              >
+                {downloadingHighResolutionImage
+                  ? t("membership.info.Downloading")
+                  : t("membership.info.Download High Resolution Image")}
+              </button>
+            </div>
           </div>
         </div>
       </div>
