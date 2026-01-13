@@ -20,6 +20,9 @@ import { currencyExchangeRatesService } from "@/services/rest/currency-exchange-
 import { Nft } from "@/models/nft.model";
 import { thirdwebService } from "@/services/rest/thirdweb";
 
+// Flag to prevent duplicate exchange rate API calls
+let isExchangeRateFetching = false;
+
 type Store = {
   campaign: Campaign | null;
   campaignLoading: boolean;
@@ -146,37 +149,62 @@ export const useStore = create<Store>((set, get) => {
     },
 
     getUsdToCopRate: async (currencyFrom: CURRENCY, currencyTo: CURRENCY) => {
+      // Fallback rate in case API fails (approximate USD to COP rate)
+      const FALLBACK_USD_TO_COP_RATE = 4200;
+      const isProduction = window.location.protocol === "https:";
+      
       const cookieRateExchange = Cookies.get(VITE_COOKIE_RATE_EXCHANGE);
-      let usdToCopRate = Number(cookieRateExchange);
+      
+      // If cookie exists and has a valid value, use it
+      if (cookieRateExchange) {
+        const cachedRate = Number(cookieRateExchange);
+        if (cachedRate > 0) {
+          set({ usdToCopRate: cachedRate });
+          return cachedRate;
+        }
+      }
 
-      if (!cookieRateExchange) {
+      // Prevent duplicate API calls (e.g., from React Strict Mode)
+      if (isExchangeRateFetching) {
+        return get().usdToCopRate || FALLBACK_USD_TO_COP_RATE;
+      }
+
+      isExchangeRateFetching = true;
+
+      try {
         const serviceResponse = await getExchangeRates(
           currencyFrom,
           currencyTo
         );
 
-        if (!serviceResponse.success) {
-          set({ usdToCopRate: 0 });
-          return 0;
+        let usdToCopRate = FALLBACK_USD_TO_COP_RATE;
+
+        if (serviceResponse.success && serviceResponse.data) {
+          usdToCopRate = serviceResponse.data;
+        } else {
+          console.warn("⚠️ Exchange rate API failed, using fallback rate:", FALLBACK_USD_TO_COP_RATE);
         }
 
-        const oneDayFromNow = new Date(Date.now() + 24 * 60 * 60 * 1000);
+        // Save to cookie (shorter expiry if using fallback)
+        const expiryHours = serviceResponse.success ? 24 : 1;
+        const expiryDate = new Date(Date.now() + expiryHours * 60 * 60 * 1000);
 
         Cookies.set(
           VITE_COOKIE_RATE_EXCHANGE,
-          serviceResponse.data?.toString() ?? "0",
+          usdToCopRate.toString(),
           {
-            expires: oneDayFromNow,
+            expires: expiryDate,
             path: "/",
             sameSite: "lax",
-            secure: true,
+            secure: isProduction,
           }
         );
 
-        usdToCopRate = serviceResponse.data ?? 0;
+        set({ usdToCopRate: usdToCopRate });
+        return usdToCopRate;
+      } finally {
+        isExchangeRateFetching = false;
       }
-
-      set({ usdToCopRate: usdToCopRate });
     },
 
     getWalletNfts: async (address: Address) => {
