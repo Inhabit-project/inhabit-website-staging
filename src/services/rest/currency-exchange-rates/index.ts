@@ -34,7 +34,6 @@ export function currencyExchangeRatesService() {
     getExchangeRates,
   };
 }
-
 function getHost(): string {
   const url: string = "https://api.exchangerate.host/live";
   const accessKey: string = EXCHANGERATE_API_KEY;
@@ -43,3 +42,4 @@ function getHost(): string {
 
   return host;
 }
+
