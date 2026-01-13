@@ -16,7 +16,7 @@ import { createThirdwebClient } from "thirdweb";
 import { celo as thierdwebCelo, celoSepoliaTestnet } from "thirdweb/chains";
 import { ContractJson } from "@/services/blockchain/base-contract";
 import celoLogo from "../../assets/images/blockchains/celo.svg";
-// import ForwarderCeloJson from "../../assets/json/contracts/celo/Forwarder.json";
+import ForwarderCeloJson from "../../assets/json/contracts/celo/Forwarder.json";
 import ForwarderSepoliaJson from "../../assets/json/contracts/celo-sepolia/Forwarder.json";
 
 export const ENV: string = ensureEnvVar(import.meta.env.VITE_ENV, "VITE_ENV");
@@ -54,7 +54,7 @@ export const INHABIT_JSON =
 
 export const FORWARDER_JSON =
   ENV === "prod"
-    ? (ForwarderSepoliaJson as ContractJson)
+    ? (ForwarderCeloJson as ContractJson)
     : (ForwarderSepoliaJson as ContractJson);
 
 export const USDC_JSON =
