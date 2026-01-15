@@ -10,6 +10,7 @@ import { Info } from "./_componets/Info";
 import OtherCollections from "./_componets/OtherCollections";
 import Stepper from "./_componets/Stepper";
 import { ViewAssetsModal } from "./_componets/ViewAssetsModal";
+import { useActiveAccount } from "thirdweb/react";
 
 type Props = {
   onHeroImageLoad?: VoidFunction;
@@ -19,6 +20,9 @@ type Props = {
 export default function Membership(props: Props): JSX.Element {
   // props
   const { onHeroImageLoad } = props;
+
+  // thirdweb hooks
+  const account = useActiveAccount();
 
   // hooks
   const [collection, setCollection] = useState<Collection | null>(null);
@@ -136,7 +140,7 @@ export default function Membership(props: Props): JSX.Element {
     <div className="min-h-screen background-gradient-light">
       <Menu />
 
-      {lastNft && (
+      {account && lastNft && (
         <button
           onClick={() => setIsViewAssetsModalOpen(true)}
           className="fixed bottom-6 right-6 z-50 group"
@@ -165,7 +169,9 @@ export default function Membership(props: Props): JSX.Element {
         <div className="mt-8 w-full flex items-center justify-center min-h-[50vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-secondary mx-auto mb-4"></div>
-            <p className="text-secondary">{t("membership.index.Loading collection data...")}</p>
+            <p className="text-secondary">
+              {t("membership.index.Loading collection data...")}
+            </p>
           </div>
         </div>
       ) : collection ? (
@@ -193,7 +199,9 @@ export default function Membership(props: Props): JSX.Element {
       ) : (
         <div className="mt-8 w-full flex items-center justify-center min-h-[50vh]">
           <div className="text-center">
-            <p className="text-secondary">{t("membership.index.No collection data available")}</p>
+            <p className="text-secondary">
+              {t("membership.index.No collection data available")}
+            </p>
           </div>
         </div>
       )}

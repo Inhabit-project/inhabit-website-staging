@@ -42,4 +42,3 @@ function getHost(): string {
 
   return host;
 }
-

@@ -60,7 +60,7 @@ const App: React.FC = memo(() => {
   const location = useLocation();
 
   // store
-  const { getUsdToCopRate } = useStore();
+  const { usdToCopRate, getUsdToCopRate } = useStore();
 
   // Only show loader on main page reload - NEVER for internal pages or navigation
   const isMainPageReload = useCallback(() => {
@@ -415,7 +415,9 @@ const App: React.FC = memo(() => {
   }, [location.pathname, showTransition]);
 
   useEffect(() => {
-    getUsdToCopRate(CURRENCY.USD, CURRENCY.COP);
+    if (usdToCopRate === 0) {
+      getUsdToCopRate(CURRENCY.USD, CURRENCY.COP);
+    }
   }, []);
 
   return (

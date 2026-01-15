@@ -340,7 +340,7 @@ export function Checkout(props: Props): JSX.Element {
           />
         </div>
         {/* Indicator + Cellphone */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 z-10">
           <div className="relative" ref={dropdownRef}>
             <label className="body-S block text-light font-semibold mb-1">
               {t("membership.checkout.Country Code*")}

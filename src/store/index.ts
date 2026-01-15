@@ -150,11 +150,11 @@ export const useStore = create<Store>((set, get) => {
 
     getUsdToCopRate: async (currencyFrom: CURRENCY, currencyTo: CURRENCY) => {
       // Fallback rate in case API fails (approximate USD to COP rate)
-      const FALLBACK_USD_TO_COP_RATE = 4200;
+      const FALLBACK_USD_TO_COP_RATE = 3800;
       const isProduction = window.location.protocol === "https:";
-      
+
       const cookieRateExchange = Cookies.get(VITE_COOKIE_RATE_EXCHANGE);
-      
+
       // If cookie exists and has a valid value, use it
       if (cookieRateExchange) {
         const cachedRate = Number(cookieRateExchange);
@@ -182,23 +182,22 @@ export const useStore = create<Store>((set, get) => {
         if (serviceResponse.success && serviceResponse.data) {
           usdToCopRate = serviceResponse.data;
         } else {
-          console.warn("⚠️ Exchange rate API failed, using fallback rate:", FALLBACK_USD_TO_COP_RATE);
+          console.warn(
+            "⚠️ Exchange rate API failed, using fallback rate:",
+            FALLBACK_USD_TO_COP_RATE
+          );
         }
 
         // Save to cookie (shorter expiry if using fallback)
         const expiryHours = serviceResponse.success ? 24 : 1;
         const expiryDate = new Date(Date.now() + expiryHours * 60 * 60 * 1000);
 
-        Cookies.set(
-          VITE_COOKIE_RATE_EXCHANGE,
-          usdToCopRate.toString(),
-          {
-            expires: expiryDate,
-            path: "/",
-            sameSite: "lax",
-            secure: isProduction,
-          }
-        );
+        Cookies.set(VITE_COOKIE_RATE_EXCHANGE, usdToCopRate.toString(), {
+          expires: expiryDate,
+          path: "/",
+          sameSite: "lax",
+          secure: isProduction,
+        });
 
         set({ usdToCopRate: usdToCopRate });
         return usdToCopRate;
