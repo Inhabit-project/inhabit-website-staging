@@ -795,6 +795,7 @@ export function VoucherStep(props: Props): JSX.Element {
                     );
                     const signature = await account.signMessage({ message });
                     const dto: ResendKycDto = {
+                      chainId: chain.id,
                       message,
                       signature,
                       nonce,

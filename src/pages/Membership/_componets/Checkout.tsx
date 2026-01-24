@@ -1,4 +1,5 @@
 import { JSX, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 // import { useAccount, useSignMessage } from "wagmi";
 import { Indicator, indicators } from "../../../assets/json/form/indicators";
 import { z } from "zod";
@@ -12,11 +13,7 @@ import { KYC_TYPE } from "../../../config/enums";
 import { mapUserToUserDto } from "../../../services/mapping/mapUserToUserDto";
 import { useStore } from "../../../store";
 import { useTranslation } from "react-i18next";
-import {
-  useActiveAccount,
-  useActiveWallet,
-  useActiveWalletChain,
-} from "thirdweb/react";
+import { useActiveWallet } from "thirdweb/react";
 import { Address, getAddress } from "viem";
 import { ZERO_ADDRESS } from "thirdweb";
 
@@ -169,7 +166,15 @@ export function Checkout(props: Props): JSX.Element {
   // hooks
   const [selectedIndicator, setSelectedIndicator] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [dropdownPosition, setDropdownPosition] = useState<{
+    top: number;
+    left: number;
+    width: number;
+    maxHeight: number;
+  } | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownTriggerRef = useRef<HTMLDivElement>(null);
+  const dropdownMenuRef = useRef<HTMLDivElement>(null);
 
   // external hooks
   const { register, handleSubmit, setValue, watch, reset } = useForm<Form>({
@@ -199,15 +204,32 @@ export function Checkout(props: Props): JSX.Element {
     setIsDropdownOpen(false);
   };
 
+  const updateDropdownPosition = () => {
+    if (!dropdownTriggerRef.current) return;
+    const rect = dropdownTriggerRef.current.getBoundingClientRect();
+    const viewportPadding = 8;
+    const maxHeight = Math.max(120, window.innerHeight - rect.bottom - 16);
+    const width = rect.width;
+    const left = Math.min(
+      Math.max(viewportPadding, rect.left),
+      Math.max(viewportPadding, window.innerWidth - width - viewportPadding)
+    );
+
+    setDropdownPosition({
+      top: rect.bottom + 4,
+      left,
+      width,
+      maxHeight
+    });
+  };
+
   // effects
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsDropdownOpen(false);
-      }
+      const target = event.target as Node;
+      if (dropdownRef.current?.contains(target)) return;
+      if (dropdownMenuRef.current?.contains(target)) return;
+      setIsDropdownOpen(false);
     };
 
     if (isDropdownOpen) {
@@ -216,6 +238,20 @@ export function Checkout(props: Props): JSX.Element {
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
+  useEffect(() => {
+    if (!isDropdownOpen) return;
+    updateDropdownPosition();
+
+    const handleWindowChange = () => updateDropdownPosition();
+    window.addEventListener("resize", handleWindowChange);
+    window.addEventListener("scroll", handleWindowChange, true);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowChange);
+      window.removeEventListener("scroll", handleWindowChange, true);
     };
   }, [isDropdownOpen]);
 
@@ -347,8 +383,12 @@ export function Checkout(props: Props): JSX.Element {
             </label>
             <div
               className="custom-dropdown-trigger"
+              ref={dropdownTriggerRef}
               onClick={() => {
-                if (!formDisabled) setIsDropdownOpen(!isDropdownOpen);
+                if (formDisabled) return;
+                const nextOpen = !isDropdownOpen;
+                setIsDropdownOpen(nextOpen);
+                if (nextOpen) updateDropdownPosition();
               }}
             >
               <div className="custom-dropdown-display">
@@ -380,28 +420,52 @@ export function Checkout(props: Props): JSX.Element {
                 </svg>
               </div>
             </div>
-            {isDropdownOpen && (
-              <div className="custom-dropdown-menu">
-                <div className="custom-dropdown-content">
-                  {/* TODO: added no indicator option */}
-                  {indicators.map((indicator: Indicator, index: number) => (
-                    <div
-                      key={index}
-                      className={`custom-dropdown-option ${
-                        formDisabled ? "pointer-events-none opacity-50" : ""
-                      }`}
-                      onClick={() => {
-                        if (!formDisabled) handleIndicatorSelect(indicator);
-                      }}
-                    >
-                      <span className="flag">{indicator.flag}</span>
-                      <span className="country-name">{indicator.name}</span>
-                      <span className="country-code">({indicator.code})</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            {isDropdownOpen &&
+              typeof document !== "undefined" &&
+              createPortal(
+                <div
+                  ref={dropdownMenuRef}
+                  className="custom-dropdown-menu"
+                  style={
+                    dropdownPosition
+                      ? {
+                          position: "fixed",
+                          top: dropdownPosition.top,
+                          left: dropdownPosition.left,
+                          width: dropdownPosition.width,
+                          zIndex: 9999
+                        }
+                      : { position: "fixed", zIndex: 9999 }
+                  }
+                >
+                  <div
+                    className="custom-dropdown-content"
+                    style={
+                      dropdownPosition
+                        ? { maxHeight: dropdownPosition.maxHeight }
+                        : undefined
+                    }
+                  >
+                    {/* TODO: added no indicator option */}
+                    {indicators.map((indicator: Indicator, index: number) => (
+                      <div
+                        key={index}
+                        className={`custom-dropdown-option ${
+                          formDisabled ? "pointer-events-none opacity-50" : ""
+                        }`}
+                        onClick={() => {
+                          if (!formDisabled) handleIndicatorSelect(indicator);
+                        }}
+                      >
+                        <span className="flag">{indicator.flag}</span>
+                        <span className="country-name">{indicator.name}</span>
+                        <span className="country-code">({indicator.code})</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>,
+                document.body
+              )}
             <input
               type="hidden"
               {...register("countryCode")}

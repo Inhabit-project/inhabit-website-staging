@@ -11,6 +11,8 @@ import OtherCollections from "./_componets/OtherCollections";
 import Stepper from "./_componets/Stepper";
 import { ViewAssetsModal } from "./_componets/ViewAssetsModal";
 import { useActiveAccount } from "thirdweb/react";
+import { ChevronLeft, ChevronRight } from 'lucide-react'; 
+
 
 type Props = {
   onHeroImageLoad?: VoidFunction;
@@ -23,6 +25,10 @@ export default function Membership(props: Props): JSX.Element {
 
   // thirdweb hooks
   const account = useActiveAccount();
+
+  // states
+  const [isAssetDrawerOpen, setIsAssetDrawerOpen] = useState(false);
+
 
   // hooks
   const [collection, setCollection] = useState<Collection | null>(null);
@@ -141,22 +147,40 @@ export default function Membership(props: Props): JSX.Element {
       <Menu />
 
       {account && lastNft && (
-        <button
-          onClick={() => setIsViewAssetsModalOpen(true)}
-          className="fixed bottom-6 right-6 z-50 group"
-          aria-label="View Assets"
-        >
-          <div className="w-36 h-36 rounded-xl overflow-hidden border-4 border-primary shadow-xl group-hover:scale-105 transition-transform duration-300">
-            <img
-              src={lastNft.imageUrl}
-              alt={lastNft.name}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <span className="block mt-2 text-secondary text-sm font-semibold uppercase tracking-wider text-center">
-            {t("membership.index.My Assets")}
-          </span>
-        </button>
+  <div
+    className={`fixed bottom-6 z-50 transition-all duration-300 ease-in-out
+      md:right-6
+      ${isAssetDrawerOpen ? 'right-6' : '-right-36'}
+    `}
+  >
+  {/* Tab/Flecha para abrir/cerrar - solo visible en mobile */}
+  <button
+      onClick={() => setIsAssetDrawerOpen(!isAssetDrawerOpen)}
+      className="md:hidden absolute -left-6 top-1/2 -translate-y-1/2 
+        bg-primary text-white rounded-l-lg py-6 px-1 shadow-lg"
+      aria-label={isAssetDrawerOpen ? "Hide Assets" : "Show Assets"}
+    >
+      {isAssetDrawerOpen ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+    </button>
+
+  {/* Contenido del botón */}
+  <button
+    onClick={() => setIsViewAssetsModalOpen(true)}
+    className="group"
+    aria-label="View Assets"
+  >
+    <div className="w-36 h-36 rounded-xl overflow-hidden border-4 border-primary shadow-xl group-hover:scale-105 transition-transform duration-300">
+      <img
+        src={lastNft.imageUrl}
+        alt={lastNft.name}
+        className="w-full h-full object-cover"
+      />
+    </div>
+    <span className="hidden sm:block mt-2 text-secondary text-sm font-semibold uppercase tracking-wider text-center">
+      {t("membership.index.My Assets")}
+    </span>
+  </button>
+</div>
       )}
 
       {/* View Assets Modal */}
