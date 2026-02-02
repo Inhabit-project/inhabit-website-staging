@@ -180,6 +180,10 @@ export function VoucherStep(props: Props): JSX.Element {
   const hasSufficientBalance = selectedBalance >= price;
   const isAvailable = availableSupply > 0;
 
+  // validations
+  /// is social login
+  const isSocialLogin = useMemo(() => wallet?.id === "inApp", [wallet]);
+
   // const contract = getContract({
   //   client: client as any,
   //   address: inhabit.getAddress(),
@@ -616,7 +620,8 @@ export function VoucherStep(props: Props): JSX.Element {
           </button>
         </div>
         {/* Pay with Crypto */}
-        <div className="bg-green-soft/30 rounded-xl overflow-hidden border border-green-soft/20">
+        {!isSocialLogin && (
+          <div className="bg-green-soft/30 rounded-xl overflow-hidden border border-green-soft/20">
           <button
             onClick={() =>
               setExpandedPaymentMethod(
@@ -765,8 +770,9 @@ export function VoucherStep(props: Props): JSX.Element {
                 </div>
               </div>
             </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {requiresHardKyc && !isKycHardCompleted && (
