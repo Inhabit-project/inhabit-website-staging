@@ -1766,3 +1766,39 @@
     mask-position: 0 0;
   }
 }
+
+/* Shake/Buzz animation like Messenger */
+@keyframes shake-buzz {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-4px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(4px);
+  }
+}
+
+.input-attention {
+  animation: shake-buzz 0.5s ease-in-out;
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3) !important;
+}
+
+.input-attention:focus {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* Border red state for unregistered user */
+.input-needs-attention {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-needs-attention:focus {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3) !important;
+}

@@ -72,6 +72,7 @@ export function VoucherStep(props: Props): JSX.Element {
     string | null
   >(null);
   const [isWompiScriptLoaded, setIsWompiScriptLoaded] = useState(false);
+  const [isResendInFlight, setIsResendInFlight] = useState(false);
 
   // external hooks
   const { campaignId, collectionId } = useParams();
@@ -779,12 +780,13 @@ export function VoucherStep(props: Props): JSX.Element {
             <button
               type="button"
               className={`${
-                isNoncePending || isResendingKyc || cooldown > 0
+                isResendInFlight || isNoncePending || isResendingKyc || cooldown > 0
                   ? "text-[#BDBDBD] hover:no-underline cursor-auto"
                   : "text-[#D57300] hover:underline inline normal-case"
               } body-S`}
               onClick={() => {
                 if (!account?.address || !chain) return;
+                setIsResendInFlight(true);
                 fetchNonce(accountAddress, {
                   onSuccess: async (nonce) => {
                     if (!nonce) return;
@@ -815,6 +817,7 @@ export function VoucherStep(props: Props): JSX.Element {
                           expiresAt.toString()
                         );
                         setCooldown(180);
+                        setIsResendInFlight(false);
                       },
                       onError: (error) => {
                         console.error("❌", error);
@@ -823,6 +826,7 @@ export function VoucherStep(props: Props): JSX.Element {
                             "membership.checkout.Error sending KYC request. Please try again"
                           )
                         );
+                        setIsResendInFlight(false);
                       },
                     });
                   },
@@ -833,12 +837,15 @@ export function VoucherStep(props: Props): JSX.Element {
                         "membership.checkout.Error signing message. Please try again."
                       )
                     );
+                    setIsResendInFlight(false);
                   },
                 });
               }}
-              disabled={isNoncePending || isResendingKyc || cooldown > 0}
+              disabled={
+                isResendInFlight || isNoncePending || isResendingKyc || cooldown > 0
+              }
             >
-              {isNoncePending || isResendingKyc
+              {isResendInFlight || isNoncePending || isResendingKyc
                 ? t("membership.voucher.Resending KYC request...")
                 : cooldown > 0
                 ? `${t("membership.voucher.Wait")} ${Math.floor(

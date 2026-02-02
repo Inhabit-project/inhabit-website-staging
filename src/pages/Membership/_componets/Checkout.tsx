@@ -1,4 +1,4 @@
-import { JSX, useEffect, useMemo, useRef, useState } from "react";
+import { JSX, useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 // import { useAccount, useSignMessage } from "wagmi";
 import { Indicator, indicators } from "../../../assets/json/form/indicators";
@@ -172,6 +172,9 @@ export function Checkout(props: Props): JSX.Element {
     width: number;
     maxHeight: number;
   } | null>(null);
+  const [needsAttention, setNeedsAttention] = useState<boolean>(false);
+  const [isShaking, setIsShaking] = useState<boolean>(false);
+  const prevAccountRef = useRef<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const dropdownTriggerRef = useRef<HTMLDivElement>(null);
   const dropdownMenuRef = useRef<HTMLDivElement>(null);
@@ -254,6 +257,36 @@ export function Checkout(props: Props): JSX.Element {
       window.removeEventListener("scroll", handleWindowChange, true);
     };
   }, [isDropdownOpen]);
+
+  // Detect when user logs in and trigger attention effect
+  useEffect(() => {
+    const currentAddress = account?.address ?? null;
+    const previousAddress = prevAccountRef.current;
+
+    // User just logged in (went from no address to having one)
+    if (currentAddress && !previousAddress) {
+      // Trigger shake animation
+      setIsShaking(true);
+      setNeedsAttention(true);
+
+      // Remove shake class after animation completes
+      const shakeTimeout = setTimeout(() => {
+        setIsShaking(false);
+      }, 500);
+
+      return () => clearTimeout(shakeTimeout);
+    }
+
+    // Update ref for next comparison
+    prevAccountRef.current = currentAddress;
+  }, [account?.address]);
+
+  // Function to clear attention state when user starts filling form
+  const clearAttention = useCallback(() => {
+    if (needsAttention) {
+      setNeedsAttention(false);
+    }
+  }, [needsAttention]);
 
   const onSubmit = (data: Form) => {
     if (!account || !account.address || !chainId) return;
@@ -347,8 +380,9 @@ export function Checkout(props: Props): JSX.Element {
             </label>
             <input
               type="text"
-              className="input-main"
+              className={`input-main ${isShaking ? "input-attention" : ""} ${needsAttention ? "input-needs-attention" : ""}`}
               placeholder={t("membership.checkout.Enter your name")}
+              onFocus={clearAttention}
               {...register("firstName")}
             />
           </div>
@@ -358,8 +392,9 @@ export function Checkout(props: Props): JSX.Element {
             </label>
             <input
               type="text"
-              className="input-main"
+              className={`input-main ${isShaking ? "input-attention" : ""} ${needsAttention ? "input-needs-attention" : ""}`}
               placeholder={t("membership.checkout.Enter your last name")}
+              onFocus={clearAttention}
               {...register("lastName")}
             />
           </div>
@@ -370,8 +405,9 @@ export function Checkout(props: Props): JSX.Element {
           </label>
           <input
             type="email"
-            className="input-main"
+            className={`input-main ${isShaking ? "input-attention" : ""} ${needsAttention ? "input-needs-attention" : ""}`}
             placeholder={t("membership.checkout.Enter your email")}
+            onFocus={clearAttention}
             {...register("email")}
           />
         </div>
@@ -382,10 +418,11 @@ export function Checkout(props: Props): JSX.Element {
               {t("membership.checkout.Country Code*")}
             </label>
             <div
-              className="custom-dropdown-trigger"
+              className={`custom-dropdown-trigger ${isShaking ? "input-attention" : ""} ${needsAttention ? "input-needs-attention" : ""}`}
               ref={dropdownTriggerRef}
               onClick={() => {
                 if (formDisabled) return;
+                clearAttention();
                 const nextOpen = !isDropdownOpen;
                 setIsDropdownOpen(nextOpen);
                 if (nextOpen) updateDropdownPosition();
@@ -479,13 +516,14 @@ export function Checkout(props: Props): JSX.Element {
             </label>
             <input
               type="tel"
-              className="input-main"
+              className={`input-main ${isShaking ? "input-attention" : ""} ${needsAttention ? "input-needs-attention" : ""}`}
               placeholder={
                 selectedIndicatorData
                   ? t("membership.checkout.Enter phone number")
                   : t("membership.checkout.Select country first")
               }
               disabled={!selectedIndicator}
+              onFocus={clearAttention}
               {...register("cellphone")}
             />
           </div>
@@ -497,8 +535,9 @@ export function Checkout(props: Props): JSX.Element {
           </label>
           <input
             type="text"
-            className="input-main"
+            className={`input-main ${isShaking ? "input-attention" : ""} ${needsAttention ? "input-needs-attention" : ""}`}
             placeholder="@pepioperez"
+            onFocus={clearAttention}
             {...register("telegramHandle")}
           />
         </div>
