@@ -66,7 +66,7 @@ export function VoucherStep(props: Props): JSX.Element {
   const [showCreditCardModal, setShowCreditCardModal] = useState(false);
   const [wompiSignature, setWompiSignature] = useState<string>("");
   const [wompiReference, setWompiReference] = useState(() =>
-    crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase()
+    crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase(),
   );
   const [expandedPaymentMethod, setExpandedPaymentMethod] = useState<
     string | null
@@ -104,7 +104,7 @@ export function VoucherStep(props: Props): JSX.Element {
   // account hook
   const { useGetSiweMessage, useSaveOrder } = useAccount(
     chainId,
-    accountAddress
+    accountAddress,
   );
 
   /// get siwe message
@@ -220,7 +220,7 @@ export function VoucherStep(props: Props): JSX.Element {
     (async () => {
       const signature = await generateWompiSignature(
         wompiReference,
-        priceInCcopInCents
+        priceInCcopInCents,
       );
 
       setWompiSignature(signature);
@@ -301,8 +301,8 @@ export function VoucherStep(props: Props): JSX.Element {
     ) {
       alert(
         t(
-          "membership.voucher.Payment gateway is loading. Please try again in a moment."
-        )
+          "membership.voucher.Payment gateway is loading. Please try again in a moment.",
+        ),
       );
       return;
     }
@@ -329,7 +329,11 @@ export function VoucherStep(props: Props): JSX.Element {
             checkoutRef.current.open(async (_result: any) => {
               setWompiSignature("");
               setWompiReference(
-                crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase()
+                crypto
+                  .randomUUID()
+                  .replace(/-/g, "")
+                  .slice(0, 12)
+                  .toUpperCase(),
               );
 
               confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
@@ -351,15 +355,19 @@ export function VoucherStep(props: Props): JSX.Element {
           onError: (error: APIError) => {
             if (error.status === 409) {
               setWompiReference(
-                crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase()
+                crypto
+                  .randomUUID()
+                  .replace(/-/g, "")
+                  .slice(0, 12)
+                  .toUpperCase(),
               );
 
               alert(
-                t("membership.voucher.Order already exists. Please try again.")
+                t("membership.voucher.Order already exists. Please try again."),
               );
             }
           },
-        }
+        },
       );
     } catch (error) {
       console.error("❌ Error signing message:", error);
@@ -478,7 +486,7 @@ export function VoucherStep(props: Props): JSX.Element {
               alert(t("membership.voucher.Error approving token"));
               reject(error);
             },
-          }
+          },
         );
       });
     }
@@ -511,7 +519,7 @@ export function VoucherStep(props: Props): JSX.Element {
               } catch (error) {
                 console.error(
                   "❌ Error refreshing balances after purchase:",
-                  error
+                  error,
                 );
                 resolve();
               }
@@ -521,7 +529,7 @@ export function VoucherStep(props: Props): JSX.Element {
             console.error("❌ buyNFT", error);
             reject(error);
           },
-        }
+        },
       );
     });
   };
@@ -606,8 +614,8 @@ export function VoucherStep(props: Props): JSX.Element {
               (requiresHardKyc && !isKycHardCompleted)
             }
           >
-            <h4 className="heading-6 text-left">
-              {t("membership.voucher.Pay with card")}
+            <h4 className="heading-6 text-left text-primary">
+              {t("membership.voucher.Pay with card - click here")}
             </h4>
             <div className="flex items-center gap-2">
               <img
@@ -620,17 +628,18 @@ export function VoucherStep(props: Props): JSX.Element {
           </button>
         </div>
         {/* Pay with Crypto */}
-        {!isSocialLogin && (
-          <div className="bg-green-soft/30 rounded-xl overflow-hidden border border-green-soft/20">
+        <div className="bg-green-soft/30 rounded-xl overflow-hidden border border-green-soft/20">
           <button
             onClick={() =>
               setExpandedPaymentMethod(
-                expandedPaymentMethod === "crypto" ? null : "crypto"
+                expandedPaymentMethod === "crypto" ? null : "crypto",
               )
             }
             className="w-full px-4 py-4 flex items-center justify-between hover:bg-green-soft/20 transition-colors"
           >
-            <h4 className="heading-6 text-left">Pay with crypto</h4>
+            <h4 className="heading-6 text-left text-primary">
+              {t("membership.voucher.Pay with crypto - click here")}
+            </h4>
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
                 <img src={usdcImage} alt="USDC" className="w-6 h-6" />
@@ -696,7 +705,7 @@ export function VoucherStep(props: Props): JSX.Element {
                     (!requiresHardKyc && !hasSufficientBalance)) && (
                     <label className="text-center p-3 body-S text-light">
                       {t(
-                        "membership.voucher.You don't have enough balance to purchase this membership"
+                        "membership.voucher.You don't have enough balance to purchase this membership",
                       )}
                     </label>
                   )}
@@ -741,8 +750,8 @@ export function VoucherStep(props: Props): JSX.Element {
                     {selectedCoin === COIN.CCOP && priceInCcop
                       ? formatCcopToCop(
                           Number(
-                            formatUnits(BigInt(priceInCcop), ccop.decimals)
-                          )
+                            formatUnits(BigInt(priceInCcop), ccop.decimals),
+                          ),
                         )
                       : price.toFixed(2)}
                   </span>
@@ -770,9 +779,8 @@ export function VoucherStep(props: Props): JSX.Element {
                 </div>
               </div>
             </div>
-            </div>
           </div>
-        )}
+        </div>
       </div>
 
       {requiresHardKyc && !isKycHardCompleted && (
@@ -780,13 +788,16 @@ export function VoucherStep(props: Props): JSX.Element {
           <label className="text-center body-S text-light">
             {isNoncePending || isResendingKyc
               ? t(
-                  "membership.voucher.You need to pass the KYC to purchase this NFT."
+                  "membership.voucher.You need to pass the KYC to purchase this NFT.",
                 )
               : null}
             <button
               type="button"
               className={`${
-                isResendInFlight || isNoncePending || isResendingKyc || cooldown > 0
+                isResendInFlight ||
+                isNoncePending ||
+                isResendingKyc ||
+                cooldown > 0
                   ? "text-[#BDBDBD] hover:no-underline cursor-auto"
                   : "text-[#D57300] hover:underline inline normal-case"
               } body-S`}
@@ -799,7 +810,7 @@ export function VoucherStep(props: Props): JSX.Element {
                     const message = generateSiweMessage(
                       chain.id,
                       account.address as Address,
-                      nonce
+                      nonce,
                     );
                     const signature = await account.signMessage({ message });
                     const dto: ResendKycDto = {
@@ -814,13 +825,13 @@ export function VoucherStep(props: Props): JSX.Element {
                       onSuccess: () => {
                         alert(
                           t(
-                            "membership.checkout.KYC request sent successfully!"
-                          )
+                            "membership.checkout.KYC request sent successfully!",
+                          ),
                         );
                         const expiresAt = Math.floor(Date.now() / 1000) + 180;
                         localStorage.setItem(
                           COOLDOWN_KEY,
-                          expiresAt.toString()
+                          expiresAt.toString(),
                         );
                         setCooldown(180);
                         setIsResendInFlight(false);
@@ -829,8 +840,8 @@ export function VoucherStep(props: Props): JSX.Element {
                         console.error("❌", error);
                         alert(
                           t(
-                            "membership.checkout.Error sending KYC request. Please try again"
-                          )
+                            "membership.checkout.Error sending KYC request. Please try again",
+                          ),
                         );
                         setIsResendInFlight(false);
                       },
@@ -840,26 +851,29 @@ export function VoucherStep(props: Props): JSX.Element {
                     console.error("❌", error);
                     alert(
                       t(
-                        "membership.checkout.Error signing message. Please try again."
-                      )
+                        "membership.checkout.Error signing message. Please try again.",
+                      ),
                     );
                     setIsResendInFlight(false);
                   },
                 });
               }}
               disabled={
-                isResendInFlight || isNoncePending || isResendingKyc || cooldown > 0
+                isResendInFlight ||
+                isNoncePending ||
+                isResendingKyc ||
+                cooldown > 0
               }
             >
               {isResendInFlight || isNoncePending || isResendingKyc
                 ? t("membership.voucher.Resending KYC request...")
                 : cooldown > 0
-                ? `${t("membership.voucher.Wait")} ${Math.floor(
-                    cooldown / 60
-                  )}:${(cooldown % 60).toString().padStart(2, "0")} ${t(
-                    "membership.voucher.to resend"
-                  )}`
-                : t("membership.voucher.Click here to resend KYC request")}
+                  ? `${t("membership.voucher.Wait")} ${Math.floor(
+                      cooldown / 60,
+                    )}:${(cooldown % 60).toString().padStart(2, "0")} ${t(
+                      "membership.voucher.to resend",
+                    )}`
+                  : t("membership.voucher.Click here to resend KYC request")}
             </button>
           </label>
         </div>
