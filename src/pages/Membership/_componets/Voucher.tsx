@@ -615,7 +615,7 @@ export function VoucherStep(props: Props): JSX.Element {
             }
           >
             <h4 className="heading-6 text-left text-primary">
-              {t("membership.voucher.Pay with card - click here")}
+              {t("membership.voucher.Pay with card")}
             </h4>
             <div className="flex items-center gap-2">
               <img
@@ -638,7 +638,7 @@ export function VoucherStep(props: Props): JSX.Element {
             className="w-full px-4 py-4 flex items-center justify-between hover:bg-green-soft/20 transition-colors"
           >
             <h4 className="heading-6 text-left text-primary">
-              {t("membership.voucher.Pay with crypto - click here")}
+              {t("membership.voucher.Pay with crypto")}
             </h4>
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">

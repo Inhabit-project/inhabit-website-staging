@@ -45,6 +45,7 @@ export function LoginButton(): JSX.Element {
 
   return (
     <div className="w-full flex justify-center">
+      <div className="relative inline-flex">
       <ConnectButton
         client={client}
         connectButton={{ label: "Login" }}
@@ -71,6 +72,7 @@ export function LoginButton(): JSX.Element {
           onClick={() => activeWallet.disconnect()}
         />
       ) : null}
+      </div>
     </div>
   );
 }
